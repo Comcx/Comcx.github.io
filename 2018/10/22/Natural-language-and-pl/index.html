@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="I’m reading “Grammar Club” these days, trying to figure out the inner relationshipbetween natural and programming language which I may refer to to help with mynew language Nano’s syntax design. Link s">
 <meta name="keywords" content="Study">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Isomorphism of Natural and Programming language">
 <meta property="og:url" content="http://yoursite.com/2018/10/22/Natural-language-and-pl/index.html">
 <meta property="og:site_name" content="Comcx.Blog">
-<meta property="og:description" content="I’m reading “Grammar Club” these days, trying to figure out the inner relationshipbetween natural and programming language which I may refer to to help with mynew language Nano’s syntax design. Link s">
 <meta property="og:locale" content="English">
-<meta property="og:updated_time" content="2018-10-23T02:21:26.305Z">
+<meta property="og:image" content="http://yoursite.com/images/Natural-language-and-pl/pl.jpg">
+<meta property="og:updated_time" content="2018-10-23T02:57:45.009Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Isomorphism of Natural and Programming language">
-<meta name="twitter:description" content="I’m reading “Grammar Club” these days, trying to figure out the inner relationshipbetween natural and programming language which I may refer to to help with mynew language Nano’s syntax design. Link s">
+<meta name="twitter:image" content="http://yoursite.com/images/Natural-language-and-pl/pl.jpg">
 
 
 
@@ -399,11 +398,11 @@
       
 
       
-        <p>I’m reading “Grammar Club” these days, trying to figure out the inner relationship<br>between natural and programming language which I may refer to to help with my<br>new language Nano’s syntax design.</p>
+        <p><img src="/images/Natural-language-and-pl/pl.jpg" width="950" height="600" alt="languages" align="center"></p>
+<a id="more"></a>
+<p>I’m reading “Grammar Club” these days, trying to figure out the inner relationship<br>between natural and programming language which I may refer to to help with my<br>new language Nano’s syntax design.</p>
 <p>Link start!</p>
-<ol>
-<li><p><strong>Basic sentence pattern <em>vs</em> composition of expressions</strong></p>
-<ul>
+<h2 id="1-Basic-sentence-pattern-vs-composition-of-expressions"><a href="#1-Basic-sentence-pattern-vs-composition-of-expressions" class="headerlink" title="1. Basic sentence pattern vs composition of expressions"></a>1. <strong>Basic sentence pattern <em>vs</em> composition of expressions</strong></h2><ul>
 <li><p>Basic sentence pattern in English</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">S V </span><br><span class="line">S V O </span><br><span class="line">S V C</span><br><span class="line">S V O O</span><br><span class="line">S V O C</span><br><span class="line">where S = Subject(主语); V = Verb(谓语); O = Object(宾语); C = Complement(补语)</span><br></pre></td></tr></table></figure>
 </li>
@@ -412,40 +411,44 @@
 <p>Here, we use same representations of grammar terminations,<br>and say, we select prefix expression to express function call.</p>
 <p>Thinking carefully, It seems that <em>object</em> is just another name of a second parameter<br>of a function call, and also the <em>subject</em> is just the first parameter.</p>
 <p>What’s more? Let’s focus on <em>complements</em> with a single example:<br><code>He is a Magic.</code><br>Traditional grammar assumes that there is a class of words which could be called<br><em>link verb</em> such as ‘is’. In the example above, the noun ‘Magic’ can be viewed<br>as being binded to the subject ‘He’. Hence we can say, in an extent, <em>link verb</em><br>is just like the binding operation which is also called <strong>abstraction</strong> in<br>Programming language.<br>p.s. From now on, we do not seperate abstraction(=) and equal comparsion(==),<br>we shall clarify these two later.</p>
-</li>
-</ul>
 <p>Let’s update our sentence patterns of English:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">F X+</span><br><span class="line">= X Y</span><br><span class="line">where F = Function; X, Y = Parameters; &apos;=&apos; = Bindings</span><br><span class="line">-- X+ means one parameter or more</span><br></pre></td></tr></table></figure>
 <p>So far, we have abstract a general form of English in programming language.<br>Before getting into next step, we now define a infix representation of ‘F’.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F X Y &lt;=&gt; X .F Y</span><br></pre></td></tr></table></figure>
 <p>We simply add a dot before F to indicate that this sentence is equal to <code>F X Y</code>.</p>
 </li>
-</ol>
-<ol start="2">
-<li><p><strong>Prediction <em>vs</em> Abstraction</strong></p>
-<p>Let’s review our example above:<br><code>He is a Magic</code></p>
-<p>Well, is it means <em>he</em> is absolutly <em>a Magic</em>? No, it’s just a statement.<br>We now call this kind of sentence <strong><em>Prediction</em></strong>.<br><strong>More examples:</strong></p>
+</ul>
+<h2 id="2-Prediction-vs-Abstraction"><a href="#2-Prediction-vs-Abstraction" class="headerlink" title="2. Prediction vs Abstraction"></a>2. <strong>Prediction <em>vs</em> Abstraction</strong></h2><p>  Let’s review our example above:<br>  <code>He is a Magic</code></p>
+<p>  Well, is it means <em>he</em> is absolutly <em>a Magic</em>? No, it’s just a statement.<br>  We now call this kind of sentence <strong><em>Prediction</em></strong>.<br>  <strong>More examples:</strong></p>
 <ul>
 <li>She is pretty.</li>
 <li>Yogami is interesting.<br>…</li>
 </ul>
-<p>Strictly, we use ‘=’ only when a sentence is a <strong>prediction</strong>.</p>
-</li>
-</ol>
-<p>  However, then what is abstraction??<br>  Actually, we call = abstraction above, therefore, we need a new symbol to<br>  represent abstraction. Here we choose <strong>‘:’</strong>.<br>  Let me list some examples of abstractions:</p>
+<p>  Strictly, we use ‘=’ only when a sentence is a <strong>prediction</strong>.</p>
+<p>  However, then what is abstraction??<br>  Actually, we call = abstraction above, therefore, we need a new symbol to represent abstraction.<br>  Here we choose <strong>‘:’</strong>.<br>  Let me list some examples of abstractions:</p>
 <ul>
 <li>A smart boy</li>
 <li>An interesting program</li>
-<li><p>The boy who won<br>…</p>
-<p>It is interesting that the sentence <code>A smart boy</code> can also be rewritten as<br><code>the boy who is smart</code>.</p>
-<p>Get some feelings?<br>Yes! This is kind of like assignment in programming!<br>With the symbol ‘:’, we can write:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">boy .: smart</span><br><span class="line">program .: interesting</span><br><span class="line">boy .: (boy won)</span><br></pre></td></tr></table></figure>
-<p>Abstraction will be pretty useful when we tallking about <em>attributive clauses</em>.</p>
-</li>
+<li>The boy who won<br>…</li>
 </ul>
-<ol start="3">
-<li><strong>Adjective or Trait</strong></li>
-</ol>
+<p>  It is interesting that the sentence <code>A smart boy</code> can also be rewritten as<br>  <code>the boy who is smart</code>.</p>
+<p>  Get some feelings?<br>  Yes! This is kind of like assignment in programming!<br>  With the symbol ‘:’, we can write:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">boy .: smart</span><br><span class="line">program .: interesting</span><br><span class="line">boy .: (boy won)</span><br></pre></td></tr></table></figure></p>
+<p>  Abstraction will be pretty useful when we tallking about <em>attributive clauses</em>.</p>
+<h2 id="3-Adjective-or-Trait"><a href="#3-Adjective-or-Trait" class="headerlink" title="3. Adjective or Trait"></a>3. <strong>Adjective or Trait</strong></h2><p>  All of a sudden, a weird question appeared:<br>  <strong><em>What on earth is a adjustive?</em></strong></p>
+<p>  Well, it’s kind of hard to give an answer directly. Let’s look into a similar<br>  word in <em>Scala</em>: <em>trait</em>.</p>
+<p>  In scala, traits are used to share interfaces and fields between classes.<br>  They are similar to Java 8’s interfaces. Classes and objects can extend traits<br>  but traits cannot be instantiated and therefore have no parameters.</p>
+<p>  So,, does that mean trait is just a special kind of class or interface?<br>  Not exactly.</p>
+<p>  (still under work)…</p>
+<h2 id="4-Noun-Clauses-is-about-composition"><a href="#4-Noun-Clauses-is-about-composition" class="headerlink" title="4. Noun Clauses is about composition"></a><strong>4. Noun Clauses is about composition</strong></h2><p>  Let’s start with an example:<br>  <code>He said what he know.</code></p>
+<p>  We can decompose this sentence into two parts:</p>
+<ul>
+<li>He said something.</li>
+<li>He know something.</li>
+</ul>
+<p>  Using English grammar, it is a sentence like:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S V Clause??</span><br></pre></td></tr></table></figure></p>
+<p>  Well, English do not allow two verbs work at the same time, it is really<br>  not convenient! If we use our programming grammar:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X .F (X .F&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>  Pretty cool! But something wrong happened.<br>  First, if we use composition, we need to track the result type of a composition.<br>  Here what does <code>(X .F)</code> result? What the result type of <code>(X .F)</code>??</p>
+<p>  Second, </p>
 
       
     </div>
@@ -546,8 +549,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -625,6 +637,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Basic-sentence-pattern-vs-composition-of-expressions"><span class="nav-number">1.</span> <span class="nav-text">1. Basic sentence pattern vs composition of expressions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Prediction-vs-Abstraction"><span class="nav-number">2.</span> <span class="nav-text">2. Prediction vs Abstraction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Adjective-or-Trait"><span class="nav-number">3.</span> <span class="nav-text">3. Adjective or Trait</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Noun-Clauses-is-about-composition"><span class="nav-number">4.</span> <span class="nav-text">4. Noun Clauses is about composition</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
