@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="I’m reading “Grammar Club” these days, trying to figure out the inner relationshipbetween natural and programming language which I may refer to to help with my new languageNano’s syntax design. Link s">
+<meta name="description" content="I’m reading “Grammar Club” these days, trying to figure out the inner relationshipbetween natural and programming language which I may refer to to help with mynew language Nano’s syntax design. Link s">
 <meta name="keywords" content="Study">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Isomorphism of Natural and Programming language">
 <meta property="og:url" content="http://yoursite.com/2018/10/22/Natural-language-and-pl/index.html">
 <meta property="og:site_name" content="Comcx.Blog">
-<meta property="og:description" content="I’m reading “Grammar Club” these days, trying to figure out the inner relationshipbetween natural and programming language which I may refer to to help with my new languageNano’s syntax design. Link s">
+<meta property="og:description" content="I’m reading “Grammar Club” these days, trying to figure out the inner relationshipbetween natural and programming language which I may refer to to help with mynew language Nano’s syntax design. Link s">
 <meta property="og:locale" content="English">
-<meta property="og:updated_time" content="2018-10-22T04:26:33.978Z">
+<meta property="og:updated_time" content="2018-10-23T02:21:26.305Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Isomorphism of Natural and Programming language">
-<meta name="twitter:description" content="I’m reading “Grammar Club” these days, trying to figure out the inner relationshipbetween natural and programming language which I may refer to to help with my new languageNano’s syntax design. Link s">
+<meta name="twitter:description" content="I’m reading “Grammar Club” these days, trying to figure out the inner relationshipbetween natural and programming language which I may refer to to help with mynew language Nano’s syntax design. Link s">
 
 
 
@@ -399,13 +399,13 @@
       
 
       
-        <p>I’m reading “Grammar Club” these days, trying to figure out the inner relationship<br>between natural and programming language which I may refer to to help with my new language<br>Nano’s syntax design.</p>
+        <p>I’m reading “Grammar Club” these days, trying to figure out the inner relationship<br>between natural and programming language which I may refer to to help with my<br>new language Nano’s syntax design.</p>
 <p>Link start!</p>
 <ol>
 <li><p><strong>Basic sentence pattern <em>vs</em> composition of expressions</strong></p>
 <ul>
 <li><p>Basic sentence pattern in English</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">S V </span><br><span class="line">S V O </span><br><span class="line">S V C</span><br><span class="line">S V O O</span><br><span class="line">S V O C</span><br><span class="line">-- S = Subject(主语); V = Verb(谓语); O = Object(宾语); C = Complement(补语)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">S V </span><br><span class="line">S V O </span><br><span class="line">S V C</span><br><span class="line">S V O O</span><br><span class="line">S V O C</span><br><span class="line">where S = Subject(主语); V = Verb(谓语); O = Object(宾语); C = Complement(补语)</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Compositions in Programming languages</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">V S</span><br><span class="line">V S X</span><br><span class="line">V S X Y</span><br></pre></td></tr></table></figure>
@@ -415,8 +415,36 @@
 </li>
 </ul>
 <p>Let’s update our sentence patterns of English:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">F X</span><br><span class="line">= X Y</span><br><span class="line">-- F = Function; X, Y = Parameters; &apos;=&apos; = Bindings</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">F X+</span><br><span class="line">= X Y</span><br><span class="line">where F = Function; X, Y = Parameters; &apos;=&apos; = Bindings</span><br><span class="line">-- X+ means one parameter or more</span><br></pre></td></tr></table></figure>
+<p>So far, we have abstract a general form of English in programming language.<br>Before getting into next step, we now define a infix representation of ‘F’.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F X Y &lt;=&gt; X .F Y</span><br></pre></td></tr></table></figure>
+<p>We simply add a dot before F to indicate that this sentence is equal to <code>F X Y</code>.</p>
 </li>
+</ol>
+<ol start="2">
+<li><p><strong>Prediction <em>vs</em> Abstraction</strong></p>
+<p>Let’s review our example above:<br><code>He is a Magic</code></p>
+<p>Well, is it means <em>he</em> is absolutly <em>a Magic</em>? No, it’s just a statement.<br>We now call this kind of sentence <strong><em>Prediction</em></strong>.<br><strong>More examples:</strong></p>
+<ul>
+<li>She is pretty.</li>
+<li>Yogami is interesting.<br>…</li>
+</ul>
+<p>Strictly, we use ‘=’ only when a sentence is a <strong>prediction</strong>.</p>
+</li>
+</ol>
+<p>  However, then what is abstraction??<br>  Actually, we call = abstraction above, therefore, we need a new symbol to<br>  represent abstraction. Here we choose <strong>‘:’</strong>.<br>  Let me list some examples of abstractions:</p>
+<ul>
+<li>A smart boy</li>
+<li>An interesting program</li>
+<li><p>The boy who won<br>…</p>
+<p>It is interesting that the sentence <code>A smart boy</code> can also be rewritten as<br><code>the boy who is smart</code>.</p>
+<p>Get some feelings?<br>Yes! This is kind of like assignment in programming!<br>With the symbol ‘:’, we can write:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">boy .: smart</span><br><span class="line">program .: interesting</span><br><span class="line">boy .: (boy won)</span><br></pre></td></tr></table></figure>
+<p>Abstraction will be pretty useful when we tallking about <em>attributive clauses</em>.</p>
+</li>
+</ul>
+<ol start="3">
+<li><strong>Adjective or Trait</strong></li>
 </ol>
 
       
