@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Comcx.Space">
 <meta property="og:description" content="List pitfalls I ran into in my programming days. Format: [Language/Domain]Title[Solved or not]  [Haskell]putStr is not evaluated in the correct order[Solved] If you try codes(let&amp;#39;s say in file &amp;#3">
 <meta property="og:locale" content="English">
-<meta property="og:updated_time" content="2018-11-11T08:42:49.304Z">
+<meta property="og:updated_time" content="2018-11-11T08:45:07.319Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pitfalls while programming">
 <meta name="twitter:description" content="List pitfalls I ran into in my programming days. Format: [Language/Domain]Title[Solved or not]  [Haskell]putStr is not evaluated in the correct order[Solved] If you try codes(let&amp;#39;s say in file &amp;#3">
@@ -409,8 +409,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ghc --make Test.hs</span><br><span class="line">$ ./Test.exe</span><br></pre></td></tr></table></figure>
 <p>You may discover that the string &quot;input: &quot; appears after you input something!
 It seems that the <code>putStr</code> operation worked in the wrong order??!</p>
-<p><strong>Solution</strong>
-GHCi and the compiled program do not buffer the output in quite the
+<p><strong>Solution</strong></p>
+<p>GHCi and the compiled program do not buffer the output in quite the
 same way. In the compile program, stdout is line buffered, so it will
 not output anything until it gets a &#39;\n&#39;. You can force the output
 using &#39;hFlush stdout&#39;:</p>
