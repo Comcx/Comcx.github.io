@@ -403,62 +403,96 @@
 <h1 id="Record-of-the-construction-of-my-blog"><a href="#Record-of-the-construction-of-my-blog" class="headerlink" title="Record of the construction of my blog"></a>Record of the construction of my blog</h1><p><br><br><br></p>
 <h2 id="Recipe-Github-Pages-with-Git-Hexo-Domain-name"><a href="#Recipe-Github-Pages-with-Git-Hexo-Domain-name" class="headerlink" title="Recipe: Github Pages with Git + Hexo +  Domain name"></a>Recipe: Github Pages with Git + Hexo +  Domain name</h2><h2 id="Github-Pages-with-Git"><a href="#Github-Pages-with-Git" class="headerlink" title="Github Pages with Git"></a>Github Pages with Git</h2><h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>Website hosted directly from your GitHub repository. Just edit, push, and your changes are live.(来自官方概括︿(￣︶￣)︿)</p>
 <h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><ul>
-<li><p><strong><em>Step_[0]: Create a repository on Github</em></strong><br>Head over to GitHub and create a new repository named username.github.io, where username is your username (or organization name) on GitHub.<br>p.s. If the first part of the repository doesn’t exactly match your username, it won’t work, so make sure to get it right.</p>
+<li><p><strong><em>Step_[0]: Create a repository on Github</em></strong>
+Head over to GitHub and create a new repository named username.github.io, where username is your username (or organization name) on GitHub.
+p.s. If the first part of the repository doesn’t exactly match your username, it won’t work, so make sure to get it right.</p>
 </li>
-<li><p><strong><em>Step_[1]: Install Git</em></strong><br>Download from Git official website (<a href="https://git-scm.com/download/win)" target="_blank" rel="noopener">https://git-scm.com/download/win)</a>.<br>Open Git Bash, use command:</p>
+<li><p><strong><em>Step_[1]: Install Git</em></strong>
+Download from Git official website (<a href="https://git-scm.com/download/win)" target="_blank" rel="noopener">https://git-scm.com/download/win)</a>.
+Open Git Bash, use command:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name --你的GitHub用户名(your github username)</span><br><span class="line">git config --global user.email --你的GitHub注册邮箱(your github email)</span><br></pre></td></tr></table></figure>
 <p>then, generate ssh key(for convenience and security)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C --你的GitHub注册邮箱(your github email)</span><br></pre></td></tr></table></figure>
-<p>here, we can just press Enter for three times if nothing necessary.<br>Find youe generated file named id_rsa.pub, copy all contents.<br>Open Github Setting Keys page, create new SSH key.<br>p.s.To check whether ssh key is working, back to Git Bash, use command:</p>
+<p>here, we can just press Enter for three times if nothing necessary.
+Find youe generated file named id_rsa.pub, copy all contents.
+Open Github Setting Keys page, create new SSH key. 
+p.s.To check whether ssh key is working, back to Git Bash, use command:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><h3 id="Introduction-1"><a href="#Introduction-1" class="headerlink" title="Introduction"></a>Introduction</h3><h3 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h3><ul>
-<li><p><strong><em>Step_[0]: Install Node.js and npm</em></strong><br>To check, use command:</p>
+<li><p><strong><em>Step_[0]: Install Node.js and npm</em></strong>
+To check, use command:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong><em>Step_[1]: Install Hexo</em></strong><br>Input command:</p>
+<li><p><strong><em>Step_[1]: Install Hexo</em></strong>
+Input command:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
 <p>p.s. This installation could be a little long, be patient.</p>
-<p>Install successfully! Here we go.<br>Create a directory wherever you like, here I name it Blog, and then we jump into this path<br><code>cd Blog</code><br>Use command:</p>
+<p>Install successfully! Here we go.
+Create a directory wherever you like, here I name it Blog, and then we jump into this path
+<code>cd Blog</code>
+Use command:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init blog</span><br></pre></td></tr></table></figure>
-<p>which create a new directory named “blog” inside our Blog directory.<br>To test whether command above actually worked, use command:</p>
+<p>which create a new directory named &quot;blog&quot; inside our Blog directory.
+To test whether command above actually worked, use command:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo new &apos;Hello Blog&apos;</span><br><span class="line"></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-<p>Open the web browser(I use chrome), input URL<br>(<code>localhost:4000</code>)</p>
+<p>Open the web browser(I use chrome), input URL 
+(<code>localhost:4000</code>)</p>
 <p>If you can see your blog now, Congratulations!!!</p>
 </li>
 </ul>
 <h3 id="Hexo-useful-commands"><a href="#Hexo-useful-commands" class="headerlink" title="Hexo useful commands"></a>Hexo useful commands</h3><ul>
-<li>npm install hexo -g     –安装Hexo</li>
-<li>npm update hexo -g     –升级 </li>
-<li>hexo init             –初始化博客</li>
+<li>npm install hexo -g     --安装Hexo</li>
+<li>npm update hexo -g     --升级 </li>
+<li>hexo init             --初始化博客</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">hexo n &quot;My Blog&quot; == hexo new &quot;My Blog&quot;  --新建文章</span><br><span class="line">hexo g == hexo generate                 --生成</span><br><span class="line">hexo s == hexo server                   --启动服务预览</span><br><span class="line">hexo d == hexo deploy                   --部署</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">hexo server --Hexo会监视文件变动并自动更新，无须重启服务器</span><br><span class="line">hexo server -s --静态模式</span><br><span class="line">hexo server -p 5000 --更改端口</span><br><span class="line">hexo server -i 192.168.1.1 --自定义 IP</span><br><span class="line">hexo clean --清除缓存，若是网页正常情况下可以忽略这条命令</span><br></pre></td></tr></table></figure>
-<h3 id="Push-our-articals"><a href="#Push-our-articals" class="headerlink" title="Push our articals"></a>Push our articals</h3><p>Firstly, let’s get some basic comcepts of Hexo.</p>
+<h3 id="Push-our-articals"><a href="#Push-our-articals" class="headerlink" title="Push our articals"></a>Push our articals</h3><p>Firstly, let&#39;s get some basic comcepts of Hexo.</p>
 <ul>
-<li>Global Configuration<br>file: Blog/blog/_config.yml</li>
-<li>Theme Configuration<br>file: Blog/blog/themes/(your theme name)/_config.yml</li>
+<li>Global Configuration
+file: Blog/blog/_config.yml</li>
+<li>Theme Configuration
+file: Blog/blog/themes/(your theme name)/_config.yml</li>
 </ul>
-<p>Then, connect Hexo to our github<br>Open global config file(mentioned above), go to last few lines, where writes:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy: </span><br><span class="line">type: git</span><br><span class="line">repo: 这里填入你之前在GitHub上创建仓库的完整路径，记得加上 .git</span><br><span class="line">branch: master</span><br></pre></td></tr></table></figure></p>
-<p>Change it, and remember to save.<br>Mine for instance:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:Comcx/Comcx.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></p>
-<p>p.s. Here I use (<a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:Comcx/Comcx.github.io.git) instead of<br>(<a href="https://github.com/Comcx/Comcx.github.io" target="_blank" rel="noopener">https://github.com/Comcx/Comcx.github.io</a>) for the reason that https:// links<br>do not work on my computer.</p>
-<p>Third, install Git plugin:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></p>
-<p>if success, command:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean </span><br><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p>
-<p>Deploy finished! Let’s see what just happened.<br>Browse ((your github name).github.io) – e.g. comcx.github.io(mine)</p>
-<p>If everything’s all right, we can see your blog online now!</p>
-<h2 id="Bind-Domain-name"><a href="#Bind-Domain-name" class="headerlink" title="Bind Domain name"></a>Bind Domain name</h2><h3 id="Get-a-name"><a href="#Get-a-name" class="headerlink" title="Get a name"></a>Get a name</h3><p>We can buy domain name wherever you like.<br>p.s. I use .fun for the reason that I love functional programming and this is really fun!</p>
+<p>Then, connect Hexo to our github
+Open global config file(mentioned above), go to last few lines, where writes:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy: </span><br><span class="line">type: git</span><br><span class="line">repo: 这里填入你之前在GitHub上创建仓库的完整路径，记得加上 .git</span><br><span class="line">branch: master</span><br></pre></td></tr></table></figure></p>
+<p>Change it, and remember to save.
+Mine for instance:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:Comcx/Comcx.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></p>
+<p>p.s. Here I use (<a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:Comcx/Comcx.github.io.git) instead of
+(<a href="https://github.com/Comcx/Comcx.github.io" target="_blank" rel="noopener">https://github.com/Comcx/Comcx.github.io</a>) for the reason that https:// links
+do not work on my computer.</p>
+<p>Third, install Git plugin:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></p>
+<p>if success, command:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean </span><br><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p>
+<p>Deploy finished! Let&#39;s see what just happened.
+Browse ((your github name).github.io) -- e.g. comcx.github.io(mine)</p>
+<p>If everything&#39;s all right, we can see your blog online now!</p>
+<h2 id="Bind-Domain-name"><a href="#Bind-Domain-name" class="headerlink" title="Bind Domain name"></a>Bind Domain name</h2><h3 id="Get-a-name"><a href="#Get-a-name" class="headerlink" title="Get a name"></a>Get a name</h3><p>We can buy domain name wherever you like.
+p.s. I use .fun for the reason that I love functional programming and this is really fun!</p>
 <h3 id="Bind-from-two-sides"><a href="#Bind-from-two-sides" class="headerlink" title="Bind from two sides"></a>Bind from two sides</h3><ul>
-<li><p><strong><em>Step_[0]: Add records to your domain DNS:</em></strong><br>2 records necessary, mine for example:</p>
+<li><p><strong><em>Step_[0]: Add records to your domain DNS:</em></strong>
+2 records necessary, mine for example:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">          record_[1]        record_[2]</span><br><span class="line">记录类型	A                 CNAME</span><br><span class="line">主机记录	@                 www</span><br><span class="line">解析线路	default           default</span><br><span class="line">记录值	185.199.111.153	  comcx.github.io		</span><br><span class="line">TTL       600               600</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong><em>Step_[1]: Back to Github</em></strong><br>Go to the repository(xxx.github.io), click settings,<br>fill the item “Custom doamin” with</p>
+<li><p><strong><em>Step_[1]: Back to Github</em></strong>
+Go to the repository(xxx.github.io), click settings,
+fill the item &quot;Custom doamin&quot; with</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">www.\(your domain name)</span><br></pre></td></tr></table></figure>
-<p>save it!<br>Then we can discover that a new file named “CNAME” has been created in branch master.</p>
+<p>save it! 
+Then we can discover that a new file named &quot;CNAME&quot; has been created in branch master.</p>
 </li>
-<li><p><strong><em>Step_[2]: create CNAME file in hexo local directory</em></strong><br>Turn to our local hexo blog directory(blog/source)<br>Create file with name “CNAME”<br>Write our binding domain name(the same as that in Step_[1]) to CNAME file and save it.</p>
+<li><p><strong><em>Step_[2]: create CNAME file in hexo local directory</em></strong>
+Turn to our local hexo blog directory(blog/source)
+Create file with name &quot;CNAME&quot;
+Write our binding domain name(the same as that in Step_[1]) to CNAME file and save it.</p>
 </li>
 </ul>
-<p>  Finally, command again:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p>
+<p>  Finally, command again:
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p>
 <p>  Now we can use our domain name! Cooool!</p>
 
       
@@ -591,7 +625,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

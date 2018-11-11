@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Comcx.Space">
 <meta property="og:locale" content="English">
 <meta property="og:image" content="http://yoursite.com/images/Natural-language-and-pl/pl.jpg">
-<meta property="og:updated_time" content="2018-10-23T05:00:48.456Z">
+<meta property="og:updated_time" content="2018-11-11T07:37:53.535Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Isomorphism of Natural and Programming language">
 <meta name="twitter:image" content="http://yoursite.com/images/Natural-language-and-pl/pl.jpg">
@@ -400,7 +400,9 @@
       
         <p><img src="/images/Natural-language-and-pl/pl.jpg" width="950" height="600" alt="languages" align="center"></p>
 <a id="more"></a>
-<p>I’m reading “Grammar Club” these days, trying to figure out the inner relationship<br>between natural and programming language which I may refer to to help with my<br>new language Nano’s syntax design.</p>
+<p>I&#39;m reading &quot;Grammar Club&quot; these days, trying to figure out the inner relationship
+between natural and programming language which I may refer to to help with my 
+new language Nano&#39;s syntax design.</p>
 <p>Link start!</p>
 <h2 id="1-Basic-sentence-pattern-vs-composition-of-expressions"><a href="#1-Basic-sentence-pattern-vs-composition-of-expressions" class="headerlink" title="1. Basic sentence pattern vs composition of expressions"></a>1. <strong>Basic sentence pattern <em>vs</em> composition of expressions</strong></h2><ul>
 <li><p>Basic sentence pattern in English</p>
@@ -408,54 +410,95 @@
 </li>
 <li><p>Compositions in Programming languages</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">V S</span><br><span class="line">V S X</span><br><span class="line">V S X Y</span><br></pre></td></tr></table></figure>
-<p>Here, we use same representations of grammar terminations,<br>and say, we select prefix expression to express function call.</p>
-<p>Thinking carefully, It seems that <em>object</em> is just another name of a second parameter<br>of a function call, and also the <em>subject</em> is just the first parameter.</p>
-<p>What’s more? Let’s focus on <em>complements</em> with a single example:<br><code>He is a Magic.</code><br>Traditional grammar assumes that there is a class of words which could be called<br><em>link verb</em> such as ‘is’. In the example above, the noun ‘Magic’ can be viewed<br>as being binded to the subject ‘He’. Hence we can say, in an extent, <em>link verb</em><br>is just like the binding operation which is also called <strong>abstraction</strong> in<br>Programming language.<br>p.s. From now on, we do not seperate abstraction(=) and equal comparsion(==),<br>we shall clarify these two later.</p>
-<p>Let’s update our sentence patterns of English:</p>
+<p>Here, we use same representations of grammar terminations,
+and say, we select prefix expression to express function call.</p>
+<p>Thinking carefully, It seems that <em>object</em> is just another name of a second parameter
+of a function call, and also the <em>subject</em> is just the first parameter.</p>
+<p>What&#39;s more? Let&#39;s focus on <em>complements</em> with a single example:
+<code>He is a Magic.</code>
+Traditional grammar assumes that there is a class of words which could be called 
+<em>link verb</em> such as &#39;is&#39;. In the example above, the noun &#39;Magic&#39; can be viewed 
+as being binded to the subject &#39;He&#39;. Hence we can say, in an extent, <em>link verb</em> 
+is just like the binding operation which is also called <strong>abstraction</strong> in 
+Programming language.
+p.s. From now on, we do not seperate abstraction(=) and equal comparsion(==), 
+we shall clarify these two later.</p>
+<p>Let&#39;s update our sentence patterns of English:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">F X+</span><br><span class="line">= X Y</span><br><span class="line">where F = Function; X, Y = Parameters; &apos;=&apos; = Bindings</span><br><span class="line">-- X+ means one parameter or more</span><br></pre></td></tr></table></figure>
-<p>So far, we have abstract a general form of English in programming language.<br>Before getting into next step, we now define a infix representation of ‘F’.</p>
+<p>So far, we have abstract a general form of English in programming language.
+Before getting into next step, we now define a infix representation of &#39;F&#39;.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F X Y &lt;=&gt; X .F Y</span><br></pre></td></tr></table></figure>
 <p>We simply add a dot before F to indicate that this sentence is equal to <code>F X Y</code>.</p>
 </li>
 </ul>
-<h2 id="2-Prediction-vs-Abstraction"><a href="#2-Prediction-vs-Abstraction" class="headerlink" title="2. Prediction vs Abstraction"></a>2. <strong>Prediction <em>vs</em> Abstraction</strong></h2><p>  Let’s review our example above:<br>  <code>He is a Magic</code></p>
-<p>  Well, is it means <em>he</em> is absolutly <em>a Magic</em>? No, it’s just a statement.<br>  We now call this kind of sentence <strong><em>Prediction</em></strong>.<br>  <strong>More examples:</strong></p>
+<h2 id="2-Prediction-vs-Abstraction"><a href="#2-Prediction-vs-Abstraction" class="headerlink" title="2. Prediction vs Abstraction"></a>2. <strong>Prediction <em>vs</em> Abstraction</strong></h2><p>  Let&#39;s review our example above:
+  <code>He is a Magic</code></p>
+<p>  Well, is it means <em>he</em> is absolutly <em>a Magic</em>? No, it&#39;s just a statement.
+  We now call this kind of sentence <strong><em>Prediction</em></strong>.
+  <strong>More examples:</strong></p>
 <ul>
 <li>She is pretty.</li>
-<li>Yogami is interesting.<br>…</li>
+<li>Yogami is interesting.
+...</li>
 </ul>
-<p>  Strictly, we use ‘=’ only when a sentence is a <strong>prediction</strong>.</p>
-<p>  However, then what is abstraction??<br>  Actually, we call = abstraction above, therefore, we need a new symbol to represent abstraction.<br>  Here we choose <strong>‘:’</strong>.<br>  Let me list some examples of abstractions:</p>
+<p>  Strictly, we use &#39;=&#39; only when a sentence is a <strong>prediction</strong>.</p>
+<p>  However, then what is abstraction??
+  Actually, we call = abstraction above, therefore, we need a new symbol to represent abstraction. 
+  Here we choose <strong>&#39;:&#39;</strong>.
+  Let me list some examples of abstractions:</p>
 <ul>
 <li>A smart boy</li>
 <li>An interesting program</li>
-<li>The boy who won<br>…</li>
+<li>The boy who won
+...</li>
 </ul>
-<p>  It is interesting that the sentence <code>A smart boy</code> can also be rewritten as<br>  <code>the boy who is smart</code>.</p>
-<p>  Get some feelings?<br>  Yes! This is kind of like assignment in programming!<br>  With the symbol ‘:’, we can write:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">boy .: smart</span><br><span class="line">program .: interesting</span><br><span class="line">boy .: (boy won)</span><br></pre></td></tr></table></figure></p>
+<p>  It is interesting that the sentence <code>A smart boy</code> can also be rewritten as
+  <code>the boy who is smart</code>.</p>
+<p>  Get some feelings?
+  Yes! This is kind of like assignment in programming!
+  With the symbol &#39;:&#39;, we can write:
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">boy .: smart</span><br><span class="line">program .: interesting</span><br><span class="line">boy .: (boy won)</span><br></pre></td></tr></table></figure></p>
 <p>  Abstraction will be pretty useful when we tallking about <em>attributive clauses</em>.</p>
-<h2 id="3-Adjective-or-Trait"><a href="#3-Adjective-or-Trait" class="headerlink" title="3. Adjective or Trait"></a>3. <strong>Adjective or Trait</strong></h2><p>  All of a sudden, a weird question appeared:<br>  <strong><em>What on earth is a adjustive?</em></strong></p>
-<p>  Well, it’s kind of hard to give an answer directly. Let’s look into a similar<br>  word in <em>Scala</em>: <em>trait</em>.</p>
-<p>  In scala, traits are used to share interfaces and fields between classes.<br>  They are similar to Java 8’s interfaces. Classes and objects can extend traits<br>  but traits cannot be instantiated and therefore have no parameters.</p>
-<p>  So,, does that mean trait is just a special kind of class or interface?<br>  Not exactly.</p>
-<p>  (still under work)…</p>
-<h2 id="4-Noun-Clauses-is-about-composition"><a href="#4-Noun-Clauses-is-about-composition" class="headerlink" title="4. Noun Clauses is about composition"></a><strong>4. Noun Clauses is about composition</strong></h2><p>  Let’s start with an example:<br>  <code>He said that he is Naruto.</code></p>
+<h2 id="3-Adjective-or-Trait"><a href="#3-Adjective-or-Trait" class="headerlink" title="3. Adjective or Trait"></a>3. <strong>Adjective or Trait</strong></h2><p>  All of a sudden, a weird question appeared:
+  <strong><em>What on earth is a adjustive?</em></strong></p>
+<p>  Well, it&#39;s kind of hard to give an answer directly. Let&#39;s look into a similar
+  word in <em>Scala</em>: <em>trait</em>.</p>
+<p>  In scala, traits are used to share interfaces and fields between classes. 
+  They are similar to Java 8’s interfaces. Classes and objects can extend traits 
+  but traits cannot be instantiated and therefore have no parameters.</p>
+<p>  So,, does that mean trait is just a special kind of class or interface?
+  Not exactly.</p>
+<p>  (still under work)...</p>
+<h2 id="4-Noun-Clauses-is-about-composition"><a href="#4-Noun-Clauses-is-about-composition" class="headerlink" title="4. Noun Clauses is about composition"></a><strong>4. Noun Clauses is about composition</strong></h2><p>  Let&#39;s start with an example:
+  <code>He said that he is Naruto.</code></p>
 <p>  We can decompose this sentence into two parts:</p>
 <ul>
 <li>He said something.</li>
 <li>He is Naruto.</li>
 </ul>
-<p>  Using English grammar, it is a sentence like:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S V Clause??</span><br></pre></td></tr></table></figure></p>
-<p>  Well, English do not allow two verbs work at the same time, it is really<br>  not convenient! If we use our programming grammar:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X .F (X .= Y)</span><br></pre></td></tr></table></figure></p>
-<p>  Pretty cool! But something wrong happened.<br>  If we use composition, we need to track the result type of a composition.<br>  Here what does <code>(X .= Y)</code> result? What the result type of <code>(X .= y)</code>??</p>
-<p>  To fix this problem, we assume that the type of sentence so far are <em>Boolean</em><br>  types.</p>
-<p>  Accepting this assumption, noun clause simplification rule can be expressed as:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X .F (X .F&apos; Y*) &lt;=&gt; X .F (.F&apos; Y*) if F is not =</span><br><span class="line">(X .F&apos; Y*) .F Y &lt;=&gt; (.F&apos; Y*) .F Y</span><br></pre></td></tr></table></figure></p>
+<p>  Using English grammar, it is a sentence like:
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S V Clause??</span><br></pre></td></tr></table></figure></p>
+<p>  Well, English do not allow two verbs work at the same time, it is really
+  not convenient! If we use our programming grammar:
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X .F (X .= Y)</span><br></pre></td></tr></table></figure></p>
+<p>  Pretty cool! But something wrong happened.
+  If we use composition, we need to track the result type of a composition.
+  Here what does <code>(X .= Y)</code> result? What the result type of <code>(X .= y)</code>??</p>
+<p>  To fix this problem, we assume that the type of sentence so far are <em>Boolean</em>
+  types.</p>
+<p>  Accepting this assumption, noun clause simplification rule can be expressed as:
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X .F (X .F&apos; Y*) &lt;=&gt; X .F (.F&apos; Y*) if F is not =</span><br><span class="line">(X .F&apos; Y*) .F Y &lt;=&gt; (.F&apos; Y*) .F Y</span><br></pre></td></tr></table></figure></p>
 <p>  On the right hand we keep <code>.F&#39;</code> so that we can see clearly that it is a simplification.</p>
-<p>  In English, <strong>F’</strong> is called <strong>Verbal</strong> which includs <em>Ving</em>, <em>Ven</em>, <em>to do</em>, and <em>Ving</em><br>  (two <em>Vings</em> are different). Since our programming language automatically support lambda<br>  calculous, we can pass F directly without any extra operations.</p>
-<h2 id="5-Attributive-clauses-is-about-abstraction"><a href="#5-Attributive-clauses-is-about-abstraction" class="headerlink" title="5. Attributive clauses is about abstraction"></a><strong>5. Attributive clauses is about abstraction</strong></h2><p>  A sentence <code>The book which is big is mine.</code> has grammar structure:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S(Clause) V C</span><br></pre></td></tr></table></figure></p>
-<p>  which in Programming language:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(X .: (X .= Big)) .= Y</span><br></pre></td></tr></table></figure></p>
+<p>  In English, <strong>F&#39;</strong> is called <strong>Verbal</strong> which includs <em>Ving</em>, <em>Ven</em>, <em>to do</em>, and <em>Ving</em>
+  (two <em>Vings</em> are different). Since our programming language automatically support lambda
+  calculous, we can pass F directly without any extra operations.</p>
+<h2 id="5-Attributive-clauses-is-about-abstraction"><a href="#5-Attributive-clauses-is-about-abstraction" class="headerlink" title="5. Attributive clauses is about abstraction"></a><strong>5. Attributive clauses is about abstraction</strong></h2><p>  A sentence <code>The book which is big is mine.</code> has grammar structure:
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S(Clause) V C</span><br></pre></td></tr></table></figure></p>
+<p>  which in Programming language:
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(X .: (X .= Big)) .= Y</span><br></pre></td></tr></table></figure></p>
 <p>  if the (:) operation returns the binded object directly.(although this may be controversial)</p>
-<p>  Simplification rules are:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X .: (X .F Y) &lt;=&gt; X .: (.F Y)</span><br><span class="line">X .: (.F X)   &lt;=&gt; X .: .F</span><br><span class="line">X .: (Y .F X) &lt;=&gt; X .: (Y .F)</span><br></pre></td></tr></table></figure></p>
+<p>  Simplification rules are:
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X .: (X .F Y) &lt;=&gt; X .: (.F Y)</span><br><span class="line">X .: (.F X)   &lt;=&gt; X .: .F</span><br><span class="line">X .: (Y .F X) &lt;=&gt; X .: (Y .F)</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -587,7 +630,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

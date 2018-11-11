@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Record,Study,">
+  <meta name="keywords" content="Record,">
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="keywords" content="Record,Study">
+<meta name="description" content="List pitfalls I ran into in my programming days. Format: [Language/Domain]Title[Solved or not]  [Haskell]putStr is not evaluated in the correct order[Solved] If you try codes(let&amp;#39;s say in file &amp;#3">
+<meta name="keywords" content="Record">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Papers in PLT">
-<meta property="og:url" content="http://yoursite.com/2018/10/24/Papers-in-PLT/index.html">
-<meta property="og:site_name" content="ComcxのBlog">
+<meta property="og:title" content="Pitfalls-while-programming">
+<meta property="og:url" content="http://yoursite.com/2018/11/11/Pitfalls-while-programming/index.html">
+<meta property="og:site_name" content="Comcx.Space">
+<meta property="og:description" content="List pitfalls I ran into in my programming days. Format: [Language/Domain]Title[Solved or not]  [Haskell]putStr is not evaluated in the correct order[Solved] If you try codes(let&amp;#39;s say in file &amp;#3">
 <meta property="og:locale" content="English">
-<meta property="og:image" content="http://yoursite.com/images/Papers-in-PLT/SICP.jpg">
-<meta property="og:updated_time" content="2018-10-24T06:09:32.280Z">
+<meta property="og:updated_time" content="2018-11-11T08:28:28.624Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Papers in PLT">
-<meta name="twitter:image" content="http://yoursite.com/images/Papers-in-PLT/SICP.jpg">
+<meta name="twitter:title" content="Pitfalls-while-programming">
+<meta name="twitter:description" content="List pitfalls I ran into in my programming days. Format: [Language/Domain]Title[Solved or not]  [Haskell]putStr is not evaluated in the correct order[Solved] If you try codes(let&amp;#39;s say in file &amp;#3">
 
 
 
@@ -119,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/10/24/Papers-in-PLT/">
+  <link rel="canonical" href="http://yoursite.com/2018/11/11/Pitfalls-while-programming/">
 
 
 
 
 
-  <title>Papers in PLT | ComcxのBlog</title>
+  <title>Pitfalls-while-programming | Comcx.Space</title>
   
 
 
@@ -155,7 +156,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">ComcxのBlog</span>
+        <span class="site-title">Comcx.Space</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -294,7 +295,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/24/Papers-in-PLT/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/11/Pitfalls-while-programming/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Comcx">
@@ -303,7 +304,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ComcxのBlog">
+      <meta itemprop="name" content="Comcx.Space">
     </span>
 
     
@@ -311,7 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Papers in PLT</h1>
+          <h1 class="post-title" itemprop="name headline">Pitfalls-while-programming</h1>
         
 
         <div class="post-meta">
@@ -323,8 +324,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-24T13:40:24+08:00">
-                2018-10-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-11T16:02:39+08:00">
+                2018-11-11
               </time>
             
 
@@ -364,8 +365,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/10/24/Papers-in-PLT/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/24/Papers-in-PLT/" itemprop="commentCount"></span>
+                <a href="/2018/11/11/Pitfalls-while-programming/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/11/Pitfalls-while-programming/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -398,13 +399,34 @@
       
 
       
-        <p><img src="/images/Papers-in-PLT/SICP.jpg" width="950" height="600" alt="SICPSICPSICP" align="center"></p>
-<a id="more"></a>
-<h2 id="Type-Theory"><a href="#Type-Theory" class="headerlink" title="Type Theory"></a>Type Theory</h2><ul>
-<li><em>Type Checker</em></li>
-<li><em>Type System</em></li>
+        <p>List pitfalls I ran into in my programming days.</p>
+<p><strong>Format: [Language/Domain]Title[Solved or not]</strong></p>
+<ul>
+<li><p><strong>[Haskell]putStr is not evaluated in the correct order[Solved]</strong></p>
+<p>If you try codes(let&#39;s say in file &#39;Test.hs&#39;) like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">main :: IO ()</span><br><span class="line">main = do</span><br><span class="line">  putStr &quot;input: &quot;</span><br><span class="line">  input &lt;- getLine</span><br><span class="line">  putStr $ &quot;You typed &quot; ++ input</span><br></pre></td></tr></table></figure>
+<p>Then type in command:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ghc --make Test.hs</span><br><span class="line">$ ./Test.exe</span><br></pre></td></tr></table></figure>
+<p>You may discover that the string &quot;input: &quot; appears after you input something!
+It seems that the <code>putStr</code> operation worked in the wrong order??!</p>
+<p><strong>Solution</strong>
+GHCi and the compiled program do not buffer the output in quite the
+same way. In the compile program, stdout is line buffered, so it will
+not output anything until it gets a &#39;\n&#39;. You can force the output
+using &#39;hFlush stdout&#39;:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">main :: IO ()</span><br><span class="line">main = do</span><br><span class="line">  putStr &quot;input: &quot;</span><br><span class="line">  hFlush stdout</span><br><span class="line">  input &lt;- getLine</span><br><span class="line">  putStr $ &quot;You typed &quot; ++ input</span><br></pre></td></tr></table></figure>
+<p>You could also change stdout to be unbuffered -- but using flush is
+probably the prefered method:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">main :: IO ()</span><br><span class="line">main = do</span><br><span class="line">  putStr &quot;input: &quot;</span><br><span class="line">  hSetBuffering stdout NoBuffering</span><br><span class="line">  input &lt;- getLine</span><br><span class="line">  putStr $ &quot;You typed &quot; ++ input</span><br></pre></td></tr></table></figure>
+<p>Either solution should make the GHCi and compiled version behave the
+same.</p>
+<p>The behaviour of the compiled version is consistent with most other
+languages under Unix. The behaviour under GHCi could be considered
+buggy -- it has certainly confused many people. On the other hand, I
+think the GHCi behaviour is also somewhat deliberate.</p>
+</li>
 </ul>
-<h2 id="Syntax-Design"><a href="#Syntax-Design" class="headerlink" title="Syntax Design"></a>Syntax Design</h2><h2 id="Semantics"><a href="#Semantics" class="headerlink" title="Semantics"></a>Semantics</h2><h2 id="Languages"><a href="#Languages" class="headerlink" title="Languages"></a>Languages</h2><h2 id="Interpreter"><a href="#Interpreter" class="headerlink" title="Interpreter"></a>Interpreter</h2><h2 id="Compiler"><a href="#Compiler" class="headerlink" title="Compiler"></a>Compiler</h2><h2 id="Formal-Verification"><a href="#Formal-Verification" class="headerlink" title="Formal Verification"></a>Formal Verification</h2>
+
       
     </div>
     
@@ -423,8 +445,6 @@
           
             <a href="/tags/Record/" rel="tag"># Record</a>
           
-            <a href="/tags/Study/" rel="tag"># Study</a>
-          
         </div>
       
 
@@ -436,8 +456,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/22/Natural-language-and-pl/" rel="next" title="Isomorphism of Natural and Programming language">
-                <i class="fa fa-chevron-left"></i> Isomorphism of Natural and Programming language
+              <a href="/2018/10/24/Resources-in-PLT/" rel="next" title="Resources in PLT">
+                <i class="fa fa-chevron-left"></i> Resources in PLT
               </a>
             
           </div>
@@ -506,17 +526,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -533,7 +544,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -594,22 +605,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Type-Theory"><span class="nav-number">1.</span> <span class="nav-text">Type Theory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Syntax-Design"><span class="nav-number">2.</span> <span class="nav-text">Syntax Design</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Semantics"><span class="nav-number">3.</span> <span class="nav-text">Semantics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Languages"><span class="nav-number">4.</span> <span class="nav-text">Languages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Interpreter"><span class="nav-number">5.</span> <span class="nav-text">Interpreter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compiler"><span class="nav-number">6.</span> <span class="nav-text">Compiler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Formal-Verification"><span class="nav-number">7.</span> <span class="nav-text">Formal Verification</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -801,9 +796,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/10/24/Papers-in-PLT/';
-          this.page.identifier = '2018/10/24/Papers-in-PLT/';
-          this.page.title = 'Papers in PLT';
+          this.page.url = 'http://yoursite.com/2018/11/11/Pitfalls-while-programming/';
+          this.page.identifier = '2018/11/11/Pitfalls-while-programming/';
+          this.page.title = 'Pitfalls-while-programming';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://www-comcx-fun.disqus.com/embed.js';
