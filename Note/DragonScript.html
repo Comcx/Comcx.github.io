@@ -1,0 +1,2000 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-01-20 一 03:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dragon Script</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Comcx" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Dragon Script</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org79ea259">1. Weapons <code>[0/2]</code></a>
+<ul>
+<li><a href="#orgfd7942a">1.1. <span class="todo TODO">TODO</span> Books</a>
+<ul>
+<li><a href="#org2b0b036">1.1.1. Concrete Mathematics</a></li>
+<li><a href="#org1f8e226">1.1.2. CLRS</a></li>
+</ul>
+</li>
+<li><a href="#org78d6f7c">1.2. <span class="todo NEXT">NEXT</span> Lazy Robot Project</a>
+<ul>
+<li><a href="#org03a9713">1.2.1. <span class="todo TODO">TODO</span> Dynamic Programming</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org73ee1a1">2. Dragons <code>[13/17]</code></a>
+<ul>
+<li><a href="#org1fe1659">2.1. <span class="done DONE">DONE</span> Longest Substring Without Repeating Characters&#xa0;&#xa0;&#xa0;<span class="tag"><span class="EASY">EASY</span></span></a>
+<ul>
+<li><a href="#org1bc6c69">2.1.1. Description</a></li>
+<li><a href="#org5497125">2.1.2. Analysis</a></li>
+<li><a href="#org7c2fc17">2.1.3. Solution</a></li>
+</ul>
+</li>
+<li><a href="#org9a1110c">2.2. <span class="done DONE">DONE</span> Find The Parity Outlier&#xa0;&#xa0;&#xa0;<span class="tag"><span class="EASY">EASY</span></span></a>
+<ul>
+<li><a href="#org3d9b466">2.2.1. Description</a></li>
+<li><a href="#org7aff221">2.2.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#orged7fa47">2.3. <span class="todo NEXT">NEXT</span> Cycle detection&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></a>
+<ul>
+<li><a href="#org299e1d1">2.3.1. Extant</a></li>
+<li><a href="#org385c974">2.3.2. Floyd algorithm</a></li>
+<li><a href="#org2a5244a">2.3.3. Bernt's algorithm(The Teleporting Turtle)</a></li>
+<li><a href="#org1fa3d9c">2.3.4. Experiment</a></li>
+</ul>
+</li>
+<li><a href="#orgcdf63ee">2.4. <span class="done DONE">DONE</span> Factorial decomposition&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></a>
+<ul>
+<li><a href="#org7eea2fa">2.4.1. Description</a></li>
+<li><a href="#org20e1177">2.4.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#org71e756b">2.5. <span class="done DONE">DONE</span> Counting Change Combinations&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></a>
+<ul>
+<li><a href="#org515a723">2.5.1. Description</a></li>
+<li><a href="#org5e04e49">2.5.2. Analysis</a></li>
+<li><a href="#org152f593">2.5.3. Solution</a></li>
+</ul>
+</li>
+<li><a href="#orgbb4f2d6">2.6. <span class="done DONE">DONE</span> ZigZag Conversion&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></a>
+<ul>
+<li><a href="#orgc8d62e2">2.6.1. Description</a></li>
+<li><a href="#org7fbb25b">2.6.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#orgea9be10">2.7. <span class="done DONE">DONE</span> Longest Palindromic Substring&#xa0;&#xa0;&#xa0;<span class="tag"><span class="HARD">HARD</span>&#xa0;<span class="BOND">BOND</span></span></a>
+<ul>
+<li><a href="#org233ab85">2.7.1. Description</a></li>
+<li><a href="#org249d2f6">2.7.2. Analysis</a></li>
+<li><a href="#orgc736295">2.7.3. Solution</a></li>
+</ul>
+</li>
+<li><a href="#org937c1c9">2.8. <span class="done DONE">DONE</span> Maximum Subarray&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span>&#xa0;<span class="BOND">BOND</span></span></a>
+<ul>
+<li><a href="#orgf88b3d4">2.8.1. Description</a></li>
+<li><a href="#orgc043624">2.8.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#org74c265e">2.9. <span class="done DONE">DONE</span> Climbing Stairs&#xa0;&#xa0;&#xa0;<span class="tag"><span class="EASY">EASY</span></span></a>
+<ul>
+<li><a href="#org6280d3b">2.9.1. Description</a></li>
+<li><a href="#orgb2b7e90">2.9.2. Analysis</a></li>
+<li><a href="#org61d4fe2">2.9.3. Solution</a></li>
+</ul>
+</li>
+<li><a href="#org529a67c">2.10. <span class="done DONE">DONE</span> Regular Expression Matching&#xa0;&#xa0;&#xa0;<span class="tag"><span class="HARD">HARD</span></span></a>
+<ul>
+<li><a href="#org2bc86a4">2.10.1. Description</a></li>
+<li><a href="#org0969a66">2.10.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#orgb4771cd">2.11. <span class="done DONE">DONE</span> Wildcard Matching&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></a>
+<ul>
+<li><a href="#org5d2761f">2.11.1. Description</a></li>
+<li><a href="#org29a76ee">2.11.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#org8d12ce7">2.12. <span class="todo TODO">TODO</span> The Josephus Problem</a></li>
+<li><a href="#org05a462a">2.13. <span class="done DONE">DONE</span> Maximal Square&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></a>
+<ul>
+<li><a href="#org16c4a53">2.13.1. Description</a></li>
+<li><a href="#orgf3dc6c0">2.13.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#org509c578">2.14. <span class="todo NEXT">NEXT</span> Divisible Sum Pairs</a></li>
+<li><a href="#org86fe289">2.15. <span class="todo NEXT">NEXT</span> [HackerRank] Interview Preparation Kit <code>[7/8]</code></a>
+<ul>
+<li><a href="#org23c1dc4">2.15.1. <span class="done DONE">DONE</span> Sock Merchant</a></li>
+<li><a href="#orge218d94">2.15.2. <span class="done DONE">DONE</span> Counting Valleys</a></li>
+<li><a href="#orgfff1fc0">2.15.3. <span class="done DONE">DONE</span> Jumping on the Clouds</a></li>
+<li><a href="#orgd7b2946">2.15.4. <span class="done DONE">DONE</span> Repeated String</a></li>
+<li><a href="#orgba13abe">2.15.5. <span class="done DONE">DONE</span> 2D Array - DS</a></li>
+<li><a href="#org15b4977">2.15.6. <span class="done DONE">DONE</span> Arrays: Left Rotation</a></li>
+<li><a href="#orgbcad506">2.15.7. <span class="done DONE">DONE</span> New Year Chaos</a></li>
+<li><a href="#org91e8b2c">2.15.8. <span class="todo NEXT">NEXT</span> Minimum Swaps 2</a></li>
+</ul>
+</li>
+<li><a href="#org64db2fa">2.16. <span class="done DONE">DONE</span> Decode the Morse code</a></li>
+<li><a href="#org9e50e97">2.17. <span class="done DONE">DONE</span> Shortest Knight Path</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+
+</p>
+
+<p>
+Well I suddenly contrived the idea that I should find some basic(atom)
+problems which can be used or composed in various kinds of problems,
+which can save some time.
+</p>
+
+<p>
+Therefore, I'm planning to reconstruct the structure of this script.
+not only just records of my solutions of katas, but all simple ideas
+novelty :)
+</p>
+
+
+<div id="outline-container-org79ea259" class="outline-2">
+<h2 id="org79ea259"><span class="section-number-2">1</span> Weapons <code>[0/2]</code></h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgfd7942a" class="outline-3">
+<h3 id="orgfd7942a"><span class="section-number-3">1.1</span> <span class="todo TODO">TODO</span> Books</h3>
+<div class="outline-text-3" id="text-1-1">
+</div>
+<div id="outline-container-org2b0b036" class="outline-4">
+<h4 id="org2b0b036"><span class="section-number-4">1.1.1</span> Concrete Mathematics</h4>
+</div>
+<div id="outline-container-org1f8e226" class="outline-4">
+<h4 id="org1f8e226"><span class="section-number-4">1.1.2</span> CLRS</h4>
+</div>
+</div>
+
+<div id="outline-container-org78d6f7c" class="outline-3">
+<h3 id="org78d6f7c"><span class="section-number-3">1.2</span> <span class="todo NEXT">NEXT</span> Lazy Robot Project</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Trying to build most algorithms from functional implemention to
+imperative ones&#x2026;
+</p>
+
+<p>
+Well, firstly, some techniques&#x2026;
+</p>
+</div>
+<div id="outline-container-org03a9713" class="outline-4">
+<h4 id="org03a9713"><span class="section-number-4">1.2.1</span> <span class="todo TODO">TODO</span> Dynamic Programming</h4>
+<div class="outline-text-4" id="text-1-2-1">
+</div>
+<ol class="org-ol">
+<li><a id="org171a693"></a><span class="done DONE">DONE</span> What's DP's really about ?<br />
+<ol class="org-ol">
+<li><a id="org28082c6"></a><span class="done DONE">DONE</span> Version 1: A <span class="underline">memorization</span> perspect<br />
+<div class="outline-text-6" id="text-1-2-1-1-1">
+<p>
+If we are in a lazy programming environment, it would be apparently easy to implement.
+</p>
+
+<p>
+! Using <i>Haskell</i> and <i>Scala</i>
+</p>
+</div>
+<ol class="org-ol">
+<li><a id="orgdd02c57"></a><span class="done DONE">DONE</span> Fibonacci numbers<br />
+<div class="outline-text-7" id="text-1-2-1-1-1-1">
+<p>
+By the way, this makes me recall the website: <a href="https://www.willamette.edu/~fruehr/haskell/evolution.html">Haskell.evolution</a> 
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">import</span> <span style="color: #8ae234; font-weight: bold;">Data.Array</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Naive recursion</span>
+<span style="color: #edd400; font-weight: bold;">fib0</span> 0 <span style="color: #ff6347; font-weight: bold;">=</span> 0
+<span style="color: #edd400; font-weight: bold;">fib0</span> 1 <span style="color: #ff6347; font-weight: bold;">=</span> 1
+<span style="color: #edd400; font-weight: bold;">fib0</span> n <span style="color: #ff6347; font-weight: bold;">=</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Tailrec</span>
+<span style="color: #edd400; font-weight: bold;">fib1</span> n <span style="color: #ff6347; font-weight: bold;">=</span> f n 0 1 <span style="color: #729fcf; font-weight: bold;">where</span>
+  f n a b <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">if</span> n <span style="color: #ff6347; font-weight: bold;">==</span> 0 <span style="color: #729fcf; font-weight: bold;">then</span> a <span style="color: #729fcf; font-weight: bold;">else</span> f <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> b <span style="color: #ffd700;">(</span>a<span style="color: #ff6347; font-weight: bold;">+</span>b<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">CPS(seems the worst one...)</span>
+<span style="color: #edd400; font-weight: bold;">fib2</span> n <span style="color: #ff6347; font-weight: bold;">=</span> f n <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">\</span>x <span style="color: #ff6347; font-weight: bold;">-&gt;</span> x <span style="color: #729fcf; font-weight: bold;">where</span>
+  f n g <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">case</span> n <span style="color: #729fcf; font-weight: bold;">of</span>
+    0 <span style="color: #ff6347; font-weight: bold;">-&gt;</span> g 0
+    1 <span style="color: #ff6347; font-weight: bold;">-&gt;</span> g 1
+    <span style="color: #729fcf; font-weight: bold;">_</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> f <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">\</span>a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> f <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">\</span>b <span style="color: #ff6347; font-weight: bold;">-&gt;</span> g <span style="color: #ffd700;">(</span>a<span style="color: #ff6347; font-weight: bold;">+</span>b<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Lazy memorization with automatic GC(seems the best one?)</span>
+<span style="color: #edd400; font-weight: bold;">fib3</span> n <span style="color: #ff6347; font-weight: bold;">=</span> fibs <span style="color: #ff6347; font-weight: bold;">!!</span> n
+  <span style="color: #729fcf; font-weight: bold;">where</span> fibs <span style="color: #ff6347; font-weight: bold;">=</span> 0 <span style="color: #8ae234; font-weight: bold;">:</span> 1 <span style="color: #8ae234; font-weight: bold;">:</span> zipWith <span style="color: #ffd700;">(</span><span style="color: #ff6347; font-weight: bold;">+</span><span style="color: #ffd700;">)</span> fibs <span style="color: #ffd700;">(</span>drop 1 fibs<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Yet another memorization</span>
+<span style="color: #edd400; font-weight: bold;">fib4</span> max <span style="color: #ff6347; font-weight: bold;">=</span> go max <span style="color: #729fcf; font-weight: bold;">where</span> 
+  go 0 <span style="color: #ff6347; font-weight: bold;">=</span> 0
+  go 1 <span style="color: #ff6347; font-weight: bold;">=</span> 1
+  go n <span style="color: #ff6347; font-weight: bold;">=</span> fibs <span style="color: #ff6347; font-weight: bold;">!</span> <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">-</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> fibs <span style="color: #ff6347; font-weight: bold;">!</span> <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">-</span> 2<span style="color: #ffd700;">)</span>
+  fibs <span style="color: #ff6347; font-weight: bold;">=</span> listArray <span style="color: #ffd700;">(</span>0, max<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">[</span>go x <span style="color: #ff6347; font-weight: bold;">|</span> x <span style="color: #ff6347; font-weight: bold;">&lt;-</span> <span style="color: #00bfff;">[</span>0<span style="color: #ff6347; font-weight: bold;">..</span>max<span style="color: #00bfff;">]</span><span style="color: #ffd700;">]</span>
+
+</pre>
+</div>
+<p>
+fib1, fib3 and fib4 are more efficient than others.
+In practice, it's easier to come up with the method of fib1 or fib4.
+</p>
+
+<p>
+well, good news! I found a kata where none of my fibs can pass through&#x2026;
+Finally I found the solution below(now we have fib5 :):
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">module</span> <span style="color: #8ae234; font-weight: bold;">Fibonacci</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+
+<span style="color: #729fcf; font-weight: bold;">import</span> <span style="color: #8ae234; font-weight: bold;">Data.List</span>
+<span style="color: #729fcf; font-weight: bold;">import</span> <span style="color: #8ae234; font-weight: bold;">Data.Bits</span>
+
+<span style="color: #edd400; font-weight: bold;">fib'</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Int</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Integer</span>
+<span style="color: #edd400; font-weight: bold;">fib'</span> n <span style="color: #ff6347; font-weight: bold;">=</span> snd <span style="color: #ff6347; font-weight: bold;">.</span> foldl' fib'' <span style="color: #ffd700;">(</span>1, 0<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">.</span> dropWhile not <span style="color: #ff6347; font-weight: bold;">$</span> testedBits <span style="color: #729fcf; font-weight: bold;">where</span>
+  testedBits <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>testBit n k <span style="color: #ff6347; font-weight: bold;">|</span> k <span style="color: #ff6347; font-weight: bold;">&lt;-</span> <span style="color: #729fcf; font-weight: bold;">let</span> s <span style="color: #ff6347; font-weight: bold;">=</span> bitSize n <span style="color: #729fcf; font-weight: bold;">in</span> <span style="color: #00bfff;">[</span>s <span style="color: #ff6347; font-weight: bold;">-</span> 1,s <span style="color: #ff6347; font-weight: bold;">-</span> 2<span style="color: #ff6347; font-weight: bold;">..</span>0<span style="color: #00bfff;">]</span><span style="color: #ffd700;">]</span>
+  fib'' <span style="color: #ffd700;">(</span>f, g<span style="color: #ffd700;">)</span> p
+    <span style="color: #ff6347; font-weight: bold;">|</span> p         <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span>f <span style="color: #ff6347; font-weight: bold;">*</span> <span style="color: #00bfff;">(</span>f <span style="color: #ff6347; font-weight: bold;">+</span> 2 <span style="color: #ff6347; font-weight: bold;">*</span> g<span style="color: #00bfff;">)</span>, ss<span style="color: #ffd700;">)</span>
+    <span style="color: #ff6347; font-weight: bold;">|</span> otherwise <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span>ss, g <span style="color: #ff6347; font-weight: bold;">*</span> <span style="color: #00bfff;">(</span>2 <span style="color: #ff6347; font-weight: bold;">*</span> f <span style="color: #ff6347; font-weight: bold;">-</span> g<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+    <span style="color: #729fcf; font-weight: bold;">where</span> ss <span style="color: #ff6347; font-weight: bold;">=</span> f <span style="color: #ff6347; font-weight: bold;">*</span> f <span style="color: #ff6347; font-weight: bold;">+</span> g <span style="color: #ff6347; font-weight: bold;">*</span> g
+
+<span style="color: #edd400; font-weight: bold;">fib5</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Integer</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Integer</span>
+<span style="color: #edd400; font-weight: bold;">fib5</span> n
+  <span style="color: #ff6347; font-weight: bold;">|</span> n <span style="color: #ff6347; font-weight: bold;">&lt;</span> 0 <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ff6347; font-weight: bold;">-</span><span style="color: #ffd700;">(</span><span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span><span style="color: #ff6347; font-weight: bold;">^</span><span style="color: #ffd700;">(</span><span style="color: #ff6347; font-weight: bold;">-</span>n<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span><span style="color: #ff6347; font-weight: bold;">-</span>n<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">|</span> otherwise <span style="color: #ff6347; font-weight: bold;">=</span> fib' <span style="color: #ff6347; font-weight: bold;">$</span> fromInteger n
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orgbf9b17c"></a><span class="done DONE">DONE</span> Translating into memorization version(dynamic programming)<br />
+<div class="outline-text-7" id="text-1-2-1-1-1-2">
+<p>
+In fact, if we can come up with a reasonable recursion method, then we can directly
+translate it to versions like fib4. Here's the template:
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Naive recursion version</span>
+<span style="color: #edd400; font-weight: bold;">f</span> n <span style="color: #ff6347; font-weight: bold;">=</span> g <span style="color: #ff6347; font-weight: bold;">$</span> f <span style="color: #ff6347; font-weight: bold;">$</span> h n
+<span style="color: #888a85;">-- ||</span>
+<span style="color: #888a85;">-- \/</span>
+<span style="color: #888a85;">-- Memorization version</span>
+<span style="color: #edd400; font-weight: bold;">f'</span> n <span style="color: #ff6347; font-weight: bold;">=</span> rc <span style="color: #ff6347; font-weight: bold;">!</span> n <span style="color: #729fcf; font-weight: bold;">where</span>
+  rc <span style="color: #ff6347; font-weight: bold;">=</span> listArray bounds <span style="color: #ffd700;">[</span>f n <span style="color: #ff6347; font-weight: bold;">|</span> n <span style="color: #ff6347; font-weight: bold;">&lt;-</span> bound<span style="color: #ffd700;">]</span>
+</pre>
+</div>
+<p>
+Now, what about fib1, how can we find a tail recursion version of any recursions?
+</p>
+</div>
+</li>
+</ol>
+</li>
+
+<li><a id="orga61ef7a"></a><span class="done DONE">DONE</span> Version 2: Tail recursion calculus<br />
+<div class="outline-text-6" id="text-1-2-1-1-2">
+<p>
+When I began programming in FP style before, I in a sense regard tail recursion as
+a fp-version loop in imperative languages. Therefore, if we want to optimize a naive
+recursion by tail recursion, we are going to translate naive recursions into loops without
+stack.
+</p>
+
+<p>
+Let's have a look at the fib1 version again.
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">tailrec</span>
+<span style="color: #edd400; font-weight: bold;">fib1</span> n <span style="color: #ff6347; font-weight: bold;">=</span> f n 0 1 <span style="color: #729fcf; font-weight: bold;">where</span>
+  f n a b <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">if</span> n <span style="color: #ff6347; font-weight: bold;">==</span> 0 <span style="color: #729fcf; font-weight: bold;">then</span> a <span style="color: #729fcf; font-weight: bold;">else</span> f <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> b <span style="color: #ffd700;">(</span>a<span style="color: #ff6347; font-weight: bold;">+</span>b<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+<p>
+we can try to find the form in this way:
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Step 1 ==&gt; A first attempt is to add fib(n + 1) to both sides of the equation:</span>
+<span style="color: #edd400; font-weight: bold;">fib</span> <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 2<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> fib n <span style="color: #ff6347; font-weight: bold;">+</span> 2 <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Step 2 ==&gt; The two sides of the equation look much more alike, </span>
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">but there is still an essential difference, which is the coefficient of the second term of each side. </span>
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">On the left side of the equation, it is 1 and, on the right, it is 2. To remedy this, we can introduce a variable b:</span>
+<span style="color: #edd400; font-weight: bold;">fib</span> <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 2<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib n <span style="color: #ff6347; font-weight: bold;">+</span> <span style="color: #ffd700;">(</span>b <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Step3 ==&gt; We notice that the coefficients of the first term are not the same (1 on the left and b on the right), </span>
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">so we introduce a variable a:</span>
+a <span style="color: #edd400; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 2<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib n <span style="color: #ff6347; font-weight: bold;">+</span> <span style="color: #ffd700;">(</span>a <span style="color: #ff6347; font-weight: bold;">+</span> b<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Step 4 ==&gt; Now the two sides have the same form (call it F), which we can define as:</span>
+<span style="color: #8ae234; font-weight: bold;">F</span> a b n <span style="color: #ff6347; font-weight: bold;">=</span> a <span style="color: #ff6347; font-weight: bold;">*</span> fib n <span style="color: #ff6347; font-weight: bold;">+</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Then we have</span>
+<span style="color: #8ae234; font-weight: bold;">F</span> a b <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">F</span> b <span style="color: #ffd700;">(</span>a <span style="color: #ff6347; font-weight: bold;">+</span> b<span style="color: #ffd700;">)</span> n
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">and</span>
+<span style="color: #8ae234; font-weight: bold;">F</span> a b 0 <span style="color: #ff6347; font-weight: bold;">=</span> a <span style="color: #ff6347; font-weight: bold;">*</span> fib 0 <span style="color: #ff6347; font-weight: bold;">+</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib 1 <span style="color: #ff6347; font-weight: bold;">=</span> a <span style="color: #ff6347; font-weight: bold;">+</span> b
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Step 5 ==&gt; Finally, by definition of F:</span>
+<span style="color: #edd400; font-weight: bold;">fib</span> n <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">F</span> 1 0 n
+</pre>
+</div>
+<p>
+Can we find a more general procedure to produce a tailrec version of recursions?
+If not, what kind of recursions can be translated in this way?
+</p>
+
+<p>
+In the first place, I came up with the <b>CPS</b> style, which is like <i>fib2</i> .
+If the CPS style is more efficient, we can easily translate any recursion to its CPS style.
+However, sadly, CPS style is the worst version os fib* and the CPS style is just another way of
+calculation context accumulation.
+</p>
+
+<p>
+Therefore, if the recursion is tree-like, we can not simplely use CPS to create out tailrec version.
+</p>
+</div>
+</li>
+</ol>
+</li>
+
+<li><a id="org02181af"></a><span class="todo NEXT">NEXT</span> Implementing DP in imperative strict languages<br />
+<div class="outline-text-5" id="text-1-2-1-2">
+<p>
+! Using C++ or Python
+</p>
+
+<p>
+In general, if we have already found the naive recursive method, 
+then all we have to do is to solve the dependency problem.
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="orgc61fc19"></a><span class="todo NEXT">NEXT</span> Patterns of dependency<br />
+<div class="outline-text-6" id="text-1-2-1-2-1">
+<ul class="org-ul">
+<li><p>
+<b>Some notations</b>
+</p>
+
+<p>
+In dynamic programming, we have many states of the function, we denote these states as
+vectors in n-dimension space. For instance, fib0 has 1-dimension vectors such as fib0 0, fib0 1, etc;
+fib1 has 2-dimension vectors such as fib1 0 1, fib1 1 1, etc.
+</p></li>
+</ul>
+</div>
+
+<ol class="org-ol">
+<li><a id="orgd4a684d"></a><span class="todo TODO">TODO</span> Simple dependency by naive order<br />
+<div class="outline-text-7" id="text-1-2-1-2-1-1">
+<p>
+The most simple dependency pattern is orderred by number orders.
+for example, if a &lt; b(or a &gt; b), then a is denpendent with b.
+These patterns can be tranlated into DP without much thinking.
+</p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-org73ee1a1" class="outline-2">
+<h2 id="org73ee1a1"><span class="section-number-2">2</span> Dragons <code>[13/17]</code></h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org1fe1659" class="outline-3">
+<h3 id="org1fe1659"><span class="section-number-3">2.1</span> <span class="done DONE">DONE</span> Longest Substring Without Repeating Characters&#xa0;&#xa0;&#xa0;<span class="tag"><span class="EASY">EASY</span></span></h3>
+<div class="outline-text-3" id="text-2-1">
+</div>
+<div id="outline-container-org1bc6c69" class="outline-4">
+<h4 id="org1bc6c69"><span class="section-number-4">2.1.1</span> Description</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+Given a string, find the length of the longest substring without repeating characters.
+</p>
+<pre class="example">
+Example 1:
+Input: "abcabcbb"
+Output: 3 
+Explanation: The answer is "abc", with the length of 3. 
+
+Example 2:
+Input: "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+
+Example 3:
+Input: "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3. 
+Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org5497125" class="outline-4">
+<h4 id="org5497125"><span class="section-number-4">2.1.2</span> Analysis</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+Let's generalize this problem a little bit:
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="org43df6fc"></a>Settings<br />
+<div class="outline-text-5" id="text-2-1-2-1">
+<ul class="org-ul">
+<li>Say our indices in the array comes from 0.</li>
+<li>Our solver 
+<code>f : Seq a ==&gt; Index -&gt; (List a -&gt; a -&gt; Bool) -&gt; (List a, Length)</code>
+which gives the answer on the range index of [0, n]</li>
+</ul>
+</div>
+</li>
+<li><a id="org425b39f"></a>Environment<br />
+<div class="outline-text-5" id="text-2-1-2-2">
+<p>
+s : List a
+</p>
+</div>
+</li>
+<li><a id="orgb1ce2a5"></a>Pseudocode<br />
+<div class="outline-text-5" id="text-2-1-2-3">
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">f</span> 0 p <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">if</span> p <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ffd700;">(</span>s 0<span style="color: #ffd700;">)</span> <span style="color: #729fcf; font-weight: bold;">then</span> <span style="color: #ffd700;">(</span><span style="color: #00bfff;">[</span>s 0<span style="color: #00bfff;">]</span>, 1<span style="color: #ffd700;">)</span> <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #ffd700;">(</span><span style="color: #00bfff; font-weight: bold;">[]</span>, 0<span style="color: #ffd700;">)</span>
+<span style="color: #edd400; font-weight: bold;">f</span> n p <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">if</span> p a <span style="color: #ffd700;">(</span>s n<span style="color: #ffd700;">)</span> <span style="color: #729fcf; font-weight: bold;">then</span> <span style="color: #ffd700;">(</span>a <span style="color: #ff6347; font-weight: bold;">++</span> <span style="color: #00bfff;">[</span>s n<span style="color: #00bfff;">]</span>, len <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #ffd700;">(</span><span style="color: #00bfff;">[</span>s n<span style="color: #00bfff;">]</span>, 0<span style="color: #ffd700;">)</span>
+<span style="color: #729fcf; font-weight: bold;">where</span>
+  <span style="color: #ffd700;">(</span>a, len<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> f <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">-</span> 1<span style="color: #ffd700;">)</span> p
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Here we can make</span>
+<span style="color: #edd400; font-weight: bold;">p</span> a x <span style="color: #ff6347; font-weight: bold;">=</span> not <span style="color: #ff6347; font-weight: bold;">$</span> elem a x
+
+<span style="color: #edd400; font-weight: bold;">main</span> <span style="color: #ff6347; font-weight: bold;">=</span> f <span style="color: #ffd700;">(</span>length s <span style="color: #ff6347; font-weight: bold;">-</span> 1<span style="color: #ffd700;">)</span> p
+</pre>
+</div>
+
+<p>
+Ok, we can see now we must tranverse the entire array, which is O(n),
+therefore, the complexity is depend on the complexity of function <b>p</b>.
+</p>
+
+<p>
+I we use hash, we can have function p with time complexity O(1)
+and finally we have O(n) algorithm.
+</p>
+
+<p>
+If we do not use hash, any better way?
+</p>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org7c2fc17" class="outline-4">
+<h4 id="org7c2fc17"><span class="section-number-4">2.1.3</span> Solution</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">O(nlgn)?? or better?</span>
+<span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">Failed to find a better way to check if current elem already existed</span>
+<span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">use array[256]:(</span>
+
+<span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">I tried several several times on Leet but failed:(! Switching back to CodeWars</span>
+<span style="color: #729fcf; font-weight: bold;">class</span> <span style="color: #8ae234; font-weight: bold;">Solution</span> <span style="color: #ffd700;">{</span>
+<span style="color: #729fcf; font-weight: bold;">public</span>:
+
+<span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #edd400; font-weight: bold;">lengthOfLongestSubstring</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #ff6347; font-weight: bold;">s</span><span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+        
+  <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">ans</span> = 1;
+  <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">acc</span><span style="color: #ffa500;">[</span>256<span style="color: #ffa500;">]</span>;
+  <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">p</span> = 0;
+  
+  memset<span style="color: #ffa500;">(</span>acc, 0, 256<span style="color: #ffa500;">)</span>;
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #ffa500;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span> = 0; i &lt; s.size<span style="color: #ff7f50;">()</span>; ++i<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+    
+    <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ff7f50;">(</span>acc<span style="color: #00ff00;">[</span>s<span style="color: #a020f0;">[</span>i<span style="color: #a020f0;">]</span><span style="color: #00ff00;">]</span> == 1<span style="color: #ff7f50;">)</span> <span style="color: #ff7f50;">{</span>
+
+      <span style="color: #729fcf; font-weight: bold;">while</span><span style="color: #00ff00;">(</span>s<span style="color: #a020f0;">[</span>p<span style="color: #a020f0;">]</span> != s<span style="color: #a020f0;">[</span>i<span style="color: #a020f0;">]</span><span style="color: #00ff00;">)</span> <span style="color: #00ff00;">{</span>
+      
+        acc<span style="color: #a020f0;">[</span>s<span style="color: #ffff00;">[</span>p<span style="color: #ffff00;">]</span><span style="color: #a020f0;">]</span> = 0;
+        ++p;
+      <span style="color: #00ff00;">}</span>
+      p += 1;
+      ans = <span style="color: #00ff00;">(</span>ans &lt; i-p+1<span style="color: #00ff00;">)</span> ? i-p+1 : ans;
+    <span style="color: #ff7f50;">}</span>
+    <span style="color: #729fcf; font-weight: bold;">else</span> ans = <span style="color: #ff7f50;">(</span>ans &lt; i-p+1<span style="color: #ff7f50;">)</span> ? i-p+1 : ans;
+    acc<span style="color: #ff7f50;">[</span>s<span style="color: #00ff00;">[</span>i<span style="color: #00ff00;">]</span><span style="color: #ff7f50;">]</span> = 1;
+  <span style="color: #ffa500;">}</span>
+  <span style="color: #729fcf; font-weight: bold;">return</span> ans;
+<span style="color: #00bfff;">}</span>
+
+<span style="color: #ffd700;">}</span>;
+
+
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9a1110c" class="outline-3">
+<h3 id="org9a1110c"><span class="section-number-3">2.2</span> <span class="done DONE">DONE</span> Find The Parity Outlier&#xa0;&#xa0;&#xa0;<span class="tag"><span class="EASY">EASY</span></span></h3>
+<div class="outline-text-3" id="text-2-2">
+</div>
+<div id="outline-container-org3d9b466" class="outline-4">
+<h4 id="org3d9b466"><span class="section-number-4">2.2.1</span> Description</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+You are given an array (which will have a length of at least 3, 
+but could be very large) containing integers. 
+The array is either entirely comprised of odd integers or 
+entirely comprised of even integers except for a single integer N. 
+Write a method that takes the array as an argument and returns this "outlier" N.
+</p>
+<pre class="example">
+
+Examples
+[2, 4, 0, 100, 4, 11, 2602, 36]
+Should return: 11 (the only odd number)
+
+[160, 3, 1719, 19, 11, 13, -21]
+Should return: 160 (the only even number)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org7aff221" class="outline-4">
+<h4 id="org7aff221"><span class="section-number-4">2.2.2</span> Solution</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #edd400; font-weight: bold;">FindOutlier</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">std</span>::<span style="color: #8ae234; font-weight: bold;">vector</span><span style="color: #00bfff;">&lt;</span><span style="color: #8ae234; font-weight: bold;">int</span><span style="color: #00bfff;">&gt;</span> <span style="color: #ff6347; font-weight: bold;">arr</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>
+    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">even</span>;
+    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">odd</span>;
+  
+    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">evenCount</span> = 0;
+    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">oddCount</span> = 0;
+  
+    <span style="color: #729fcf; font-weight: bold;">for</span> <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">auto</span> <span style="color: #ff6347; font-weight: bold;">a</span> : arr<span style="color: #00bfff;">)</span>
+        a % 2 == 0 ? <span style="color: #00bfff;">(</span>evenCount++, even = a<span style="color: #00bfff;">)</span> : <span style="color: #00bfff;">(</span>oddCount++, odd = a<span style="color: #00bfff;">)</span>;
+  
+    <span style="color: #729fcf; font-weight: bold;">return</span> evenCount &lt; oddCount ? even : odd;
+<span style="color: #ffd700;">}</span>
+
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orged7fa47" class="outline-3">
+<h3 id="orged7fa47"><span class="section-number-3">2.3</span> <span class="todo NEXT">NEXT</span> Cycle detection&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></h3>
+<div class="outline-text-3" id="text-2-3">
+</div>
+<div id="outline-container-org299e1d1" class="outline-4">
+<h4 id="org299e1d1"><span class="section-number-4">2.3.1</span> Extant</h4>
+</div>
+<div id="outline-container-org385c974" class="outline-4">
+<h4 id="org385c974"><span class="section-number-4">2.3.2</span> Floyd algorithm</h4>
+</div>
+
+<div id="outline-container-org2a5244a" class="outline-4">
+<h4 id="org2a5244a"><span class="section-number-4">2.3.3</span> Bernt's algorithm(The Teleporting Turtle)</h4>
+</div>
+
+<div id="outline-container-org1fa3d9c" class="outline-4">
+<h4 id="org1fa3d9c"><span class="section-number-4">2.3.4</span> Experiment</h4>
+</div>
+</div>
+
+<div id="outline-container-orgcdf63ee" class="outline-3">
+<h3 id="orgcdf63ee"><span class="section-number-3">2.4</span> <span class="done DONE">DONE</span> Factorial decomposition&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></h3>
+<div class="outline-text-3" id="text-2-4">
+</div>
+<div id="outline-container-org7eea2fa" class="outline-4">
+<h4 id="org7eea2fa"><span class="section-number-4">2.4.1</span> Description</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<p>
+The aim of the kata is to decompose n! (factorial n) into its prime factors.
+</p>
+<pre class="example">
+Examples:
+
+n = 12; decomp(12) -&gt; "2^10 * 3^5 * 5^2 * 7 * 11"
+since 12! is divisible by 2 ten times, by 3 five times, by 5 two times and by 7 and 11 only once.
+
+n = 22; decomp(22) -&gt; "2^19 * 3^9 * 5^4 * 7^3 * 11^2 * 13 * 17 * 19"
+
+n = 25; decomp(25) -&gt; 2^22 * 3^10 * 5^6 * 7^3 * 11^2 * 13 * 17 * 19 * 23
+Prime numbers should be in increasing order. When the exponent of a prime is 1 don't put the exponent.
+
+</pre>
+<p>
+<b>Notes</b>
+</p>
+
+<ul class="org-ul">
+<li>the function is decomp(n) and should return the decomposition of n! into 
+its prime factors in increasing order of the primes, as a string.</li>
+<li>factorial can be a very big number (4000! has 12674 digits, n will go from 300 to 4000).</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org20e1177" class="outline-4">
+<h4 id="org20e1177"><span class="section-number-4">2.4.2</span> Solution</h4>
+<div class="outline-text-4" id="text-2-4-2">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #729fcf;">#include</span> <span style="color: #ffd700; font-style: italic;">&lt;</span><span style="color: #ad7fa8; font-style: italic;">string</span><span style="color: #ffd700; font-style: italic;">&gt;</span>
+<span style="color: #729fcf;">#include</span> <span style="color: #ffd700; font-style: italic;">&lt;</span><span style="color: #ad7fa8; font-style: italic;">map</span><span style="color: #ffd700; font-style: italic;">&gt;</span>
+<span style="color: #729fcf;">#include</span> <span style="color: #ffd700; font-style: italic;">&lt;</span><span style="color: #ad7fa8; font-style: italic;">sstream</span><span style="color: #ffd700; font-style: italic;">&gt;</span>
+
+<span style="color: #729fcf; font-weight: bold;">using</span> <span style="color: #8ae234; font-weight: bold;">std</span>::<span style="color: #8ae234; font-weight: bold;">vector</span>;
+<span style="color: #729fcf; font-weight: bold;">using</span> <span style="color: #8ae234; font-weight: bold;">std</span>::<span style="color: #8ae234; font-weight: bold;">string</span>;
+<span style="color: #729fcf; font-weight: bold;">using</span> <span style="color: #8ae234; font-weight: bold;">std</span>::<span style="color: #8ae234; font-weight: bold;">map</span>;
+<span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #edd400; font-weight: bold;">decomp</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">n</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+  
+  <span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #ff6347; font-weight: bold;">ans</span><span style="color: #00bfff;">(</span><span style="color: #ad7fa8; font-style: italic;">""</span><span style="color: #00bfff;">)</span>;
+  <span style="color: #8ae234; font-weight: bold;">std</span>::<span style="color: #8ae234; font-weight: bold;">stringstream</span> <span style="color: #ff6347; font-weight: bold;">ss</span>;
+  <span style="color: #8ae234; font-weight: bold;">map</span><span style="color: #00bfff;">&lt;</span><span style="color: #8ae234; font-weight: bold;">int</span>, <span style="color: #8ae234; font-weight: bold;">int</span><span style="color: #00bfff;">&gt;</span> <span style="color: #ff6347; font-weight: bold;">rc</span> <span style="color: #00bfff;">{}</span>;
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span><span style="color: #ffa500;">(</span>2<span style="color: #ffa500;">)</span>; i &lt;= n; ++i<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+    
+    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">cur</span><span style="color: #ffa500;">(</span>i<span style="color: #ffa500;">)</span>;
+    <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #ffa500;">(</span><span style="color: #729fcf; font-weight: bold;">auto</span> &amp;<span style="color: #ff6347; font-weight: bold;">p</span> : rc<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+      <span style="color: #729fcf; font-weight: bold;">while</span><span style="color: #ff7f50;">(</span>cur % p.first == 0<span style="color: #ff7f50;">)</span> <span style="color: #ff7f50;">{</span>
+        cur /= p.first;
+        p.second++;
+      <span style="color: #ff7f50;">}</span>
+    <span style="color: #ffa500;">}</span>
+    <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>cur &gt; 1<span style="color: #ffa500;">)</span> rc<span style="color: #ffa500;">[</span>cur<span style="color: #ffa500;">]</span> = 1;
+  <span style="color: #00bfff;">}</span>
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">auto</span> <span style="color: #ff6347; font-weight: bold;">p</span> : rc<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+    
+    <span style="color: #ffa500;">(</span>p.second == 1<span style="color: #ffa500;">)</span> ?
+      ss &lt;&lt; p.first : 
+      ss &lt;&lt; p.first &lt;&lt; <span style="color: #ad7fa8; font-style: italic;">"^"</span> &lt;&lt; p.second;
+    ss &lt;&lt; <span style="color: #ad7fa8; font-style: italic;">" * "</span>;
+  <span style="color: #00bfff;">}</span>
+  ans = ss.str<span style="color: #00bfff;">()</span>;
+  
+  <span style="color: #729fcf; font-weight: bold;">return</span> ans.substr<span style="color: #00bfff;">(</span>0, ans.length<span style="color: #ffa500;">()</span> - 3<span style="color: #00bfff;">)</span>;
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org71e756b" class="outline-3">
+<h3 id="org71e756b"><span class="section-number-3">2.5</span> <span class="done DONE">DONE</span> Counting Change Combinations&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></h3>
+<div class="outline-text-3" id="text-2-5">
+</div>
+<div id="outline-container-org515a723" class="outline-4">
+<h4 id="org515a723"><span class="section-number-4">2.5.1</span> Description</h4>
+<div class="outline-text-4" id="text-2-5-1">
+<p>
+Write a function that counts how many different ways you can make change for an amount of money, 
+given an array of coin denominations. 
+For example, there are 3 ways to give change for 4 if you have coins with denomination 1 and 2:
+<code>1+1+1+1, 1+1+2, 2+2.</code>
+</p>
+
+<p>
+The order of coins does not matter:
+<code>1+1+2 =</code> 2+1+1=
+</p>
+
+<p>
+Also, assume that you have an infinite amount of coins.
+</p>
+
+<p>
+Your function should take an amount to change and an array of unique denominations for the coins:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">count_change<span style="color: #ffd700;">(</span>4,  <span style="color: #00bfff;">{</span>1,2<span style="color: #00bfff;">}</span><span style="color: #ffd700;">)</span>   <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">=&gt; 3</span>
+count_change<span style="color: #ffd700;">(</span>10, <span style="color: #00bfff;">{</span>5,2,3<span style="color: #00bfff;">}</span><span style="color: #ffd700;">)</span> <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">=&gt; 4</span>
+count_change<span style="color: #ffd700;">(</span>11, <span style="color: #00bfff;">{</span>5,7<span style="color: #00bfff;">}</span><span style="color: #ffd700;">)</span>   <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">=&gt; 0</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5e04e49" class="outline-4">
+<h4 id="org5e04e49"><span class="section-number-4">2.5.2</span> Analysis</h4>
+<div class="outline-text-4" id="text-2-5-2">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">m := money</span>
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">i := index of coins</span>
+<span style="color: #edd400; font-weight: bold;">count</span> m i <span style="color: #ff6347; font-weight: bold;">=</span> count <span style="color: #ffd700;">(</span>m <span style="color: #ff6347; font-weight: bold;">-</span> <span style="color: #00bfff;">(</span>coins i<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> i <span style="color: #ff6347; font-weight: bold;">+</span> count m <span style="color: #ffd700;">(</span>i <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span>
+<span style="color: #edd400; font-weight: bold;">count</span> 0 <span style="color: #729fcf; font-weight: bold;">_</span> <span style="color: #ff6347; font-weight: bold;">=</span> 1
+</pre>
+</div>
+<p>
+found a bug here, you can't export to html if u have codes on the 1st line of haskell code block
+</p>
+</div>
+<ol class="org-ol">
+<li><a id="org9301a45"></a>Complexity<br />
+<div class="outline-text-5" id="text-2-5-2-1">
+<p>
+underwork
+</p>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org152f593" class="outline-4">
+<h4 id="org152f593"><span class="section-number-4">2.5.3</span> Solution</h4>
+<div class="outline-text-4" id="text-2-5-3">
+<div class="org-src-container">
+<pre class="src src-c++">
+<span style="color: #729fcf;">#include</span> <span style="color: #ffd700; font-style: italic;">&lt;</span><span style="color: #ad7fa8; font-style: italic;">vector</span><span style="color: #ffd700; font-style: italic;">&gt;</span>
+<span style="color: #729fcf;">#include</span> <span style="color: #ffd700; font-style: italic;">&lt;</span><span style="color: #ad7fa8; font-style: italic;">algorithm</span><span style="color: #ffd700; font-style: italic;">&gt;</span>
+
+<span style="color: #729fcf; font-weight: bold;">using</span> <span style="color: #8ae234; font-weight: bold;">std</span>::<span style="color: #8ae234; font-weight: bold;">vector</span>;
+<span style="color: #729fcf; font-weight: bold;">using</span> <span style="color: #8ae234; font-weight: bold;">large</span> = <span style="color: #8ae234; font-weight: bold;">unsigned</span> <span style="color: #8ae234; font-weight: bold;">long</span> <span style="color: #8ae234; font-weight: bold;">long</span>;
+<span style="color: #8ae234; font-weight: bold;">large</span>
+<span style="color: #edd400; font-weight: bold;">dp</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">unsigned</span> <span style="color: #ff6347; font-weight: bold;">money</span>, <span style="color: #729fcf; font-weight: bold;">const</span> <span style="color: #8ae234; font-weight: bold;">vector</span><span style="color: #00bfff;">&lt;</span><span style="color: #8ae234; font-weight: bold;">unsigned</span> <span style="color: #8ae234; font-weight: bold;">int</span><span style="color: #00bfff;">&gt;</span>&amp; <span style="color: #ff6347; font-weight: bold;">coins</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+
+  <span style="color: #8ae234; font-weight: bold;">large</span> <span style="color: #ff6347; font-weight: bold;">ans</span><span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>;
+  <span style="color: #8ae234; font-weight: bold;">large</span> **<span style="color: #ff6347; font-weight: bold;">rc</span> = <span style="color: #729fcf; font-weight: bold;">new</span> <span style="color: #8ae234; font-weight: bold;">large</span>*<span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">money</span> + 1<span style="color: #00bfff;">]</span>;
+  <span style="color: #729fcf; font-weight: bold;">for</span> <span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span> = 0; i &lt; money+1; ++i<span style="color: #00bfff;">)</span> rc<span style="color: #00bfff;">[</span>i<span style="color: #00bfff;">]</span> = <span style="color: #729fcf; font-weight: bold;">new</span> <span style="color: #8ae234; font-weight: bold;">large</span><span style="color: #00bfff;">[</span>coins.size<span style="color: #ffa500;">()</span><span style="color: #00bfff;">]</span>;
+  
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span><span style="color: #ffa500;">(</span>0<span style="color: #ffa500;">)</span>; i &lt;= money; ++i<span style="color: #00bfff;">)</span>
+    rc<span style="color: #00bfff;">[</span>i<span style="color: #00bfff;">][</span>coins.size<span style="color: #ffa500;">()</span>-1<span style="color: #00bfff;">]</span> = i % coins<span style="color: #00bfff;">[</span>coins.size<span style="color: #ffa500;">()</span>-1<span style="color: #00bfff;">]</span> == 0 ? 1 : 0;
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">j</span><span style="color: #ffa500;">(</span>0<span style="color: #ffa500;">)</span>; j &lt; coins.size<span style="color: #ffa500;">()</span>; ++j<span style="color: #00bfff;">)</span>
+    rc<span style="color: #00bfff;">[</span>0<span style="color: #00bfff;">][</span>j<span style="color: #00bfff;">]</span> = 1;
+  
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span><span style="color: #ffa500;">(</span>1<span style="color: #ffa500;">)</span>; i &lt;= money; ++i<span style="color: #00bfff;">)</span>
+    <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">j</span><span style="color: #ffa500;">(</span>coins.size<span style="color: #ff7f50;">()</span>-2<span style="color: #ffa500;">)</span>; j &gt;= 0; --j<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+      
+      <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i &gt;= coins<span style="color: #ff7f50;">[</span>j<span style="color: #ff7f50;">]</span><span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+        rc<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">][</span>j<span style="color: #ff7f50;">]</span> = rc<span style="color: #ff7f50;">[</span>i - coins<span style="color: #00ff00;">[</span>j<span style="color: #00ff00;">]</span><span style="color: #ff7f50;">][</span>j<span style="color: #ff7f50;">]</span>
+                 + rc<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">][</span>j + 1<span style="color: #ff7f50;">]</span>;
+      <span style="color: #ffa500;">}</span>
+      <span style="color: #729fcf; font-weight: bold;">else</span> rc<span style="color: #ffa500;">[</span>i<span style="color: #ffa500;">][</span>j<span style="color: #ffa500;">]</span> = 0;
+    <span style="color: #00bfff;">}</span>
+  
+  <span style="color: #729fcf; font-weight: bold;">return</span> rc<span style="color: #00bfff;">[</span>money<span style="color: #00bfff;">][</span>0<span style="color: #00bfff;">]</span>;
+<span style="color: #ffd700;">}</span>
+<span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">count m i = count (m-coins[i]) i + count m (i+1)</span>
+<span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">count 0 _ = 1</span>
+
+<span style="color: #8ae234; font-weight: bold;">large</span> 
+<span style="color: #edd400; font-weight: bold;">countChange</span><span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">const</span> <span style="color: #8ae234; font-weight: bold;">unsigned</span> <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">money</span>, <span style="color: #729fcf; font-weight: bold;">const</span> <span style="color: #8ae234; font-weight: bold;">vector</span><span style="color: #00bfff;">&lt;</span><span style="color: #8ae234; font-weight: bold;">unsigned</span> <span style="color: #8ae234; font-weight: bold;">int</span><span style="color: #00bfff;">&gt;</span>&amp; <span style="color: #ff6347; font-weight: bold;">coins</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+
+  <span style="color: #8ae234; font-weight: bold;">large</span> <span style="color: #ff6347; font-weight: bold;">ans</span><span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>;
+  
+  <span style="color: #8ae234; font-weight: bold;">vector</span><span style="color: #00bfff;">&lt;</span><span style="color: #8ae234; font-weight: bold;">unsigned</span> <span style="color: #8ae234; font-weight: bold;">int</span><span style="color: #00bfff;">&gt;</span> <span style="color: #ff6347; font-weight: bold;">pac</span><span style="color: #00bfff;">(</span>coins<span style="color: #00bfff;">)</span>;
+  <span style="color: #8ae234; font-weight: bold;">std</span>::sort<span style="color: #00bfff;">(</span>pac.begin<span style="color: #ffa500;">()</span>, pac.end<span style="color: #ffa500;">()</span><span style="color: #00bfff;">)</span>;
+
+  ans = dp<span style="color: #00bfff;">(</span>money, pac<span style="color: #00bfff;">)</span>;
+  
+  <span style="color: #729fcf; font-weight: bold;">return</span> ans;
+<span style="color: #ffd700;">}</span>
+
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #729fcf; font-weight: bold;">using</span> <span style="color: #8ae234; font-weight: bold;">large</span> = <span style="color: #8ae234; font-weight: bold;">unsigned</span> <span style="color: #8ae234; font-weight: bold;">long</span> <span style="color: #8ae234; font-weight: bold;">long</span>;
+<span style="color: #8ae234; font-weight: bold;">large</span> 
+<span style="color: #edd400; font-weight: bold;">countChange</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">unsigned</span> <span style="color: #ff6347; font-weight: bold;">money</span>, <span style="color: #729fcf; font-weight: bold;">const</span> <span style="color: #8ae234; font-weight: bold;">std</span>::<span style="color: #8ae234; font-weight: bold;">vector</span><span style="color: #00bfff;">&lt;</span><span style="color: #8ae234; font-weight: bold;">unsigned</span><span style="color: #00bfff;">&gt;</span>&amp; <span style="color: #ff6347; font-weight: bold;">coins</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+  <span style="color: #8ae234; font-weight: bold;">std</span>::<span style="color: #8ae234; font-weight: bold;">vector</span><span style="color: #00bfff;">&lt;</span><span style="color: #8ae234; font-weight: bold;">large</span><span style="color: #00bfff;">&gt;</span> <span style="color: #ff6347; font-weight: bold;">ks</span><span style="color: #00bfff;">(</span>money + 1<span style="color: #00bfff;">)</span>;
+  ks<span style="color: #00bfff;">[</span>0<span style="color: #00bfff;">]</span> = 1;
+  <span style="color: #729fcf; font-weight: bold;">for</span> <span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">unsigned</span> <span style="color: #ff6347; font-weight: bold;">i</span> : coins<span style="color: #00bfff;">)</span>
+    <span style="color: #729fcf; font-weight: bold;">for</span> <span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">unsigned</span> <span style="color: #ff6347; font-weight: bold;">j</span> = i; j &lt;= money; j++<span style="color: #00bfff;">)</span>
+      ks<span style="color: #00bfff;">[</span>j<span style="color: #00bfff;">]</span> += ks<span style="color: #00bfff;">[</span>j - i<span style="color: #00bfff;">]</span>;
+  <span style="color: #729fcf; font-weight: bold;">return</span> ks<span style="color: #00bfff;">[</span>money<span style="color: #00bfff;">]</span>;
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+<p>
+Somehow a little confused with this solution)
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbb4f2d6" class="outline-3">
+<h3 id="orgbb4f2d6"><span class="section-number-3">2.6</span> <span class="done DONE">DONE</span> ZigZag Conversion&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></h3>
+<div class="outline-text-3" id="text-2-6">
+</div>
+<div id="outline-container-orgc8d62e2" class="outline-4">
+<h4 id="orgc8d62e2"><span class="section-number-4">2.6.1</span> Description</h4>
+<div class="outline-text-4" id="text-2-6-1">
+<p>
+The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+</p>
+<pre class="example">
+P   A   H   N
+A P L S I I G
+Y   I   R
+</pre>
+<p>
+And then read line by line: "PAHNAPLSIIGYIR"
+</p>
+
+<p>
+Write the code that will take a string and make this conversion given a number of rows:
+</p>
+
+<p>
+string convert(string s, int numRows);
+</p>
+
+<p>
+Example 1:
+</p>
+<pre class="example">
+Input: s = "PAYPALISHIRING", numRows = 3
+Output: "PAHNAPLSIIGYIR"
+</pre>
+
+<p>
+Example 2:
+</p>
+<pre class="example">
+Input: s = "PAYPALISHIRING", numRows = 4
+Output: "PINALSIGYAHRPI"
+
+Explanation:
+
+P     I    N
+A   L S  I G
+Y A   H R
+P     I
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org7fbb25b" class="outline-4">
+<h4 id="org7fbb25b"><span class="section-number-4">2.6.2</span> Solution</h4>
+<div class="outline-text-4" id="text-2-6-2">
+<div class="org-src-container">
+<pre class="src src-c++">
+<span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #8ae234; font-weight: bold;">Solution</span>::<span style="color: #edd400; font-weight: bold;">convert</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #ff6347; font-weight: bold;">s</span>, <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">numRows</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+  
+  <span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #ff6347; font-weight: bold;">ans</span><span style="color: #00bfff;">(</span><span style="color: #ad7fa8; font-style: italic;">""</span><span style="color: #00bfff;">)</span>;
+  <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">cur</span><span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>;
+  <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>numRows == 1<span style="color: #00bfff;">)</span> <span style="color: #729fcf; font-weight: bold;">return</span> s;
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span><span style="color: #ffa500;">(</span>1<span style="color: #ffa500;">)</span>; i &lt;= numRows; ++i<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+    
+    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">j</span><span style="color: #ffa500;">(</span>cur<span style="color: #ffa500;">)</span>, <span style="color: #ff6347; font-weight: bold;">invert</span><span style="color: #ffa500;">(</span>numRows - i<span style="color: #ffa500;">)</span>;
+    ans += string<span style="color: #ffa500;">(</span>1, s<span style="color: #ff7f50;">[</span>cur<span style="color: #ff7f50;">]</span><span style="color: #ffa500;">)</span>;
+    <span style="color: #729fcf; font-weight: bold;">while</span><span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span>cur = cur + invert * 2<span style="color: #ff7f50;">)</span> &lt; s.size<span style="color: #ff7f50;">()</span><span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+      
+      ans += invert ? string<span style="color: #ff7f50;">(</span>1, s<span style="color: #00ff00;">[</span>cur<span style="color: #00ff00;">]</span><span style="color: #ff7f50;">)</span> : <span style="color: #ad7fa8; font-style: italic;">""</span>;
+      invert = <span style="color: #ff7f50;">(</span>numRows - invert - 1<span style="color: #ff7f50;">)</span>;
+      <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ff7f50;">(</span>cur + invert * 2 &lt; s.size<span style="color: #00ff00;">()</span><span style="color: #ff7f50;">)</span> <span style="color: #ff7f50;">{</span>
+        ans += invert ? 
+          <span style="color: #00ff00;">(</span>cur += invert * 2, string<span style="color: #a020f0;">(</span>1, s<span style="color: #ffff00;">[</span>cur<span style="color: #ffff00;">]</span><span style="color: #a020f0;">)</span><span style="color: #00ff00;">)</span> : <span style="color: #ad7fa8; font-style: italic;">""</span>;
+      <span style="color: #ff7f50;">}</span> <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #729fcf; font-weight: bold;">break</span>;
+      invert = <span style="color: #ff7f50;">(</span>numRows - invert - 1<span style="color: #ff7f50;">)</span>;
+    <span style="color: #ffa500;">}</span>
+    cur = i;
+  <span style="color: #00bfff;">}</span>
+  
+  <span style="color: #729fcf; font-weight: bold;">return</span> ans;
+<span style="color: #ffd700;">}</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgea9be10" class="outline-3">
+<h3 id="orgea9be10"><span class="section-number-3">2.7</span> <span class="done DONE">DONE</span> Longest Palindromic Substring&#xa0;&#xa0;&#xa0;<span class="tag"><span class="HARD">HARD</span>&#xa0;<span class="BOND">BOND</span></span></h3>
+<div class="outline-text-3" id="text-2-7">
+</div>
+<div id="outline-container-org233ab85" class="outline-4">
+<h4 id="org233ab85"><span class="section-number-4">2.7.1</span> Description</h4>
+<div class="outline-text-4" id="text-2-7-1">
+<p>
+Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+</p>
+
+<p>
+Example 1:
+</p>
+<pre class="example">
+Input: "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+</pre>
+
+<p>
+Example 2:
+</p>
+<pre class="example">
+Input: "cbbd"
+Output: "bb"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org249d2f6" class="outline-4">
+<h4 id="org249d2f6"><span class="section-number-4">2.7.2</span> Analysis</h4>
+<div class="outline-text-4" id="text-2-7-2">
+<p>
+Let's first find the way to get the longest length
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">s := the string(data)</span>
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">i := left index</span>
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">j := right index</span>
+<span style="color: #edd400; font-weight: bold;">f</span> i j <span style="color: #ff6347; font-weight: bold;">|</span> i <span style="color: #ff6347; font-weight: bold;">==</span> j     <span style="color: #ff6347; font-weight: bold;">=</span> 1
+      <span style="color: #ff6347; font-weight: bold;">|</span> j <span style="color: #ff6347; font-weight: bold;">-</span> i <span style="color: #ff6347; font-weight: bold;">==</span> 2 <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">if</span> s<span style="color: #ffd700;">[</span>i<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">==</span> s<span style="color: #ffd700;">[</span>j<span style="color: #ffd700;">]</span> <span style="color: #729fcf; font-weight: bold;">then</span> 2 <span style="color: #729fcf; font-weight: bold;">else</span> 0
+      <span style="color: #ff6347; font-weight: bold;">|</span> otherwise  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">if</span> s<span style="color: #ffd700;">[</span>i<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">==</span> s<span style="color: #ffd700;">[</span>j<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">&amp;&amp;</span> inner <span style="color: #729fcf; font-weight: bold;">then</span> inner <span style="color: #ff6347; font-weight: bold;">+</span> 2 <span style="color: #729fcf; font-weight: bold;">else</span> 0
+<span style="color: #729fcf; font-weight: bold;">where</span> inner <span style="color: #ff6347; font-weight: bold;">=</span> f <span style="color: #ffd700;">(</span>i <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>j <span style="color: #ff6347; font-weight: bold;">-</span> 1<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc736295" class="outline-4">
+<h4 id="orgc736295"><span class="section-number-4">2.7.3</span> Solution</h4>
+<div class="outline-text-4" id="text-2-7-3">
+</div>
+<ol class="org-ol">
+<li><a id="orgcb8562e"></a>Dynamic Programming<br />
+<div class="outline-text-5" id="text-2-7-3-1">
+<div class="org-src-container">
+<pre class="src src-c++">
+<span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">DP method</span>
+<span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #edd400; font-weight: bold;">longestPalindrome</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #ff6347; font-weight: bold;">s</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+  
+  <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">rc</span><span style="color: #00bfff;">[</span>1000<span style="color: #00bfff;">][</span>1000<span style="color: #00bfff;">]</span>, <span style="color: #ff6347; font-weight: bold;">start</span><span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>, <span style="color: #ff6347; font-weight: bold;">end</span><span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>, <span style="color: #ff6347; font-weight: bold;">cur</span><span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>;
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span><span style="color: #ffa500;">(</span>s.size<span style="color: #ff7f50;">()</span>-1<span style="color: #ffa500;">)</span>; i &gt;= 0; --i<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+    <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #ffa500;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">j</span><span style="color: #ff7f50;">(</span>i<span style="color: #ff7f50;">)</span>; j &lt; s.size<span style="color: #ff7f50;">()</span>; ++j<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+      
+      <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ff7f50;">(</span>i == j<span style="color: #ff7f50;">)</span> rc<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">][</span>j<span style="color: #ff7f50;">]</span> = 1;
+      <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ff7f50;">(</span>j - i == 1<span style="color: #ff7f50;">)</span> rc<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">][</span>j<span style="color: #ff7f50;">]</span> = s<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span> == s<span style="color: #ff7f50;">[</span>j<span style="color: #ff7f50;">]</span> ? 2 : 0;
+      <span style="color: #729fcf; font-weight: bold;">else</span> rc<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">][</span>j<span style="color: #ff7f50;">]</span> = 
+        rc<span style="color: #ff7f50;">[</span>i+1<span style="color: #ff7f50;">][</span>j-1<span style="color: #ff7f50;">]</span> &amp;&amp; s<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span> == s<span style="color: #ff7f50;">[</span>j<span style="color: #ff7f50;">]</span> ? rc<span style="color: #ff7f50;">[</span>i+1<span style="color: #ff7f50;">][</span>j-1<span style="color: #ff7f50;">]</span> + 2 : 0;
+      cur = rc<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">][</span>j<span style="color: #ff7f50;">]</span> &gt; cur ?
+        start = i, end = j, rc<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">][</span>j<span style="color: #ff7f50;">]</span> : cur;
+    <span style="color: #ffa500;">}</span>
+  <span style="color: #00bfff;">}</span>
+  <span style="color: #729fcf; font-weight: bold;">return</span> s.substr<span style="color: #00bfff;">(</span>start, end-start+1<span style="color: #00bfff;">)</span>;
+<span style="color: #ffd700;">}</span>
+
+</pre>
+</div>
+<ul class="org-ul">
+<li>Summary
+Focus on how answer is constructed by answers.
+Unfortunately, still O(n<sup>2</sup>)</li>
+</ul>
+</div>
+</li>
+
+<li><a id="orga13c31f"></a>Manacher's Algorithm<br />
+<div class="outline-text-5" id="text-2-7-3-2">
+<p>
+underwork
+</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org937c1c9" class="outline-3">
+<h3 id="org937c1c9"><span class="section-number-3">2.8</span> <span class="done DONE">DONE</span> Maximum Subarray&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span>&#xa0;<span class="BOND">BOND</span></span></h3>
+<div class="outline-text-3" id="text-2-8">
+</div>
+<div id="outline-container-orgf88b3d4" class="outline-4">
+<h4 id="orgf88b3d4"><span class="section-number-4">2.8.1</span> Description</h4>
+<div class="outline-text-4" id="text-2-8-1">
+<p>
+Given an integer array nums, 
+find the contiguous subarray (containing at least one number) 
+which has the largest sum and return its sum.
+</p>
+
+<p>
+Example:
+</p>
+<pre class="example">
+Input: [-2,1,-3,4,-1,2,1,-5,4],
+Output: 6
+Explanation: [4,-1,2,1] has the largest sum = 6.
+Follow up:
+</pre>
+<p>
+If you have figured out the O(n) solution, 
+try coding another solution using the divide and conquer approach, 
+which is more subtle.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc043624" class="outline-4">
+<h4 id="orgc043624"><span class="section-number-4">2.8.2</span> Solution</h4>
+<div class="outline-text-4" id="text-2-8-2">
+<div class="org-src-container">
+<pre class="src src-C++">
+<span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #8ae234; font-weight: bold;">Solution</span>::<span style="color: #edd400; font-weight: bold;">maxSubArray</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">vector</span><span style="color: #00bfff;">&lt;</span><span style="color: #8ae234; font-weight: bold;">int</span><span style="color: #00bfff;">&gt;</span>&amp; <span style="color: #ff6347; font-weight: bold;">nums</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+  
+  <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">ans</span><span style="color: #00bfff;">(</span>INT_MIN<span style="color: #00bfff;">)</span>, <span style="color: #ff6347; font-weight: bold;">sum</span><span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>;
+  <span style="color: #729fcf; font-weight: bold;">for</span> <span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">n</span> : nums<span style="color: #00bfff;">)</span>
+    sum = max<span style="color: #00bfff;">(</span>sum + n, n<span style="color: #00bfff;">)</span>,
+    ans = max<span style="color: #00bfff;">(</span>ans, sum<span style="color: #00bfff;">)</span>;
+  
+  <span style="color: #729fcf; font-weight: bold;">return</span> ans;
+<span style="color: #ffd700;">}</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org74c265e" class="outline-3">
+<h3 id="org74c265e"><span class="section-number-3">2.9</span> <span class="done DONE">DONE</span> Climbing Stairs&#xa0;&#xa0;&#xa0;<span class="tag"><span class="EASY">EASY</span></span></h3>
+<div class="outline-text-3" id="text-2-9">
+</div>
+<div id="outline-container-org6280d3b" class="outline-4">
+<h4 id="org6280d3b"><span class="section-number-4">2.9.1</span> Description</h4>
+<div class="outline-text-4" id="text-2-9-1">
+<p>
+You are climbing a stair case. It takes n steps to reach to the top.
+</p>
+
+<p>
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+</p>
+
+<p>
+Note: Given n will be a positive integer.
+</p>
+
+<p>
+Example 1:
+</p>
+<pre class="example">
+Input: 2
+Output: 2
+Explanation: There are two ways to climb to the top.
+1. 1 step + 1 step
+2. 2 steps
+</pre>
+<p>
+Example 2:
+</p>
+<pre class="example">
+Input: 3
+Output: 3
+Explanation: There are three ways to climb to the top.
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb2b7e90" class="outline-4">
+<h4 id="orgb2b7e90"><span class="section-number-4">2.9.2</span> Analysis</h4>
+<div class="outline-text-4" id="text-2-9-2">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">f</span> 0 <span style="color: #ff6347; font-weight: bold;">=</span> 1
+<span style="color: #edd400; font-weight: bold;">f</span> n <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">if</span> n <span style="color: #ff6347; font-weight: bold;">&lt;</span> 0 <span style="color: #729fcf; font-weight: bold;">then</span> 0 <span style="color: #729fcf; font-weight: bold;">else</span> f <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> f <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+<p>
+Obviously, it's a fibonacci seq!
+</p>
+</div>
+</div>
+
+<div id="outline-container-org61d4fe2" class="outline-4">
+<h4 id="org61d4fe2"><span class="section-number-4">2.9.3</span> Solution</h4>
+<div class="outline-text-4" id="text-2-9-3">
+<div class="org-src-container">
+<pre class="src src-c++">
+<span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #8ae234; font-weight: bold;">Solution</span>::<span style="color: #edd400; font-weight: bold;">climbStairs</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">n</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+  
+  <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">a</span><span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>, <span style="color: #ff6347; font-weight: bold;">b</span><span style="color: #00bfff;">(</span>1<span style="color: #00bfff;">)</span>, <span style="color: #ff6347; font-weight: bold;">x</span><span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>;
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span><span style="color: #ffa500;">(</span>2<span style="color: #ffa500;">)</span>; i &lt;= n; ++i<span style="color: #00bfff;">)</span>
+    x = a + b,
+    a = b, b = x;
+  
+  <span style="color: #729fcf; font-weight: bold;">return</span> a + b;
+<span style="color: #ffd700;">}</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org529a67c" class="outline-3">
+<h3 id="org529a67c"><span class="section-number-3">2.10</span> <span class="done DONE">DONE</span> Regular Expression Matching&#xa0;&#xa0;&#xa0;<span class="tag"><span class="HARD">HARD</span></span></h3>
+<div class="outline-text-3" id="text-2-10">
+</div>
+<div id="outline-container-org2bc86a4" class="outline-4">
+<h4 id="org2bc86a4"><span class="section-number-4">2.10.1</span> Description</h4>
+<div class="outline-text-4" id="text-2-10-1">
+<p>
+Given an input string (s) and a pattern (p), 
+implement regular expression matching with support for '.' and '*'.
+</p>
+
+<ul class="org-ul">
+<li>'.' Matches any single character.</li>
+<li>'*' Matches zero or more of the preceding element.</li>
+</ul>
+<p>
+The matching should cover the entire input string (not partial).
+</p>
+
+<p>
+Note:
+</p>
+
+<ul class="org-ul">
+<li>s could be empty and contains only lowercase letters a-z.</li>
+<li>p could be empty and contains only lowercase letters a-z, and characters like . or *.</li>
+</ul>
+<p>
+Example 1:
+</p>
+<pre class="example">
+Input:
+s = "aa"
+p = "a"
+Output: false
+Explanation: "a" does not match the entire string "aa".
+</pre>
+<p>
+Example 2:
+</p>
+<pre class="example">
+Input:
+s = "aa"
+p = "a*"
+Output: true
+Explanation: '*' means zero or more of the preceding element, 'a'. Therefore, by repeating 'a' once, it becomes "aa".
+</pre>
+<p>
+Example 3:
+</p>
+<pre class="example">
+Input:
+s = "ab"
+p = ".*"
+Output: true
+Explanation: ".*" means "zero or more (*) of any character (.)".
+</pre>
+<p>
+Example 4:
+</p>
+<pre class="example">
+Input:
+s = "aab"
+p = "c*a*b"
+Output: true
+Explanation: c can be repeated 0 times, a can be repeated 1 time. Therefore, it matches "aab".
+</pre>
+<p>
+Example 5:
+</p>
+<pre class="example">
+Input:
+s = "mississippi"
+p = "mis*is*p*."
+Output: false
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org0969a66" class="outline-4">
+<h4 id="org0969a66"><span class="section-number-4">2.10.2</span> Solution</h4>
+<div class="outline-text-4" id="text-2-10-2">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #8ae234; font-weight: bold;">bool</span> <span style="color: #8ae234; font-weight: bold;">Solution</span>::<span style="color: #edd400; font-weight: bold;">isMatch</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #ff6347; font-weight: bold;">s</span>, <span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #ff6347; font-weight: bold;">p</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+  
+  <span style="color: #729fcf; font-weight: bold;">return</span>
+    p == <span style="color: #ad7fa8; font-style: italic;">""</span> ? s == <span style="color: #ad7fa8; font-style: italic;">""</span> :
+    p.size<span style="color: #00bfff;">()</span> &gt; 1 &amp;&amp; p<span style="color: #00bfff;">[</span>1<span style="color: #00bfff;">]</span> == <span style="color: #ad7fa8; font-style: italic;">'*'</span> ?
+      isMatch<span style="color: #00bfff;">(</span>s, p.substr<span style="color: #ffa500;">(</span>2<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> || 
+        <span style="color: #00bfff;">(</span>s != <span style="color: #ad7fa8; font-style: italic;">""</span> &amp;&amp; <span style="color: #ffa500;">(</span>s<span style="color: #ff7f50;">[</span>0<span style="color: #ff7f50;">]</span> == p<span style="color: #ff7f50;">[</span>0<span style="color: #ff7f50;">]</span> || p<span style="color: #ff7f50;">[</span>0<span style="color: #ff7f50;">]</span> == <span style="color: #ad7fa8; font-style: italic;">'.'</span><span style="color: #ffa500;">)</span> &amp;&amp; isMatch<span style="color: #ffa500;">(</span>s.substr<span style="color: #ff7f50;">(</span>1<span style="color: #ff7f50;">)</span>, p<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> :
+    s != <span style="color: #ad7fa8; font-style: italic;">""</span> &amp;&amp; 
+      <span style="color: #00bfff;">(</span>s<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">]</span> == p<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">]</span> || p<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">]</span> == <span style="color: #ad7fa8; font-style: italic;">'.'</span><span style="color: #00bfff;">)</span> &amp;&amp; isMatch<span style="color: #00bfff;">(</span>s.substr<span style="color: #ffa500;">(</span>1<span style="color: #ffa500;">)</span>, p.substr<span style="color: #ffa500;">(</span>1<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span>;
+<span style="color: #ffd700;">}</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb4771cd" class="outline-3">
+<h3 id="orgb4771cd"><span class="section-number-3">2.11</span> <span class="done DONE">DONE</span> Wildcard Matching&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></h3>
+<div class="outline-text-3" id="text-2-11">
+</div>
+<div id="outline-container-org5d2761f" class="outline-4">
+<h4 id="org5d2761f"><span class="section-number-4">2.11.1</span> Description</h4>
+<div class="outline-text-4" id="text-2-11-1">
+<p>
+Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*'.
+</p>
+<pre class="example">
+'?' Matches any single character.
+'*' Matches any sequence of characters (including the empty sequence).
+The matching should cover the entire input string (not partial).
+
+Note:
+
+s could be empty and contains only lowercase letters a-z.
+p could be empty and contains only lowercase letters a-z, and characters like ? or *.
+Example 1:
+
+Input:
+s = "aa"
+p = "a"
+Output: false
+Explanation: "a" does not match the entire string "aa".
+Example 2:
+
+Input:
+s = "aa"
+p = "*"
+Output: true
+Explanation: '*' matches any sequence.
+Example 3:
+
+Input:
+s = "cb"
+p = "?a"
+Output: false
+Explanation: '?' matches 'c', but the second letter is 'a', which does not match 'b'.
+Example 4:
+
+Input:
+s = "adceb"
+p = "*a*b"
+Output: true
+Explanation: The first '*' matches the empty sequence, while the second '*' matches the substring "dce".
+Example 5:
+
+Input:
+s = "acdcb"
+p = "a*c?b"
+Output: false
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org29a76ee" class="outline-4">
+<h4 id="org29a76ee"><span class="section-number-4">2.11.2</span> Solution</h4>
+<div class="outline-text-4" id="text-2-11-2">
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #729fcf; font-weight: bold;">class</span> <span style="color: #8ae234; font-weight: bold;">Solution</span> <span style="color: #ffd700;">{</span>
+<span style="color: #729fcf; font-weight: bold;">public</span>:
+  <span style="color: #8ae234; font-weight: bold;">bool</span> <span style="color: #edd400; font-weight: bold;">isMatch</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #ff6347; font-weight: bold;">s</span>, <span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #ff6347; font-weight: bold;">p</span><span style="color: #00bfff;">)</span>;
+<span style="color: #ffd700;">}</span>;
+
+<span style="color: #8ae234; font-weight: bold;">bool</span> <span style="color: #8ae234; font-weight: bold;">Solution</span>::<span style="color: #edd400; font-weight: bold;">isMatch</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #ff6347; font-weight: bold;">s</span>, <span style="color: #8ae234; font-weight: bold;">string</span> <span style="color: #ff6347; font-weight: bold;">p</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+  
+  <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">m</span><span style="color: #00bfff;">(</span>s.size<span style="color: #ffa500;">()</span><span style="color: #00bfff;">)</span>, <span style="color: #ff6347; font-weight: bold;">n</span><span style="color: #00bfff;">(</span>p.size<span style="color: #ffa500;">()</span><span style="color: #00bfff;">)</span>;
+  <span style="color: #8ae234; font-weight: bold;">bool</span> <span style="color: #ff6347; font-weight: bold;">rc</span><span style="color: #00bfff;">[</span>m+1<span style="color: #00bfff;">][</span>n+1<span style="color: #00bfff;">]</span>;
+  
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span><span style="color: #ffa500;">(</span>m<span style="color: #ffa500;">)</span>; i &gt;= 0; --i<span style="color: #00bfff;">)</span>
+    <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">j</span><span style="color: #ffa500;">(</span>n<span style="color: #ffa500;">)</span>; j &gt;= 0; --j<span style="color: #00bfff;">)</span>
+      
+      rc<span style="color: #00bfff;">[</span>i<span style="color: #00bfff;">][</span>j<span style="color: #00bfff;">]</span> = 
+        i == m &amp;&amp; j == n      ? <span style="color: #8ae234; font-weight: bold;">true</span>                     :
+        i == m &amp;&amp; p<span style="color: #00bfff;">[</span>j<span style="color: #00bfff;">]</span> == <span style="color: #ad7fa8; font-style: italic;">'*'</span> ? rc<span style="color: #00bfff;">[</span>i<span style="color: #00bfff;">][</span>j+1<span style="color: #00bfff;">]</span>               :
+        i == m || j == n      ? <span style="color: #8ae234; font-weight: bold;">false</span>                    :
+        p<span style="color: #00bfff;">[</span>j<span style="color: #00bfff;">]</span> == <span style="color: #ad7fa8; font-style: italic;">'.'</span>           ? rc<span style="color: #00bfff;">[</span>i+1<span style="color: #00bfff;">][</span>j+1<span style="color: #00bfff;">]</span>             :
+        p<span style="color: #00bfff;">[</span>j<span style="color: #00bfff;">]</span> == <span style="color: #ad7fa8; font-style: italic;">'*'</span>           ? rc<span style="color: #00bfff;">[</span>i+1<span style="color: #00bfff;">][</span>j<span style="color: #00bfff;">]</span> || rc<span style="color: #00bfff;">[</span>i<span style="color: #00bfff;">][</span>j+1<span style="color: #00bfff;">]</span> :
+        p<span style="color: #00bfff;">[</span>j<span style="color: #00bfff;">]</span> == s<span style="color: #00bfff;">[</span>i<span style="color: #00bfff;">]</span>          ? rc<span style="color: #00bfff;">[</span>i+1<span style="color: #00bfff;">][</span>j+1<span style="color: #00bfff;">]</span>             :
+        <span style="color: #888a85; font-style: italic;">/*</span><span style="color: #888a85; font-style: italic;">otherwise          */</span> <span style="color: #8ae234; font-weight: bold;">false</span>                    ;
+  
+  <span style="color: #729fcf; font-weight: bold;">return</span> rc<span style="color: #00bfff;">[</span>0<span style="color: #00bfff;">][</span>0<span style="color: #00bfff;">]</span>;
+<span style="color: #ffd700;">}</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8d12ce7" class="outline-3">
+<h3 id="org8d12ce7"><span class="section-number-3">2.12</span> <span class="todo TODO">TODO</span> The Josephus Problem</h3>
+</div>
+<div id="outline-container-org05a462a" class="outline-3">
+<h3 id="org05a462a"><span class="section-number-3">2.13</span> <span class="done DONE">DONE</span> Maximal Square&#xa0;&#xa0;&#xa0;<span class="tag"><span class="MEDI">MEDI</span></span></h3>
+<div class="outline-text-3" id="text-2-13">
+</div>
+<div id="outline-container-org16c4a53" class="outline-4">
+<h4 id="org16c4a53"><span class="section-number-4">2.13.1</span> Description</h4>
+<div class="outline-text-4" id="text-2-13-1">
+<p>
+Given a 2D binary matrix filled with 0's and 1's, 
+find the largest square containing only 1's and return its area.
+</p>
+
+<p>
+Example:
+</p>
+<pre class="example">
+Input: 
+
+1 0 1 0 0
+1 0 1 1 1
+1 1 1 1 1
+1 0 0 1 0
+
+Output: 4
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgf3dc6c0" class="outline-4">
+<h4 id="orgf3dc6c0"><span class="section-number-4">2.13.2</span> Solution</h4>
+<div class="outline-text-4" id="text-2-13-2">
+<div class="org-src-container">
+<pre class="src src-c++">
+<span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #8ae234; font-weight: bold;">Solution</span>::<span style="color: #edd400; font-weight: bold;">maximalSquare</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">vector</span><span style="color: #00bfff;">&lt;</span><span style="color: #8ae234; font-weight: bold;">vector</span><span style="color: #ffa500;">&lt;</span><span style="color: #8ae234; font-weight: bold;">char</span><span style="color: #ffa500;">&gt;</span><span style="color: #00bfff;">&gt;</span>&amp; <span style="color: #ff6347; font-weight: bold;">matrix</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+  
+  <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>matrix.empty<span style="color: #ffa500;">()</span><span style="color: #00bfff;">)</span> <span style="color: #729fcf; font-weight: bold;">return</span> 0;
+  <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">m</span> = matrix.size<span style="color: #00bfff;">()</span>, <span style="color: #ff6347; font-weight: bold;">n</span> = matrix<span style="color: #00bfff;">[</span>0<span style="color: #00bfff;">]</span>.size<span style="color: #00bfff;">()</span>;
+  <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">r</span><span style="color: #00bfff;">[</span>m<span style="color: #00bfff;">][</span>n<span style="color: #00bfff;">]</span>, <span style="color: #ff6347; font-weight: bold;">ma</span><span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>;
+  
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span><span style="color: #ffa500;">(</span>0<span style="color: #ffa500;">)</span>; i &lt; m; ++i<span style="color: #00bfff;">)</span> r<span style="color: #00bfff;">[</span>i<span style="color: #00bfff;">][</span>0<span style="color: #00bfff;">]</span> = matrix<span style="color: #00bfff;">[</span>i<span style="color: #00bfff;">][</span>0<span style="color: #00bfff;">]</span> - <span style="color: #ad7fa8; font-style: italic;">'0'</span>, ma = max<span style="color: #00bfff;">(</span>ma, r<span style="color: #ffa500;">[</span>i<span style="color: #ffa500;">][</span>0<span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span>;
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">j</span><span style="color: #ffa500;">(</span>0<span style="color: #ffa500;">)</span>; j &lt; n; ++j<span style="color: #00bfff;">)</span> r<span style="color: #00bfff;">[</span>0<span style="color: #00bfff;">][</span>j<span style="color: #00bfff;">]</span> = matrix<span style="color: #00bfff;">[</span>0<span style="color: #00bfff;">][</span>j<span style="color: #00bfff;">]</span> - <span style="color: #ad7fa8; font-style: italic;">'0'</span>, ma = max<span style="color: #00bfff;">(</span>ma, r<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">][</span>j<span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span>;
+  
+  <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span><span style="color: #ffa500;">(</span>1<span style="color: #ffa500;">)</span>; i &lt; m; ++i<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+    <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #ffa500;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">j</span><span style="color: #ff7f50;">(</span>1<span style="color: #ff7f50;">)</span>; j &lt; n; ++j<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+      
+      r<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">][</span>j<span style="color: #ff7f50;">]</span> = matrix<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">][</span>j<span style="color: #ff7f50;">]</span> == <span style="color: #ad7fa8; font-style: italic;">'0'</span> ? 0 :
+        min<span style="color: #ff7f50;">(</span>r<span style="color: #00ff00;">[</span>i-1<span style="color: #00ff00;">][</span>j<span style="color: #00ff00;">]</span>, min<span style="color: #00ff00;">(</span>r<span style="color: #a020f0;">[</span>i<span style="color: #a020f0;">][</span>j-1<span style="color: #a020f0;">]</span>, r<span style="color: #a020f0;">[</span>i-1<span style="color: #a020f0;">][</span>j-1<span style="color: #a020f0;">]</span><span style="color: #00ff00;">)</span><span style="color: #ff7f50;">)</span> + 1;
+      ma = max<span style="color: #ff7f50;">(</span>ma, r<span style="color: #00ff00;">[</span>i<span style="color: #00ff00;">][</span>j<span style="color: #00ff00;">]</span><span style="color: #ff7f50;">)</span>;
+    <span style="color: #ffa500;">}</span>
+  <span style="color: #00bfff;">}</span>
+  <span style="color: #729fcf; font-weight: bold;">return</span> ma * ma;
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org509c578" class="outline-3">
+<h3 id="org509c578"><span class="section-number-3">2.14</span> <span class="todo NEXT">NEXT</span> Divisible Sum Pairs</h3>
+<div class="outline-text-3" id="text-2-14">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">divisibleSumPairs</span> n k ar <span style="color: #ff6347; font-weight: bold;">=</span> length <span style="color: #ff6347; font-weight: bold;">$</span> 
+  Data.List.filter <span style="color: #ffd700;">(</span><span style="color: #ff6347; font-weight: bold;">\</span><span style="color: #00bfff;">(</span>a, b<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> mod <span style="color: #00bfff;">(</span>a <span style="color: #ff6347; font-weight: bold;">+</span> b<span style="color: #00bfff;">)</span> k <span style="color: #ff6347; font-weight: bold;">==</span> 0<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>list ar<span style="color: #ffd700;">)</span>
+
+<span style="color: #edd400; font-weight: bold;">list</span> ar <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span><span style="color: #00bfff;">(</span>ar <span style="color: #ff6347; font-weight: bold;">!!</span> a, ar <span style="color: #ff6347; font-weight: bold;">!!</span> b<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">|</span> a <span style="color: #ff6347; font-weight: bold;">&lt;-</span> <span style="color: #00bfff;">[</span>0<span style="color: #ff6347; font-weight: bold;">..</span>n<span style="color: #00bfff;">]</span>, b <span style="color: #ff6347; font-weight: bold;">&lt;-</span> <span style="color: #00bfff;">[</span>a<span style="color: #ff6347; font-weight: bold;">..</span>n<span style="color: #00bfff;">]</span>, a <span style="color: #ff6347; font-weight: bold;">/=</span> b<span style="color: #ffd700;">]</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  n <span style="color: #ff6347; font-weight: bold;">=</span> length ar <span style="color: #ff6347; font-weight: bold;">-</span> 1
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org86fe289" class="outline-3">
+<h3 id="org86fe289"><span class="section-number-3">2.15</span> <span class="todo NEXT">NEXT</span> [HackerRank] Interview Preparation Kit <code>[7/8]</code></h3>
+<div class="outline-text-3" id="text-2-15">
+</div>
+<div id="outline-container-org23c1dc4" class="outline-4">
+<h4 id="org23c1dc4"><span class="section-number-4">2.15.1</span> <span class="done DONE">DONE</span> Sock Merchant</h4>
+<div class="outline-text-4" id="text-2-15-1">
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">map'</span> <span style="color: #ff6347; font-weight: bold;">=</span> Data.List.map
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Complete the sockMerchant function below.</span>
+<span style="color: #edd400; font-weight: bold;">sockMerchant</span> n ar <span style="color: #ff6347; font-weight: bold;">=</span> sum <span style="color: #ff6347; font-weight: bold;">$</span> map' pair <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ffd700;">(</span>group <span style="color: #ff6347; font-weight: bold;">.</span> sort<span style="color: #ffd700;">)</span> ar
+  <span style="color: #729fcf; font-weight: bold;">where</span> pair xs <span style="color: #ff6347; font-weight: bold;">=</span> div <span style="color: #ffd700;">(</span>length xs<span style="color: #ffd700;">)</span> 2
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge218d94" class="outline-4">
+<h4 id="orge218d94"><span class="section-number-4">2.15.2</span> <span class="done DONE">DONE</span> Counting Valleys</h4>
+<div class="outline-text-4" id="text-2-15-2">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">countingValleys</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Int</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">String</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+<span style="color: #edd400; font-weight: bold;">countingValleys</span> n <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> 0
+<span style="color: #edd400; font-weight: bold;">countingValleys</span> n xs <span style="color: #ff6347; font-weight: bold;">=</span> count xs 0 0
+
+<span style="color: #edd400; font-weight: bold;">count</span> <span style="color: #ffd700; font-weight: bold;">[]</span> n vs <span style="color: #ff6347; font-weight: bold;">=</span> vs
+<span style="color: #edd400; font-weight: bold;">count</span> <span style="color: #ffd700;">(</span>c<span style="color: #8ae234; font-weight: bold;">:</span>cs<span style="color: #ffd700;">)</span> n vs <span style="color: #ff6347; font-weight: bold;">=</span> 
+  <span style="color: #729fcf; font-weight: bold;">if</span> step c <span style="color: #ff6347; font-weight: bold;">+</span> n <span style="color: #ff6347; font-weight: bold;">&lt;</span> 0 <span style="color: #ff6347; font-weight: bold;">&amp;&amp;</span> n <span style="color: #ff6347; font-weight: bold;">&gt;=</span> 0
+  <span style="color: #729fcf; font-weight: bold;">then</span> count cs <span style="color: #ffd700;">(</span>step c <span style="color: #ff6347; font-weight: bold;">+</span> n<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>vs <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span>
+  <span style="color: #729fcf; font-weight: bold;">else</span> count cs <span style="color: #ffd700;">(</span>step c <span style="color: #ff6347; font-weight: bold;">+</span> n<span style="color: #ffd700;">)</span> vs
+
+<span style="color: #edd400; font-weight: bold;">step</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Char</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+<span style="color: #edd400; font-weight: bold;">step</span> c <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">case</span> c <span style="color: #729fcf; font-weight: bold;">of</span>
+  <span style="color: #ad7fa8; font-style: italic;">'U'</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> 1
+  <span style="color: #ad7fa8; font-style: italic;">'D'</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">(</span><span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span>
+  <span style="color: #729fcf; font-weight: bold;">_</span>   <span style="color: #ff6347; font-weight: bold;">-&gt;</span> 0
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfff1fc0" class="outline-4">
+<h4 id="orgfff1fc0"><span class="section-number-4">2.15.3</span> <span class="done DONE">DONE</span> Jumping on the Clouds</h4>
+<div class="outline-text-4" id="text-2-15-3">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">jumpingOnClouds</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+<span style="color: #edd400; font-weight: bold;">jumpingOnClouds</span> <span style="color: #ffd700; font-weight: bold;">[]</span>     <span style="color: #ff6347; font-weight: bold;">=</span> 0
+<span style="color: #edd400; font-weight: bold;">jumpingOnClouds</span> <span style="color: #ffd700;">[</span>x<span style="color: #ffd700;">]</span>    <span style="color: #ff6347; font-weight: bold;">=</span> 0
+<span style="color: #edd400; font-weight: bold;">jumpingOnClouds</span> <span style="color: #ffd700;">[</span>a, b<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">=</span> 1
+<span style="color: #edd400; font-weight: bold;">jumpingOnClouds</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>a<span style="color: #8ae234; font-weight: bold;">:</span>b<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">|</span> a <span style="color: #ff6347; font-weight: bold;">==</span> 1    <span style="color: #ff6347; font-weight: bold;">=</span> jumpingOnClouds <span style="color: #ffd700;">(</span>b<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span>   <span style="color: #ff6347; font-weight: bold;">+</span> 1
+  <span style="color: #ff6347; font-weight: bold;">|</span> b <span style="color: #ff6347; font-weight: bold;">==</span> 1    <span style="color: #ff6347; font-weight: bold;">=</span> jumpingOnClouds <span style="color: #ffd700;">(</span>a<span style="color: #8ae234; font-weight: bold;">:</span>b<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> 1
+  <span style="color: #ff6347; font-weight: bold;">|</span> otherwise <span style="color: #ff6347; font-weight: bold;">=</span> jumpingOnClouds <span style="color: #ffd700;">(</span>b<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span>   <span style="color: #ff6347; font-weight: bold;">+</span> 1
+  
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd7b2946" class="outline-4">
+<h4 id="orgd7b2946"><span class="section-number-4">2.15.4</span> <span class="done DONE">DONE</span> Repeated String</h4>
+<div class="outline-text-4" id="text-2-15-4">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">take'</span> <span style="color: #ff6347; font-weight: bold;">=</span> Data.List.take
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Complete the repeatedString function below.</span>
+<span style="color: #edd400; font-weight: bold;">repeatedString</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">String</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Integer</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+<span style="color: #edd400; font-weight: bold;">repeatedString</span> s n <span style="color: #ff6347; font-weight: bold;">=</span> 
+  div <span style="color: #ffd700;">(</span>fromIntegral n<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fromIntegral <span style="color: #ff6347; font-weight: bold;">$</span> length s<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">*</span> countA s <span style="color: #ff6347; font-weight: bold;">+</span> 
+  <span style="color: #ffd700;">(</span>countA <span style="color: #ff6347; font-weight: bold;">.</span> <span style="color: #00bfff;">(</span>take' <span style="color: #ffa500;">(</span>mod <span style="color: #ff7f50;">(</span>fromIntegral n<span style="color: #ff7f50;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fromIntegral <span style="color: #ff7f50;">(</span>length s<span style="color: #ff7f50;">)</span><span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> s
+
+<span style="color: #edd400; font-weight: bold;">countA</span> <span style="color: #ad7fa8; font-style: italic;">""</span> <span style="color: #ff6347; font-weight: bold;">=</span> 0
+<span style="color: #edd400; font-weight: bold;">countA</span> <span style="color: #ffd700;">(</span>c<span style="color: #8ae234; font-weight: bold;">:</span>cs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">if</span> c <span style="color: #ff6347; font-weight: bold;">==</span> <span style="color: #ad7fa8; font-style: italic;">'a'</span> <span style="color: #729fcf; font-weight: bold;">then</span> countA cs <span style="color: #ff6347; font-weight: bold;">+</span> 1 <span style="color: #729fcf; font-weight: bold;">else</span> countA cs
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgba13abe" class="outline-4">
+<h4 id="orgba13abe"><span class="section-number-4">2.15.5</span> <span class="done DONE">DONE</span> 2D Array - DS</h4>
+<div class="outline-text-4" id="text-2-15-5">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">map'</span> <span style="color: #ff6347; font-weight: bold;">=</span> Data.List.map
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Complete the hourglassSum function below.</span>
+<span style="color: #edd400; font-weight: bold;">hourglassSum</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">[</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #00bfff;">]</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+<span style="color: #edd400; font-weight: bold;">hourglassSum</span> arr <span style="color: #ff6347; font-weight: bold;">=</span> maximum <span style="color: #ff6347; font-weight: bold;">$</span> map' <span style="color: #ffd700;">(</span>mask arr<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> range <span style="color: #ffd700;">(</span><span style="color: #00bfff;">(</span>1, 1<span style="color: #00bfff;">)</span>, <span style="color: #00bfff;">(</span>a<span style="color: #ff6347; font-weight: bold;">-</span>2, b<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+  <span style="color: #729fcf; font-weight: bold;">where</span> a <span style="color: #ff6347; font-weight: bold;">=</span> length arr
+        b <span style="color: #ff6347; font-weight: bold;">=</span> length <span style="color: #ff6347; font-weight: bold;">$</span> arr <span style="color: #ff6347; font-weight: bold;">!!</span> 0
+
+<span style="color: #edd400; font-weight: bold;">mask</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">[</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #00bfff;">]</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Int</span>, <span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+<span style="color: #edd400; font-weight: bold;">mask</span> <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #729fcf; font-weight: bold;">_</span> <span style="color: #ff6347; font-weight: bold;">=</span> 0
+<span style="color: #edd400; font-weight: bold;">mask</span> m <span style="color: #ffd700;">(</span>x, y<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> 
+  m <span style="color: #ff6347; font-weight: bold;">!!</span> x <span style="color: #ff6347; font-weight: bold;">!!</span> y <span style="color: #ff6347; font-weight: bold;">+</span> 
+  m <span style="color: #ff6347; font-weight: bold;">!!</span> <span style="color: #ffd700;">(</span>x<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">!!</span> y <span style="color: #ff6347; font-weight: bold;">+</span> m <span style="color: #ff6347; font-weight: bold;">!!</span> <span style="color: #ffd700;">(</span>x<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">!!</span> <span style="color: #ffd700;">(</span>y<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> m <span style="color: #ff6347; font-weight: bold;">!!</span> <span style="color: #ffd700;">(</span>x<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">!!</span> <span style="color: #ffd700;">(</span>y<span style="color: #ff6347; font-weight: bold;">+</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span>
+  m <span style="color: #ff6347; font-weight: bold;">!!</span> <span style="color: #ffd700;">(</span>x<span style="color: #ff6347; font-weight: bold;">+</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">!!</span> y <span style="color: #ff6347; font-weight: bold;">+</span> m <span style="color: #ff6347; font-weight: bold;">!!</span> <span style="color: #ffd700;">(</span>x<span style="color: #ff6347; font-weight: bold;">+</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">!!</span> <span style="color: #ffd700;">(</span>y<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> m <span style="color: #ff6347; font-weight: bold;">!!</span> <span style="color: #ffd700;">(</span>x<span style="color: #ff6347; font-weight: bold;">+</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">!!</span> <span style="color: #ffd700;">(</span>y<span style="color: #ff6347; font-weight: bold;">+</span>1<span style="color: #ffd700;">)</span>
+
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">hourglassSum</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">[</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #00bfff;">]</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">hourglassSum</span> <span style="color: #ffd700;">(</span><span style="color: #00bfff;">(</span>a1 <span style="color: #8ae234; font-weight: bold;">:</span> a2 <span style="color: #8ae234; font-weight: bold;">:</span> <span style="color: #ffa500; font-weight: bold;">[]</span><span style="color: #00bfff;">)</span> <span style="color: #8ae234; font-weight: bold;">:</span> <span style="color: #729fcf; font-weight: bold;">_</span><span style="color: #ffd700;">)</span>  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
+<span style="color: #edd400; font-weight: bold;">hourglassSum</span> <span style="color: #ffd700;">(</span>a<span style="color: #8ae234; font-weight: bold;">:</span>b<span style="color: #8ae234; font-weight: bold;">:</span>c<span style="color: #8ae234; font-weight: bold;">:</span><span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> 
+    <span style="color: #ffd700;">(</span>sum <span style="color: #00bfff;">(</span>take 3 a<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> <span style="color: #ffd700;">(</span>head <span style="color: #ff6347; font-weight: bold;">$</span> tail b<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> <span style="color: #ffd700;">(</span>sum <span style="color: #00bfff;">(</span>take 3 c<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #8ae234; font-weight: bold;">:</span>
+    hourglassSum <span style="color: #ffd700;">(</span>tail a <span style="color: #8ae234; font-weight: bold;">:</span> tail b <span style="color: #8ae234; font-weight: bold;">:</span> tail c <span style="color: #8ae234; font-weight: bold;">:</span> <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span>
+
+<span style="color: #edd400; font-weight: bold;">hGlassMap</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">[</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #00bfff;">]</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">hGlassMap</span> <span style="color: #ffd700;">(</span>a <span style="color: #8ae234; font-weight: bold;">:</span> b <span style="color: #8ae234; font-weight: bold;">:</span> <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
+<span style="color: #edd400; font-weight: bold;">hGlassMap</span> <span style="color: #ffd700;">(</span>a <span style="color: #8ae234; font-weight: bold;">:</span> b <span style="color: #8ae234; font-weight: bold;">:</span> c <span style="color: #8ae234; font-weight: bold;">:</span> xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> maximum <span style="color: #ffd700;">(</span>hourglassSum <span style="color: #00bfff;">[</span>a,b,c<span style="color: #00bfff;">]</span><span style="color: #ffd700;">)</span> <span style="color: #8ae234; font-weight: bold;">:</span> hGlassMap <span style="color: #ffd700;">(</span>b<span style="color: #8ae234; font-weight: bold;">:</span>c<span style="color: #8ae234; font-weight: bold;">:</span> xs<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org15b4977" class="outline-4">
+<h4 id="org15b4977"><span class="section-number-4">2.15.6</span> <span class="done DONE">DONE</span> Arrays: Left Rotation</h4>
+<div class="outline-text-4" id="text-2-15-6">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">take'</span> <span style="color: #ff6347; font-weight: bold;">=</span> Data.List.take
+<span style="color: #edd400; font-weight: bold;">drop'</span> <span style="color: #ff6347; font-weight: bold;">=</span> Data.List.drop
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Complete the rotLeft function below.</span>
+<span style="color: #edd400; font-weight: bold;">rotLeft</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Int</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">rotLeft</span> a d <span style="color: #ff6347; font-weight: bold;">=</span> rot a <span style="color: #ff6347; font-weight: bold;">$</span> mod d <span style="color: #ffd700;">(</span>length a<span style="color: #ffd700;">)</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  rot ar n <span style="color: #ff6347; font-weight: bold;">=</span> drop' n ar <span style="color: #ff6347; font-weight: bold;">++</span> take' n ar
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbcad506" class="outline-4">
+<h4 id="orgbcad506"><span class="section-number-4">2.15.7</span> <span class="done DONE">DONE</span> New Year Chaos</h4>
+<div class="outline-text-4" id="text-2-15-7">
+</div>
+<ol class="org-ol">
+<li><a id="org68c436d"></a>Description<br />
+<div class="outline-text-5" id="text-2-15-7-1">
+<p>
+<a href="https://www.hackerrank.com/challenges/new-year-chaos/problem?h_l=interview&amp;playlist_slugs%5B%5D=interview-preparation-kit&amp;playlist_slugs%5B%5D=arrays">HackerRank</a>
+It's New Year's Day and everyone's in line for the Wonderland rollercoaster ride! 
+There are a number of people queued up, and each person wears a sticker indicating their initial position in the queue. 
+Initial positions increment by 1 from 1 at the front of the line to n at the back.
+</p>
+
+<p>
+Any person in the queue can bribe the person directly in front of them to swap positions. 
+If two people swap positions, they still wear the same sticker denoting their original places in line. 
+One person can bribe at most two others. For example, if n = 8 and Person 5 bribes Person 4, 
+the queue will look like this: [1 2 3 5 4 6 7 8].
+</p>
+
+<p>
+Fascinated by this chaotic queue, 
+you decide you must know the minimum number of bribes that took place to get the queue into its current state!
+</p>
+
+<ul class="org-ul">
+<li><p>
+Function Description
+</p>
+
+<p>
+Complete the function minimumBribes in the editor below. 
+It must print an integer representing the minimum number of bribes necessary, or Too chaotic 
+if the line configuration is not possible.
+</p></li>
+</ul>
+
+<p>
+minimumBribes has the following parameter(s):
+</p>
+
+<p>
+q: an array of integers
+Input Format
+</p>
+
+<p>
+The first line contains an integer t, the number of test cases.
+</p>
+
+<p>
+Each of the next t pairs of lines are as follows:
+</p>
+<ul class="org-ul">
+<li>The first line contains an integer t, the number of people in the queue</li>
+<li>The second line has n space-separated integers describing the final state of the queue.</li>
+</ul>
+</div>
+</li>
+
+<li><a id="orgcbfdda6"></a>First submission<br />
+<div class="outline-text-5" id="text-2-15-7-2">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">filter'</span> <span style="color: #ff6347; font-weight: bold;">=</span> Data.List.filter
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Complete the minimumBribes function below.</span>
+<span style="color: #edd400; font-weight: bold;">minimumBribes</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">IO</span> <span style="color: #ffd700; font-weight: bold;">()</span>
+<span style="color: #edd400; font-weight: bold;">minimumBribes</span> q <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">do</span>
+  <span style="color: #729fcf; font-weight: bold;">let</span> ms <span style="color: #ff6347; font-weight: bold;">=</span> sum <span style="color: #ff6347; font-weight: bold;">&lt;$&gt;</span> sequence <span style="color: #ffd700;">(</span>count q <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span>
+  putStrLn <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #729fcf; font-weight: bold;">case</span> ms <span style="color: #729fcf; font-weight: bold;">of</span>
+    <span style="color: #8ae234; font-weight: bold;">Just</span> n  <span style="color: #ff6347; font-weight: bold;">-&gt;</span> show n
+    <span style="color: #8ae234; font-weight: bold;">Nothing</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ad7fa8; font-style: italic;">"Too chaotic"</span>
+
+<span style="color: #edd400; font-weight: bold;">count</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Maybe</span> <span style="color: #8ae234; font-weight: bold;">Integer</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Maybe</span> <span style="color: #8ae234; font-weight: bold;">Integer</span><span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">count</span> <span style="color: #ffd700; font-weight: bold;">[]</span> m <span style="color: #ff6347; font-weight: bold;">=</span> m
+<span style="color: #edd400; font-weight: bold;">count</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> m <span style="color: #ff6347; font-weight: bold;">=</span> count xs <span style="color: #ffd700;">(</span>inver x xs <span style="color: #8ae234; font-weight: bold;">:</span> m<span style="color: #ffd700;">)</span>
+
+<span style="color: #edd400; font-weight: bold;">inver</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Int</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Maybe</span> <span style="color: #8ae234; font-weight: bold;">Integer</span>
+<span style="color: #edd400; font-weight: bold;">inver</span> n <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Just</span> 0
+<span style="color: #edd400; font-weight: bold;">inver</span> n xs <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">if</span> len <span style="color: #ff6347; font-weight: bold;">&lt;=</span> 2 <span style="color: #729fcf; font-weight: bold;">then</span> <span style="color: #8ae234; font-weight: bold;">Just</span> len <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #8ae234; font-weight: bold;">Nothing</span>
+  <span style="color: #729fcf; font-weight: bold;">where</span> len <span style="color: #ff6347; font-weight: bold;">=</span> fromIntegral <span style="color: #ff6347; font-weight: bold;">$</span> length <span style="color: #ff6347; font-weight: bold;">$</span> filter' <span style="color: #ffd700;">(</span><span style="color: #ff6347; font-weight: bold;">&lt;</span> n<span style="color: #ffd700;">)</span> xs
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Result: Failed on some cases&#x2026;</li>
+<li>Analysis
+Use the constraint of 'at most 2 steps'.</li>
+</ul>
+</div>
+</li>
+<li><a id="org8744a7b"></a>Second submission<br />
+<div class="outline-text-5" id="text-2-15-7-3">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">import</span> <span style="color: #8ae234; font-weight: bold;">Control.Applicative</span> <span style="color: #ffd700;">(</span><span style="color: #00bfff;">(</span><span style="color: #ff6347; font-weight: bold;">&lt;$&gt;</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<span style="color: #729fcf; font-weight: bold;">import</span> <span style="color: #8ae234; font-weight: bold;">Control.Monad</span> <span style="color: #ffd700;">(</span>replicateM_, guard<span style="color: #ffd700;">)</span>
+<span style="color: #729fcf; font-weight: bold;">import</span> <span style="color: #8ae234; font-weight: bold;">Data.List</span> <span style="color: #ffd700;">(</span>elemIndex<span style="color: #ffd700;">)</span>
+<span style="color: #729fcf; font-weight: bold;">import</span> <span style="color: #8ae234; font-weight: bold;">Data.Maybe</span> <span style="color: #ffd700;">(</span>fromJust<span style="color: #ffd700;">)</span>
+
+<span style="color: #edd400; font-weight: bold;">main</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">IO</span> <span style="color: #ffd700; font-weight: bold;">()</span>
+<span style="color: #edd400; font-weight: bold;">main</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">do</span>
+  t <span style="color: #ff6347; font-weight: bold;">&lt;-</span> readLn <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">IO</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+  replicateM_ t <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #729fcf; font-weight: bold;">do</span>
+    n  <span style="color: #ff6347; font-weight: bold;">&lt;-</span> readLn <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">IO</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+    as <span style="color: #ff6347; font-weight: bold;">&lt;-</span> reverse <span style="color: #ff6347; font-weight: bold;">.</span> map read <span style="color: #ff6347; font-weight: bold;">.</span> words <span style="color: #ff6347; font-weight: bold;">&lt;$&gt;</span> getLine <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">IO</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">]</span>
+    <span style="color: #729fcf; font-weight: bold;">case</span> go n as <span style="color: #729fcf; font-weight: bold;">of</span>
+      <span style="color: #8ae234; font-weight: bold;">Just</span> a  <span style="color: #ff6347; font-weight: bold;">-&gt;</span> print a
+      <span style="color: #8ae234; font-weight: bold;">Nothing</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> putStrLn <span style="color: #ad7fa8; font-style: italic;">"Too chaotic"</span>
+
+<span style="color: #edd400; font-weight: bold;">go</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Int</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Maybe</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+<span style="color: #edd400; font-weight: bold;">go</span> 0 <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Just</span> 0
+<span style="color: #edd400; font-weight: bold;">go</span> n as <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">do</span>
+  i <span style="color: #ff6347; font-weight: bold;">&lt;-</span> elemIndex n as
+  guard <span style="color: #ffd700;">(</span>i <span style="color: #ff6347; font-weight: bold;">&lt;=</span> 2<span style="color: #ffd700;">)</span>
+  <span style="color: #729fcf; font-weight: bold;">let</span> <span style="color: #ffd700;">(</span>xs, y<span style="color: #8ae234; font-weight: bold;">:</span>ys<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> splitAt i as
+  <span style="color: #729fcf; font-weight: bold;">let</span> as' <span style="color: #ff6347; font-weight: bold;">=</span> xs <span style="color: #ff6347; font-weight: bold;">++</span> ys
+  r <span style="color: #ff6347; font-weight: bold;">&lt;-</span> go <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">-</span> 1<span style="color: #ffd700;">)</span> as'
+  return <span style="color: #ff6347; font-weight: bold;">$</span> r <span style="color: #ff6347; font-weight: bold;">+</span> i
+
+</pre>
+</div>
+</div>
+</li>
+<li><a id="orgbc1a7de"></a>Thinking<br />
+<div class="outline-text-5" id="text-2-15-7-4">
+<p>
+Thinking of the problem of inverse number.
+</p>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org91e8b2c" class="outline-4">
+<h4 id="org91e8b2c"><span class="section-number-4">2.15.8</span> <span class="todo NEXT">NEXT</span> Minimum Swaps 2</h4>
+<div class="outline-text-4" id="text-2-15-8">
+</div>
+<ol class="org-ol">
+<li><a id="orge10822a"></a>First submission<br />
+<div class="outline-text-5" id="text-2-15-8-1">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">minimumSwaps</span> <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> 0
+<span style="color: #edd400; font-weight: bold;">minimumSwaps</span> ar <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">case</span> swaps arr 0 <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Just</span> 0<span style="color: #ffd700;">)</span> <span style="color: #729fcf; font-weight: bold;">of</span>
+  <span style="color: #8ae234; font-weight: bold;">Just</span> x  <span style="color: #ff6347; font-weight: bold;">-&gt;</span> x
+  <span style="color: #8ae234; font-weight: bold;">Nothing</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> 0
+  <span style="color: #729fcf; font-weight: bold;">where</span> arr <span style="color: #ff6347; font-weight: bold;">=</span> listArray <span style="color: #ffd700;">(</span>0, length ar <span style="color: #ff6347; font-weight: bold;">-</span> 1<span style="color: #ffd700;">)</span> ar
+
+<span style="color: #edd400; font-weight: bold;">swaps</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Array</span> <span style="color: #8ae234; font-weight: bold;">Int</span> <span style="color: #8ae234; font-weight: bold;">Int</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Int</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Maybe</span> <span style="color: #8ae234; font-weight: bold;">Int</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Maybe</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+<span style="color: #edd400; font-weight: bold;">swaps</span> arr i n
+  <span style="color: #ff6347; font-weight: bold;">|</span> i <span style="color: #ff6347; font-weight: bold;">==</span> length arr <span style="color: #ff6347; font-weight: bold;">=</span> n
+  <span style="color: #ff6347; font-weight: bold;">|</span> otherwise       <span style="color: #ff6347; font-weight: bold;">=</span> 
+    <span style="color: #729fcf; font-weight: bold;">if</span> arr <span style="color: #ff6347; font-weight: bold;">!</span> i <span style="color: #ff6347; font-weight: bold;">==</span> i <span style="color: #ff6347; font-weight: bold;">+</span> 1 <span style="color: #729fcf; font-weight: bold;">then</span> swaps arr <span style="color: #ffd700;">(</span>i <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> n 
+    <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #729fcf; font-weight: bold;">do</span> 
+      j <span style="color: #ff6347; font-weight: bold;">&lt;-</span> getIndex <span style="color: #ffd700;">(</span>i <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> arr
+      swaps <span style="color: #ffd700;">(</span>swapByIndex i j arr<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>i <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">$!</span> <span style="color: #ffd700;">(</span><span style="color: #00bfff;">(</span>1 <span style="color: #ff6347; font-weight: bold;">+</span><span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">&lt;$&gt;</span> n<span style="color: #ffd700;">)</span>
+
+<span style="color: #edd400; font-weight: bold;">getIndex</span> x arr <span style="color: #ff6347; font-weight: bold;">=</span> fmap fst <span style="color: #ff6347; font-weight: bold;">$</span> find <span style="color: #ffd700;">(</span><span style="color: #00bfff;">(</span><span style="color: #ff6347; font-weight: bold;">==</span> x<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">.</span> snd<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> assocs arr
+
+<span style="color: #edd400; font-weight: bold;">swapByIndex</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Ix</span> a<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=&gt;</span> a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Array</span> a b <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Array</span> a b
+<span style="color: #edd400; font-weight: bold;">swapByIndex</span> i j xs <span style="color: #ff6347; font-weight: bold;">=</span> xs <span style="color: #ff6347; font-weight: bold;">//</span> <span style="color: #ffd700;">[</span><span style="color: #00bfff;">(</span>i, xs <span style="color: #ff6347; font-weight: bold;">!</span> j<span style="color: #00bfff;">)</span>, <span style="color: #00bfff;">(</span>j, xs <span style="color: #ff6347; font-weight: bold;">!</span> i<span style="color: #00bfff;">)</span><span style="color: #ffd700;">]</span>
+
+</pre>
+</div>
+<ul class="org-ul">
+<li>Result: Time out on some cases&#x2026;</li>
+</ul>
+</div>
+</li>
+<li><a id="org2cdc51f"></a>Second submission<br /></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org64db2fa" class="outline-3">
+<h3 id="org64db2fa"><span class="section-number-3">2.16</span> <span class="done DONE">DONE</span> Decode the Morse code</h3>
+<div class="outline-text-3" id="text-2-16">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">module</span> <span style="color: #8ae234; font-weight: bold;">Codewars.Kata.DecodeMorse</span> <span style="color: #ffd700;">(</span>decodeMorse<span style="color: #ffd700;">)</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+
+<span style="color: #729fcf; font-weight: bold;">import</span> <span style="color: #8ae234; font-weight: bold;">Codewars.Kata.DecodeMorse.Preload</span> <span style="color: #ffd700;">(</span>morseCodes<span style="color: #ffd700;">)</span>
+
+<span style="color: #729fcf; font-weight: bold;">import</span> <span style="color: #8ae234; font-weight: bold;">Data.List.Split</span> <span style="color: #ffd700;">(</span>splitOn<span style="color: #ffd700;">)</span>
+<span style="color: #729fcf; font-weight: bold;">import</span> <span style="color: #8ae234; font-weight: bold;">Data.Map.Strict</span> <span style="color: #ffd700;">(</span><span style="color: #00bfff;">(</span><span style="color: #ff6347; font-weight: bold;">!</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+
+<span style="color: #edd400; font-weight: bold;">decodeMorse</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">String</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">String</span>
+<span style="color: #edd400; font-weight: bold;">decodeMorse</span> <span style="color: #ff6347; font-weight: bold;">=</span> unwords <span style="color: #ff6347; font-weight: bold;">.</span> filter <span style="color: #ffd700;">(</span>not <span style="color: #ff6347; font-weight: bold;">.</span> null<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">.</span> map <span style="color: #ffd700;">(</span>concatMap <span style="color: #00bfff;">(</span>morseCodes<span style="color: #ff6347; font-weight: bold;">!</span><span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">.</span> words<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">.</span> splitOn <span style="color: #ad7fa8; font-style: italic;">"   "</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org9e50e97" class="outline-3">
+<h3 id="org9e50e97"><span class="section-number-3">2.17</span> <span class="done DONE">DONE</span> Shortest Knight Path</h3>
+<div class="outline-text-3" id="text-2-17">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">import</span> <span style="color: #8ae234; font-weight: bold;">Data.Char</span>
+
+<span style="color: #edd400; font-weight: bold;">knight</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">String</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">String</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+<span style="color: #edd400; font-weight: bold;">knight</span> s t <span style="color: #ff6347; font-weight: bold;">=</span> path <span style="color: #ffd700;">[</span>s<span style="color: #ffd700;">]</span> t 0
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Brute BFS ...</span>
+<span style="color: #edd400; font-weight: bold;">path</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">String</span><span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">String</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Int</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Int</span>
+<span style="color: #edd400; font-weight: bold;">path</span> s t a <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">case</span> filter <span style="color: #ffd700;">(</span><span style="color: #ff6347; font-weight: bold;">==</span> t<span style="color: #ffd700;">)</span> s <span style="color: #729fcf; font-weight: bold;">of</span>
+  <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> path <span style="color: #ffd700;">(</span><span style="color: #00bfff;">(</span>pos <span style="color: #ff6347; font-weight: bold;">&lt;$&gt;</span> s<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">&gt;&gt;=</span> moves<span style="color: #ffd700;">)</span> t <span style="color: #ffd700;">(</span>a <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span>
+  <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> a
+  <span style="color: #729fcf; font-weight: bold;">where</span> pos <span style="color: #ffd700;">[</span>c, i<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span>c, read <span style="color: #00bfff;">[</span>i<span style="color: #00bfff;">]</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">)</span>
+
+<span style="color: #edd400; font-weight: bold;">moves</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Char</span>, <span style="color: #8ae234; font-weight: bold;">Int</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">String</span><span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">moves</span> <span style="color: #ffd700;">(</span>c, n<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>chr c' <span style="color: #8ae234; font-weight: bold;">:</span> show n'
+  <span style="color: #ff6347; font-weight: bold;">|</span> c' <span style="color: #ff6347; font-weight: bold;">&lt;-</span> map <span style="color: #00bfff;">(</span><span style="color: #ff6347; font-weight: bold;">$</span> ord c<span style="color: #00bfff;">)</span> pos
+  , n' <span style="color: #ff6347; font-weight: bold;">&lt;-</span> map <span style="color: #00bfff;">(</span><span style="color: #ff6347; font-weight: bold;">$</span> n<span style="color: #00bfff;">)</span> pos
+  , n' <span style="color: #ff6347; font-weight: bold;">&gt;</span> 0 <span style="color: #ff6347; font-weight: bold;">&amp;&amp;</span> n' <span style="color: #ff6347; font-weight: bold;">&lt;</span> 9, c' <span style="color: #ff6347; font-weight: bold;">&gt;=</span> ord <span style="color: #ad7fa8; font-style: italic;">'a'</span> <span style="color: #ff6347; font-weight: bold;">&amp;&amp;</span> c' <span style="color: #ff6347; font-weight: bold;">&lt;=</span> ord <span style="color: #ad7fa8; font-style: italic;">'h'</span>
+  , abs <span style="color: #00bfff;">(</span>n' <span style="color: #ff6347; font-weight: bold;">-</span> n<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">/=</span> abs <span style="color: #00bfff;">(</span>c' <span style="color: #ff6347; font-weight: bold;">-</span> ord c<span style="color: #00bfff;">)</span>
+  <span style="color: #ffd700;">]</span> <span style="color: #729fcf; font-weight: bold;">where</span> pos <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span><span style="color: #00bfff;">(</span><span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #00bfff;">)</span>, <span style="color: #00bfff;">(</span><span style="color: #ff6347; font-weight: bold;">+</span> 2<span style="color: #00bfff;">)</span>, <span style="color: #00bfff;">(</span><span style="color: #ff6347; font-weight: bold;">\</span>i <span style="color: #ff6347; font-weight: bold;">-&gt;</span> i <span style="color: #ff6347; font-weight: bold;">-</span> 1<span style="color: #00bfff;">)</span>, <span style="color: #00bfff;">(</span><span style="color: #ff6347; font-weight: bold;">\</span>i <span style="color: #ff6347; font-weight: bold;">-&gt;</span> i <span style="color: #ff6347; font-weight: bold;">-</span> 2<span style="color: #00bfff;">)</span><span style="color: #ffd700;">]</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2019-04-09 二 00:00</p>
+<p class="author">Author: Comcx</p>
+<p class="date">Created: 2020-01-20 一 03:35</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
