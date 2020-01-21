@@ -1,90 +1,137 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Comcx's world</title>
-    <style>
-     body {
-	 font-family: "Lato", sans-serif;
-     }
+    <head>
 
-     .sidenav {
-	 height: 100%;
-	 width: 0;
-	 position: fixed;
-	 z-index: 1;
-	 top: 0;
-	 left: 0;
-	 background-color: #111;
-	 overflow-x: hidden;
-	 transition: 0.5s;
-	 padding-top: 60px;
-     }
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Comcx's world</title>
+	<style>
+	 body {
+	     font-family: "Lato", sans-serif;
+	 }
 
-     .sidenav a {
-	 padding: 8px 8px 8px 32px;
-	 text-decoration: none;
-	 font-size: 18px;
-	 color: #818181;
-	 display: block;
-	 transition: 0.3s;
-     }
+	 .sidenav {
+	     height: 100%;
+	     width: 0;
+	     position: fixed;
+	     z-index: 1;
+	     top: 0;
+	     left: 0;
+	     background-color: #111;
+	     overflow-x: hidden;
+	     transition: 0.5s;
+	     padding-top: 60px;
+	 }
 
-     .sidenav a:hover {
-	 color: #f1f1f1;
-     }
+	 .sidenav a {
+	     padding: 8px 8px 8px 32px;
+	     text-decoration: none;
+	     font-size: 18px;
+	     color: #818181;
+	     display: block;
+	     transition: 0.3s;
+	 }
 
-     .sidenav .closebtn {
-	 position: absolute;
-	 top: 0;
-	 right: 20px;
-	 font-size: 20px;
-	 margin-left: 40px;
-     }
+	 .sidenav a:hover {
+	     color: #f1f1f1;
+	 }
 
-     #main {
-	 transition: margin-left .5s;
-	 padding: 16px;
-     }
+	 .sidenav .closebtn {
+	     position: absolute;
+	     top: 0;
+	     right: 20px;
+	     font-size: 20px;
+	     margin-left: 40px;
+	 }
 
-     @media screen and (max-height: 450px) {
-	 .sidenav {padding-top: 15px;}
-	 .sidenav a {font-size: 18px;}
-     }
-    </style>
-</head>
+	 #main {
+	     transition: margin-left .5s;
+	     padding: 16px;
+	 }
 
-<body>
+	 @media screen and (max-height: 450px) {
+	     .sidenav {padding-top: 15px;}
+	     .sidenav a {font-size: 18px;}
+	 }
+	 
+	 #show {
+	     font-size: 18px;
+	     color: #990099;
+	     text-align: right;
+	 }
 
-    <div id="mySidenav" class="sidenav">
-	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-	<a href="/Frame/About.html">About me</a>
-	<a href="#">Category</a>
-	<a href="#">Content</a>
-	<a href="#">Contact</a>
-        <a href="#"></a>
-	<a href="#"></a>
-	<a href="#"></a>
-	<a href="#"></a>
-	<a href="https://github.com/Comcx"><i>Github</i></a>
-    </div>
+	 p.Y {
 
-    <div id="main">
-	<span style="font-size:16px;cursor:pointer" onclick="openNav()">
-	    <font color="grey">&#9776;</font> Menu</span>
-	<br>
-	<h2><font color="purple">&lambda;</font> Comcx's world</h2>
-	<i>Functional Programming, Animations, Music.</i>
+
+	     font-size: 24px;
+	 }
+	</style>
+
+	<script>
+	 var timer=null;
+	 function displayClock(num){//num是传入的startClock中的动态值
+	     if(num<10){
+		 return "0"+num;
+	     }
+	     else{
+		 return num;
+	     }
+	 }
+	 //停止计时
+	 function stopClock(){
+	     clearTimeout(timer);
+	 }
+	 //开始计时
+	 function startClock(){
+	     var time =new Date();
+	     var hours=displayClock(time.getHours())+":";
+	     var minutes=displayClock(time.getMinutes())+":";
+	     var seconds=displayClock(time.getSeconds());
+	     //显示时间
+	     show.innerHTML=hours+minutes+seconds;//在id为show的块区域显示
+	     timer=setTimeout("startClock()",1000);//延时器
+	 }
+	</script>
+    </head>
+
+    <body onload="startClock()" onunload="stopClock()">
+
+	<div id="mySidenav" class="sidenav">
+	    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	    <a href="/Frame/About.html">About me</a>
+	    <a href="#">Category</a>
+	    <a href="#">Content</a>
+	    <a href="#">Contact</a>
+            <a href="#"></a>
+	    <a href="#"></a>
+	    <a href="#"></a>
+	    <a href="#"></a>
+	    <a href="https://github.com/Comcx"><i>Github</i></a>
+	</div>
+	
+	<div id="main">
+	    <span style="font-size:16px;cursor:pointer" onclick="openNav()">
+		<font color="grey">&#9776;</font>
+		Menu
+	    </span>
+	    <br>
+	    <img src="images/reading.png" style="float:right" width="250"/>
+	    <h2><font color="purple">&lambda;</font> Comcx's world</h2>
+	    <i>Functional Programming, アニメ, 文学, Music, Games.</i>
+
 	<br>
 	<p>Email: comcx@outlook.com</p><br>
 
 	<h3><font color="#0099ff">Omniselector</font> </h3>
 	<hr>
+	<div id="show"></div>
 	<a href="/Note/DragonScript.html">Fighting with Ender Dragon</a><br>
 	<a href="/Note/Emacs.html">Emacs Cheet Sheet</a>
 	
 	<br>
 	
     </div>
+
+
 
     <script>
      function openNav() {
