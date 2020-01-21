@@ -1,0 +1,11 @@
+#+Title:  Why Functional Programming
+#+Author: Comcx
+
+
+** What is Functional Programming
+
+
+
+
+
+
