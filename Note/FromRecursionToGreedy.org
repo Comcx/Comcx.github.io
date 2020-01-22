@@ -17,6 +17,7 @@ with careful implementation. As a programmer, we should get used to think in a m
 be good at translate functional programs into other languages.
 
 
+** Functional Programming とは ...
 A functional programming language should have the following features:
 
 1) Functions are first-class and thus can be passed as high-order function values.
@@ -30,6 +31,7 @@ A functional programming language may have the following features:
 2) Type polymorphism(type as type parameters)
 3) Typeclass or trait(OO) system(u can also regard as structured overloading)
 4) Pure without any side-effect(which means u can not survivie without monad:)
+5) Dependent Typed System
 
 
 ** Divide and Conquer
