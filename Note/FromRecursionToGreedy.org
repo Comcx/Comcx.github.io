@@ -3,6 +3,42 @@
 #+Date:   <2020-01-22 三>
 
 
+There's an important leanring and developing chain of traditional algorithms:
+
+=Divide and Conquer(recursion) ---> Dynamic Programming(mermorization) --> Greedy= 
+
+
+This chain(route) is also quite suitble to get to think and solve a problem.
+We may think problems in this way, but I sometimes just get confused if I insist on
+following the rule. To collect our thinkings, programming languages play an really important role
+in problem solving. Functional programming languages often work better for thinking but sometimes hard
+to implement as efficiently as others. In fact, functional programming languages can also be very efficient
+with careful implementation. As a programmer, we should get used to think in a more functional way and also,
+be good at translate functional programs into other languages.
+
+
+A functional programming language should have the following features:
+
+1) Functions are first-class and thus can be passed as high-order function values.
+2) Functions can be constructed without any side-effect.
+3) Have both evaluation strategies: eager and lazy.
+
+
+A functional programming language may have the following features:
+
+1) Static and strict type system
+2) Type polymorphism(type as type parameters)
+3) Typeclass or trait(OO) system(u can also regard as structured overloading)
+4) Pure without any side-effect(which means u can not survivie without monad:)
+
+
+** Divide and Conquer
+
+
+** Dynamic Programming
+
+
+** Greedy
 
 
 
