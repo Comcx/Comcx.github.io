@@ -35,7 +35,46 @@ A functional programming language may have the following features:
 
 
 ** Divide and Conquer
+Before starting to explore recursions, let us first reflect some questions:
 
+1. What is data structure and what is a algorithm?
+2. Any links between data structure and algorithms?
+3. What kind of algorithm should we use for different kinds of data structures?
+
+
+*** Data structures by examples
+In functional world, a very common and heavy used data structure is *List a(or [a] in haskell)*.
+Let's look at its definition first:
+#+BEGIN_SRC haskell
+
+data List a = Nil | Cons a (List a)
+#+END_SRC
+If we regard that =List= is just a function which receive a type and output a type, then we can rewrite
+the definition(this is not strict...):
+#+BEGIN_SRC 
+List :: (a :: Type) -> Type where
+  Cons :: a -> List a -> List a
+  Nil  :: List a
+#+END_SRC
+We just defined 3 functions, this can be easily done with dependent typed languages.
+For a simple list: =[1, 2, 3],= we can simply write it done:
+#+BEGIN_SRC 
+(Cons 1 (Cons 2 (Cons 3 Nil)))
+#+END_SRC
+Now we just replace all =Cons= into =(+)= and =Nil= into =0=.
+#+BEGIN_SRC 
+((+) 1 ((+) 2 ((+) 3 0))) => 1 + 2 + 3 + 0 => 6
+#+END_SRC
+We just turned a unfoldable(terminated form) into a foldable expression!
+You may see that List is a prototype of many expressions, we can use this abstracted data structure
+to generate more expressions without actually writing them character after charater!
+
+Now define a replacing function:
+#+BEGIN_SRC 
+replace f a (Cons x xs) = f x (replace f a xs)
+replace f a Nil = a
+#+END_SRC
+In fact, this function is called =foldr= in Haskell.
 
 ** Dynamic Programming
 

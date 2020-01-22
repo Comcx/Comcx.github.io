@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-22 三 09:56 -->
+<!-- 2020-01-22 三 10:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>From Recursion to Greedy algorithms: a functional perspective</title>
@@ -234,10 +234,14 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd589bff">1. Functional Programming とは &#x2026;</a></li>
-<li><a href="#orgf99da55">2. Divide and Conquer</a></li>
-<li><a href="#org754ebce">3. Dynamic Programming</a></li>
-<li><a href="#org1d16dd2">4. Greedy</a></li>
+<li><a href="#orgd315666">1. Functional Programming とは &#x2026;</a></li>
+<li><a href="#org1b385af">2. Divide and Conquer</a>
+<ul>
+<li><a href="#org32f3b24">2.1. Data structures by examples</a></li>
+</ul>
+</li>
+<li><a href="#org94570f7">3. Dynamic Programming</a></li>
+<li><a href="#org63f7110">4. Greedy</a></li>
 </ul>
 </div>
 </div>
@@ -261,8 +265,8 @@ be good at translate functional programs into other languages.
 </p>
 
 
-<div id="outline-container-orgd589bff" class="outline-2">
-<h2 id="orgd589bff"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
+<div id="outline-container-orgd315666" class="outline-2">
+<h2 id="orgd315666"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 A functional programming language should have the following features:
@@ -290,24 +294,88 @@ A functional programming language may have the following features:
 </div>
 
 
-<div id="outline-container-orgf99da55" class="outline-2">
-<h2 id="orgf99da55"><span class="section-number-2">2</span> Divide and Conquer</h2>
+<div id="outline-container-org1b385af" class="outline-2">
+<h2 id="org1b385af"><span class="section-number-2">2</span> Divide and Conquer</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Before starting to explore recursions, let us first reflect some questions:
+</p>
+
+<ol class="org-ol">
+<li>What is data structure and what is a algorithm?</li>
+<li>Any links between data structure and algorithms?</li>
+<li>What kind of algorithm should we use for different kinds of data structures?</li>
+</ol>
 </div>
 
 
-<div id="outline-container-org754ebce" class="outline-2">
-<h2 id="org754ebce"><span class="section-number-2">3</span> Dynamic Programming</h2>
+<div id="outline-container-org32f3b24" class="outline-3">
+<h3 id="org32f3b24"><span class="section-number-3">2.1</span> Data structures by examples</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+In functional world, a very common and heavy used data structure is <b>List a(or [a] in haskell)</b>.
+Let's look at its definition first:
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">data</span> <span style="color: #8ae234; font-weight: bold;">List</span> a <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Nil</span> <span style="color: #ff6347; font-weight: bold;">|</span> <span style="color: #8ae234; font-weight: bold;">Cons</span> a <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">List</span> a<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+<p>
+If we regard that <code>List</code> is just a function which receive a type and output a type, then we can rewrite
+the definition(this is not strict&#x2026;):
+</p>
+<pre class="example">
+List :: (a :: Type) -&gt; Type where
+  Cons :: a -&gt; List a -&gt; List a
+  Nil  :: List a
+</pre>
+<p>
+We just defined 3 functions, this can be easily done with dependent typed languages.
+For a simple list: <code>[1, 2, 3],</code> we can simply write it done:
+</p>
+<pre class="example">
+(Cons 1 (Cons 2 (Cons 3 Nil)))
+</pre>
+<p>
+Now we just replace all <code>Cons</code> into <code>(+)</code> and <code>Nil</code> into <code>0</code>.
+</p>
+<pre class="example">
+((+) 1 ((+) 2 ((+) 3 0))) =&gt; 1 + 2 + 3 + 0 =&gt; 6
+</pre>
+<p>
+We just turned a unfoldable(terminated form) into a foldable expression!
+You may see that List is a prototype of many expressions, we can use this abstracted data structure
+to generate more expressions without actually writing them character after charater!
+</p>
+
+<p>
+Now define a replacing function:
+</p>
+<pre class="example">
+replace f a (Cons x xs) = f x (replace f a xs)
+replace f a Nil = a
+</pre>
+<p>
+In fact, this function is called <code>foldr</code> in Haskell.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org94570f7" class="outline-2">
+<h2 id="org94570f7"><span class="section-number-2">3</span> Dynamic Programming</h2>
 </div>
 
 
-<div id="outline-container-org1d16dd2" class="outline-2">
-<h2 id="org1d16dd2"><span class="section-number-2">4</span> Greedy</h2>
+<div id="outline-container-org63f7110" class="outline-2">
+<h2 id="org63f7110"><span class="section-number-2">4</span> Greedy</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-22 三 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-22 三 09:56</p>
+<p class="date">Created: 2020-01-22 三 10:47</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
