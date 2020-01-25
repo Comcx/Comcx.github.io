@@ -47,6 +47,8 @@ Let's look at its definition first:
 
 data List a = Nil | Cons a (List a)
 #+END_SRC
+
+**** Replacing
 If we regard that =List= is just a function which receive a type and output a type, then we can rewrite
 the definition(this is not strict...):
 #+BEGIN_SRC 
@@ -75,6 +77,36 @@ replace f a Nil = a
 In fact, this function is called =foldr= in Haskell.
 By using _Lists_, we can divide and store problems into many linear sub-problems, i.e.
 To solve a problem, we only need to solve one sub-problem before.(this give us hint to convert this recursion to loops)
+
+**** *Reversing lists*
+One more interesting thing is that Haskell also have the function =foldl.= 
+Then what's the differences between =foldr= and =foldl= ?
+
+Lets again use our addition example.
+#+BEGIN_SRC
+xs = [0, 1, 2, 3] 
+foldr (+) 0 xs => ((+) 0 ((+) 1 ((+) 2 ((+) 3 0)))) => (0 + 1 + 2 + 3 + 0)
+foldl (+) 0 xs => ((+) ((+) ((+) ((+) 0 0) 1) 2) 3) => (0 + 0 + 1 + 2 + 3)
+#+END_SRC
+
+Compared with =foldr=, =foldl= is can be seen as a reversed list-constructed expression.
+Let's try to implement our =foldl=:
+#+BEGIN_SRC haskell
+
+foldl f z [] = z
+foldl f z (x:xs) = foldl f (f z x) xs
+#+END_SRC
+
+Great! Try to reverse a list using foldl:
+#+BEGIN_SRC haskell
+
+reverse = foldl (flip (:)) []
+#+END_SRC
+
+**** foldl or foldr?
+1) If we are in a stack model, then foldl can be used without worrying about stackoverflow.
+2) Both are valid if we have the rule: (f a (f b c)) = (f (f a b) c). In other words, the type a in =List a= should
+   be an instance of typeclass _Monoid_.
 
 *** Expressions
 In the last part, we talked about data structures. However, a new question raised that,
@@ -206,6 +238,33 @@ Now we can add all numbers of =BinTree Int=.
 sum = replace (\v a b -> v + a + b) 0
 #+END_SRC
 
+***** Using tricks as foldl in Lists
+If we want to traverse a binary tree in an inorder order:
+
+- Naive inorder traverse
+#+BEGIN_SRC haskell
+
+inorder Empty = []
+inorder (Node v t0 t1) = inorder t0 ++ [v] ++ inorder t1
+#+END_SRC
+This is valid but not efficient for too many append operations.
+Let's try to do some expression transformations:
+#+BEGIN_SRC haskell
+
+inorder' t@(Node v t0 t1) a = inorder t ++ a
+  = inorder t0 ++ [v] ++ inorder t1 ++ a
+  = inorder to ++ (v:(inorder' t1 a))
+  = inorder' t0 (v:(inorder' t1 a)) 
+#+END_SRC
+Finally we have:
+#+BEGIN_SRC haskell
+
+inorder' t = inorder'' t [] where
+  inorder'' Empty z = z
+  inorder'' (Node v t0 t1) z = inorder'' t0 (v:(inorder'' t1 a)) 
+#+END_SRC
+
+
 **** More general trees
 #+BEGIN_SRC haskell
 
@@ -243,6 +302,12 @@ Algorithms can be used to generate data structures.
 To select data structures with respect to different kind os algorithms,
 We should choose data structures which have the same recursion structure as the algorithm
 as far as possible.
+
+*** Abstract Data Types
+In fact, data structures we talked before are _Algebra Data Structures(ADT)_.
+However, we can generize our types a little bit, we can define types by actions.
+
+
 
 ** Dynamic Programming
 Dynamic programming is about finding similar sub structures.
