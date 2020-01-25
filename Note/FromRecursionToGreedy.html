@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-25 周六 11:44 -->
+<!-- 2020-01-25 周六 12:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>From Recursion to Greedy algorithms: a functional perspective</title>
@@ -234,21 +234,29 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org891e7d6">1. Functional Programming とは &#x2026;</a></li>
-<li><a href="#org192bb4e">2. Divide and Conquer</a>
+<li><a href="#org0975e8a">1. Functional Programming とは &#x2026;</a></li>
+<li><a href="#org111340a">2. Divide and Conquer</a>
 <ul>
-<li><a href="#org9ce1a2a">2.1. Data structures by Lists</a></li>
-<li><a href="#org50b67ea">2.2. Expressions</a></li>
-<li><a href="#org1567f3e">2.3. Data structures by Trees</a>
+<li><a href="#org59e83e5">2.1. Data structures by Lists</a></li>
+<li><a href="#org346a65f">2.2. Expressions</a></li>
+<li><a href="#org304ed43">2.3. Data structures by Trees</a>
 <ul>
-<li><a href="#org96a7137">2.3.1. Binary Tree</a></li>
-<li><a href="#org9e6563a">2.3.2. More general trees</a></li>
+<li><a href="#org777036e">2.3.1. Binary Tree</a></li>
+<li><a href="#orgf12f4c6">2.3.2. More general trees</a></li>
+</ul>
+</li>
+<li><a href="#orgb6b20d2">2.4. The answers</a>
+<ul>
+<li><a href="#org366eb85">2.4.1. What is data structure?</a></li>
+<li><a href="#orgda1b4b6">2.4.2. What is algorithm?</a></li>
+<li><a href="#org46d3317">2.4.3. Links between data structures and algorithms?</a></li>
+<li><a href="#org6c267d7">2.4.4. How to select?</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org6d4aa31">3. Dynamic Programming</a></li>
-<li><a href="#org3897cbc">4. Greedy</a></li>
+<li><a href="#orgc5ed05e">3. Dynamic Programming</a></li>
+<li><a href="#orgc16b73e">4. Greedy</a></li>
 </ul>
 </div>
 </div>
@@ -272,8 +280,8 @@ be good at translate functional programs into other languages.
 </p>
 
 
-<div id="outline-container-org891e7d6" class="outline-2">
-<h2 id="org891e7d6"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
+<div id="outline-container-org0975e8a" class="outline-2">
+<h2 id="org0975e8a"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 A functional programming language should have the following features:
@@ -300,9 +308,8 @@ A functional programming language may have the following features:
 </div>
 </div>
 
-
-<div id="outline-container-org192bb4e" class="outline-2">
-<h2 id="org192bb4e"><span class="section-number-2">2</span> Divide and Conquer</h2>
+<div id="outline-container-org111340a" class="outline-2">
+<h2 id="org111340a"><span class="section-number-2">2</span> Divide and Conquer</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Before starting to explore recursions, let us first reflect some questions:
@@ -315,9 +322,8 @@ Before starting to explore recursions, let us first reflect some questions:
 </ol>
 </div>
 
-
-<div id="outline-container-org9ce1a2a" class="outline-3">
-<h3 id="org9ce1a2a"><span class="section-number-3">2.1</span> Data structures by Lists</h3>
+<div id="outline-container-org59e83e5" class="outline-3">
+<h3 id="org59e83e5"><span class="section-number-3">2.1</span> Data structures by Lists</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 In functional world, a very common and heavy used data structure is <b>List a(or [a] in haskell)</b>.
@@ -371,8 +377,8 @@ To solve a problem, we only need to solve one sub-problem before.(this give us h
 </div>
 </div>
 
-<div id="outline-container-org50b67ea" class="outline-3">
-<h3 id="org50b67ea"><span class="section-number-3">2.2</span> Expressions</h3>
+<div id="outline-container-org346a65f" class="outline-3">
+<h3 id="org346a65f"><span class="section-number-3">2.2</span> Expressions</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 In the last part, we talked about data structures. However, a new question raised that,
@@ -474,8 +480,8 @@ Finally we feel that we've got better understanding of expressions&#x2026;(altho
 </div>
 </div>
 
-<div id="outline-container-org1567f3e" class="outline-3">
-<h3 id="org1567f3e"><span class="section-number-3">2.3</span> Data structures by Trees</h3>
+<div id="outline-container-org304ed43" class="outline-3">
+<h3 id="org304ed43"><span class="section-number-3">2.3</span> Data structures by Trees</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Unlike <i>Lists,</i> Trees allow us to divide problems into many sub-problems.
@@ -483,8 +489,8 @@ To make things simple and clear, we first focus on <span class="underline">binar
 </p>
 </div>
 
-<div id="outline-container-org96a7137" class="outline-4">
-<h4 id="org96a7137"><span class="section-number-4">2.3.1</span> Binary Tree</h4>
+<div id="outline-container-org777036e" class="outline-4">
+<h4 id="org777036e"><span class="section-number-4">2.3.1</span> Binary Tree</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <div class="org-src-container">
 <pre class="src src-haskell">
@@ -569,8 +575,8 @@ Now we can add all numbers of <code>BinTree Int</code>.
 </div>
 </div>
 
-<div id="outline-container-org9e6563a" class="outline-4">
-<h4 id="org9e6563a"><span class="section-number-4">2.3.2</span> More general trees</h4>
+<div id="outline-container-orgf12f4c6" class="outline-4">
+<h4 id="orgf12f4c6"><span class="section-number-4">2.3.2</span> More general trees</h4>
 <div class="outline-text-4" id="text-2-3-2">
 <div class="org-src-container">
 <pre class="src src-haskell">
@@ -602,23 +608,74 @@ or
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgb6b20d2" class="outline-3">
+<h3 id="orgb6b20d2"><span class="section-number-3">2.4</span> The answers</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+OK! now I may answer the three questions before(may be wrong, only my views):
+</p>
+</div>
+
+<div id="outline-container-org366eb85" class="outline-4">
+<h4 id="org366eb85"><span class="section-number-4">2.4.1</span> What is data structure?</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<p>
+Data structures are recursion proto structures which can be used to solve problems.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgda1b4b6" class="outline-4">
+<h4 id="orgda1b4b6"><span class="section-number-4">2.4.2</span> What is algorithm?</h4>
+<div class="outline-text-4" id="text-2-4-2">
+<p>
+Algorithms are <span class="underline">foldable</span> data structures.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org46d3317" class="outline-4">
+<h4 id="org46d3317"><span class="section-number-4">2.4.3</span> Links between data structures and algorithms?</h4>
+<div class="outline-text-4" id="text-2-4-3">
+<p>
+Data structures can be easily converted to algorithms.
+Algorithms can be used to generate data structures.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6c267d7" class="outline-4">
+<h4 id="org6c267d7"><span class="section-number-4">2.4.4</span> How to select?</h4>
+<div class="outline-text-4" id="text-2-4-4">
+<p>
+To select data structures with respect to different kind os algorithms,
+We should choose data structures which have the same recursion structure as the algorithm
+as far as possible.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc5ed05e" class="outline-2">
+<h2 id="orgc5ed05e"><span class="section-number-2">3</span> Dynamic Programming</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Dynamic programming is about finding similar sub structures.
+</p>
+</div>
 </div>
 
 
-
-<div id="outline-container-org6d4aa31" class="outline-2">
-<h2 id="org6d4aa31"><span class="section-number-2">3</span> Dynamic Programming</h2>
-</div>
-
-
-<div id="outline-container-org3897cbc" class="outline-2">
-<h2 id="org3897cbc"><span class="section-number-2">4</span> Greedy</h2>
+<div id="outline-container-orgc16b73e" class="outline-2">
+<h2 id="orgc16b73e"><span class="section-number-2">4</span> Greedy</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-22 周三 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-25 周六 11:44</p>
+<p class="date">Created: 2020-01-25 周六 12:01</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
