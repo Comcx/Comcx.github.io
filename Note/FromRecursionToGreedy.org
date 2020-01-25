@@ -264,7 +264,6 @@ inorder' t = inorder'' t [] where
   inorder'' (Node v t0 t1) z = inorder'' t0 (v:(inorder'' t1 a)) 
 #+END_SRC
 
-
 **** More general trees
 #+BEGIN_SRC haskell
 
@@ -311,6 +310,38 @@ However, we can generize our types a little bit, we can define types by actions.
 
 ** Dynamic Programming
 Dynamic programming is about finding similar sub structures.
+
+*** A dynamic programming example by expanding data structure
+Suppose we want to insert a node at the lowest level of the smallest sub-tree.
+(Binary Tree definition just as before)
+#+BEGIN_SRC haskell
+
+tinsert v Empty = Node v Empty Empty
+tinsert v (Node w t0 t1)
+  | size t0 <= size t1 = Node w (tinsert v t0) t1
+  | otherwise          = Node w t0 (tinsert v t1)
+#+END_SRC
+We can see that the function =size= is used several times and it seems that there're
+relations between levels of sub-trees that can be used to calculate the size more efficiently.
+
+An alternative is to use the following tree definition instead:
+#+BEGIN_SRC haskell
+
+data BinTreeM a 
+  = EmptyM 
+  | NodeM (Int, Int) a (BinTreeM a) (BinTreeM a)
+
+tinsertM v EmptyM = NodeM (0, 0) v EmptyM EmptyM
+tinsertM v (NodeM (s0, s1) w t0 t1)
+  | s0 <= s1  = NodeM (s0 + 1, s1) w (tinsertM v t0) t1
+  | otherwise = NodeM (s0, s1 + 1) w t0 (tinsertM v t1)
+#+END_SRC
+
+However, you may think that this example is not a right dynamic programming example.
+So let's take more examples.
+
+*** A dynamic programming example by using extra data structures
+A well-known data structre used frequently in dynamic programming is =Array=.
 
 
 ** Greedy
