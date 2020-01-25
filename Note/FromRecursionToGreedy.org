@@ -75,6 +75,8 @@ replace f a (Cons x xs) = f x (replace f a xs)
 replace f a Nil = a
 #+END_SRC
 In fact, this function is called =foldr= in Haskell.
+By using _Lists_, we can divide and store problems into many linear sub-problems, i.e.
+To solve a problem, we only need to solve one sub-problem before.(this give us hint to convert this recursion to loops)
 
 *** Expressions
 In the last part, we talked about data structures. However, a new question raised that,
@@ -141,9 +143,91 @@ To be more precise, "in need" means we need to do pattern matching by data const
 Now I suppose I was wrong. Value should not be just expressions can not be evaluated further.
 In lazy languages, it can also means _weak head normal form_.
 
-Finally we feel that we've got better understanding of expressions...(although still confused and error-prone)
+Finally we feel that we've got better understanding of expressions...(although still confusing and error-prone)
 
 *** Data structures by Trees
+Unlike /Lists,/ Trees allow us to divide problems into many sub-problems.
+To make things simple and clear, we first focus on _binary trees_.
+
+**** Binary Tree
+#+BEGIN_SRC haskell
+
+data BinTree a = Empty | Node a (BinTree a) (BinTree a)
+#+END_SRC
+Again this data strucutre is a prototype for recursion algorithms.
+Now we create an example and try to do the same things as /Lists/.
+
+- An example of Binary Tree
+#+BEGIN_SRC 
+tree :: BinTree Int
+tree = Node 0
+         (Node 1 Empty Empty)
+         (Node 2 
+           (Node 3 Empty
+                  (Node 4 Empty Empty))
+           (Node 5 
+             (Node 6 Empty Empty)
+             (Node 7 Empty Empty)))
+#+END_SRC
+  + Visualization
+#+BEGIN_SRC 
+           0
+    1             2
+             3         5
+               4     6   7
+#+END_SRC
+
+- Replacing(folding)
+We want to do the replacing thing as Lists do.
+Observe that this time we may have more parameters to replace:
+  1. Node
+  2. Empty
+  3. ??
+If the function to replace =Node= is binary(a -> b -> b), then we need the third pararmeter to combine
+sub-trees.
+Else, the third para is not necessary.
+
+- A naive replacing
+#+BEGIN_SRC haskell
+
+replace f z Empty = z
+replace f z (Node v t0 t1) = f v (replace f z t0) (replace f z t1)
+#+END_SRC
+  + Visualization of the example
+#+BEGIN_SRC 
+f 0 (f 1 z z)
+    (f 2 (f 3 z 
+              (f 4 z z))
+         (f 5 (f 6 z z)
+              (f 7 z z)))
+#+END_SRC
+
+Now we can add all numbers of =BinTree Int=.
+#+BEGIN_SRC haskell
+
+sum = replace (\v a b -> v + a + b) 0
+#+END_SRC
+
+**** More general trees
+#+BEGIN_SRC haskell
+
+data Tree a = Node a [Tree a]
+#+END_SRC
+Now we have the prototype to handle all recursion problems!
+
+- Folding
+#+BEGIN_SRC haskell
+
+fold f z (Node v []) = f v [z]
+fold f z (Node v ts) = f v $ map (fold f z) ts
+#+END_SRC
+or
+#+BEGIN_SRC haskell
+
+fold' f g z (Node v []) = f v z
+fold' f g z (Node v ts) = f v $ (g $ map (fold' f g z) ts)
+#+END_SRC
+
 
 
 ** Dynamic Programming

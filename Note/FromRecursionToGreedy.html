@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-25 周六 08:27 -->
+<!-- 2020-01-25 周六 11:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>From Recursion to Greedy algorithms: a functional perspective</title>
@@ -234,16 +234,21 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb2cab27">1. Functional Programming とは &#x2026;</a></li>
-<li><a href="#org05374bd">2. Divide and Conquer</a>
+<li><a href="#org891e7d6">1. Functional Programming とは &#x2026;</a></li>
+<li><a href="#org192bb4e">2. Divide and Conquer</a>
 <ul>
-<li><a href="#orga713942">2.1. Data structures by Lists</a></li>
-<li><a href="#org6c86092">2.2. Expressions</a></li>
-<li><a href="#orgbc22fb1">2.3. Data structures by Trees</a></li>
+<li><a href="#org9ce1a2a">2.1. Data structures by Lists</a></li>
+<li><a href="#org50b67ea">2.2. Expressions</a></li>
+<li><a href="#org1567f3e">2.3. Data structures by Trees</a>
+<ul>
+<li><a href="#org96a7137">2.3.1. Binary Tree</a></li>
+<li><a href="#org9e6563a">2.3.2. More general trees</a></li>
 </ul>
 </li>
-<li><a href="#org93af791">3. Dynamic Programming</a></li>
-<li><a href="#orgb28fc75">4. Greedy</a></li>
+</ul>
+</li>
+<li><a href="#org6d4aa31">3. Dynamic Programming</a></li>
+<li><a href="#org3897cbc">4. Greedy</a></li>
 </ul>
 </div>
 </div>
@@ -267,8 +272,8 @@ be good at translate functional programs into other languages.
 </p>
 
 
-<div id="outline-container-orgb2cab27" class="outline-2">
-<h2 id="orgb2cab27"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
+<div id="outline-container-org891e7d6" class="outline-2">
+<h2 id="org891e7d6"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 A functional programming language should have the following features:
@@ -296,8 +301,8 @@ A functional programming language may have the following features:
 </div>
 
 
-<div id="outline-container-org05374bd" class="outline-2">
-<h2 id="org05374bd"><span class="section-number-2">2</span> Divide and Conquer</h2>
+<div id="outline-container-org192bb4e" class="outline-2">
+<h2 id="org192bb4e"><span class="section-number-2">2</span> Divide and Conquer</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Before starting to explore recursions, let us first reflect some questions:
@@ -311,8 +316,8 @@ Before starting to explore recursions, let us first reflect some questions:
 </div>
 
 
-<div id="outline-container-orga713942" class="outline-3">
-<h3 id="orga713942"><span class="section-number-3">2.1</span> Data structures by Lists</h3>
+<div id="outline-container-org9ce1a2a" class="outline-3">
+<h3 id="org9ce1a2a"><span class="section-number-3">2.1</span> Data structures by Lists</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 In functional world, a very common and heavy used data structure is <b>List a(or [a] in haskell)</b>.
@@ -360,12 +365,14 @@ replace f a Nil = a
 </pre>
 <p>
 In fact, this function is called <code>foldr</code> in Haskell.
+By using <span class="underline">Lists</span>, we can divide and store problems into many linear sub-problems, i.e.
+To solve a problem, we only need to solve one sub-problem before.(this give us hint to convert this recursion to loops)
 </p>
 </div>
 </div>
 
-<div id="outline-container-org6c86092" class="outline-3">
-<h3 id="org6c86092"><span class="section-number-3">2.2</span> Expressions</h3>
+<div id="outline-container-org50b67ea" class="outline-3">
+<h3 id="org50b67ea"><span class="section-number-3">2.2</span> Expressions</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 In the last part, we talked about data structures. However, a new question raised that,
@@ -462,30 +469,156 @@ In lazy languages, it can also means <span class="underline">weak head normal fo
 </p>
 
 <p>
-Finally we feel that we've got better understanding of expressions&#x2026;(although still confused and error-prone)
+Finally we feel that we've got better understanding of expressions&#x2026;(although still confusing and error-prone)
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgbc22fb1" class="outline-3">
-<h3 id="orgbc22fb1"><span class="section-number-3">2.3</span> Data structures by Trees</h3>
+<div id="outline-container-org1567f3e" class="outline-3">
+<h3 id="org1567f3e"><span class="section-number-3">2.3</span> Data structures by Trees</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Unlike <i>Lists,</i> Trees allow us to divide problems into many sub-problems.
+To make things simple and clear, we first focus on <span class="underline">binary trees</span>.
+</p>
+</div>
+
+<div id="outline-container-org96a7137" class="outline-4">
+<h4 id="org96a7137"><span class="section-number-4">2.3.1</span> Binary Tree</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">data</span> <span style="color: #8ae234; font-weight: bold;">BinTree</span> a <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Empty</span> <span style="color: #ff6347; font-weight: bold;">|</span> <span style="color: #8ae234; font-weight: bold;">Node</span> a <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">BinTree</span> a<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">BinTree</span> a<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+<p>
+Again this data strucutre is a prototype for recursion algorithms.
+Now we create an example and try to do the same things as <i>Lists</i>.
+</p>
+
+<ul class="org-ul">
+<li>An example of Binary Tree</li>
+</ul>
+<pre class="example">
+tree :: BinTree Int
+tree = Node 0
+         (Node 1 Empty Empty)
+         (Node 2 
+           (Node 3 Empty
+                  (Node 4 Empty Empty))
+           (Node 5 
+             (Node 6 Empty Empty)
+             (Node 7 Empty Empty)))
+</pre>
+<ul class="org-ul">
+<li>Visualization</li>
+</ul>
+<pre class="example">
+           0
+    1             2
+             3         5
+               4     6   7
+</pre>
+
+<ul class="org-ul">
+<li>Replacing(folding)</li>
+</ul>
+<p>
+We want to do the replacing thing as Lists do.
+Observe that this time we may have more parameters to replace:
+</p>
+<ol class="org-ol">
+<li>Node</li>
+<li>Empty</li>
+<li>??</li>
+</ol>
+<p>
+If the function to replace <code>Node</code> is binary(a -&gt; b -&gt; b), then we need the third pararmeter to combine
+sub-trees.
+Else, the third para is not necessary.
+</p>
+
+<ul class="org-ul">
+<li>A naive replacing</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">replace</span> f z <span style="color: #8ae234; font-weight: bold;">Empty</span> <span style="color: #ff6347; font-weight: bold;">=</span> z
+<span style="color: #edd400; font-weight: bold;">replace</span> f z <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Node</span> v t0 t1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> f v <span style="color: #ffd700;">(</span>replace f z t0<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>replace f z t1<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+<ul class="org-ul">
+<li>Visualization of the example</li>
+</ul>
+<pre class="example">
+f 0 (f 1 z z)
+    (f 2 (f 3 z 
+              (f 4 z z))
+         (f 5 (f 6 z z)
+              (f 7 z z)))
+</pre>
+
+<p>
+Now we can add all numbers of <code>BinTree Int</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">sum</span> <span style="color: #ff6347; font-weight: bold;">=</span> replace <span style="color: #ffd700;">(</span><span style="color: #ff6347; font-weight: bold;">\</span>v a b <span style="color: #ff6347; font-weight: bold;">-&gt;</span> v <span style="color: #ff6347; font-weight: bold;">+</span> a <span style="color: #ff6347; font-weight: bold;">+</span> b<span style="color: #ffd700;">)</span> 0
+</pre>
 </div>
 </div>
+</div>
 
+<div id="outline-container-org9e6563a" class="outline-4">
+<h4 id="org9e6563a"><span class="section-number-4">2.3.2</span> More general trees</h4>
+<div class="outline-text-4" id="text-2-3-2">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">data</span> <span style="color: #8ae234; font-weight: bold;">Tree</span> a <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Node</span> a <span style="color: #ffd700;">[</span><span style="color: #8ae234; font-weight: bold;">Tree</span> a<span style="color: #ffd700;">]</span>
+</pre>
+</div>
+<p>
+Now we have the prototype to handle all recursion problems!
+</p>
 
-<div id="outline-container-org93af791" class="outline-2">
-<h2 id="org93af791"><span class="section-number-2">3</span> Dynamic Programming</h2>
+<ul class="org-ul">
+<li>Folding</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">fold</span> f z <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Node</span> v <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> f v <span style="color: #ffd700;">[</span>z<span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">fold</span> f z <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Node</span> v ts<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> f v <span style="color: #ff6347; font-weight: bold;">$</span> map <span style="color: #ffd700;">(</span>fold f z<span style="color: #ffd700;">)</span> ts
+</pre>
+</div>
+<p>
+or
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">fold'</span> f g z <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Node</span> v <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> f v z
+<span style="color: #edd400; font-weight: bold;">fold'</span> f g z <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Node</span> v ts<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> f v <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ffd700;">(</span>g <span style="color: #ff6347; font-weight: bold;">$</span> map <span style="color: #00bfff;">(</span>fold' f g z<span style="color: #00bfff;">)</span> ts<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 
-<div id="outline-container-orgb28fc75" class="outline-2">
-<h2 id="orgb28fc75"><span class="section-number-2">4</span> Greedy</h2>
+
+<div id="outline-container-org6d4aa31" class="outline-2">
+<h2 id="org6d4aa31"><span class="section-number-2">3</span> Dynamic Programming</h2>
+</div>
+
+
+<div id="outline-container-org3897cbc" class="outline-2">
+<h2 id="org3897cbc"><span class="section-number-2">4</span> Greedy</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-22 周三 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-25 周六 08:27</p>
+<p class="date">Created: 2020-01-25 周六 11:44</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
