@@ -42,7 +42,7 @@ Before starting to explore recursions, let us first reflect some questions:
 3. What kind of algorithm should we use for different kinds of data structures?
 
 
-*** Data structures by examples
+*** Data structures by Lists
 In functional world, a very common and heavy used data structure is *List a(or [a] in haskell)*.
 Let's look at its definition first:
 #+BEGIN_SRC haskell
@@ -97,7 +97,7 @@ It's a function yet to be evaluated.
 For example, in Haskell, every expression is lazy and be stored into a thunk.
 #+END_SRC
 
-- Beta reduction
+- *Beta reduction*
 #+BEGIN_SRC 
 Beta reduction is a process of calculating result of a function after function application.
 We can now simple regard this process as a special replacing of introduced local variables.
@@ -105,11 +105,45 @@ We can now simple regard this process as a special replacing of introduced local
 
 Ok! Now let's explore it! What is a value?
 Firstly I guess /value/ is the form that can not be calculated further.
+If I'm right... what about ...
 
 *Definition of Redeuced Normal Form(RNF)* 
 #+BEGIN_SRC 
-
+Expression A has RNF if there exists term B obtained from A that is in RNF and B is in RNF where 
+there’s no term A such A can be obtained from B and A has RNF.
 #+END_SRC
+To make my life easier, RNF is the form whose sub-expressions(including itself) can not be reduced any further.
+
+*(Head) Normal Form*
+#+BEGIN_SRC 
+An expression in (Head)normal form is fully evaluated, and no sub-expression could be evaluated any further.
+#+END_SRC
+Well, seems similar to RNF. Next form is quite important:
+
+*Weak Head Normal Form(WHNF)*
+#+BEGIN_SRC 
+An expression is in weak head normal form when the outermost part has been evaluated to 
+the data constructor or lambda abstraction. Sub-expressions may not have been evaluated. 
+If all the sub-expressions would be evaluated then the expression would be in normal form. 
+The conclusion is: every normal form expression is also in weak normal form. The opposite is not always the true.
+#+END_SRC
+for example:
+#+BEGIN_SRC 
+(1 + 1, 1 + 2)      
+'h' : ("e" ++ "llo")
+\x -> 2 + 2 
+#+END_SRC
+
+Alright, we've got the point of Haskell's lazy evlauation strategy.
+In Haskell, expressions are evaluated until they are in need.
+To be more precise, "in need" means we need to do pattern matching by data constructors.
+
+Now I suppose I was wrong. Value should not be just expressions can not be evaluated further.
+In lazy languages, it can also means _weak head normal form_.
+
+Finally we feel that we've got better understanding of expressions...(although still confused and error-prone)
+
+*** Data structures by Trees
 
 
 ** Dynamic Programming

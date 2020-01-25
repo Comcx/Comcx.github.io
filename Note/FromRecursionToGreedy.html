@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-25 六 08:07 -->
+<!-- 2020-01-25 周六 08:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>From Recursion to Greedy algorithms: a functional perspective</title>
@@ -185,7 +185,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -234,15 +234,16 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org0e67b7b">1. Functional Programming とは &#x2026;</a></li>
-<li><a href="#orga7f4cab">2. Divide and Conquer</a>
+<li><a href="#orgb2cab27">1. Functional Programming とは &#x2026;</a></li>
+<li><a href="#org05374bd">2. Divide and Conquer</a>
 <ul>
-<li><a href="#org1fb0c38">2.1. Data structures by examples</a></li>
-<li><a href="#org4fe09b7">2.2. Expressions</a></li>
+<li><a href="#orga713942">2.1. Data structures by Lists</a></li>
+<li><a href="#org6c86092">2.2. Expressions</a></li>
+<li><a href="#orgbc22fb1">2.3. Data structures by Trees</a></li>
 </ul>
 </li>
-<li><a href="#orgccedd7b">3. Dynamic Programming</a></li>
-<li><a href="#org98d4259">4. Greedy</a></li>
+<li><a href="#org93af791">3. Dynamic Programming</a></li>
+<li><a href="#orgb28fc75">4. Greedy</a></li>
 </ul>
 </div>
 </div>
@@ -266,8 +267,8 @@ be good at translate functional programs into other languages.
 </p>
 
 
-<div id="outline-container-org0e67b7b" class="outline-2">
-<h2 id="org0e67b7b"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
+<div id="outline-container-orgb2cab27" class="outline-2">
+<h2 id="orgb2cab27"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 A functional programming language should have the following features:
@@ -295,8 +296,8 @@ A functional programming language may have the following features:
 </div>
 
 
-<div id="outline-container-orga7f4cab" class="outline-2">
-<h2 id="orga7f4cab"><span class="section-number-2">2</span> Divide and Conquer</h2>
+<div id="outline-container-org05374bd" class="outline-2">
+<h2 id="org05374bd"><span class="section-number-2">2</span> Divide and Conquer</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Before starting to explore recursions, let us first reflect some questions:
@@ -310,8 +311,8 @@ Before starting to explore recursions, let us first reflect some questions:
 </div>
 
 
-<div id="outline-container-org1fb0c38" class="outline-3">
-<h3 id="org1fb0c38"><span class="section-number-3">2.1</span> Data structures by examples</h3>
+<div id="outline-container-orga713942" class="outline-3">
+<h3 id="orga713942"><span class="section-number-3">2.1</span> Data structures by Lists</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 In functional world, a very common and heavy used data structure is <b>List a(or [a] in haskell)</b>.
@@ -363,8 +364,8 @@ In fact, this function is called <code>foldr</code> in Haskell.
 </div>
 </div>
 
-<div id="outline-container-org4fe09b7" class="outline-3">
-<h3 id="org4fe09b7"><span class="section-number-3">2.2</span> Expressions</h3>
+<div id="outline-container-org6c86092" class="outline-3">
+<h3 id="org6c86092"><span class="section-number-3">2.2</span> Expressions</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 In the last part, we talked about data structures. However, a new question raised that,
@@ -397,7 +398,7 @@ For example, in Haskell, every expression is lazy and be stored into a thunk.
 </pre>
 
 <ul class="org-ul">
-<li>Beta reduction</li>
+<li><b>Beta reduction</b></li>
 </ul>
 <pre class="example">
 Beta reduction is a process of calculating result of a function after function application.
@@ -407,32 +408,84 @@ We can now simple regard this process as a special replacing of introduced local
 <p>
 Ok! Now let's explore it! What is a value?
 Firstly I guess <i>value</i> is the form that can not be calculated further.
+If I'm right&#x2026; what about &#x2026;
 </p>
 
 <p>
 <b>Definition of Redeuced Normal Form(RNF)</b> 
 </p>
 <pre class="example">
-
+Expression A has RNF if there exists term B obtained from A that is in RNF and B is in RNF where 
+there’s no term A such A can be obtained from B and A has RNF.
 </pre>
+<p>
+To make my life easier, RNF is the form whose sub-expressions(including itself) can not be reduced any further.
+</p>
+
+<p>
+<b>(Head) Normal Form</b>
+</p>
+<pre class="example">
+An expression in (Head)normal form is fully evaluated, and no sub-expression could be evaluated any further.
+</pre>
+<p>
+Well, seems similar to RNF. Next form is quite important:
+</p>
+
+<p>
+<b>Weak Head Normal Form(WHNF)</b>
+</p>
+<pre class="example">
+An expression is in weak head normal form when the outermost part has been evaluated to 
+the data constructor or lambda abstraction. Sub-expressions may not have been evaluated. 
+If all the sub-expressions would be evaluated then the expression would be in normal form. 
+The conclusion is: every normal form expression is also in weak normal form. The opposite is not always the true.
+</pre>
+<p>
+for example:
+</p>
+<pre class="example">
+(1 + 1, 1 + 2)      
+'h' : ("e" ++ "llo")
+\x -&gt; 2 + 2 
+</pre>
+
+<p>
+Alright, we've got the point of Haskell's lazy evlauation strategy.
+In Haskell, expressions are evaluated until they are in need.
+To be more precise, "in need" means we need to do pattern matching by data constructors.
+</p>
+
+<p>
+Now I suppose I was wrong. Value should not be just expressions can not be evaluated further.
+In lazy languages, it can also means <span class="underline">weak head normal form</span>.
+</p>
+
+<p>
+Finally we feel that we've got better understanding of expressions&#x2026;(although still confused and error-prone)
+</p>
 </div>
+</div>
+
+<div id="outline-container-orgbc22fb1" class="outline-3">
+<h3 id="orgbc22fb1"><span class="section-number-3">2.3</span> Data structures by Trees</h3>
 </div>
 </div>
 
 
-<div id="outline-container-orgccedd7b" class="outline-2">
-<h2 id="orgccedd7b"><span class="section-number-2">3</span> Dynamic Programming</h2>
+<div id="outline-container-org93af791" class="outline-2">
+<h2 id="org93af791"><span class="section-number-2">3</span> Dynamic Programming</h2>
 </div>
 
 
-<div id="outline-container-org98d4259" class="outline-2">
-<h2 id="org98d4259"><span class="section-number-2">4</span> Greedy</h2>
+<div id="outline-container-orgb28fc75" class="outline-2">
+<h2 id="orgb28fc75"><span class="section-number-2">4</span> Greedy</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: 2020-01-22 三 00:00</p>
+<p class="date">Date: 2020-01-22 周三 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-25 六 08:07</p>
+<p class="date">Created: 2020-01-25 周六 08:27</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
