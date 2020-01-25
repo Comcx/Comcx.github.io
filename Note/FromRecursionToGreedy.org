@@ -76,6 +76,42 @@ replace f a Nil = a
 #+END_SRC
 In fact, this function is called =foldr= in Haskell.
 
+*** Expressions
+In the last part, we talked about data structures. However, a new question raised that,
+What exactly is an expression??
+
+Let's first get a simple definition.
+#+BEGIN_SRC 
+An expression is any valid unit of code that resolves to a value.
+#+END_SRC
+Well, this looks still not enough straight-forward answer.
+If so, then what is value??
+
+Before we have the ability and knowledge to answer these questions, let's firstly introduce some
+necessary terminologies.
+
+- *Thunk*
+#+BEGIN_SRC 
+A thunk is another name for the function(but the special one).
+It's a function yet to be evaluated.
+For example, in Haskell, every expression is lazy and be stored into a thunk.
+#+END_SRC
+
+- Beta reduction
+#+BEGIN_SRC 
+Beta reduction is a process of calculating result of a function after function application.
+We can now simple regard this process as a special replacing of introduced local variables.
+#+END_SRC
+
+Ok! Now let's explore it! What is a value?
+Firstly I guess /value/ is the form that can not be calculated further.
+
+*Definition of Redeuced Normal Form(RNF)* 
+#+BEGIN_SRC 
+
+#+END_SRC
+
+
 ** Dynamic Programming
 
 

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-22 三 10:47 -->
+<!-- 2020-01-25 六 08:07 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>From Recursion to Greedy algorithms: a functional perspective</title>
@@ -234,14 +234,15 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd315666">1. Functional Programming とは &#x2026;</a></li>
-<li><a href="#org1b385af">2. Divide and Conquer</a>
+<li><a href="#org0e67b7b">1. Functional Programming とは &#x2026;</a></li>
+<li><a href="#orga7f4cab">2. Divide and Conquer</a>
 <ul>
-<li><a href="#org32f3b24">2.1. Data structures by examples</a></li>
+<li><a href="#org1fb0c38">2.1. Data structures by examples</a></li>
+<li><a href="#org4fe09b7">2.2. Expressions</a></li>
 </ul>
 </li>
-<li><a href="#org94570f7">3. Dynamic Programming</a></li>
-<li><a href="#org63f7110">4. Greedy</a></li>
+<li><a href="#orgccedd7b">3. Dynamic Programming</a></li>
+<li><a href="#org98d4259">4. Greedy</a></li>
 </ul>
 </div>
 </div>
@@ -265,8 +266,8 @@ be good at translate functional programs into other languages.
 </p>
 
 
-<div id="outline-container-orgd315666" class="outline-2">
-<h2 id="orgd315666"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
+<div id="outline-container-org0e67b7b" class="outline-2">
+<h2 id="org0e67b7b"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 A functional programming language should have the following features:
@@ -294,8 +295,8 @@ A functional programming language may have the following features:
 </div>
 
 
-<div id="outline-container-org1b385af" class="outline-2">
-<h2 id="org1b385af"><span class="section-number-2">2</span> Divide and Conquer</h2>
+<div id="outline-container-orga7f4cab" class="outline-2">
+<h2 id="orga7f4cab"><span class="section-number-2">2</span> Divide and Conquer</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Before starting to explore recursions, let us first reflect some questions:
@@ -309,8 +310,8 @@ Before starting to explore recursions, let us first reflect some questions:
 </div>
 
 
-<div id="outline-container-org32f3b24" class="outline-3">
-<h3 id="org32f3b24"><span class="section-number-3">2.1</span> Data structures by examples</h3>
+<div id="outline-container-org1fb0c38" class="outline-3">
+<h3 id="org1fb0c38"><span class="section-number-3">2.1</span> Data structures by examples</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 In functional world, a very common and heavy used data structure is <b>List a(or [a] in haskell)</b>.
@@ -361,21 +362,77 @@ In fact, this function is called <code>foldr</code> in Haskell.
 </p>
 </div>
 </div>
+
+<div id="outline-container-org4fe09b7" class="outline-3">
+<h3 id="org4fe09b7"><span class="section-number-3">2.2</span> Expressions</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+In the last part, we talked about data structures. However, a new question raised that,
+What exactly is an expression??
+</p>
+
+<p>
+Let's first get a simple definition.
+</p>
+<pre class="example">
+An expression is any valid unit of code that resolves to a value.
+</pre>
+<p>
+Well, this looks still not enough straight-forward answer.
+If so, then what is value??
+</p>
+
+<p>
+Before we have the ability and knowledge to answer these questions, let's firstly introduce some
+necessary terminologies.
+</p>
+
+<ul class="org-ul">
+<li><b>Thunk</b></li>
+</ul>
+<pre class="example">
+A thunk is another name for the function(but the special one).
+It's a function yet to be evaluated.
+For example, in Haskell, every expression is lazy and be stored into a thunk.
+</pre>
+
+<ul class="org-ul">
+<li>Beta reduction</li>
+</ul>
+<pre class="example">
+Beta reduction is a process of calculating result of a function after function application.
+We can now simple regard this process as a special replacing of introduced local variables.
+</pre>
+
+<p>
+Ok! Now let's explore it! What is a value?
+Firstly I guess <i>value</i> is the form that can not be calculated further.
+</p>
+
+<p>
+<b>Definition of Redeuced Normal Form(RNF)</b> 
+</p>
+<pre class="example">
+
+</pre>
+</div>
+</div>
 </div>
 
-<div id="outline-container-org94570f7" class="outline-2">
-<h2 id="org94570f7"><span class="section-number-2">3</span> Dynamic Programming</h2>
+
+<div id="outline-container-orgccedd7b" class="outline-2">
+<h2 id="orgccedd7b"><span class="section-number-2">3</span> Dynamic Programming</h2>
 </div>
 
 
-<div id="outline-container-org63f7110" class="outline-2">
-<h2 id="org63f7110"><span class="section-number-2">4</span> Greedy</h2>
+<div id="outline-container-org98d4259" class="outline-2">
+<h2 id="org98d4259"><span class="section-number-2">4</span> Greedy</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-22 三 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-22 三 10:47</p>
+<p class="date">Created: 2020-01-25 六 08:07</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
