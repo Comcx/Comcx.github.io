@@ -33,14 +33,12 @@ A functional programming language may have the following features:
 4) Pure without any side-effect(which means u can not survivie without monad:)
 5) Dependent Typed System
 
-
 ** Divide and Conquer
 Before starting to explore recursions, let us first reflect some questions:
 
 1. What is data structure and what is a algorithm?
 2. Any links between data structure and algorithms?
 3. What kind of algorithm should we use for different kinds of data structures?
-
 
 *** Data structures by Lists
 In functional world, a very common and heavy used data structure is *List a(or [a] in haskell)*.
@@ -228,9 +226,26 @@ fold' f g z (Node v []) = f v z
 fold' f g z (Node v ts) = f v $ (g $ map (fold' f g z) ts)
 #+END_SRC
 
+*** The answers
+OK! now I may answer the three questions before(may be wrong, only my views):
 
+**** What is data structure?
+Data structures are recursion proto structures which can be used to solve problems.
+
+**** What is algorithm?
+Algorithms are _foldable_ data structures.
+
+**** Links between data structures and algorithms?
+Data structures can be easily converted to algorithms.
+Algorithms can be used to generate data structures.
+
+**** How to select?
+To select data structures with respect to different kind os algorithms,
+We should choose data structures which have the same recursion structure as the algorithm
+as far as possible.
 
 ** Dynamic Programming
+Dynamic programming is about finding similar sub structures.
 
 
 ** Greedy
