@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-25 周六 16:51 -->
+<!-- 2020-01-26 周日 08:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>From Recursion to Greedy algorithms: a functional perspective</title>
@@ -234,41 +234,51 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8942e50">1. Functional Programming とは &#x2026;</a></li>
-<li><a href="#orgb94a15c">2. Divide and Conquer</a>
+<li><a href="#org89a0ae0">1. Functional Programming とは &#x2026;</a></li>
+<li><a href="#org970fb47">2. Divide and Conquer</a>
 <ul>
-<li><a href="#org0e9ad3c">2.1. Data structures by Lists</a>
+<li><a href="#org86a66bb">2.1. Data structures by Lists</a>
 <ul>
-<li><a href="#org82a3d76">2.1.1. Replacing</a></li>
-<li><a href="#orgc65db6a">2.1.2. <b>Reversing lists</b></a></li>
-<li><a href="#orgb1baea0">2.1.3. foldl or foldr?</a></li>
+<li><a href="#org4364b6f">2.1.1. Replacing</a></li>
+<li><a href="#orga829c68">2.1.2. <b>Reversing lists</b></a></li>
+<li><a href="#org5c25637">2.1.3. foldl or foldr?</a></li>
 </ul>
 </li>
-<li><a href="#orgec4b436">2.2. Expressions</a></li>
-<li><a href="#org175780b">2.3. Data structures by Trees</a>
+<li><a href="#org2465bf1">2.2. Expressions</a></li>
+<li><a href="#org422ac1f">2.3. Data structures by Trees</a>
 <ul>
-<li><a href="#orge2074e5">2.3.1. Binary Tree</a></li>
-<li><a href="#orga49e9f7">2.3.2. More general trees</a></li>
+<li><a href="#orgf410e11">2.3.1. Binary Tree</a></li>
+<li><a href="#org316b9f2">2.3.2. More general trees</a></li>
 </ul>
 </li>
-<li><a href="#orgfb528e5">2.4. The answers</a>
+<li><a href="#org92383b7">2.4. The answers</a>
 <ul>
-<li><a href="#orged214e3">2.4.1. What is data structure?</a></li>
-<li><a href="#org908edf6">2.4.2. What is algorithm?</a></li>
-<li><a href="#orge407147">2.4.3. Links between data structures and algorithms?</a></li>
-<li><a href="#org2b9743a">2.4.4. How to select?</a></li>
+<li><a href="#orge9013f1">2.4.1. What is data structure?</a></li>
+<li><a href="#orgc28e1b7">2.4.2. What is algorithm?</a></li>
+<li><a href="#org44ffa28">2.4.3. Links between data structures and algorithms?</a></li>
+<li><a href="#org3177522">2.4.4. How to select?</a></li>
 </ul>
 </li>
-<li><a href="#orge013055">2.5. Abstract Data Types</a></li>
-</ul>
-</li>
-<li><a href="#orgd266985">3. Dynamic Programming</a>
+<li><a href="#orgfa982f0">2.5. Abstract Data Types <code>[2/7]</code></a>
 <ul>
-<li><a href="#org7f1d761">3.1. A dynamic programming example by expanding data structure</a></li>
-<li><a href="#org99f1542">3.2. A dynamic programming example by using extra data structures</a></li>
+<li><a href="#orge25f121">2.5.1. <span class="done DONE">DONE</span> Stack</a></li>
+<li><a href="#org7301559">2.5.2. <span class="done DONE">DONE</span> Queue</a></li>
+<li><a href="#orgd13b95f">2.5.3. <span class="todo TODO">TODO</span> Heap</a></li>
+<li><a href="#orga28d2ba">2.5.4. <span class="todo NEXT">NEXT</span> Set</a></li>
+<li><a href="#orgdd3284f">2.5.5. <span class="todo TODO">TODO</span> Vector</a></li>
+<li><a href="#orgf791b2e">2.5.6. <span class="todo TODO">TODO</span> Table</a></li>
+<li><a href="#orgc1a946c">2.5.7. <span class="todo TODO">TODO</span> More Trees</a></li>
 </ul>
 </li>
-<li><a href="#org07b6316">4. Greedy</a></li>
+</ul>
+</li>
+<li><a href="#orgcf1c124">3. Dynamic Programming</a>
+<ul>
+<li><a href="#org462faa1">3.1. A dynamic programming example by expanding data structure</a></li>
+<li><a href="#orgde76577">3.2. A dynamic programming example by using extra data structure</a></li>
+</ul>
+</li>
+<li><a href="#org5a2cdd9">4. Greedy</a></li>
 </ul>
 </div>
 </div>
@@ -292,8 +302,8 @@ be good at translate functional programs into other languages.
 </p>
 
 
-<div id="outline-container-org8942e50" class="outline-2">
-<h2 id="org8942e50"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
+<div id="outline-container-org89a0ae0" class="outline-2">
+<h2 id="org89a0ae0"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 A functional programming language should have the following features:
@@ -320,8 +330,8 @@ A functional programming language may have the following features:
 </div>
 </div>
 
-<div id="outline-container-orgb94a15c" class="outline-2">
-<h2 id="orgb94a15c"><span class="section-number-2">2</span> Divide and Conquer</h2>
+<div id="outline-container-org970fb47" class="outline-2">
+<h2 id="org970fb47"><span class="section-number-2">2</span> Divide and Conquer</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Before starting to explore recursions, let us first reflect some questions:
@@ -334,8 +344,8 @@ Before starting to explore recursions, let us first reflect some questions:
 </ol>
 </div>
 
-<div id="outline-container-org0e9ad3c" class="outline-3">
-<h3 id="org0e9ad3c"><span class="section-number-3">2.1</span> Data structures by Lists</h3>
+<div id="outline-container-org86a66bb" class="outline-3">
+<h3 id="org86a66bb"><span class="section-number-3">2.1</span> Data structures by Lists</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 In functional world, a very common and heavy used data structure is <b>List a(or [a] in haskell)</b>.
@@ -348,8 +358,8 @@ Let's look at its definition first:
 </div>
 </div>
 
-<div id="outline-container-org82a3d76" class="outline-4">
-<h4 id="org82a3d76"><span class="section-number-4">2.1.1</span> Replacing</h4>
+<div id="outline-container-org4364b6f" class="outline-4">
+<h4 id="org4364b6f"><span class="section-number-4">2.1.1</span> Replacing</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 If we regard that <code>List</code> is just a function which receive a type and output a type, then we can rewrite
@@ -394,8 +404,8 @@ To solve a problem, we only need to solve one sub-problem before.(this give us h
 </div>
 </div>
 
-<div id="outline-container-orgc65db6a" class="outline-4">
-<h4 id="orgc65db6a"><span class="section-number-4">2.1.2</span> <b>Reversing lists</b></h4>
+<div id="outline-container-orga829c68" class="outline-4">
+<h4 id="orga829c68"><span class="section-number-4">2.1.2</span> <b>Reversing lists</b></h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 One more interesting thing is that Haskell also have the function <code>foldl.</code> 
@@ -433,8 +443,8 @@ Great! Try to reverse a list using foldl:
 </div>
 </div>
 
-<div id="outline-container-orgb1baea0" class="outline-4">
-<h4 id="orgb1baea0"><span class="section-number-4">2.1.3</span> foldl or foldr?</h4>
+<div id="outline-container-org5c25637" class="outline-4">
+<h4 id="org5c25637"><span class="section-number-4">2.1.3</span> foldl or foldr?</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <ol class="org-ol">
 <li>If we are in a stack model, then foldl can be used without worrying about stackoverflow.</li>
@@ -445,8 +455,8 @@ be an instance of typeclass <span class="underline">Monoid</span>.</li>
 </div>
 </div>
 
-<div id="outline-container-orgec4b436" class="outline-3">
-<h3 id="orgec4b436"><span class="section-number-3">2.2</span> Expressions</h3>
+<div id="outline-container-org2465bf1" class="outline-3">
+<h3 id="org2465bf1"><span class="section-number-3">2.2</span> Expressions</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 In the last part, we talked about data structures. However, a new question raised that,
@@ -548,8 +558,8 @@ Finally we feel that we've got better understanding of expressions&#x2026;(altho
 </div>
 </div>
 
-<div id="outline-container-org175780b" class="outline-3">
-<h3 id="org175780b"><span class="section-number-3">2.3</span> Data structures by Trees</h3>
+<div id="outline-container-org422ac1f" class="outline-3">
+<h3 id="org422ac1f"><span class="section-number-3">2.3</span> Data structures by Trees</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Unlike <i>Lists,</i> Trees allow us to divide problems into many sub-problems.
@@ -557,8 +567,8 @@ To make things simple and clear, we first focus on <span class="underline">binar
 </p>
 </div>
 
-<div id="outline-container-orge2074e5" class="outline-4">
-<h4 id="orge2074e5"><span class="section-number-4">2.3.1</span> Binary Tree</h4>
+<div id="outline-container-orgf410e11" class="outline-4">
+<h4 id="orgf410e11"><span class="section-number-4">2.3.1</span> Binary Tree</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <div class="org-src-container">
 <pre class="src src-haskell">
@@ -643,7 +653,7 @@ Now we can add all numbers of <code>BinTree Int</code>.
 </div>
 
 <ol class="org-ol">
-<li><a id="orgc83e93a"></a>Using tricks as foldl in Lists<br />
+<li><a id="org8a2b05c"></a>Using tricks as foldl in Lists<br />
 <div class="outline-text-5" id="text-2-3-1-1">
 <p>
 If we want to traverse a binary tree in an inorder order:
@@ -685,8 +695,8 @@ Finally we have:
 </ol>
 </div>
 
-<div id="outline-container-orga49e9f7" class="outline-4">
-<h4 id="orga49e9f7"><span class="section-number-4">2.3.2</span> More general trees</h4>
+<div id="outline-container-org316b9f2" class="outline-4">
+<h4 id="org316b9f2"><span class="section-number-4">2.3.2</span> More general trees</h4>
 <div class="outline-text-4" id="text-2-3-2">
 <div class="org-src-container">
 <pre class="src src-haskell">
@@ -719,16 +729,16 @@ or
 </div>
 </div>
 
-<div id="outline-container-orgfb528e5" class="outline-3">
-<h3 id="orgfb528e5"><span class="section-number-3">2.4</span> The answers</h3>
+<div id="outline-container-org92383b7" class="outline-3">
+<h3 id="org92383b7"><span class="section-number-3">2.4</span> The answers</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 OK! now I may answer the three questions before(may be wrong, only my views):
 </p>
 </div>
 
-<div id="outline-container-orged214e3" class="outline-4">
-<h4 id="orged214e3"><span class="section-number-4">2.4.1</span> What is data structure?</h4>
+<div id="outline-container-orge9013f1" class="outline-4">
+<h4 id="orge9013f1"><span class="section-number-4">2.4.1</span> What is data structure?</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <p>
 Data structures are recursion proto structures which can be used to solve problems.
@@ -736,8 +746,8 @@ Data structures are recursion proto structures which can be used to solve proble
 </div>
 </div>
 
-<div id="outline-container-org908edf6" class="outline-4">
-<h4 id="org908edf6"><span class="section-number-4">2.4.2</span> What is algorithm?</h4>
+<div id="outline-container-orgc28e1b7" class="outline-4">
+<h4 id="orgc28e1b7"><span class="section-number-4">2.4.2</span> What is algorithm?</h4>
 <div class="outline-text-4" id="text-2-4-2">
 <p>
 Algorithms are <span class="underline">foldable</span> data structures.
@@ -745,8 +755,8 @@ Algorithms are <span class="underline">foldable</span> data structures.
 </div>
 </div>
 
-<div id="outline-container-orge407147" class="outline-4">
-<h4 id="orge407147"><span class="section-number-4">2.4.3</span> Links between data structures and algorithms?</h4>
+<div id="outline-container-org44ffa28" class="outline-4">
+<h4 id="org44ffa28"><span class="section-number-4">2.4.3</span> Links between data structures and algorithms?</h4>
 <div class="outline-text-4" id="text-2-4-3">
 <p>
 Data structures can be easily converted to algorithms.
@@ -755,8 +765,8 @@ Algorithms can be used to generate data structures.
 </div>
 </div>
 
-<div id="outline-container-org2b9743a" class="outline-4">
-<h4 id="org2b9743a"><span class="section-number-4">2.4.4</span> How to select?</h4>
+<div id="outline-container-org3177522" class="outline-4">
+<h4 id="org3177522"><span class="section-number-4">2.4.4</span> How to select?</h4>
 <div class="outline-text-4" id="text-2-4-4">
 <p>
 To select data structures with respect to different kind os algorithms,
@@ -767,29 +777,204 @@ as far as possible.
 </div>
 </div>
 
-<div id="outline-container-orge013055" class="outline-3">
-<h3 id="orge013055"><span class="section-number-3">2.5</span> Abstract Data Types</h3>
+<div id="outline-container-orgfa982f0" class="outline-3">
+<h3 id="orgfa982f0"><span class="section-number-3">2.5</span> Abstract Data Types <code>[2/7]</code></h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 In fact, data structures we talked before are <span class="underline">Algebra Data Structures(ADT)</span>.
 However, we can generize our types a little bit, we can define types by actions.
 </p>
 </div>
+
+<div id="outline-container-orge25f121" class="outline-4">
+<h4 id="orge25f121"><span class="section-number-4">2.5.1</span> <span class="done DONE">DONE</span> Stack</h4>
+<div class="outline-text-4" id="text-2-5-1">
+<p>
+The <code>Stack</code> implementation is quite straight-forward.
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">class</span> <span style="color: #8ae234; font-weight: bold;">Stack</span> s <span style="color: #729fcf; font-weight: bold;">where</span>
+  push       <span style="color: #ff6347; font-weight: bold;">::</span> a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> s a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> s a
+  pop        <span style="color: #ff6347; font-weight: bold;">::</span> s a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> s a
+  top        <span style="color: #ff6347; font-weight: bold;">::</span> s a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> a
+  emptyStack <span style="color: #ff6347; font-weight: bold;">::</span> s a
+
+<span style="color: #729fcf; font-weight: bold;">newtype</span> <span style="color: #8ae234; font-weight: bold;">Stk</span> a <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Stk</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
+
+<span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Stack</span> <span style="color: #8ae234; font-weight: bold;">Stk</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  push x <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Stk</span> xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Stk</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span>
+
+  pop <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Stk</span> <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span>     <span style="color: #ff6347; font-weight: bold;">=</span> error <span style="color: #ad7fa8; font-style: italic;">"Empty stack!"</span>
+  pop <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Stk</span> <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">_</span><span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Stk</span> xs
+
+  top <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Stk</span> <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span>    <span style="color: #ff6347; font-weight: bold;">=</span> error <span style="color: #ad7fa8; font-style: italic;">"Empty stack!"</span>
+  top <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Stk</span> <span style="color: #00bfff;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span><span style="color: #729fcf; font-weight: bold;">_</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> x
+
+  emptyStack <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Stk</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
+</pre>
+</div>
+<p>
+Each step is in <code>O(1)</code> steps.
+</p>
 </div>
 </div>
 
+<div id="outline-container-org7301559" class="outline-4">
+<h4 id="org7301559"><span class="section-number-4">2.5.2</span> <span class="done DONE">DONE</span> Queue</h4>
+<div class="outline-text-4" id="text-2-5-2">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">class</span> <span style="color: #8ae234; font-weight: bold;">Queue</span> q <span style="color: #729fcf; font-weight: bold;">where</span>
+  enqueue    <span style="color: #ff6347; font-weight: bold;">::</span> a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> q a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> q a
+  dequeue    <span style="color: #ff6347; font-weight: bold;">::</span> q a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> q a
+  front      <span style="color: #ff6347; font-weight: bold;">::</span> q a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> a
+  emptyQueue <span style="color: #ff6347; font-weight: bold;">::</span> q a
+</pre>
+</div>
+</div>
+<ol class="org-ol">
+<li><a id="orgd9a4ae7"></a>A naive implementation<br />
+<div class="outline-text-5" id="text-2-5-2-1">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">newtype</span> <span style="color: #8ae234; font-weight: bold;">Que</span> a <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
+
+<span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Queue</span> <span style="color: #8ae234; font-weight: bold;">Que</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  enqueue x <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> q<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #ffd700;">(</span>q <span style="color: #ff6347; font-weight: bold;">++</span> <span style="color: #00bfff;">[</span>x<span style="color: #00bfff;">]</span><span style="color: #ffd700;">)</span>
+
+  dequeue <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span>     <span style="color: #ff6347; font-weight: bold;">=</span> error <span style="color: #ad7fa8; font-style: italic;">"Empty queue!"</span>
+  dequeue <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">_</span><span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Q</span> xs
+
+  front <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span>    <span style="color: #ff6347; font-weight: bold;">=</span> error <span style="color: #ad7fa8; font-style: italic;">"Empty queue!"</span>
+  front <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span><span style="color: #729fcf; font-weight: bold;">_</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> x
+
+  emptyQueue <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
+</pre>
+</div>
+<p>
+<code>enqueue</code> takes <code>O(n)</code> steps.
+</p>
+</div>
+</li>
+
+<li><a id="org27c8196"></a>Another implementation<br />
+<div class="outline-text-5" id="text-2-5-2-2">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Another implementation by Burton</span>
+<span style="color: #729fcf; font-weight: bold;">newtype</span> <span style="color: #8ae234; font-weight: bold;">Que</span> a <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #ffd700;">(</span><span style="color: #00bfff;">[</span>a<span style="color: #00bfff;">]</span>, <span style="color: #00bfff;">[</span>a<span style="color: #00bfff;">]</span><span style="color: #ffd700;">)</span>
+
+<span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Queue</span> <span style="color: #8ae234; font-weight: bold;">Que</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  enqueue x <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff;">(</span><span style="color: #ffa500; font-weight: bold;">[]</span>, <span style="color: #ffa500; font-weight: bold;">[]</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #ffd700;">(</span><span style="color: #00bfff;">[</span>x<span style="color: #00bfff;">]</span>, <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span>
+  enqueue y <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff;">(</span>xs, ys<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #ffd700;">(</span>xs, y<span style="color: #8ae234; font-weight: bold;">:</span>ys<span style="color: #ffd700;">)</span>
+
+  dequeue <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff;">(</span><span style="color: #ffa500; font-weight: bold;">[]</span>, <span style="color: #ffa500; font-weight: bold;">[]</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>   <span style="color: #ff6347; font-weight: bold;">=</span> error <span style="color: #ad7fa8; font-style: italic;">"Empty queue!"</span>
+  dequeue <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff;">(</span><span style="color: #ffa500; font-weight: bold;">[]</span>, ys<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>   <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #ffd700;">(</span>tail <span style="color: #00bfff;">(</span>reverse ys<span style="color: #00bfff;">)</span>, <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span>
+  dequeue <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs, ys<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #ffd700;">(</span>xs, ys<span style="color: #ffd700;">)</span>
+
+  front <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff;">(</span><span style="color: #ffa500; font-weight: bold;">[]</span>, <span style="color: #ffa500; font-weight: bold;">[]</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>   <span style="color: #ff6347; font-weight: bold;">=</span> error <span style="color: #ad7fa8; font-style: italic;">"Empty queue!"</span>
+  front <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff;">(</span><span style="color: #ffa500; font-weight: bold;">[]</span>, ys<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>   <span style="color: #ff6347; font-weight: bold;">=</span> last ys
+  front <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #00bfff;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs, ys<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> x
+
+  emptyQueue <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">Q</span> <span style="color: #ffd700;">(</span><span style="color: #00bfff; font-weight: bold;">[]</span>, <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span>
+</pre>
+</div>
+<ul class="org-ul">
+<li><i>Note</i>: Okasaki describes a method in which a list is reversed prograssively during dequeue
+operations so that the worest case for any dequeue operation is in <code>O(logn)</code>.</li>
+</ul>
+</div>
+</li>
+
+<li><a id="org06e38ca"></a>Priority queue<br />
+<div class="outline-text-5" id="text-2-5-2-3">
+<p>
+A priority queue is a queue in which each item has a priority associated with it.
+The <code>dequeue</code> operation always removes the item with the highest(or lowest) priority.
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="org7ded6b9"></a>A naive implementation<br />
+<div class="outline-text-6" id="text-2-5-2-3-1">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">newtype</span> <span style="color: #8ae234; font-weight: bold;">PQueue</span> a <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">PQ</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
+
+<span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Queue</span> <span style="color: #8ae234; font-weight: bold;">PQueue</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  emptyQueue <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">PQ</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
+  
+  enqueue x <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">PQ</span> q<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">PQ</span> <span style="color: #ffd700;">(</span>insert x q<span style="color: #ffd700;">)</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+    insert x <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>x<span style="color: #ffd700;">]</span>
+    insert x r<span style="color: #ff6347; font-weight: bold;">@</span><span style="color: #ffd700;">(</span>e<span style="color: #8ae234; font-weight: bold;">:</span>r'<span style="color: #ffd700;">)</span>
+      <span style="color: #ff6347; font-weight: bold;">|</span> x <span style="color: #ff6347; font-weight: bold;">&lt;=</span> e    <span style="color: #ff6347; font-weight: bold;">=</span> x<span style="color: #8ae234; font-weight: bold;">:</span>r
+      <span style="color: #ff6347; font-weight: bold;">|</span> otherwise <span style="color: #ff6347; font-weight: bold;">=</span> e<span style="color: #8ae234; font-weight: bold;">:</span>insert x r'
+
+  dequeue <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">PQ</span> <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span>     <span style="color: #ff6347; font-weight: bold;">=</span> error <span style="color: #ad7fa8; font-style: italic;">"Empty queue!"</span>
+  dequeue <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">PQ</span> <span style="color: #00bfff;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">PQ</span> xs
+
+  front <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">PQ</span> <span style="color: #00bfff; font-weight: bold;">[]</span><span style="color: #ffd700;">)</span>     <span style="color: #ff6347; font-weight: bold;">=</span> error <span style="color: #ad7fa8; font-style: italic;">"Empty queue!"</span>
+  front <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">PQ</span> <span style="color: #00bfff;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> x
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orgfdaa1a2"></a>Implementation with heap<br /></li>
+</ol>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-orgd13b95f" class="outline-4">
+<h4 id="orgd13b95f"><span class="section-number-4">2.5.3</span> <span class="todo TODO">TODO</span> Heap</h4>
+</div>
+<div id="outline-container-orga28d2ba" class="outline-4">
+<h4 id="orga28d2ba"><span class="section-number-4">2.5.4</span> <span class="todo NEXT">NEXT</span> Set</h4>
+<div class="outline-text-4" id="text-2-5-4">
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #729fcf; font-weight: bold;">class</span> <span style="color: #8ae234; font-weight: bold;">Set</span> s <span style="color: #729fcf; font-weight: bold;">where</span>
+  emptySet <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">S</span> a
+  inSet    <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Eq</span> a<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=&gt;</span> a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> s a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Bool</span>
+  addSet   <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Eq</span> a<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=&gt;</span> a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> s a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> s a
+  delSet   <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Eq</span> a<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=&gt;</span> a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> s a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> s a
+</pre>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="org04f5fd9"></a>List implementations<br /></li>
+</ol>
+</div>
 
 
-<div id="outline-container-orgd266985" class="outline-2">
-<h2 id="orgd266985"><span class="section-number-2">3</span> Dynamic Programming</h2>
+<div id="outline-container-orgdd3284f" class="outline-4">
+<h4 id="orgdd3284f"><span class="section-number-4">2.5.5</span> <span class="todo TODO">TODO</span> Vector</h4>
+</div>
+
+<div id="outline-container-orgf791b2e" class="outline-4">
+<h4 id="orgf791b2e"><span class="section-number-4">2.5.6</span> <span class="todo TODO">TODO</span> Table</h4>
+</div>
+
+<div id="outline-container-orgc1a946c" class="outline-4">
+<h4 id="orgc1a946c"><span class="section-number-4">2.5.7</span> <span class="todo TODO">TODO</span> More Trees</h4>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgcf1c124" class="outline-2">
+<h2 id="orgcf1c124"><span class="section-number-2">3</span> Dynamic Programming</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Dynamic programming is about finding similar sub structures.
 </p>
 </div>
 
-<div id="outline-container-org7f1d761" class="outline-3">
-<h3 id="org7f1d761"><span class="section-number-3">3.1</span> A dynamic programming example by expanding data structure</h3>
+<div id="outline-container-org462faa1" class="outline-3">
+<h3 id="org462faa1"><span class="section-number-3">3.1</span> A dynamic programming example by expanding data structure</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Suppose we want to insert a node at the lowest level of the smallest sub-tree.
@@ -831,8 +1016,8 @@ So let's take more examples.
 </div>
 </div>
 
-<div id="outline-container-org99f1542" class="outline-3">
-<h3 id="org99f1542"><span class="section-number-3">3.2</span> A dynamic programming example by using extra data structures</h3>
+<div id="outline-container-orgde76577" class="outline-3">
+<h3 id="orgde76577"><span class="section-number-3">3.2</span> A dynamic programming example by using extra data structure</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 A well-known data structre used frequently in dynamic programming is <code>Array</code>.
@@ -842,14 +1027,14 @@ A well-known data structre used frequently in dynamic programming is <code>Array
 </div>
 
 
-<div id="outline-container-org07b6316" class="outline-2">
-<h2 id="org07b6316"><span class="section-number-2">4</span> Greedy</h2>
+<div id="outline-container-org5a2cdd9" class="outline-2">
+<h2 id="org5a2cdd9"><span class="section-number-2">4</span> Greedy</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-22 周三 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-25 周六 16:51</p>
+<p class="date">Created: 2020-01-26 周日 08:09</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

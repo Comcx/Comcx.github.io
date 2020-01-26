@@ -302,10 +302,131 @@ To select data structures with respect to different kind os algorithms,
 We should choose data structures which have the same recursion structure as the algorithm
 as far as possible.
 
-*** Abstract Data Types
+*** Abstract Data Types [2/7]
 In fact, data structures we talked before are _Algebra Data Structures(ADT)_.
 However, we can generize our types a little bit, we can define types by actions.
 
+**** DONE Stack
+The =Stack= implementation is quite straight-forward.
+#+BEGIN_SRC haskell
+
+class Stack s where
+  push       :: a -> s a -> s a
+  pop        :: s a -> s a
+  top        :: s a -> a
+  emptyStack :: s a
+
+newtype Stk a = Stk [a]
+
+instance Stack Stk where
+  push x (Stk xs) = Stk (x:xs)
+
+  pop (Stk [])     = error "Empty stack!"
+  pop (Stk (_:xs)) = Stk xs
+
+  top (Stk [])    = error "Empty stack!"
+  top (Stk (x:_)) = x
+
+  emptyStack = Stk []
+#+END_SRC
+Each step is in =O(1)= steps.
+
+**** DONE Queue
+#+BEGIN_SRC haskell
+
+class Queue q where
+  enqueue    :: a -> q a -> q a
+  dequeue    :: q a -> q a
+  front      :: q a -> a
+  emptyQueue :: q a
+#+END_SRC
+***** A naive implementation
+#+BEGIN_SRC haskell
+
+newtype Que a = Q [a]
+
+instance Queue Que where
+  enqueue x (Q q) = Q (q ++ [x])
+
+  dequeue (Q [])     = error "Empty queue!"
+  dequeue (Q (_:xs)) = Q xs
+
+  front (Q [])    = error "Empty queue!"
+  front (Q (x:_)) = x
+
+  emptyQueue = Q []
+#+END_SRC
+=enqueue= takes =O(n)= steps.
+
+***** Another implementation
+#+BEGIN_SRC haskell
+
+-- Another implementation by Burton
+newtype Que a = Q ([a], [a])
+
+instance Queue Que where
+  enqueue x (Q ([], [])) = Q ([x], [])
+  enqueue y (Q (xs, ys)) = Q (xs, y:ys)
+
+  dequeue (Q ([], []))   = error "Empty queue!"
+  dequeue (Q ([], ys))   = Q (tail (reverse ys), [])
+  dequeue (Q (x:xs, ys)) = Q (xs, ys)
+
+  front (Q ([], []))   = error "Empty queue!"
+  front (Q ([], ys))   = last ys
+  front (Q (x:xs, ys)) = x
+
+  emptyQueue = Q ([], [])
+#+END_SRC
+- /Note/: Okasaki describes a method in which a list is reversed prograssively during dequeue
+  operations so that the worest case for any dequeue operation is in =O(logn)=.
+
+***** Priority queue
+A priority queue is a queue in which each item has a priority associated with it.
+The =dequeue= operation always removes the item with the highest(or lowest) priority.
+
+****** A naive implementation
+#+BEGIN_SRC haskell
+
+newtype PQueue a = PQ [a]
+
+instance Queue PQueue where
+  emptyQueue = PQ []
+  
+  enqueue x (PQ q) = PQ (insert x q) where
+    insert x [] = [x]
+    insert x r@(e:r')
+      | x <= e    = x:r
+      | otherwise = e:insert x r'
+
+  dequeue (PQ [])     = error "Empty queue!"
+  dequeue (PQ (x:xs)) = PQ xs
+
+  front (PQ [])     = error "Empty queue!"
+  front (PQ (x:xs)) = x
+#+END_SRC
+
+****** Implementation with heap
+
+**** TODO Heap
+**** NEXT Set
+#+BEGIN_SRC haskell
+
+class Set s where
+  emptySet :: S a
+  inSet    :: (Eq a) => a -> s a -> Bool
+  addSet   :: (Eq a) => a -> s a -> s a
+  delSet   :: (Eq a) => a -> s a -> s a
+#+END_SRC
+
+***** List implementations
+
+
+**** TODO Vector
+
+**** TODO Table
+
+**** TODO More Trees
 
 
 ** Dynamic Programming
@@ -340,7 +461,7 @@ tinsertM v (NodeM (s0, s1) w t0 t1)
 However, you may think that this example is not a right dynamic programming example.
 So let's take more examples.
 
-*** A dynamic programming example by using extra data structures
+*** A dynamic programming example by using extra data structure
 A well-known data structre used frequently in dynamic programming is =Array=.
 
 
