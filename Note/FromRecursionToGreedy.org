@@ -409,6 +409,17 @@ instance Queue PQueue where
 ****** Implementation with heap
 
 **** TODO Heap
+- Definition
+#+BEGIN_SRC haskell
+
+class Heap h where
+  emptyHeap :: Ord a => h a
+  insHeap   :: Ord a => a -> h a -> h a
+  delHeap   :: Ord a => h a -> h a
+#+END_SRC
+
+
+
 **** NEXT Set
 #+BEGIN_SRC haskell
 
