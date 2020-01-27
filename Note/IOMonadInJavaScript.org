@@ -1,0 +1,114 @@
+#+Title:  IO monad in JavaScript
+#+Author: Comcx
+#+Date:   <2020-01-27 周一>
+
+
+** Monad in Haskell 
+Monad is quite interesting and important for Haskell and that's why
+/Haskell/ chooses =>\lambda= for their logo.
+
+- Monad definition
+#+BEGIN_SRC haskell
+
+class Applicative m => Monad m where
+  return :: a -> m a
+  (>>=)  :: m a -> (a -> m b) -> m b
+  (>>)   :: m a -> m b -> m b
+  m >> n = m >> \_ -> n
+#+END_SRC
+  + Note: (>>=) sometimes can be also called =bind=.
+
+
+** Simulating IO monad in JavaScript
+All we need to do is to wrap side-effects into IO monad.
+#+BEGIN_SRC javascript
+
+//IO :: (() -> a) -> IO a
+const IO = f => ({
+    //runIO :: () -> IO a
+    runIO: f,
+    
+    //map :: (a -> b) -> IO b
+    map: g => IO(() => g(f())),
+    
+    //then :: (a -> IO b) -> IO b
+    then: g => g(f())
+});
+
+//IO.of :: a -> IO a
+IO.of = x => IO(() => x);
+
+#+END_SRC
+where =of= is for =return= and =then= is for =bind=.
+
+*** Simple examples
+#+BEGIN_SRC javascript
+
+//log :: String -> a -> IO a
+const log = label => x =>
+      IO(() => (console.log(label, x), x));
+
+//jump :: a -> IO a
+const alarm = x =>
+      IO(() => (alert(x), x));
+
+#+END_SRC
+
+Then we can try our IO monad:
+#+BEGIN_SRC javascript
+
+//test :: String -> IO String
+const test = s =>
+  IO.of(s)
+    .then(log('Before:'))
+    .map(s => s.toUpperCase())
+    .then(log('Now:'));
+
+test('testing').runIO();
+#+END_SRC
+We can now combine sevel IO functions quite conveniently!
+
+
+** Examples with DOM
+
+- Some useful functions
+#+BEGIN_SRC javascript
+
+//$ :: String -> IO HTMLElement
+const $ = x =>
+      IO(() => document.querySelector(x));
+
+const $id = id =>
+      IO(() => document.getElementById(id));
+
+const $tag = tag =>
+      IO(() => document.getElementsByTagName(tag));
+
+const $class = node => c =>
+      IO(() => document.getElementsByClassName(node, c));
+
+//setAttr :: a -> IO ()
+const setAttr = attr => x => o =>
+      IO(() => o.setAttribute(attr, x));
+
+//setText :: String -> IO ()
+const setText = x => o =>
+      IO(() => {o.textContent = x;});
+
+//getText :: HTMLElement -> String
+const getText = e => e.textContent;
+
+#+END_SRC
+
+- Let's try it!
+#+BEGIN_SRC javascript
+
+//showImage :: Image -> IO ()
+const showImage = img =>
+    $id('placeholder')
+      .then(setAttr('src')(img.getAttribute('href')))
+      .then(() => IO.of('Next').then(log('')))
+      .then(() => $id('description').then(setText(img.textContent)));
+#+END_SRC
+
+
