@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-28 周二 11:28 -->
+<!-- 2020-01-28 周二 18:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sorting Algorithms: revisited</title>
@@ -234,21 +234,27 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgeda67f3">1. Overview</a>
+<li><a href="#org15d7cdc">1. Overview</a>
 <ul>
-<li><a href="#org9b2409a">1.1. Comparison-based sorting</a></li>
-<li><a href="#org5d7d88e">1.2. Representation-based sorting</a></li>
+<li><a href="#orgf2112dd">1.1. Comparison-based sorting</a></li>
+<li><a href="#org6ec8b7c">1.2. Representation-based sorting</a></li>
 </ul>
 </li>
-<li><a href="#orgae142d6">2. Algorithms in Haskell</a>
+<li><a href="#org8caccb9">2. Algorithms in <i>Haskell</i></a>
 <ul>
-<li><a href="#org6e74974">2.1. Selection sort</a></li>
-<li><a href="#org9d50aa3">2.2. Insertion sort</a></li>
-<li><a href="#org0d3760f">2.3. Quick sort</a></li>
-<li><a href="#orgeddc3f6">2.4. Merge sort</a></li>
-<li><a href="#orged7bc45">2.5. Heap sort</a></li>
+<li><a href="#org6666f14">2.1. Selection sort</a></li>
+<li><a href="#orgd95927d">2.2. Insertion sort</a></li>
+<li><a href="#orged4b97f">2.3. Quick sort</a></li>
+<li><a href="#org8e43a3a">2.4. Merge sort</a></li>
+<li><a href="#org42917fe">2.5. Heap sort</a></li>
 </ul>
 </li>
+<li><a href="#org82d159b">3. Algorithms in <i>Scala</i></a>
+<ul>
+<li><a href="#orge5c1f4f">3.1. Selection sort</a></li>
+</ul>
+</li>
+<li><a href="#org565f698">4. Algorithms in <i>C++</i></a></li>
 </ul>
 </div>
 </div>
@@ -281,12 +287,12 @@ C++ implementation                  (==&gt; C)
 Let's go!
 </p>
 
-<div id="outline-container-orgeda67f3" class="outline-2">
-<h2 id="orgeda67f3"><span class="section-number-2">1</span> Overview</h2>
+<div id="outline-container-org15d7cdc" class="outline-2">
+<h2 id="org15d7cdc"><span class="section-number-2">1</span> Overview</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org9b2409a" class="outline-3">
-<h3 id="org9b2409a"><span class="section-number-3">1.1</span> Comparison-based sorting</h3>
+<div id="outline-container-orgf2112dd" class="outline-3">
+<h3 id="orgf2112dd"><span class="section-number-3">1.1</span> Comparison-based sorting</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 A Haskell blueprint of comparison-based sorting is
@@ -377,17 +383,17 @@ Ok, now let's try to implement these algorithms in <code>Haskell</code>.
 </div>
 </div>
 
-<div id="outline-container-org5d7d88e" class="outline-3">
-<h3 id="org5d7d88e"><span class="section-number-3">1.2</span> Representation-based sorting</h3>
+<div id="outline-container-org6ec8b7c" class="outline-3">
+<h3 id="org6ec8b7c"><span class="section-number-3">1.2</span> Representation-based sorting</h3>
 </div>
 </div>
 
-<div id="outline-container-orgae142d6" class="outline-2">
-<h2 id="orgae142d6"><span class="section-number-2">2</span> Algorithms in Haskell</h2>
+<div id="outline-container-org8caccb9" class="outline-2">
+<h2 id="org8caccb9"><span class="section-number-2">2</span> Algorithms in <i>Haskell</i></h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org6e74974" class="outline-3">
-<h3 id="org6e74974"><span class="section-number-3">2.1</span> Selection sort</h3>
+<div id="outline-container-org6666f14" class="outline-3">
+<h3 id="org6666f14"><span class="section-number-3">2.1</span> Selection sort</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><b>A naive implementation</b></li>
@@ -429,8 +435,8 @@ However, this way it's not as clear as the naive one.
 </div>
 </div>
 
-<div id="outline-container-org9d50aa3" class="outline-3">
-<h3 id="org9d50aa3"><span class="section-number-3">2.2</span> Insertion sort</h3>
+<div id="outline-container-orgd95927d" class="outline-3">
+<h3 id="orgd95927d"><span class="section-number-3">2.2</span> Insertion sort</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 This algorithm is ubiquitous in our daily lives.
@@ -448,8 +454,8 @@ This algorithm is ubiquitous in our daily lives.
 </div>
 </div>
 
-<div id="outline-container-org0d3760f" class="outline-3">
-<h3 id="org0d3760f"><span class="section-number-3">2.3</span> Quick sort</h3>
+<div id="outline-container-orged4b97f" class="outline-3">
+<h3 id="orged4b97f"><span class="section-number-3">2.3</span> Quick sort</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Quick sort well, is famous&#x2026;
@@ -483,8 +489,8 @@ We can also split the list in fewer passes, but I think it's not necessary.
 </div>
 </div>
 
-<div id="outline-container-orgeddc3f6" class="outline-3">
-<h3 id="orgeddc3f6"><span class="section-number-3">2.4</span> Merge sort</h3>
+<div id="outline-container-org8e43a3a" class="outline-3">
+<h3 id="org8e43a3a"><span class="section-number-3">2.4</span> Merge sort</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 Merge sort is a well balanced algorithm.
@@ -521,15 +527,80 @@ Now all we need is to split list in a balanced way.
 </div>
 </div>
 
-<div id="outline-container-orged7bc45" class="outline-3">
-<h3 id="orged7bc45"><span class="section-number-3">2.5</span> Heap sort</h3>
+<div id="outline-container-org42917fe" class="outline-3">
+<h3 id="org42917fe"><span class="section-number-3">2.5</span> Heap sort</h3>
+<div class="outline-text-3" id="text-2-5">
+<pre class="example">
+UNDERWORK!
+</pre>
 </div>
+</div>
+</div>
+
+
+<div id="outline-container-org82d159b" class="outline-2">
+<h2 id="org82d159b"><span class="section-number-2">3</span> Algorithms in <i>Scala</i></h2>
+<div class="outline-text-2" id="text-3">
+<p>
+In this part, we firstly translate haskell code directly into Scala
+and then try to improve codes to a more traditional program.
+</p>
+
+<p>
+At first, we will try to be as functional as possible, every variable should
+not be changed. However, scala also support traditional variables which can
+be easily changed. We will implement both versions.
+</p>
+</div>
+
+<div id="outline-container-orge5c1f4f" class="outline-3">
+<h3 id="orge5c1f4f"><span class="section-number-3">3.1</span> Selection sort</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>Translation in Scala</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-scala">
+<span style="color: #729fcf; font-weight: bold;">object</span> <span style="color: #8ae234; font-weight: bold;">SelectionSort</span> <span style="color: #ffd700;">{</span>
+
+  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">remove</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00bfff;">](</span>x<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">A</span>, list<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span> <span style="color: #729fcf; font-weight: bold;">=</span> list diff <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00bfff;">(</span>x<span style="color: #00bfff;">)</span>
+
+  <span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">Functional version 1</span>
+  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">ssort1</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span> <span style="color: #729fcf; font-weight: bold;">&lt;%</span> <span style="color: #8ae234; font-weight: bold;">Ordered</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">](</span>xs<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00bfff;">]</span> <span style="color: #729fcf; font-weight: bold;">=</span> xs <span style="color: #729fcf; font-weight: bold;">match</span> <span style="color: #00bfff;">{</span>
+    <span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #8ae234; font-weight: bold;">Nil</span> <span style="color: #729fcf; font-weight: bold;">=&gt;</span> <span style="color: #8ae234; font-weight: bold;">Nil</span>
+    <span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #729fcf; font-weight: bold;">_</span>   <span style="color: #729fcf; font-weight: bold;">=&gt;</span> xs.min :: ssort1<span style="color: #ffa500;">(</span>xs remove xs.min<span style="color: #ffa500;">)</span>
+  <span style="color: #00bfff;">}</span>
+  
+  <span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">Functional version 2(tailrec)</span>
+  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">ssort2</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span> <span style="color: #729fcf; font-weight: bold;">&lt;%</span> <span style="color: #8ae234; font-weight: bold;">Ordered</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">](</span>xs<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00bfff;">]</span> <span style="color: #729fcf; font-weight: bold;">=</span> <span style="color: #00bfff;">{</span>
+    <span style="color: #729fcf;">@tailrec</span>
+    <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">ssort2T</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">](</span>xs<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ff7f50;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ff7f50;">]</span>, a<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ff7f50;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ff7f50;">]</span><span style="color: #ffa500;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span> <span style="color: #729fcf; font-weight: bold;">=</span> 
+      <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>xs.isEmpty<span style="color: #ffa500;">)</span> a 
+      <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #ffa500;">{</span>
+        <span style="color: #729fcf; font-weight: bold;">val</span> <span style="color: #ff6347; font-weight: bold;">ys</span> <span style="color: #729fcf; font-weight: bold;">=</span> maximum<span style="color: #ff7f50;">(</span>xs<span style="color: #ff7f50;">)</span>
+        ssort2T<span style="color: #ff7f50;">(</span>ys.tail, ys.head :: a<span style="color: #ff7f50;">)</span>
+      <span style="color: #ffa500;">}</span>
+    ssort2T<span style="color: #ffa500;">(</span>xs, <span style="color: #8ae234; font-weight: bold;">Nil</span><span style="color: #ffa500;">)</span> 
+  <span style="color: #00bfff;">}</span>
+
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-org565f698" class="outline-2">
+<h2 id="org565f698"><span class="section-number-2">4</span> Algorithms in <i>C++</i></h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-28 周二 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-28 周二 11:28</p>
+<p class="date">Created: 2020-01-28 周二 18:45</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -61,7 +61,7 @@ Ok, now let's try to implement these algorithms in =Haskell=.
 
 *** Representation-based sorting
 
-** Algorithms in Haskell
+** Algorithms in /Haskell/ 
 *** Selection sort
 - *A naive implementation*
 #+BEGIN_SRC haskell
@@ -151,5 +151,51 @@ msort xs  = merge (msort as) (msort bs)
 #+END_SRC
 
 *** Heap sort
+#+BEGIN_SRC 
+UNDERWORK!
+#+END_SRC
+
+
+** Algorithms in /Scala/ 
+In this part, we firstly translate haskell code directly into Scala
+and then try to improve codes to a more traditional program.
+
+At first, we will try to be as functional as possible, every variable should
+not be changed. However, scala also support traditional variables which can
+be easily changed. We will implement both versions.
+
+*** Selection sort
+- Translation in Scala
+#+BEGIN_SRC scala
+
+object SelectionSort {
+
+  def remove[A](x: A, list: List[A]) = list diff List(x)
+
+  //Functional version 1
+  def ssort1[A <% Ordered[A]](xs: List[A]): List[A] = xs match {
+    case Nil => Nil
+    case _   => xs.min :: ssort1(xs remove xs.min)
+  }
+  
+  //Functional version 2(tailrec)
+  def ssort2[A <% Ordered[A]](xs: List[A]): List[A] = {
+    @tailrec
+    def ssort2T[A](xs: List[A], a: List[A]): List[A] = 
+      if(xs.isEmpty) a 
+      else {
+        val ys = maximum(xs)
+        ssort2T(ys.tail, ys.head :: a)
+      }
+    ssort2T(xs, Nil) 
+  }
+
+}
+#+END_SRC
+
+
+
+
+** Algorithms in /C++/ 
 
 
