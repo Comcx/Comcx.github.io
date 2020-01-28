@@ -1,0 +1,155 @@
+#+Title:  Sorting Algorithms: revisited
+#+Author: Comcx
+#+Date:   <2020-01-28 周二>
+
+
+We're going to revisite some main-stream sorting algorithms and
+try to implement them in a more efficient way.
+
+To make things simple, we choose _Haskell_ to describe basic recursions and
+ideas, then we directly translate haskell codes into _Scala_ since Scala serves
+a great role between purely functional way and more traditional ways.
+
+Finally, we translate Scala codes into _C++_ (some even C:).
+If you have some better ideas or implementations, please email _comcx@outlook.com_.
+
+- Our outline
+#+BEGIN_SRC 
+Haskell recursion                    ==> 
+Scala equivalent                     ==> 
+Scala more traditional and efficient ==>
+C++ implementation                  (==> C)
+#+END_SRC
+Let's go!
+
+** Overview
+*** Comparison-based sorting
+A Haskell blueprint of comparison-based sorting is
+#+BEGIN_SRC haskell
+
+sort :: Ord a => [a] -> [a]
+#+END_SRC
+
+Nearly all comparison-based algorithms rely on the following principles:
+1. Split the list =L= into two lists =L1= and =L2=, sort them resursively.
+2. Join the result together.
+
+From these principles, we have the following table:
+| Type                 | Singleton      | Equal size |
+|----------------------+----------------+------------|
+| hard split/easy join | Selection sort | Quick sort |
+|                      | Heap sort      |            |
+| easy split/hard join | Insertion sort | Merge sort |
+|                      | Tree sort      |            |
+where =Singleton/Equal size= refers the length of =L1= compared to =L2=.
+
+- Visualization
+#+BEGIN_SRC 
+                           List L
+                             ||
+                             \/
+                           split L 
+                    /                   \
+          sort L1                           sort L2
+                   \                    /
+                         join L1 L2
+                             ||
+                             \/
+                        Sorted List L
+#+END_SRC
+Ok, now let's try to implement these algorithms in =Haskell=.
+
+*** Representation-based sorting
+
+** Algorithms in Haskell
+*** Selection sort
+- *A naive implementation*
+#+BEGIN_SRC haskell
+
+ssort :: Ord a => [a] -> [a]
+ssort [] = []
+ssort xs = m : ssort $ delete m xs
+  where m = minimum xs
+#+END_SRC
+Well although this is not efficient, 
+this is quite clear and easy to understand.
+
+A more efficient implemetation of Haskell maybe:
+#+BEGIN_SRC haskell
+
+split :: Ord a => [a] -> a -> [a] -> [a]
+split [] m r     = m : ssort' r
+split (x:xs) m r | x < m     = split xs x (m:r)
+                 | otherwise = split xs m (x:r)
+
+ssort' []     = []
+ssort' (x:xs) = split xs x []
+#+END_SRC
+or just make the naive one /tailrec/.
+
+However, this way it's not as clear as the naive one.
+
+*** Insertion sort
+This algorithm is ubiquitous in our daily lives.
+#+BEGIN_SRC haskell
+
+insert k [] = [k]
+insert k l@(x:xs)
+  | k <= x    = k : l
+  | otherwise = x : (insert k xs)
+
+isort = foldr insert []
+#+END_SRC
+
+*** Quick sort
+Quick sort well, is famous...
+many people was attracted by the naive implementation in haskell...
+#+BEGIN_SRC haskell
+
+qsort :: ord a => [a] -> [a]
+qsort [] = []
+qsort (x:xs) = qsort lower ++ [x] ++ qsort upper
+  where lower = [e | e <- xs, e <= x]
+        upper = [e | e <- xs, e >  x]
+#+END_SRC
+
+Well, just improve a little bit(tailrec):
+#+BEGIN_SRC haskell
+
+qsort' [] s     = s
+qsort' (x:xs) s = qsort' lower (x : qsort' upper s)
+  where lower = [e | e <- xs, e <= x]
+        upper = [e | e <- xs, e >  x]
+#+END_SRC
+
+We can also split the list in fewer passes, but I think it's not necessary.
+
+*** Merge sort
+Merge sort is a well balanced algorithm.
+
+Firstly, we need to know how to merge two ordered lists.
+#+BEGIN_SRC haskell
+
+merge :: Ord a => [a] -> [a] -> [a]
+merge [] b = b
+merge a [] = a
+merge a@(x:xs) b@(y:ys)
+  | x <= y    = x : merge xs b
+  | otherwise = y : merge a ys
+#+END_SRC
+
+Now all we need is to split list in a balanced way.
+#+BEGIN_SRC haskell
+
+msort :: Ord a => [a] -> [a]
+msort []  = []
+msort [x] = [x]
+msort xs  = merge (msort as) (msort bs)
+  where as = take k xs
+        bs = drop k xs
+        k  = (length xs) `div` 2
+#+END_SRC
+
+*** Heap sort
+
+
