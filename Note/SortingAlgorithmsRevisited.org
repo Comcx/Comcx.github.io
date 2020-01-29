@@ -428,6 +428,8 @@ object SelectionSort {
     def ssort3T[A <% Ordered[A]](xs: List[A], a: List[A] => List[A]) = 
       if(xs.isEmpty) a(xs)
       else ssort3T(minimum(xs), (ys: List[A]) => xs.min :: ys)
+
+    ssort3T(xs, (x: List[A]) => x)
   }
   
 
