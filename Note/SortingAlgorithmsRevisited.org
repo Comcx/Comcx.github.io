@@ -348,50 +348,101 @@ Let's recap!
 To avoid unnecessary calculation
 
 **** Applying our optimizations 
-
 ***** Choose optimizing strategy
 Now we try to optimize our _selection sort_.
+
+- What is function =h= ?
+
+  #+BEGIN_SRC 
+  h xs = delete xs (minimum xs)
+  #+END_SRC
+
+- What is function =f= ?
+
+  #+BEGIN_SRC 
+  f x xs = (minimum x) : xs
+  #+END_SRC
+
 - Is function =h= reversible?
+
   well, obviously we can't. Since we can't recover a list from [].
-
-- Can we find a special function =g= to reverse calculation order?
-
-  
 
 - Can we find a monoid structure?
 
-- CPS style?
+  No again. 
+  #+BEGIN_SRC 
+  f a (f b c) =/= f (f a b) c
+  #+END_SRC
+  This can be verified easily.
 
+- Can we find a special function =g= to reverse calculation order?
+
+  Recall that function =g= must satisfy:
+  #+BEGIN_SRC 
+  g (g a b) c = f a (f b c)
+  #+END_SRC  
+  This looks a little hard though...
+  
+  A possible solution:
+  #+BEGIN_SRC 
+  g a xs = a ++ minimum xs
+  #+END_SRC
+
+- CPS style?
+  Yes.
+
+*****  Let's do it!
 #+BEGIN_SRC scala
 
 object SelectionSort {
 
-   //calculates the minimum of a list and 
-  //returns the list with that element removed
-  def minimum(xs: List[Int]): List[Int] =
+  /**
+   * calculates the minimum of a list and 
+   * returns the list with that element removed
+   */
+  def minimum[A <% Ordered[A]](xs: List[A]): List[A] =
     (List(xs.head) /: xs.tail) {
       (ys, x) =>
         if(x < ys.head) x :: ys
         else ys.head :: x :: ys.tail
   }
   
-  //Functional version 2(tailrec and 1-pass)
+  /**
+   * Functional version 2(tailrec version)
+   */
   def ssort2[A <% Ordered[A]](xs: List[A]): List[A] = {
     @tailrec
-    def ssort2T[A](xs: List[A], a: List[A]): List[A] = 
+    def ssort2T[A <% Ordered[A]](xs: List[A], a: List[A]): List[A] = 
       if(xs.isEmpty) a 
-      else {
-        val ys = maximum(xs)
-        ssort2T(ys.tail, ys.head :: a)
-      }
+      else ssort2T(minimum(xs), a ::: List(xs.min))
+      
     ssort2T(xs, Nil) 
   }
 
+  /**
+   * CPS version
+   */
+  def ssort3[A <% Ordered[A]](xs: List[A]): List[A] = {
+    
+    @tailrec
+    def ssort3T[A <% Ordered[A]](xs: List[A], a: List[A] => List[A]) = 
+      if(xs.isEmpty) a(xs)
+      else ssort3T(minimum(xs), (ys: List[A]) => xs.min :: ys)
+  }
+  
 
 }
 #+END_SRC
 
+Realize that we need some tools to test the efficiency of our codes.
+
+
+*** Insertion sort
 
 ** Algorithms in /C++/ 
+*** Selection sort
+Since we have get tailrec form, we can easily convert the algorithm into loops.
+
+
 
 
