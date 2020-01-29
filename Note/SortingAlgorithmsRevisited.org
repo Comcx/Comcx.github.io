@@ -228,7 +228,7 @@ rec x = f x $ f (h x) $ f (h $ h x) $ f (h $ h $ h x) $ ... $ f (h $ h $ ... $ h
 
 Hummmmm, it looks even more complex...
 I now have two guesses on how to do tailrec for codes like this:
-1) Build from bottom
+1) Build from bottom or reverse order
 2) Do /CPS/ transformation
 
 Let's try the first one first.
@@ -236,13 +236,15 @@ To build from bottom, we need to know the most important parameter: =(h $ h $ ..
 To know this parameter, we need to know how many times the function =h= was
 applied to =x=. We can find some clues from the terminating pattern of =rec=.
 
+
+***** Reverse order
 - Our current problem:
 
-#+BEGIN_SRC 
-We have a function (h :: a -> a) which do transformations of x and
-we need to figure out that how many times h applied to x in order to
-reach the value '1'(some constant or pattern) in the terminating definiton of rec.
-#+END_SRC
+  #+BEGIN_SRC 
+  We have a function (h :: a -> a) which do transformations of x and
+  we need to figure out that how many times h applied to x in order to
+  reach the value '1'(some constant or pattern) in the terminating definiton of rec.
+  #+END_SRC
 
   + If h is reversible(noted h', i.e. h . h' = id)
 
@@ -263,6 +265,7 @@ reach the value '1'(some constant or pattern) in the terminating definiton of re
 
 
   + To change order... How about =Monoid=?
+
     Suppose we want to get the sum of a list:
     #+BEGIN_SRC 
     sum [] = 0
@@ -279,8 +282,49 @@ reach the value '1'(some constant or pattern) in the terminating definiton of re
     #+BEGIN_SRC 
     ((a + b) + c) + d
     #+END_SRC
+    It's just like to say that, we can change the calculation of
+    #+BEGIN_SRC 
+    x (h x) (h $ h x) ... (h $ h $ ... $ h x)
+    #+END_SRC
+    with =f=.
+
+    Let's try to implement this transformation with our general code:
+    #+BEGIN_SRC 
+    reverseOrder f h 1 res = res
+    reverseOrder f h x res = reverseOrder f h (h x) (f x (h x))
+    #+END_SRC
+    This time we don't need =h'=!
 
 
+  + Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit
+
+    This time instead of requiring f to be satisfiled by monoid law,
+    we ourselves try to find a function =g= which satisfy the following law:
+    #+BEGIN_SRC 
+    g (g a b) c = f a (f b c)
+    #+END_SRC
+    Now we can use our trick again:
+    #+BEGIN_SRC 
+    reverseOrder' g h 1 res = res
+    reverseOrder' g h x res = reverseOrder' g h (g x) (g x (h x))
+    #+END_SRC
+
+   
+  + Well, if we're not lucky.. we can't find a reverse h' nor monoid structure...
+     
+    Two options:
+    (1) We still calculate from the beginning, but we pass the result as a =List= of (h $ ..x)s.
+    (2) Maybe it's time for our /CPS/ approach...
+
+
+Time for the second idea!
+***** CPS trasformation
+
+  CPS is a tool to convert recursive code to *tail call*.(note that this is different from tailrec).
+  Recall our =rec= function:
+  #+BEGIN_SRC 
+  
+  #+END_SRC
 
 ** Algorithms in /C++/ 
 
