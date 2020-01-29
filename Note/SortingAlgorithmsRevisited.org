@@ -165,7 +165,7 @@ not be changed. However, scala also support traditional variables which can
 be easily changed. We will implement both versions.
 
 *** Selection sort
-- Translation in Scala
+**** Naive translation in Scala
 #+BEGIN_SRC scala
 
 object SelectionSort {
@@ -177,34 +177,12 @@ object SelectionSort {
     case Nil => Nil
     case _   => xs.min :: ssort1(xs remove xs.min)
   }
-
-  //calculates the minimum of a list and 
-  //returns the list with that element removed
-  def minimum(xs: List[Int]): List[Int] =
-    (List(xs.head) /: xs.tail) {
-      (ys, x) =>
-        if(x < ys.head) x :: ys
-        else ys.head :: x :: ys.tail
-  }
-  
-  //Functional version 2(tailrec and 1-pass)
-  def ssort2[A <% Ordered[A]](xs: List[A]): List[A] = {
-    @tailrec
-    def ssort2T[A](xs: List[A], a: List[A]): List[A] = 
-      if(xs.isEmpty) a 
-      else {
-        val ys = maximum(xs)
-        ssort2T(ys.tail, ys.head :: a)
-      }
-    ssort2T(xs, Nil) 
-  }
-
 }
 #+END_SRC
 Well, before we get into more traditional ways of Selection sort,
 Let's try our best to optimize our functional version.
 
-We mainly apply two optimizations: *tailrec* and *one-pass*.
+We mainly apply three optimizations: *tailrec* , *one-pass* and *Dynamic programming*.
 
 **** Tailrec
 The *tailrec* optimization is efficient and crucial for our further
@@ -341,8 +319,77 @@ With CPS, we can build our executing stack from heap.
 
 **** One-pass
 Well, notice that we need to traverse the list two times:
-1) find minimum and 2) recursion.
+1) find minimum and 
+2) recursion.
 
+We can optimize by /one-pass/ just like the version in /Haskell/.
+But this is not so necessary for us to translate codes to traditinal codes.
+
+**** Dynamic Programming
+Well, for recursions like list recursions, dynamic programming is not
+quite necessary since we usually don't have too many overlapping sub-problems.
+
+However, just in case, I think that if necessary, we can use lazy evaluation
+and stream to do dynamic programming elegantly.
+
+For more dynamic programming techniques, we will discuss in later parts(tree recursions).
+
+**** Optimizations summary
+We have discussed several optimizations may be applied to list recursions.
+Let's recap!
+
+***** Tailrec
+****** Reverse calculation order
+- By reversible function or special function
+- By Monoid structure
+****** CPS transformation 
+
+***** Dynamic Programming
+To avoid unnecessary calculation
+
+**** Applying our optimizations 
+
+***** Choose optimizing strategy
+Now we try to optimize our _selection sort_.
+- Is function =h= reversible?
+  well, obviously we can't. Since we can't recover a list from [].
+
+- Can we find a special function =g= to reverse calculation order?
+
+  
+
+- Can we find a monoid structure?
+
+- CPS style?
+
+#+BEGIN_SRC scala
+
+object SelectionSort {
+
+   //calculates the minimum of a list and 
+  //returns the list with that element removed
+  def minimum(xs: List[Int]): List[Int] =
+    (List(xs.head) /: xs.tail) {
+      (ys, x) =>
+        if(x < ys.head) x :: ys
+        else ys.head :: x :: ys.tail
+  }
+  
+  //Functional version 2(tailrec and 1-pass)
+  def ssort2[A <% Ordered[A]](xs: List[A]): List[A] = {
+    @tailrec
+    def ssort2T[A](xs: List[A], a: List[A]): List[A] = 
+      if(xs.isEmpty) a 
+      else {
+        val ys = maximum(xs)
+        ssort2T(ys.tail, ys.head :: a)
+      }
+    ssort2T(xs, Nil) 
+  }
+
+
+}
+#+END_SRC
 
 
 ** Algorithms in /C++/ 
