@@ -177,8 +177,17 @@ object SelectionSort {
     case Nil => Nil
     case _   => xs.min :: ssort1(xs remove xs.min)
   }
+
+  //calculates the minimum of a list and 
+  //returns the list with that element removed
+  def minimum(xs: List[Int]): List[Int] =
+    (List(xs.head) /: xs.tail) {
+      (ys, x) =>
+        if(x < ys.head) x :: ys
+        else ys.head :: x :: ys.tail
+  }
   
-  //Functional version 2(tailrec)
+  //Functional version 2(tailrec and 1-pass)
   def ssort2[A <% Ordered[A]](xs: List[A]): List[A] = {
     @tailrec
     def ssort2T[A](xs: List[A], a: List[A]): List[A] = 
@@ -192,7 +201,84 @@ object SelectionSort {
 
 }
 #+END_SRC
+Well, before we get into more traditional ways of Selection sort,
+Let's try our best to optimize our functional version.
 
+We mainly apply two optimizations: *tailrec* and *one-pass*.
+
+**** Tailrec
+The *tailrec* optimization is efficient and crucial for our further
+traditional implementations. However, how do we do tailrecs?
+
+- *Simple list tailrec*
+
+To make things simple and stupid, we firstly only focus on recursions whose
+last expression only contains one recursion
+(which means we do not discuss tree recursion right now).
+
+#+BEGIN_SRC 
+rec 1 = some value
+rec x = f x (rec (h x))
+#+END_SRC
+
+Now we unfold this recursion:
+#+BEGIN_SRC 
+rec x = f x $ f (h x) $ f (h $ h x) $ f (h $ h $ h x) $ ... $ f (h $ h $ ... $ h $ x) $ (some value)
+#+END_SRC
+
+Hummmmm, it looks even more complex...
+I now have two guesses on how to do tailrec for codes like this:
+1) Build from bottom
+2) Do /CPS/ transformation
+
+Let's try the first one first.
+To build from bottom, we need to know the most important parameter: =(h $ h $ ... $ x)=.
+To know this parameter, we need to know how many times the function =h= was
+applied to =x=. We can find some clues from the terminating pattern of =rec=.
+
+- Our current problem:
+
+#+BEGIN_SRC 
+We have a function (h :: a -> a) which do transformations of x and
+we need to figure out that how many times h applied to x in order to
+reach the value '1'(some constant or pattern) in the terminating definiton of rec.
+#+END_SRC
+
+  + If h is reversible(noted h', i.e. h . h' = id)
+
+    we can build from bottom!
+    Notice that we need to pass our value of each layer to upper layer,
+    so we need one more parameter to record our current result.
+    #+BEGIN_SRC 
+    reverseBuild f h x res = f x res
+    reverseBuild f h y res = reverseBuild f h (h' y) (f y res)
+    #+END_SRC
+    * use foldl, foldr?
+
+
+  + else h is not reversible:(
+
+    well, which means we can't get results from bottom, we have to start from
+    head since we can not calculate (h $ h $ ... $ x). Maybe we need another strategy.
+
+
+  + To change order... How about =Monoid=?
+    Suppose we want to get the sum of a list:
+    #+BEGIN_SRC 
+    sum [] = 0
+    sum (x:xs) = x + sum xs
+    #+END_SRC
+    where, =(+)= becomes the function =f=.
+
+    Since (a + b) + c === a + (b + c),
+    we can reverse the calculation order
+    #+BEGIN_SRC 
+    a + (b + (c + d))
+    #+END_SRC
+    to
+    #+BEGIN_SRC 
+    ((a + b) + c) + d
+    #+END_SRC
 
 
 
