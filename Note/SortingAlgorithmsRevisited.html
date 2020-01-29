@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-29 周三 13:41 -->
+<!-- 2020-01-29 周三 17:42 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sorting Algorithms: revisited</title>
@@ -234,31 +234,32 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb767f31">1. Overview</a>
+<li><a href="#org9ed6b2d">1. Overview</a>
 <ul>
-<li><a href="#org02c7bbf">1.1. Comparison-based sorting</a></li>
-<li><a href="#orgcf28b7e">1.2. Representation-based sorting</a></li>
+<li><a href="#org452f3c4">1.1. Comparison-based sorting</a></li>
+<li><a href="#org841bd46">1.2. Representation-based sorting</a></li>
 </ul>
 </li>
-<li><a href="#orgee0a54e">2. Algorithms in <i>Haskell</i></a>
+<li><a href="#orge06316f">2. Algorithms in <i>Haskell</i></a>
 <ul>
-<li><a href="#org1014117">2.1. Selection sort</a></li>
-<li><a href="#org74715af">2.2. Insertion sort</a></li>
-<li><a href="#orgfa3c46f">2.3. Quick sort</a></li>
-<li><a href="#org5c2d477">2.4. Merge sort</a></li>
-<li><a href="#org79eebd4">2.5. Heap sort</a></li>
+<li><a href="#orgdae8f45">2.1. Selection sort</a></li>
+<li><a href="#org9f2bb02">2.2. Insertion sort</a></li>
+<li><a href="#org6830e89">2.3. Quick sort</a></li>
+<li><a href="#org6fee814">2.4. Merge sort</a></li>
+<li><a href="#org537e78d">2.5. Heap sort</a></li>
 </ul>
 </li>
-<li><a href="#org3a90f8c">3. Algorithms in <i>Scala</i></a>
+<li><a href="#org2ca6f6c">3. Algorithms in <i>Scala</i></a>
 <ul>
-<li><a href="#org1142ef8">3.1. Selection sort</a>
+<li><a href="#orgffbca04">3.1. Selection sort</a>
 <ul>
-<li><a href="#org10ac386">3.1.1. Tailrec</a></li>
+<li><a href="#orgea8bafb">3.1.1. Tailrec</a></li>
+<li><a href="#orgcd180da">3.1.2. One-pass</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgde4404e">4. Algorithms in <i>C++</i></a></li>
+<li><a href="#orge2f1dae">4. Algorithms in <i>C++</i></a></li>
 </ul>
 </div>
 </div>
@@ -291,12 +292,12 @@ C++ implementation                  (==&gt; C)
 Let's go!
 </p>
 
-<div id="outline-container-orgb767f31" class="outline-2">
-<h2 id="orgb767f31"><span class="section-number-2">1</span> Overview</h2>
+<div id="outline-container-org9ed6b2d" class="outline-2">
+<h2 id="org9ed6b2d"><span class="section-number-2">1</span> Overview</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org02c7bbf" class="outline-3">
-<h3 id="org02c7bbf"><span class="section-number-3">1.1</span> Comparison-based sorting</h3>
+<div id="outline-container-org452f3c4" class="outline-3">
+<h3 id="org452f3c4"><span class="section-number-3">1.1</span> Comparison-based sorting</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 A Haskell blueprint of comparison-based sorting is
@@ -387,17 +388,17 @@ Ok, now let's try to implement these algorithms in <code>Haskell</code>.
 </div>
 </div>
 
-<div id="outline-container-orgcf28b7e" class="outline-3">
-<h3 id="orgcf28b7e"><span class="section-number-3">1.2</span> Representation-based sorting</h3>
+<div id="outline-container-org841bd46" class="outline-3">
+<h3 id="org841bd46"><span class="section-number-3">1.2</span> Representation-based sorting</h3>
 </div>
 </div>
 
-<div id="outline-container-orgee0a54e" class="outline-2">
-<h2 id="orgee0a54e"><span class="section-number-2">2</span> Algorithms in <i>Haskell</i></h2>
+<div id="outline-container-orge06316f" class="outline-2">
+<h2 id="orge06316f"><span class="section-number-2">2</span> Algorithms in <i>Haskell</i></h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org1014117" class="outline-3">
-<h3 id="org1014117"><span class="section-number-3">2.1</span> Selection sort</h3>
+<div id="outline-container-orgdae8f45" class="outline-3">
+<h3 id="orgdae8f45"><span class="section-number-3">2.1</span> Selection sort</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><b>A naive implementation</b></li>
@@ -439,8 +440,8 @@ However, this way it's not as clear as the naive one.
 </div>
 </div>
 
-<div id="outline-container-org74715af" class="outline-3">
-<h3 id="org74715af"><span class="section-number-3">2.2</span> Insertion sort</h3>
+<div id="outline-container-org9f2bb02" class="outline-3">
+<h3 id="org9f2bb02"><span class="section-number-3">2.2</span> Insertion sort</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 This algorithm is ubiquitous in our daily lives.
@@ -458,8 +459,8 @@ This algorithm is ubiquitous in our daily lives.
 </div>
 </div>
 
-<div id="outline-container-orgfa3c46f" class="outline-3">
-<h3 id="orgfa3c46f"><span class="section-number-3">2.3</span> Quick sort</h3>
+<div id="outline-container-org6830e89" class="outline-3">
+<h3 id="org6830e89"><span class="section-number-3">2.3</span> Quick sort</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Quick sort well, is famous&#x2026;
@@ -493,8 +494,8 @@ We can also split the list in fewer passes, but I think it's not necessary.
 </div>
 </div>
 
-<div id="outline-container-org5c2d477" class="outline-3">
-<h3 id="org5c2d477"><span class="section-number-3">2.4</span> Merge sort</h3>
+<div id="outline-container-org6fee814" class="outline-3">
+<h3 id="org6fee814"><span class="section-number-3">2.4</span> Merge sort</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 Merge sort is a well balanced algorithm.
@@ -531,8 +532,8 @@ Now all we need is to split list in a balanced way.
 </div>
 </div>
 
-<div id="outline-container-org79eebd4" class="outline-3">
-<h3 id="org79eebd4"><span class="section-number-3">2.5</span> Heap sort</h3>
+<div id="outline-container-org537e78d" class="outline-3">
+<h3 id="org537e78d"><span class="section-number-3">2.5</span> Heap sort</h3>
 <div class="outline-text-3" id="text-2-5">
 <pre class="example">
 UNDERWORK!
@@ -542,8 +543,8 @@ UNDERWORK!
 </div>
 
 
-<div id="outline-container-org3a90f8c" class="outline-2">
-<h2 id="org3a90f8c"><span class="section-number-2">3</span> Algorithms in <i>Scala</i></h2>
+<div id="outline-container-org2ca6f6c" class="outline-2">
+<h2 id="org2ca6f6c"><span class="section-number-2">3</span> Algorithms in <i>Scala</i></h2>
 <div class="outline-text-2" id="text-3">
 <p>
 In this part, we firstly translate haskell code directly into Scala
@@ -557,8 +558,8 @@ be easily changed. We will implement both versions.
 </p>
 </div>
 
-<div id="outline-container-org1142ef8" class="outline-3">
-<h3 id="org1142ef8"><span class="section-number-3">3.1</span> Selection sort</h3>
+<div id="outline-container-orgffbca04" class="outline-3">
+<h3 id="orgffbca04"><span class="section-number-3">3.1</span> Selection sort</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Translation in Scala</li>
@@ -609,8 +610,8 @@ We mainly apply two optimizations: <b>tailrec</b> and <b>one-pass</b>.
 </p>
 </div>
 
-<div id="outline-container-org10ac386" class="outline-4">
-<h4 id="org10ac386"><span class="section-number-4">3.1.1</span> Tailrec</h4>
+<div id="outline-container-orgea8bafb" class="outline-4">
+<h4 id="orgea8bafb"><span class="section-number-4">3.1.1</span> Tailrec</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 The <b>tailrec</b> optimization is efficient and crucial for our further
@@ -658,7 +659,7 @@ applied to <code>x</code>. We can find some clues from the terminating pattern o
 
 
 <ol class="org-ol">
-<li><a id="org6016d44"></a>Reverse order<br />
+<li><a id="orgcc55d08"></a>Reverse order<br />
 <div class="outline-text-5" id="text-3-1-1-1">
 <ul class="org-ul">
 <li><p>
@@ -785,9 +786,12 @@ Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x202
 
 <p>
 Two options:
-(1) We still calculate from the beginning, but we pass the result as a <code>List</code> of (h $ ..x)s.
-(2) Maybe it's time for our <i>CPS</i> approach&#x2026;
-</p></li>
+</p>
+<ol class="org-ol">
+<li>We still calculate from the beginning, but we pass the result as a <code>List</code> of (h $ ..x)s.
+But this is not efficient and ugly&#x2026;</li>
+<li>Maybe it's time for our <i>CPS</i> approach&#x2026;</li>
+</ol></li>
 </ul>
 
 
@@ -796,30 +800,62 @@ Time for the second idea!
 </p>
 </div>
 </li>
-<li><a id="orgbd04c72"></a>CPS trasformation<br />
+<li><a id="orgfb3e3b4"></a>CPS trasformation<br />
 <div class="outline-text-5" id="text-3-1-1-2">
 <p>
 CPS is a tool to convert recursive code to <b>tail call</b>.(note that this is different from tailrec).
 Recall our <code>rec</code> function:
 </p>
 <pre class="example">
-  
+rec 1 = some value
+rec x = f x (rec (h x))
 </pre>
+
+<p>
+to <i>CPS</i> style =&gt;
+</p>
+<pre class="example">
+rec 1 c = c value
+rec x c = rec (h x) (c . (f x))
+</pre>
+<p>
+It looks like we are just building our unfolded function chain.
+Instead of accumulating results and values, we accumulate calculations(functions).
+</p>
+
+<p>
+In fact, CPS can be used to convert any recursive function to tail-call form.
+With CPS, we can build our executing stack from heap.
+</p>
 </div>
 </li>
 </ol>
 </div>
+
+<div id="outline-container-orgcd180da" class="outline-4">
+<h4 id="orgcd180da"><span class="section-number-4">3.1.2</span> One-pass</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+Well, notice that we need to traverse the list two times:
+</p>
+<ol class="org-ol">
+<li>find minimum and 2) recursion.</li>
+</ol>
+</div>
+</div>
 </div>
 </div>
 
-<div id="outline-container-orgde4404e" class="outline-2">
-<h2 id="orgde4404e"><span class="section-number-2">4</span> Algorithms in <i>C++</i></h2>
+
+
+<div id="outline-container-orge2f1dae" class="outline-2">
+<h2 id="orge2f1dae"><span class="section-number-2">4</span> Algorithms in <i>C++</i></h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-28 周二 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-29 周三 13:41</p>
+<p class="date">Created: 2020-01-29 周三 17:42</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

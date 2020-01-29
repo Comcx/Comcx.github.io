@@ -313,18 +313,37 @@ applied to =x=. We can find some clues from the terminating pattern of =rec=.
   + Well, if we're not lucky.. we can't find a reverse h' nor monoid structure...
      
     Two options:
-    (1) We still calculate from the beginning, but we pass the result as a =List= of (h $ ..x)s.
-    (2) Maybe it's time for our /CPS/ approach...
+    1) We still calculate from the beginning, but we pass the result as a =List= of (h $ ..x)s.
+        But this is not efficient and ugly...
+    2) Maybe it's time for our /CPS/ approach...
 
 
 Time for the second idea!
 ***** CPS trasformation
 
-  CPS is a tool to convert recursive code to *tail call*.(note that this is different from tailrec).
-  Recall our =rec= function:
-  #+BEGIN_SRC 
-  
-  #+END_SRC
+CPS is a tool to convert recursive code to *tail call*.(note that this is different from tailrec).
+Recall our =rec= function:
+#+BEGIN_SRC 
+rec 1 = some value
+rec x = f x (rec (h x))
+#+END_SRC
+
+to /CPS/ style =>
+#+BEGIN_SRC 
+rec 1 c = c value
+rec x c = rec (h x) (c . (f x))
+#+END_SRC
+It looks like we are just building our unfolded function chain.
+Instead of accumulating results and values, we accumulate calculations(functions).
+
+In fact, CPS can be used to convert any recursive function to tail-call form.
+With CPS, we can build our executing stack from heap.
+
+**** One-pass
+Well, notice that we need to traverse the list two times:
+1) find minimum and 2) recursion.
+
+
 
 ** Algorithms in /C++/ 
 
