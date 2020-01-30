@@ -1,0 +1,101 @@
+#+Title:  Learning Functional Programming by Parser Combinators!
+#+Author: Comcx
+#+Date:   <2020-01-30 周四>
+
+
+** Ideas
+1. Functions are data.
+2. Data should be well described and combined.
+
+We can express parser functions in a more understandable way.
+
+
+** The main /Parser/ type
+Parsers find structure within text, either to validate, or to get text into some representation. 
+For example, in case we want to parse an integer from a string, 
+we expect a value of an integer type as result of the parser. 
+Therefore we parametrize our parser over the type of the expected value, this leads to the following definition.
+
+#+BEGIN_SRC 
+newtype Parser a = P { parse :: String -> [(String, a)] }
+#+END_SRC
+
+It's just a function of the input string, returning a list of possible outcomes! 
+A single outcome is the remaining input and the parsed value. Why multiple outomces? 
+Well, we could parse things in different ways. 
+For example ="1 + 2 + 3"= could be parsed as =(1 + 2) + 3= or =1 + (2 + 3)=.
+
+
+** Find strucutres and properties of Parser
+*** Parser can be a _Functor_.
+#+BEGIN_SRC 
+instance Functor Parser where
+  fmap f p = P $ \xs -> [ (f x, s) | (x, s) <- parse p xs ]
+#+END_SRC
+We just first parse and then map contents.
+
+*** Parser can be an _Applicative_.
+#+BEGIN_SRC 
+instance Applicative Parser where
+  pure x = P $ \xs -> [(x, xs)]
+  (P f) <*> (P a) = P $ 
+    \xs -> [ (f' x, s2) | (f', s1) <- f xs, (x, s2) <- a s1 ]
+#+END_SRC
+Again, we first apply the first parser and then map the funtion to every results of
+the next parser.
+
+*** Parser can be a _Monad_.
+Monad is powerful here again.
+#+BEGIN_SRC 
+instance Monad Parser where
+  return = pure
+  (P p) >>= f = P $
+    \xs -> [ parse (f x) s | (x, s) <- p xs ]
+#+END_SRC
+
+*** Parser can be an _Alternative_.
+Applicative => Alternative
+#+BEGIN_SRC 
+instance Alternative Parser where
+  empty = mempty
+  p <|> q = P $ \xs -> parse (p <> q) xs
+#+END_SRC
+To complete our definition, we need monoid and semigroup.
+
+*** Parser should be a _Semigroup_.
+#+BEGIN_SRC 
+instance Semigroup (Parser a) where
+  p <> q = P $ \xs -> parse p xs <> parse q xs
+#+END_SRC
+
+*** Parser should be a _Monoid_.
+#+BEGIN_SRC 
+instance Monoid (Parser a) where
+  mempty = P $ \xs -> []
+#+END_SRC
+
+
+** Our arsenal!
+*** Parser Char
+Perhaps the most basic one is =item=.
+#+BEGIN_SRC 
+item :: Parser Char
+item = P $ \xs -> case xs of
+  []     -> []
+  (x:xs) -> [(x, xs)]
+#+END_SRC
+We just get the head character of the raw string.
+
+Now we can add some constraints of Parser Char:
+#+BEGIN_SRC 
+satisfy :: (Char -> Bool) -> Parser Char
+satisfy c = do
+  x <- item
+  if c x then return x else empty
+
+oneOf :: String -> Parser Char
+oneOf = satisfy . flip elem
+#+END_SRC
+
+
+

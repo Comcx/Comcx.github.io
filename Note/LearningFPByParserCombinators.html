@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-01-30 周四 18:56 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Learning Functional Programming by Parser Combinators!</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Comcx" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Learning Functional Programming by Parser Combinators!</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org6b3ae1b">1. Ideas</a></li>
+<li><a href="#org4a94a8f">2. The main <i>Parser</i> type</a></li>
+<li><a href="#orgeeec147">3. Find strucutres and properties of Parser</a>
+<ul>
+<li><a href="#org2a5785e">3.1. Parser can be a <span class="underline">Functor</span>.</a></li>
+<li><a href="#orge3148ea">3.2. Parser can be an <span class="underline">Applicative</span>.</a></li>
+<li><a href="#orga29b713">3.3. Parser can be a <span class="underline">Monad</span>.</a></li>
+<li><a href="#orgec4249a">3.4. Parser can be an <span class="underline">Alternative</span>.</a></li>
+<li><a href="#orgd9f6829">3.5. Parser should be a <span class="underline">Semigroup</span>.</a></li>
+<li><a href="#orgc3c1fd6">3.6. Parser should be a <span class="underline">Monoid</span>.</a></li>
+</ul>
+</li>
+<li><a href="#org8a60bf1">4. Our arsenal!</a>
+<ul>
+<li><a href="#org3fd7264">4.1. Parser Char</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org6b3ae1b" class="outline-2">
+<h2 id="org6b3ae1b"><span class="section-number-2">1</span> Ideas</h2>
+<div class="outline-text-2" id="text-1">
+<ol class="org-ol">
+<li>Functions are data.</li>
+<li>Data should be well described and combined.</li>
+</ol>
+
+<p>
+We can express parser functions in a more understandable way.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org4a94a8f" class="outline-2">
+<h2 id="org4a94a8f"><span class="section-number-2">2</span> The main <i>Parser</i> type</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Parsers find structure within text, either to validate, or to get text into some representation. 
+For example, in case we want to parse an integer from a string, 
+we expect a value of an integer type as result of the parser. 
+Therefore we parametrize our parser over the type of the expected value, this leads to the following definition.
+</p>
+
+<pre class="example">
+newtype Parser a = P { parse :: String -&gt; [(String, a)] }
+</pre>
+
+<p>
+It's just a function of the input string, returning a list of possible outcomes! 
+A single outcome is the remaining input and the parsed value. Why multiple outomces? 
+Well, we could parse things in different ways. 
+For example <code>"1 + 2 + 3"</code> could be parsed as <code>(1 + 2) + 3</code> or <code>1 + (2 + 3)</code>.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgeeec147" class="outline-2">
+<h2 id="orgeeec147"><span class="section-number-2">3</span> Find strucutres and properties of Parser</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org2a5785e" class="outline-3">
+<h3 id="org2a5785e"><span class="section-number-3">3.1</span> Parser can be a <span class="underline">Functor</span>.</h3>
+<div class="outline-text-3" id="text-3-1">
+<pre class="example">
+instance Functor Parser where
+  fmap f p = P $ \xs -&gt; [ (f x, s) | (x, s) &lt;- parse p xs ]
+</pre>
+<p>
+We just first parse and then map contents.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge3148ea" class="outline-3">
+<h3 id="orge3148ea"><span class="section-number-3">3.2</span> Parser can be an <span class="underline">Applicative</span>.</h3>
+<div class="outline-text-3" id="text-3-2">
+<pre class="example">
+instance Applicative Parser where
+  pure x = P $ \xs -&gt; [(x, xs)]
+  (P f) &lt;*&gt; (P a) = P $ 
+    \xs -&gt; [ (f' x, s2) | (f', s1) &lt;- f xs, (x, s2) &lt;- a s1 ]
+</pre>
+<p>
+Again, we first apply the first parser and then map the funtion to every results of
+the next parser.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga29b713" class="outline-3">
+<h3 id="orga29b713"><span class="section-number-3">3.3</span> Parser can be a <span class="underline">Monad</span>.</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+Monad is powerful here again.
+</p>
+<pre class="example">
+instance Monad Parser where
+  return = pure
+  (P p) &gt;&gt;= f = P $
+    \xs -&gt; [ parse (f x) s | (x, s) &lt;- p xs ]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgec4249a" class="outline-3">
+<h3 id="orgec4249a"><span class="section-number-3">3.4</span> Parser can be an <span class="underline">Alternative</span>.</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+Applicative =&gt; Alternative
+</p>
+<pre class="example">
+instance Alternative Parser where
+  empty = mempty
+  p &lt;|&gt; q = P $ \xs -&gt; parse (p &lt;&gt; q) xs
+</pre>
+<p>
+To complete our definition, we need monoid and semigroup.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd9f6829" class="outline-3">
+<h3 id="orgd9f6829"><span class="section-number-3">3.5</span> Parser should be a <span class="underline">Semigroup</span>.</h3>
+<div class="outline-text-3" id="text-3-5">
+<pre class="example">
+instance Semigroup (Parser a) where
+  p &lt;&gt; q = P $ \xs -&gt; parse p xs &lt;&gt; parse q xs
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgc3c1fd6" class="outline-3">
+<h3 id="orgc3c1fd6"><span class="section-number-3">3.6</span> Parser should be a <span class="underline">Monoid</span>.</h3>
+<div class="outline-text-3" id="text-3-6">
+<pre class="example">
+instance Monoid (Parser a) where
+  mempty = P $ \xs -&gt; []
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org8a60bf1" class="outline-2">
+<h2 id="org8a60bf1"><span class="section-number-2">4</span> Our arsenal!</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org3fd7264" class="outline-3">
+<h3 id="org3fd7264"><span class="section-number-3">4.1</span> Parser Char</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+Perhaps the most basic one is <code>item</code>.
+</p>
+<pre class="example">
+item :: Parser Char
+item = P $ \xs -&gt; case xs of
+  []     -&gt; []
+  (x:xs) -&gt; [(x, xs)]
+</pre>
+<p>
+We just get the head character of the raw string.
+</p>
+
+<p>
+Now we can add some constraints of Parser Char:
+</p>
+<pre class="example">
+satisfy :: (Char -&gt; Bool) -&gt; Parser Char
+satisfy c = do
+  x &lt;- item
+  if c x then return x else empty
+
+oneOf :: String -&gt; Parser Char
+oneOf = satisfy . flip elem
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2020-01-30 周四 00:00</p>
+<p class="author">Author: Comcx</p>
+<p class="date">Created: 2020-01-30 周四 18:56</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
