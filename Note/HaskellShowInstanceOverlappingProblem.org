@@ -1,0 +1,46 @@
+#+Title:  The Haskell Show instance Overlapping problem
+#+Author: Comcx
+#+Date:   <2020-02-02 周日>
+
+
+Today when I was just writing haskell codes, I suddenly getting confused as
+the =Show= instances implementation. If we implement instances of type =[a]=, 
+then why does type =String= just works in a different way since =String = [Char]=?
+
+Well, The explanation is...
+
+** A special trick of Haskell Prelude
+In fact, class =Show= is not a typeclass with a mere function =show=.
+In =Prelude=, it is:
+#+BEGIN_SRC 
+class Show a where
+  show :: a -> String
+  showList :: [a] -> String
+  showList = default implementation for showList
+
+instance Show Char where
+  show = ...
+  showList = specific implementation for String
+
+instance Show a => Show [a] where
+  show = showList
+#+END_SRC
+By putting the showList function into the Show class, we get
+a special treatment of Strings in Haskell 98, without any overlapping
+instances at all.
+
+** Alternative solution
+An alternative solution is to use GHC extensions.
+#+BEGIN_SRC 
+{-# LANGUAGE OverlappingInstances #-}
+#+END_SRC
+
+
+** Reflection of String implementation
+Should type =String= be a synonym of =[Char]=?
+May be =Text.Lazy= a better choice?
+
+I am not sure...
+
+
+
