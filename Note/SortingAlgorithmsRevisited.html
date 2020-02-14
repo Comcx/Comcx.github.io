@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-02-14 周五 16:28 -->
+<!-- 2020-02-14 周五 20:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sorting Algorithms: revisited</title>
@@ -234,43 +234,47 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2f56c31">1. Overview</a>
+<li><a href="#org1f0a68b">1. Overview</a>
 <ul>
-<li><a href="#orga81df6a">1.1. Comparison-based sorting</a></li>
-<li><a href="#org7d9ebb8">1.2. Representation-based sorting</a></li>
-<li><a href="#org94b1686">1.3. Optimization strategies</a>
+<li><a href="#orgf9102d1">1.1. Comparison-based sorting</a></li>
+<li><a href="#orgba72410">1.2. Representation-based sorting</a></li>
+<li><a href="#org08de7b6">1.3. Optimization strategies</a>
 <ul>
-<li><a href="#org76b0103">1.3.1. Tailrec</a></li>
-<li><a href="#orga944ba1">1.3.2. One-pass</a></li>
-<li><a href="#orgf024061">1.3.3. Dynamic Programming</a></li>
-<li><a href="#orgbac99a6">1.3.4. Optimizations summary</a></li>
+<li><a href="#orga0ac19d">1.3.1. Tailrec</a></li>
+<li><a href="#org0f9f4c4">1.3.2. One-pass</a></li>
+<li><a href="#org9718f6c">1.3.3. Dynamic Programming</a></li>
+<li><a href="#orgb0896e5">1.3.4. Optimizations summary</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgd959f1b">2. Algorithms in <i>Haskell</i></a>
+<li><a href="#org8f1dca5">2. Algorithms in <i>Haskell</i></a>
 <ul>
-<li><a href="#org571e180">2.1. Selection sort</a></li>
-<li><a href="#orgaf711c6">2.2. Insertion sort</a></li>
-<li><a href="#org5a328c0">2.3. Quick sort</a></li>
-<li><a href="#org8ddc6d9">2.4. Merge sort</a></li>
-<li><a href="#org5b80036">2.5. Heap sort</a></li>
+<li><a href="#org85c21c9">2.1. Selection sort</a></li>
+<li><a href="#orgce4a096">2.2. Insertion sort</a></li>
+<li><a href="#org208a730">2.3. Quick sort</a></li>
+<li><a href="#org4ff2551">2.4. Merge sort</a></li>
+<li><a href="#org06c5a92">2.5. Heap sort</a></li>
 </ul>
 </li>
-<li><a href="#orgf140ca0">3. Algorithms in <i>Scala</i></a>
+<li><a href="#org248108e">3. Algorithms in <i>Scala</i></a>
 <ul>
-<li><a href="#org770c39f">3.1. Selection sort</a>
+<li><a href="#org08f1523">3.1. Selection sort</a>
 <ul>
-<li><a href="#orgda8f721">3.1.1. Naive translation in Scala</a></li>
-<li><a href="#org219bbf6">3.1.2. Applying our optimizations</a></li>
+<li><a href="#org01eb153">3.1.1. Naive translation in Scala</a></li>
+<li><a href="#org4ae9bc5">3.1.2. Applying our optimizations</a></li>
 </ul>
 </li>
-<li><a href="#org5f17310">3.2. Insertion sort</a></li>
+<li><a href="#org526b138">3.2. Insertion sort</a>
+<ul>
+<li><a href="#org6580c91">3.2.1. Naive translaton</a></li>
 </ul>
 </li>
-<li><a href="#orgeb255e5">4. Algorithms in <i>C++</i></a>
+</ul>
+</li>
+<li><a href="#orgded6126">4. Algorithms in <i>C++</i></a>
 <ul>
-<li><a href="#orgb5551b1">4.1. Selection sort</a></li>
+<li><a href="#org658a804">4.1. Selection sort</a></li>
 </ul>
 </li>
 </ul>
@@ -305,12 +309,12 @@ C++ implementation                  (==&gt; C)
 Let's go!
 </p>
 
-<div id="outline-container-org2f56c31" class="outline-2">
-<h2 id="org2f56c31"><span class="section-number-2">1</span> Overview</h2>
+<div id="outline-container-org1f0a68b" class="outline-2">
+<h2 id="org1f0a68b"><span class="section-number-2">1</span> Overview</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orga81df6a" class="outline-3">
-<h3 id="orga81df6a"><span class="section-number-3">1.1</span> Comparison-based sorting</h3>
+<div id="outline-container-orgf9102d1" class="outline-3">
+<h3 id="orgf9102d1"><span class="section-number-3">1.1</span> Comparison-based sorting</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 A Haskell blueprint of comparison-based sorting is
@@ -401,16 +405,16 @@ Ok, now let's try to implement these algorithms in <code>Haskell</code>.
 </div>
 </div>
 
-<div id="outline-container-org7d9ebb8" class="outline-3">
-<h3 id="org7d9ebb8"><span class="section-number-3">1.2</span> Representation-based sorting</h3>
+<div id="outline-container-orgba72410" class="outline-3">
+<h3 id="orgba72410"><span class="section-number-3">1.2</span> Representation-based sorting</h3>
 </div>
 
-<div id="outline-container-org94b1686" class="outline-3">
-<h3 id="org94b1686"><span class="section-number-3">1.3</span> Optimization strategies</h3>
+<div id="outline-container-org08de7b6" class="outline-3">
+<h3 id="org08de7b6"><span class="section-number-3">1.3</span> Optimization strategies</h3>
 <div class="outline-text-3" id="text-1-3">
 </div>
-<div id="outline-container-org76b0103" class="outline-4">
-<h4 id="org76b0103"><span class="section-number-4">1.3.1</span> Tailrec</h4>
+<div id="outline-container-orga0ac19d" class="outline-4">
+<h4 id="orga0ac19d"><span class="section-number-4">1.3.1</span> Tailrec</h4>
 <div class="outline-text-4" id="text-1-3-1">
 <p>
 The <b>tailrec</b> optimization is efficient and crucial for our further
@@ -419,7 +423,7 @@ traditional implementations. However, how do we do tailrecs?
 </div>
 
 <ol class="org-ol">
-<li><a id="org89cdf56"></a><b>Simple list tailrec</b><br />
+<li><a id="org41b1ad6"></a><b>Simple list tailrec</b><br />
 <div class="outline-text-5" id="text-1-3-1-1">
 <p>
 To make things simple and stupid, we firstly only focus on recursions whose
@@ -457,7 +461,7 @@ applied to <code>x</code>. We can find some clues from the terminating pattern o
 </div>
 
 <ol class="org-ol">
-<li><a id="orgcb0939f"></a>Reverse order<br />
+<li><a id="orgd4af013"></a>Reverse order<br />
 <div class="outline-text-6" id="text-1-3-1-1-1">
 <ul class="org-ul">
 <li><p>
@@ -473,7 +477,7 @@ Our current problem:
 </div>
 
 <ol class="org-ol">
-<li><a id="orgcced028"></a><b>If h is reversible(noted h', i.e. h . h' = id)</b><br />
+<li><a id="orgf817182"></a><b>If h is reversible(noted h', i.e. h . h' = id)</b><br />
 <div class="outline-text-7" id="text-1-3-1-1-1-1">
 <p>
 we can build from bottom!
@@ -490,7 +494,7 @@ so we need one more parameter to record our current result.
 </div>
 </li>
 
-<li><a id="orga478485"></a><b>else h is not reversible:(</b><br />
+<li><a id="org455e633"></a><b>else h is not reversible:(</b><br />
 <div class="outline-text-7" id="text-1-3-1-1-1-2">
 <p>
 well, which means we can't get results from bottom, we have to start from
@@ -499,7 +503,7 @@ head since we can not calculate (h $ h $ &#x2026; $ x). Maybe we need another st
 </div>
 </li>
 
-<li><a id="orgede6010"></a><b>To change order&#x2026; How about <code>Monoid</code>?</b><br />
+<li><a id="org533d3f6"></a><b>To change order&#x2026; How about <code>Monoid</code>?</b><br />
 <div class="outline-text-7" id="text-1-3-1-1-1-3">
 <p>
 Suppose we want to get the sum of a list:
@@ -548,7 +552,7 @@ This time we don't need <code>h'</code>!
 </div>
 </li>
 
-<li><a id="orgd225164"></a><b>Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit</b><br />
+<li><a id="orgc014bd4"></a><b>Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit</b><br />
 <div class="outline-text-7" id="text-1-3-1-1-1-4">
 <p>
 This time instead of requiring f to be satisfiled by monoid law,
@@ -562,12 +566,37 @@ Now we can use our trick again:
 </p>
 <pre class="example">
     reverseOrder' g h 1 res = res
-    reverseOrder' g h x res = reverseOrder' g h (g x) (g x (h x))
+    reverseOrder' g h x res = reverseOrder' g h (h x) (g x (h x))
+</pre>
+
+<p>
+Even more general(although harder&#x2026;), we can generalize function <code>h</code> too.
+Suppose we have our special function <code>g</code> and a new h function <code>p</code>.
+</p>
+
+<p>
+We have general rule:
+</p>
+<pre class="example">
+    g (g x (p x)) (p $ p x) = f x (f (h x) (h $ h x))
+    or(with extra start x0)
+    g (g (g a x) (p x)) (p $ p x) = f x (f (h x) (h $ (h x)))
+</pre>
+<p>
+What's more? We may Just add a new start data x0(just like foldl :-)
+</p>
+
+<p>
+The final version with extra x0(a is x0 at first):
+</p>
+<pre class="example">
+    reverseOrder'' g p a 1 res = res
+    reverseOrder'' g p a x res = reverseOrder'' g p (p x) (g a x)
 </pre>
 </div>
 </li>
 
-<li><a id="orgb28291d"></a><b>Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x2026;</b><br />
+<li><a id="orge59882a"></a><b>Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x2026;</b><br />
 <div class="outline-text-7" id="text-1-3-1-1-1-5">
 <p>
 Two options:
@@ -585,7 +614,7 @@ Time for the second idea!
 </li>
 </ol>
 </li>
-<li><a id="org63361d0"></a>CPS trasformation<br />
+<li><a id="orge850ea5"></a>CPS trasformation<br />
 <div class="outline-text-6" id="text-1-3-1-1-2">
 <p>
 CPS is a tool to convert recursive code to <b>tail call</b>.(note that this is different from tailrec).
@@ -619,8 +648,8 @@ With CPS, we can build our executing stack from heap.
 </ol>
 </div>
 
-<div id="outline-container-orga944ba1" class="outline-4">
-<h4 id="orga944ba1"><span class="section-number-4">1.3.2</span> One-pass</h4>
+<div id="outline-container-org0f9f4c4" class="outline-4">
+<h4 id="org0f9f4c4"><span class="section-number-4">1.3.2</span> One-pass</h4>
 <div class="outline-text-4" id="text-1-3-2">
 <p>
 Well, notice that we need to traverse the list two times:
@@ -637,8 +666,8 @@ But this is not so necessary for us to translate codes to traditinal codes.
 </div>
 </div>
 
-<div id="outline-container-orgf024061" class="outline-4">
-<h4 id="orgf024061"><span class="section-number-4">1.3.3</span> Dynamic Programming</h4>
+<div id="outline-container-org9718f6c" class="outline-4">
+<h4 id="org9718f6c"><span class="section-number-4">1.3.3</span> Dynamic Programming</h4>
 <div class="outline-text-4" id="text-1-3-3">
 <p>
 Well, for recursions like list recursions, dynamic programming is not
@@ -656,8 +685,8 @@ For more dynamic programming techniques, we will discuss in later parts(tree rec
 </div>
 </div>
 
-<div id="outline-container-orgbac99a6" class="outline-4">
-<h4 id="orgbac99a6"><span class="section-number-4">1.3.4</span> Optimizations summary</h4>
+<div id="outline-container-orgb0896e5" class="outline-4">
+<h4 id="orgb0896e5"><span class="section-number-4">1.3.4</span> Optimizations summary</h4>
 <div class="outline-text-4" id="text-1-3-4">
 <p>
 We have discussed several optimizations may be applied to list recursions.
@@ -666,10 +695,10 @@ Let's recap!
 </div>
 
 <ol class="org-ol">
-<li><a id="org4ee648c"></a>Tailrec<br />
+<li><a id="org793f546"></a>Tailrec<br />
 <ol class="org-ol">
-<li><a id="org9b3bcba"></a>Calculating from bottom if reversible<br /></li>
-<li><a id="orgd2b93b1"></a>Reverse calculation order<br />
+<li><a id="org4aff886"></a>Calculating from bottom if reversible<br /></li>
+<li><a id="org01909cd"></a>Reverse calculation order<br />
 <div class="outline-text-6" id="text-1-3-4-1-2">
 <ul class="org-ul">
 <li>By Monoid structure</li>
@@ -677,11 +706,11 @@ Let's recap!
 </ul>
 </div>
 </li>
-<li><a id="org8b2c88c"></a>CPS transformation<br /></li>
+<li><a id="org531a3ad"></a>CPS transformation<br /></li>
 </ol>
 </li>
 
-<li><a id="orgff4c3d9"></a>Dynamic Programming<br />
+<li><a id="org2b274c6"></a>Dynamic Programming<br />
 <div class="outline-text-5" id="text-1-3-4-2">
 <p>
 To avoid unnecessary calculation
@@ -695,12 +724,12 @@ To avoid unnecessary calculation
 
 
 
-<div id="outline-container-orgd959f1b" class="outline-2">
-<h2 id="orgd959f1b"><span class="section-number-2">2</span> Algorithms in <i>Haskell</i></h2>
+<div id="outline-container-org8f1dca5" class="outline-2">
+<h2 id="org8f1dca5"><span class="section-number-2">2</span> Algorithms in <i>Haskell</i></h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org571e180" class="outline-3">
-<h3 id="org571e180"><span class="section-number-3">2.1</span> Selection sort</h3>
+<div id="outline-container-org85c21c9" class="outline-3">
+<h3 id="org85c21c9"><span class="section-number-3">2.1</span> Selection sort</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><b>A naive implementation</b></li>
@@ -742,8 +771,8 @@ However, this way it's not as clear as the naive one.
 </div>
 </div>
 
-<div id="outline-container-orgaf711c6" class="outline-3">
-<h3 id="orgaf711c6"><span class="section-number-3">2.2</span> Insertion sort</h3>
+<div id="outline-container-orgce4a096" class="outline-3">
+<h3 id="orgce4a096"><span class="section-number-3">2.2</span> Insertion sort</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 This algorithm is ubiquitous in our daily lives.
@@ -761,8 +790,8 @@ This algorithm is ubiquitous in our daily lives.
 </div>
 </div>
 
-<div id="outline-container-org5a328c0" class="outline-3">
-<h3 id="org5a328c0"><span class="section-number-3">2.3</span> Quick sort</h3>
+<div id="outline-container-org208a730" class="outline-3">
+<h3 id="org208a730"><span class="section-number-3">2.3</span> Quick sort</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Quick sort well, is famous&#x2026;
@@ -796,8 +825,8 @@ We can also split the list in fewer passes, but I think it's not necessary.
 </div>
 </div>
 
-<div id="outline-container-org8ddc6d9" class="outline-3">
-<h3 id="org8ddc6d9"><span class="section-number-3">2.4</span> Merge sort</h3>
+<div id="outline-container-org4ff2551" class="outline-3">
+<h3 id="org4ff2551"><span class="section-number-3">2.4</span> Merge sort</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 Merge sort is a well balanced algorithm.
@@ -834,8 +863,8 @@ Now all we need is to split list in a balanced way.
 </div>
 </div>
 
-<div id="outline-container-org5b80036" class="outline-3">
-<h3 id="org5b80036"><span class="section-number-3">2.5</span> Heap sort</h3>
+<div id="outline-container-org06c5a92" class="outline-3">
+<h3 id="org06c5a92"><span class="section-number-3">2.5</span> Heap sort</h3>
 <div class="outline-text-3" id="text-2-5">
 <pre class="example">
 UNDERWORK!
@@ -844,8 +873,8 @@ UNDERWORK!
 </div>
 </div>
 
-<div id="outline-container-orgf140ca0" class="outline-2">
-<h2 id="orgf140ca0"><span class="section-number-2">3</span> Algorithms in <i>Scala</i></h2>
+<div id="outline-container-org248108e" class="outline-2">
+<h2 id="org248108e"><span class="section-number-2">3</span> Algorithms in <i>Scala</i></h2>
 <div class="outline-text-2" id="text-3">
 <p>
 In this part, we firstly translate haskell code directly into Scala
@@ -859,12 +888,12 @@ be easily changed. We will implement both versions.
 </p>
 </div>
 
-<div id="outline-container-org770c39f" class="outline-3">
-<h3 id="org770c39f"><span class="section-number-3">3.1</span> Selection sort</h3>
+<div id="outline-container-org08f1523" class="outline-3">
+<h3 id="org08f1523"><span class="section-number-3">3.1</span> Selection sort</h3>
 <div class="outline-text-3" id="text-3-1">
 </div>
-<div id="outline-container-orgda8f721" class="outline-4">
-<h4 id="orgda8f721"><span class="section-number-4">3.1.1</span> Naive translation in Scala</h4>
+<div id="outline-container-org01eb153" class="outline-4">
+<h4 id="org01eb153"><span class="section-number-4">3.1.1</span> Naive translation in Scala</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <div class="org-src-container">
 <pre class="src src-scala">
@@ -875,7 +904,7 @@ be easily changed. We will implement both versions.
   <span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">Functional version 1</span>
   <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">ssort1</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span> <span style="color: #729fcf; font-weight: bold;">&lt;%</span> <span style="color: #8ae234; font-weight: bold;">Ordered</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">](</span>xs<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00bfff;">]</span> <span style="color: #729fcf; font-weight: bold;">=</span> xs <span style="color: #729fcf; font-weight: bold;">match</span> <span style="color: #00bfff;">{</span>
     <span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #8ae234; font-weight: bold;">Nil</span> <span style="color: #729fcf; font-weight: bold;">=&gt;</span> <span style="color: #8ae234; font-weight: bold;">Nil</span>
-    <span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #729fcf; font-weight: bold;">_</span>   <span style="color: #729fcf; font-weight: bold;">=&gt;</span> xs.min :: ssort1<span style="color: #ffa500;">(</span>xs remove xs.min<span style="color: #ffa500;">)</span>
+    <span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #729fcf; font-weight: bold;">_</span>   <span style="color: #729fcf; font-weight: bold;">=&gt;</span> xs.min :: ssort1<span style="color: #ffa500;">(</span>remove<span style="color: #ff7f50;">(</span>xs.min, xs<span style="color: #ff7f50;">)</span><span style="color: #ffa500;">)</span>
   <span style="color: #00bfff;">}</span>
 <span style="color: #ffd700;">}</span>
 </pre>
@@ -891,46 +920,45 @@ We mainly apply three optimizations: <b>tailrec</b> , <b>one-pass</b> and <b>Dyn
 </div>
 </div>
 
-<div id="outline-container-org219bbf6" class="outline-4">
-<h4 id="org219bbf6"><span class="section-number-4">3.1.2</span> Applying our optimizations</h4>
+<div id="outline-container-org4ae9bc5" class="outline-4">
+<h4 id="org4ae9bc5"><span class="section-number-4">3.1.2</span> Applying our optimizations</h4>
 <div class="outline-text-4" id="text-3-1-2">
 </div>
 <ol class="org-ol">
-<li><a id="orgdf7e5bc"></a>Choose optimizing strategy<br />
+<li><a id="orge075225"></a>Choose optimizing strategy<br />
 <div class="outline-text-5" id="text-3-1-2-1">
 <p>
 Now we try to optimize our <span class="underline">selection sort</span>.
 </p>
+</div>
 
-<ul class="org-ul">
-<li><p>
-What is function <code>h</code> ?
-</p>
-
+<ol class="org-ol">
+<li><a id="orgb5c8aa6"></a>What is function <code>h</code> ?<br />
+<div class="outline-text-6" id="text-3-1-2-1-1">
 <pre class="example">
   h xs = delete xs (minimum xs)
-</pre></li>
+</pre>
+</div>
+</li>
 
-<li><p>
-What is function <code>f</code> ?
-</p>
-
+<li><a id="org7ebc44f"></a>What is function <code>f</code> ?<br />
+<div class="outline-text-6" id="text-3-1-2-1-2">
 <pre class="example">
   f x xs = (minimum x) : xs
-</pre></li>
+</pre>
+</div>
+</li>
 
-<li><p>
-Is function <code>h</code> reversible?
-</p>
-
+<li><a id="orgd4abdd1"></a>Is function <code>h</code> reversible?<br />
+<div class="outline-text-6" id="text-3-1-2-1-3">
 <p>
 well, obviously we can't. Since we can't recover a list from [].
-</p></li>
-
-<li><p>
-Can we find a monoid structure?
 </p>
+</div>
+</li>
 
+<li><a id="org0645889"></a>Can we find a monoid structure?<br />
+<div class="outline-text-6" id="text-3-1-2-1-4">
 <p>
 No again. 
 </p>
@@ -939,17 +967,23 @@ No again.
 </pre>
 <p>
 This can be verified easily.
-</p></li>
-
-<li><p>
-Can we find a special function <code>g</code> to reverse calculation order?
 </p>
+</div>
+</li>
 
+<li><a id="org50954da"></a>Can we find a special function <code>g</code> to reverse calculation order?<br />
+<div class="outline-text-6" id="text-3-1-2-1-5">
 <p>
 Recall that function <code>g</code> must satisfy:
 </p>
 <pre class="example">
   g (g a b) c = f a (f b c)
+</pre>
+<p>
+or
+</p>
+<pre class="example">
+  g (g x (p x)) (p $ p x) = f x (f (h x) (h $ h x))
 </pre>
 <p>
 This looks a little hard though&#x2026;
@@ -959,16 +993,29 @@ This looks a little hard though&#x2026;
 A possible solution:
 </p>
 <pre class="example">
-  g a xs = a ++ minimum xs
-</pre></li>
+  g a xs = a ++ [minimum xs]
+  p x = delete (minimum x) x
+</pre>
+<p>
+To verify:
+</p>
+<pre class="example">
+  g (g a x) (p x) = g (a ++ [minimum x]) (delete (minimum x) x)
+                  = a ++ [minimum x] ++ [minimum (delete (minimum x) x)]
+                  = [] ++ [1st small] ++ [2nd small]
+  f x (f (h x) (h $ h x)) = &lt;above&gt;
+</pre>
 
+<ul class="org-ul">
 <li>CPS style?
 Yes.</li>
 </ul>
 </div>
 </li>
+</ol>
+</li>
 
-<li><a id="orgb5c0930"></a>Let's do it!<br />
+<li><a id="orge0f257f"></a>Let's do it!<br />
 <div class="outline-text-5" id="text-3-1-2-2">
 <div class="org-src-container">
 <pre class="src src-scala">
@@ -978,7 +1025,7 @@ Yes.</li>
 <span style="color: #888a85;">   * calculates the minimum of a list and </span>
 <span style="color: #888a85;">   * returns the list with that element removed</span>
 <span style="color: #888a85;">   */</span>
-  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">minimum</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span> <span style="color: #729fcf; font-weight: bold;">&lt;%</span> <span style="color: #8ae234; font-weight: bold;">Ordered</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">](</span>xs<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00bfff;">]</span> <span style="color: #729fcf; font-weight: bold;">=</span>
+  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">rest</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span> <span style="color: #729fcf; font-weight: bold;">&lt;%</span> <span style="color: #8ae234; font-weight: bold;">Ordered</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">](</span>xs<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00bfff;">]</span> <span style="color: #729fcf; font-weight: bold;">=</span>
     <span style="color: #00bfff;">(</span><span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">(</span>xs.head<span style="color: #ffa500;">)</span> /: xs.tail<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
       <span style="color: #ffa500;">(</span>ys, x<span style="color: #ffa500;">)</span> <span style="color: #729fcf; font-weight: bold;">=&gt;</span>
         <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>x &lt; ys.head<span style="color: #ffa500;">)</span> x :: ys
@@ -992,7 +1039,7 @@ Yes.</li>
     <span style="color: #729fcf;">@tailrec</span>
     <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">ssort2T</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span> <span style="color: #729fcf; font-weight: bold;">&lt;%</span> <span style="color: #8ae234; font-weight: bold;">Ordered</span><span style="color: #ff7f50;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ff7f50;">]</span><span style="color: #ffa500;">](</span>xs<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ff7f50;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ff7f50;">]</span>, a<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ff7f50;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ff7f50;">]</span><span style="color: #ffa500;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span> <span style="color: #729fcf; font-weight: bold;">=</span> 
       <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>xs.isEmpty<span style="color: #ffa500;">)</span> a 
-      <span style="color: #729fcf; font-weight: bold;">else</span> ssort2T<span style="color: #ffa500;">(</span>minimum<span style="color: #ff7f50;">(</span>xs<span style="color: #ff7f50;">)</span>, a ::: <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ff7f50;">(</span>xs.min<span style="color: #ff7f50;">)</span><span style="color: #ffa500;">)</span>
+      <span style="color: #729fcf; font-weight: bold;">else</span> ssort2T<span style="color: #ffa500;">(</span>rest<span style="color: #ff7f50;">(</span>xs<span style="color: #ff7f50;">)</span>, a ::: <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ff7f50;">(</span>xs.min<span style="color: #ff7f50;">)</span><span style="color: #ffa500;">)</span>
       
     ssort2T<span style="color: #ffa500;">(</span>xs, <span style="color: #8ae234; font-weight: bold;">Nil</span><span style="color: #ffa500;">)</span> 
   <span style="color: #00bfff;">}</span>
@@ -1005,15 +1052,17 @@ Yes.</li>
     <span style="color: #729fcf;">@tailrec</span>
     <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">ssort3T</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span> <span style="color: #729fcf; font-weight: bold;">&lt;%</span> <span style="color: #8ae234; font-weight: bold;">Ordered</span><span style="color: #ff7f50;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ff7f50;">]</span><span style="color: #ffa500;">](</span>xs<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ff7f50;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ff7f50;">]</span>, a<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ff7f50;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ff7f50;">]</span> <span style="color: #729fcf; font-weight: bold;">=&gt;</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ff7f50;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ff7f50;">]</span><span style="color: #ffa500;">)</span> <span style="color: #729fcf; font-weight: bold;">=</span> 
       <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>xs.isEmpty<span style="color: #ffa500;">)</span> a<span style="color: #ffa500;">(</span>xs<span style="color: #ffa500;">)</span>
-      <span style="color: #729fcf; font-weight: bold;">else</span> ssort3T<span style="color: #ffa500;">(</span>minimum<span style="color: #ff7f50;">(</span>xs<span style="color: #ff7f50;">)</span>, <span style="color: #ff7f50;">(</span>ys<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00ff00;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00ff00;">]</span><span style="color: #ff7f50;">)</span> <span style="color: #729fcf; font-weight: bold;">=&gt;</span> xs.min :: ys<span style="color: #ffa500;">)</span>
+      <span style="color: #729fcf; font-weight: bold;">else</span> ssort3T<span style="color: #ffa500;">(</span>rest<span style="color: #ff7f50;">(</span>xs<span style="color: #ff7f50;">)</span>, <span style="color: #ff7f50;">(</span>ys<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00ff00;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00ff00;">]</span><span style="color: #ff7f50;">)</span> <span style="color: #729fcf; font-weight: bold;">=&gt;</span> xs.min :: ys<span style="color: #ffa500;">)</span>
 
     ssort3T<span style="color: #ffa500;">(</span>xs, <span style="color: #ff7f50;">(</span>x<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00ff00;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00ff00;">]</span><span style="color: #ff7f50;">)</span> <span style="color: #729fcf; font-weight: bold;">=&gt;</span> x<span style="color: #ffa500;">)</span>
   <span style="color: #00bfff;">}</span>
-  
 
 <span style="color: #ffd700;">}</span>
 </pre>
 </div>
+<p>
+Well done! we have successfully implement tailrec, which is quite easy to opitimized to plain loops.
+</p>
 
 <p>
 Realize that we need some tools to test the efficiency of our codes.
@@ -1024,17 +1073,31 @@ Realize that we need some tools to test the efficiency of our codes.
 </div>
 </div>
 
-<div id="outline-container-org5f17310" class="outline-3">
-<h3 id="org5f17310"><span class="section-number-3">3.2</span> Insertion sort</h3>
+<div id="outline-container-org526b138" class="outline-3">
+<h3 id="org526b138"><span class="section-number-3">3.2</span> Insertion sort</h3>
+<div class="outline-text-3" id="text-3-2">
+</div>
+<div id="outline-container-org6580c91" class="outline-4">
+<h4 id="org6580c91"><span class="section-number-4">3.2.1</span> Naive translaton</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #729fcf; font-weight: bold;">object</span> <span style="color: #8ae234; font-weight: bold;">InsertionSort</span> <span style="color: #ffd700;">{</span>
+
+  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">isort</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span> <span style="color: #729fcf; font-weight: bold;">&lt;%</span> <span style="color: #8ae234; font-weight: bold;">Ordered</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">](</span>xs<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span> <span style="color: #729fcf; font-weight: bold;">=</span> ???
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 
-<div id="outline-container-orgeb255e5" class="outline-2">
-<h2 id="orgeb255e5"><span class="section-number-2">4</span> Algorithms in <i>C++</i></h2>
+<div id="outline-container-orgded6126" class="outline-2">
+<h2 id="orgded6126"><span class="section-number-2">4</span> Algorithms in <i>C++</i></h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgb5551b1" class="outline-3">
-<h3 id="orgb5551b1"><span class="section-number-3">4.1</span> Selection sort</h3>
+<div id="outline-container-org658a804" class="outline-3">
+<h3 id="org658a804"><span class="section-number-3">4.1</span> Selection sort</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 Since we have get tailrec form, we can easily convert the algorithm into loops.
@@ -1046,7 +1109,7 @@ Since we have get tailrec form, we can easily convert the algorithm into loops.
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-28 周二 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-02-14 周五 16:28</p>
+<p class="date">Created: 2020-02-14 周五 20:09</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
