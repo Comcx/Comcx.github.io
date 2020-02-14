@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-29 周三 20:39 -->
+<!-- 2020-02-14 周五 16:28 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sorting Algorithms: revisited</title>
@@ -234,39 +234,43 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orged3114b">1. Overview</a>
+<li><a href="#org2f56c31">1. Overview</a>
 <ul>
-<li><a href="#org48e288c">1.1. Comparison-based sorting</a></li>
-<li><a href="#org984c29b">1.2. Representation-based sorting</a></li>
+<li><a href="#orga81df6a">1.1. Comparison-based sorting</a></li>
+<li><a href="#org7d9ebb8">1.2. Representation-based sorting</a></li>
+<li><a href="#org94b1686">1.3. Optimization strategies</a>
+<ul>
+<li><a href="#org76b0103">1.3.1. Tailrec</a></li>
+<li><a href="#orga944ba1">1.3.2. One-pass</a></li>
+<li><a href="#orgf024061">1.3.3. Dynamic Programming</a></li>
+<li><a href="#orgbac99a6">1.3.4. Optimizations summary</a></li>
 </ul>
 </li>
-<li><a href="#org478b128">2. Algorithms in <i>Haskell</i></a>
-<ul>
-<li><a href="#org6875145">2.1. Selection sort</a></li>
-<li><a href="#org26b126d">2.2. Insertion sort</a></li>
-<li><a href="#orge5013ca">2.3. Quick sort</a></li>
-<li><a href="#orgf947390">2.4. Merge sort</a></li>
-<li><a href="#org66eee2f">2.5. Heap sort</a></li>
 </ul>
 </li>
-<li><a href="#org34fbecd">3. Algorithms in <i>Scala</i></a>
+<li><a href="#orgd959f1b">2. Algorithms in <i>Haskell</i></a>
 <ul>
-<li><a href="#orgacd1a57">3.1. Selection sort</a>
-<ul>
-<li><a href="#org29dd4b4">3.1.1. Naive translation in Scala</a></li>
-<li><a href="#org19bc008">3.1.2. Tailrec</a></li>
-<li><a href="#orga2dfafd">3.1.3. One-pass</a></li>
-<li><a href="#org7e07dcf">3.1.4. Dynamic Programming</a></li>
-<li><a href="#org46874f2">3.1.5. Optimizations summary</a></li>
-<li><a href="#orgb6827aa">3.1.6. Applying our optimizations</a></li>
+<li><a href="#org571e180">2.1. Selection sort</a></li>
+<li><a href="#orgaf711c6">2.2. Insertion sort</a></li>
+<li><a href="#org5a328c0">2.3. Quick sort</a></li>
+<li><a href="#org8ddc6d9">2.4. Merge sort</a></li>
+<li><a href="#org5b80036">2.5. Heap sort</a></li>
 </ul>
 </li>
-<li><a href="#orga574f10">3.2. Insertion sort</a></li>
+<li><a href="#orgf140ca0">3. Algorithms in <i>Scala</i></a>
+<ul>
+<li><a href="#org770c39f">3.1. Selection sort</a>
+<ul>
+<li><a href="#orgda8f721">3.1.1. Naive translation in Scala</a></li>
+<li><a href="#org219bbf6">3.1.2. Applying our optimizations</a></li>
 </ul>
 </li>
-<li><a href="#org3ac33d0">4. Algorithms in <i>C++</i></a>
+<li><a href="#org5f17310">3.2. Insertion sort</a></li>
+</ul>
+</li>
+<li><a href="#orgeb255e5">4. Algorithms in <i>C++</i></a>
 <ul>
-<li><a href="#org2ab6912">4.1. Selection sort</a></li>
+<li><a href="#orgb5551b1">4.1. Selection sort</a></li>
 </ul>
 </li>
 </ul>
@@ -301,12 +305,12 @@ C++ implementation                  (==&gt; C)
 Let's go!
 </p>
 
-<div id="outline-container-orged3114b" class="outline-2">
-<h2 id="orged3114b"><span class="section-number-2">1</span> Overview</h2>
+<div id="outline-container-org2f56c31" class="outline-2">
+<h2 id="org2f56c31"><span class="section-number-2">1</span> Overview</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org48e288c" class="outline-3">
-<h3 id="org48e288c"><span class="section-number-3">1.1</span> Comparison-based sorting</h3>
+<div id="outline-container-orga81df6a" class="outline-3">
+<h3 id="orga81df6a"><span class="section-number-3">1.1</span> Comparison-based sorting</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 A Haskell blueprint of comparison-based sorting is
@@ -397,220 +401,26 @@ Ok, now let's try to implement these algorithms in <code>Haskell</code>.
 </div>
 </div>
 
-<div id="outline-container-org984c29b" class="outline-3">
-<h3 id="org984c29b"><span class="section-number-3">1.2</span> Representation-based sorting</h3>
-</div>
-</div>
-
-<div id="outline-container-org478b128" class="outline-2">
-<h2 id="org478b128"><span class="section-number-2">2</span> Algorithms in <i>Haskell</i></h2>
-<div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-org6875145" class="outline-3">
-<h3 id="org6875145"><span class="section-number-3">2.1</span> Selection sort</h3>
-<div class="outline-text-3" id="text-2-1">
-<ul class="org-ul">
-<li><b>A naive implementation</b></li>
-</ul>
-<div class="org-src-container">
-<pre class="src src-haskell">
-<span style="color: #edd400; font-weight: bold;">ssort</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Ord</span> a <span style="color: #ff6347; font-weight: bold;">=&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
-<span style="color: #edd400; font-weight: bold;">ssort</span> <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
-<span style="color: #edd400; font-weight: bold;">ssort</span> xs <span style="color: #ff6347; font-weight: bold;">=</span> m <span style="color: #8ae234; font-weight: bold;">:</span> ssort <span style="color: #ff6347; font-weight: bold;">$</span> delete m xs
-  <span style="color: #729fcf; font-weight: bold;">where</span> m <span style="color: #ff6347; font-weight: bold;">=</span> minimum xs
-</pre>
-</div>
-<p>
-Well although this is not efficient, 
-this is quite clear and easy to understand.
-</p>
-
-<p>
-A more efficient implemetation of Haskell maybe:
-</p>
-<div class="org-src-container">
-<pre class="src src-haskell">
-<span style="color: #edd400; font-weight: bold;">split</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Ord</span> a <span style="color: #ff6347; font-weight: bold;">=&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
-<span style="color: #edd400; font-weight: bold;">split</span> <span style="color: #ffd700; font-weight: bold;">[]</span> m r     <span style="color: #ff6347; font-weight: bold;">=</span> m <span style="color: #8ae234; font-weight: bold;">:</span> ssort' r
-<span style="color: #edd400; font-weight: bold;">split</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> m r <span style="color: #ff6347; font-weight: bold;">|</span> x <span style="color: #ff6347; font-weight: bold;">&lt;</span> m     <span style="color: #ff6347; font-weight: bold;">=</span> split xs x <span style="color: #ffd700;">(</span>m<span style="color: #8ae234; font-weight: bold;">:</span>r<span style="color: #ffd700;">)</span>
-                 <span style="color: #ff6347; font-weight: bold;">|</span> otherwise <span style="color: #ff6347; font-weight: bold;">=</span> split xs m <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>r<span style="color: #ffd700;">)</span>
-
-<span style="color: #edd400; font-weight: bold;">ssort'</span> <span style="color: #ffd700; font-weight: bold;">[]</span>     <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
-<span style="color: #edd400; font-weight: bold;">ssort'</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> split xs x <span style="color: #ffd700; font-weight: bold;">[]</span>
-</pre>
-</div>
-<p>
-or just make the naive one <i>tailrec</i>.
-</p>
-
-<p>
-However, this way it's not as clear as the naive one.
-</p>
-</div>
+<div id="outline-container-org7d9ebb8" class="outline-3">
+<h3 id="org7d9ebb8"><span class="section-number-3">1.2</span> Representation-based sorting</h3>
 </div>
 
-<div id="outline-container-org26b126d" class="outline-3">
-<h3 id="org26b126d"><span class="section-number-3">2.2</span> Insertion sort</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-This algorithm is ubiquitous in our daily lives.
-</p>
-<div class="org-src-container">
-<pre class="src src-haskell">
-<span style="color: #edd400; font-weight: bold;">insert</span> k <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>k<span style="color: #ffd700;">]</span>
-<span style="color: #edd400; font-weight: bold;">insert</span> k l<span style="color: #ff6347; font-weight: bold;">@</span><span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span>
-  <span style="color: #ff6347; font-weight: bold;">|</span> k <span style="color: #ff6347; font-weight: bold;">&lt;=</span> x    <span style="color: #ff6347; font-weight: bold;">=</span> k <span style="color: #8ae234; font-weight: bold;">:</span> l
-  <span style="color: #ff6347; font-weight: bold;">|</span> otherwise <span style="color: #ff6347; font-weight: bold;">=</span> x <span style="color: #8ae234; font-weight: bold;">:</span> <span style="color: #ffd700;">(</span>insert k xs<span style="color: #ffd700;">)</span>
-
-<span style="color: #edd400; font-weight: bold;">isort</span> <span style="color: #ff6347; font-weight: bold;">=</span> foldr insert <span style="color: #ffd700; font-weight: bold;">[]</span>
-</pre>
+<div id="outline-container-org94b1686" class="outline-3">
+<h3 id="org94b1686"><span class="section-number-3">1.3</span> Optimization strategies</h3>
+<div class="outline-text-3" id="text-1-3">
 </div>
-</div>
-</div>
-
-<div id="outline-container-orge5013ca" class="outline-3">
-<h3 id="orge5013ca"><span class="section-number-3">2.3</span> Quick sort</h3>
-<div class="outline-text-3" id="text-2-3">
-<p>
-Quick sort well, is famous&#x2026;
-many people was attracted by the naive implementation in haskell&#x2026;
-</p>
-<div class="org-src-container">
-<pre class="src src-haskell">
-<span style="color: #edd400; font-weight: bold;">qsort</span> <span style="color: #ff6347; font-weight: bold;">::</span> ord a <span style="color: #ff6347; font-weight: bold;">=&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
-<span style="color: #edd400; font-weight: bold;">qsort</span> <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
-<span style="color: #edd400; font-weight: bold;">qsort</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> qsort lower <span style="color: #ff6347; font-weight: bold;">++</span> <span style="color: #ffd700;">[</span>x<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">++</span> qsort upper
-  <span style="color: #729fcf; font-weight: bold;">where</span> lower <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>e <span style="color: #ff6347; font-weight: bold;">|</span> e <span style="color: #ff6347; font-weight: bold;">&lt;-</span> xs, e <span style="color: #ff6347; font-weight: bold;">&lt;=</span> x<span style="color: #ffd700;">]</span>
-        upper <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>e <span style="color: #ff6347; font-weight: bold;">|</span> e <span style="color: #ff6347; font-weight: bold;">&lt;-</span> xs, e <span style="color: #ff6347; font-weight: bold;">&gt;</span>  x<span style="color: #ffd700;">]</span>
-</pre>
-</div>
-
-<p>
-Well, just improve a little bit(tailrec):
-</p>
-<div class="org-src-container">
-<pre class="src src-haskell">
-<span style="color: #edd400; font-weight: bold;">qsort'</span> <span style="color: #ffd700; font-weight: bold;">[]</span> s     <span style="color: #ff6347; font-weight: bold;">=</span> s
-<span style="color: #edd400; font-weight: bold;">qsort'</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> s <span style="color: #ff6347; font-weight: bold;">=</span> qsort' lower <span style="color: #ffd700;">(</span>x <span style="color: #8ae234; font-weight: bold;">:</span> qsort' upper s<span style="color: #ffd700;">)</span>
-  <span style="color: #729fcf; font-weight: bold;">where</span> lower <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>e <span style="color: #ff6347; font-weight: bold;">|</span> e <span style="color: #ff6347; font-weight: bold;">&lt;-</span> xs, e <span style="color: #ff6347; font-weight: bold;">&lt;=</span> x<span style="color: #ffd700;">]</span>
-        upper <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>e <span style="color: #ff6347; font-weight: bold;">|</span> e <span style="color: #ff6347; font-weight: bold;">&lt;-</span> xs, e <span style="color: #ff6347; font-weight: bold;">&gt;</span>  x<span style="color: #ffd700;">]</span>
-</pre>
-</div>
-
-<p>
-We can also split the list in fewer passes, but I think it's not necessary.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgf947390" class="outline-3">
-<h3 id="orgf947390"><span class="section-number-3">2.4</span> Merge sort</h3>
-<div class="outline-text-3" id="text-2-4">
-<p>
-Merge sort is a well balanced algorithm.
-</p>
-
-<p>
-Firstly, we need to know how to merge two ordered lists.
-</p>
-<div class="org-src-container">
-<pre class="src src-haskell">
-<span style="color: #edd400; font-weight: bold;">merge</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Ord</span> a <span style="color: #ff6347; font-weight: bold;">=&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
-<span style="color: #edd400; font-weight: bold;">merge</span> <span style="color: #ffd700; font-weight: bold;">[]</span> b <span style="color: #ff6347; font-weight: bold;">=</span> b
-<span style="color: #edd400; font-weight: bold;">merge</span> a <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> a
-<span style="color: #edd400; font-weight: bold;">merge</span> a<span style="color: #ff6347; font-weight: bold;">@</span><span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> b<span style="color: #ff6347; font-weight: bold;">@</span><span style="color: #ffd700;">(</span>y<span style="color: #8ae234; font-weight: bold;">:</span>ys<span style="color: #ffd700;">)</span>
-  <span style="color: #ff6347; font-weight: bold;">|</span> x <span style="color: #ff6347; font-weight: bold;">&lt;=</span> y    <span style="color: #ff6347; font-weight: bold;">=</span> x <span style="color: #8ae234; font-weight: bold;">:</span> merge xs b
-  <span style="color: #ff6347; font-weight: bold;">|</span> otherwise <span style="color: #ff6347; font-weight: bold;">=</span> y <span style="color: #8ae234; font-weight: bold;">:</span> merge a ys
-</pre>
-</div>
-
-<p>
-Now all we need is to split list in a balanced way.
-</p>
-<div class="org-src-container">
-<pre class="src src-haskell">
-<span style="color: #edd400; font-weight: bold;">msort</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Ord</span> a <span style="color: #ff6347; font-weight: bold;">=&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
-<span style="color: #edd400; font-weight: bold;">msort</span> <span style="color: #ffd700; font-weight: bold;">[]</span>  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
-<span style="color: #edd400; font-weight: bold;">msort</span> <span style="color: #ffd700;">[</span>x<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>x<span style="color: #ffd700;">]</span>
-<span style="color: #edd400; font-weight: bold;">msort</span> xs  <span style="color: #ff6347; font-weight: bold;">=</span> merge <span style="color: #ffd700;">(</span>msort as<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>msort bs<span style="color: #ffd700;">)</span>
-  <span style="color: #729fcf; font-weight: bold;">where</span> as <span style="color: #ff6347; font-weight: bold;">=</span> take k xs
-        bs <span style="color: #ff6347; font-weight: bold;">=</span> drop k xs
-        k  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span>length xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">`div`</span> 2
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org66eee2f" class="outline-3">
-<h3 id="org66eee2f"><span class="section-number-3">2.5</span> Heap sort</h3>
-<div class="outline-text-3" id="text-2-5">
-<pre class="example">
-UNDERWORK!
-</pre>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org34fbecd" class="outline-2">
-<h2 id="org34fbecd"><span class="section-number-2">3</span> Algorithms in <i>Scala</i></h2>
-<div class="outline-text-2" id="text-3">
-<p>
-In this part, we firstly translate haskell code directly into Scala
-and then try to improve codes to a more traditional program.
-</p>
-
-<p>
-At first, we will try to be as functional as possible, every variable should
-not be changed. However, scala also support traditional variables which can
-be easily changed. We will implement both versions.
-</p>
-</div>
-
-<div id="outline-container-orgacd1a57" class="outline-3">
-<h3 id="orgacd1a57"><span class="section-number-3">3.1</span> Selection sort</h3>
-<div class="outline-text-3" id="text-3-1">
-</div>
-<div id="outline-container-org29dd4b4" class="outline-4">
-<h4 id="org29dd4b4"><span class="section-number-4">3.1.1</span> Naive translation in Scala</h4>
-<div class="outline-text-4" id="text-3-1-1">
-<div class="org-src-container">
-<pre class="src src-scala">
-<span style="color: #729fcf; font-weight: bold;">object</span> <span style="color: #8ae234; font-weight: bold;">SelectionSort</span> <span style="color: #ffd700;">{</span>
-
-  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">remove</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00bfff;">](</span>x<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">A</span>, list<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span> <span style="color: #729fcf; font-weight: bold;">=</span> list diff <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00bfff;">(</span>x<span style="color: #00bfff;">)</span>
-
-  <span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">Functional version 1</span>
-  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">ssort1</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span> <span style="color: #729fcf; font-weight: bold;">&lt;%</span> <span style="color: #8ae234; font-weight: bold;">Ordered</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">](</span>xs<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00bfff;">]</span> <span style="color: #729fcf; font-weight: bold;">=</span> xs <span style="color: #729fcf; font-weight: bold;">match</span> <span style="color: #00bfff;">{</span>
-    <span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #8ae234; font-weight: bold;">Nil</span> <span style="color: #729fcf; font-weight: bold;">=&gt;</span> <span style="color: #8ae234; font-weight: bold;">Nil</span>
-    <span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #729fcf; font-weight: bold;">_</span>   <span style="color: #729fcf; font-weight: bold;">=&gt;</span> xs.min :: ssort1<span style="color: #ffa500;">(</span>xs remove xs.min<span style="color: #ffa500;">)</span>
-  <span style="color: #00bfff;">}</span>
-<span style="color: #ffd700;">}</span>
-</pre>
-</div>
-<p>
-Well, before we get into more traditional ways of Selection sort,
-Let's try our best to optimize our functional version.
-</p>
-
-<p>
-We mainly apply three optimizations: <b>tailrec</b> , <b>one-pass</b> and <b>Dynamic programming</b>.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org19bc008" class="outline-4">
-<h4 id="org19bc008"><span class="section-number-4">3.1.2</span> Tailrec</h4>
-<div class="outline-text-4" id="text-3-1-2">
+<div id="outline-container-org76b0103" class="outline-4">
+<h4 id="org76b0103"><span class="section-number-4">1.3.1</span> Tailrec</h4>
+<div class="outline-text-4" id="text-1-3-1">
 <p>
 The <b>tailrec</b> optimization is efficient and crucial for our further
 traditional implementations. However, how do we do tailrecs?
 </p>
+</div>
 
-<ul class="org-ul">
-<li><b>Simple list tailrec</b></li>
-</ul>
-
+<ol class="org-ol">
+<li><a id="org89cdf56"></a><b>Simple list tailrec</b><br />
+<div class="outline-text-5" id="text-1-3-1-1">
 <p>
 To make things simple and stupid, we firstly only focus on recursions whose
 last expression only contains one recursion
@@ -646,10 +456,9 @@ applied to <code>x</code>. We can find some clues from the terminating pattern o
 </p>
 </div>
 
-
 <ol class="org-ol">
-<li><a id="org28c408f"></a>Reverse order<br />
-<div class="outline-text-5" id="text-3-1-2-1">
+<li><a id="orgcb0939f"></a>Reverse order<br />
+<div class="outline-text-6" id="text-1-3-1-1-1">
 <ul class="org-ul">
 <li><p>
 Our current problem:
@@ -659,13 +468,13 @@ Our current problem:
   We have a function (h :: a -&gt; a) which do transformations of x and
   we need to figure out that how many times h applied to x in order to
   reach the value '1'(some constant or pattern) in the terminating definiton of rec.
-</pre>
+</pre></li>
+</ul>
+</div>
 
-<ul class="org-ul">
-<li><p>
-If h is reversible(noted h', i.e. h . h' = id)
-</p>
-
+<ol class="org-ol">
+<li><a id="orgcced028"></a><b>If h is reversible(noted h', i.e. h . h' = id)</b><br />
+<div class="outline-text-7" id="text-1-3-1-1-1-1">
 <p>
 we can build from bottom!
 Notice that we need to pass our value of each layer to upper layer,
@@ -677,28 +486,21 @@ so we need one more parameter to record our current result.
 </pre>
 <ul class="org-ul">
 <li>use foldl, foldr?</li>
-</ul></li>
-</ul></li>
 </ul>
+</div>
+</li>
 
-
-<ul class="org-ul">
-<li><p>
-else h is not reversible:(
-</p>
-
+<li><a id="orga478485"></a><b>else h is not reversible:(</b><br />
+<div class="outline-text-7" id="text-1-3-1-1-1-2">
 <p>
 well, which means we can't get results from bottom, we have to start from
 head since we can not calculate (h $ h $ &#x2026; $ x). Maybe we need another strategy.
-</p></li>
-</ul>
-
-
-<ul class="org-ul">
-<li><p>
-To change order&#x2026; How about <code>Monoid</code>?
 </p>
+</div>
+</li>
 
+<li><a id="orgede6010"></a><b>To change order&#x2026; How about <code>Monoid</code>?</b><br />
+<div class="outline-text-7" id="text-1-3-1-1-1-3">
 <p>
 Suppose we want to get the sum of a list:
 </p>
@@ -742,15 +544,12 @@ Let's try to implement this transformation with our general code:
 </pre>
 <p>
 This time we don't need <code>h'</code>!
-</p></li>
-</ul>
-
-
-<ul class="org-ul">
-<li><p>
-Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit
 </p>
+</div>
+</li>
 
+<li><a id="orgd225164"></a><b>Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit</b><br />
+<div class="outline-text-7" id="text-1-3-1-1-1-4">
 <p>
 This time instead of requiring f to be satisfiled by monoid law,
 we ourselves try to find a function <code>g</code> which satisfy the following law:
@@ -764,15 +563,12 @@ Now we can use our trick again:
 <pre class="example">
     reverseOrder' g h 1 res = res
     reverseOrder' g h x res = reverseOrder' g h (g x) (g x (h x))
-</pre></li>
-</ul>
+</pre>
+</div>
+</li>
 
-
-<ul class="org-ul">
-<li><p>
-Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x2026;
-</p>
-
+<li><a id="orgb28291d"></a><b>Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x2026;</b><br />
+<div class="outline-text-7" id="text-1-3-1-1-1-5">
 <p>
 Two options:
 </p>
@@ -780,17 +576,17 @@ Two options:
 <li>We still calculate from the beginning, but we pass the result as a <code>List</code> of (h $ ..x)s.
 But this is not efficient and ugly&#x2026;</li>
 <li>Maybe it's time for our <i>CPS</i> approach&#x2026;</li>
-</ol></li>
-</ul>
-
+</ol>
 
 <p>
 Time for the second idea!
 </p>
 </div>
 </li>
-<li><a id="orga1a08f5"></a>CPS trasformation<br />
-<div class="outline-text-5" id="text-3-1-2-2">
+</ol>
+</li>
+<li><a id="org63361d0"></a>CPS trasformation<br />
+<div class="outline-text-6" id="text-1-3-1-1-2">
 <p>
 CPS is a tool to convert recursive code to <b>tail call</b>.(note that this is different from tailrec).
 Recall our <code>rec</code> function:
@@ -819,11 +615,13 @@ With CPS, we can build our executing stack from heap.
 </div>
 </li>
 </ol>
+</li>
+</ol>
 </div>
 
-<div id="outline-container-orga2dfafd" class="outline-4">
-<h4 id="orga2dfafd"><span class="section-number-4">3.1.3</span> One-pass</h4>
-<div class="outline-text-4" id="text-3-1-3">
+<div id="outline-container-orga944ba1" class="outline-4">
+<h4 id="orga944ba1"><span class="section-number-4">1.3.2</span> One-pass</h4>
+<div class="outline-text-4" id="text-1-3-2">
 <p>
 Well, notice that we need to traverse the list two times:
 </p>
@@ -839,9 +637,9 @@ But this is not so necessary for us to translate codes to traditinal codes.
 </div>
 </div>
 
-<div id="outline-container-org7e07dcf" class="outline-4">
-<h4 id="org7e07dcf"><span class="section-number-4">3.1.4</span> Dynamic Programming</h4>
-<div class="outline-text-4" id="text-3-1-4">
+<div id="outline-container-orgf024061" class="outline-4">
+<h4 id="orgf024061"><span class="section-number-4">1.3.3</span> Dynamic Programming</h4>
+<div class="outline-text-4" id="text-1-3-3">
 <p>
 Well, for recursions like list recursions, dynamic programming is not
 quite necessary since we usually don't have too many overlapping sub-problems.
@@ -858,9 +656,9 @@ For more dynamic programming techniques, we will discuss in later parts(tree rec
 </div>
 </div>
 
-<div id="outline-container-org46874f2" class="outline-4">
-<h4 id="org46874f2"><span class="section-number-4">3.1.5</span> Optimizations summary</h4>
-<div class="outline-text-4" id="text-3-1-5">
+<div id="outline-container-orgbac99a6" class="outline-4">
+<h4 id="orgbac99a6"><span class="section-number-4">1.3.4</span> Optimizations summary</h4>
+<div class="outline-text-4" id="text-1-3-4">
 <p>
 We have discussed several optimizations may be applied to list recursions.
 Let's recap!
@@ -868,22 +666,23 @@ Let's recap!
 </div>
 
 <ol class="org-ol">
-<li><a id="org5b01b75"></a>Tailrec<br />
+<li><a id="org4ee648c"></a>Tailrec<br />
 <ol class="org-ol">
-<li><a id="orgb7a74b0"></a>Reverse calculation order<br />
-<div class="outline-text-6" id="text-3-1-5-1-1">
+<li><a id="org9b3bcba"></a>Calculating from bottom if reversible<br /></li>
+<li><a id="orgd2b93b1"></a>Reverse calculation order<br />
+<div class="outline-text-6" id="text-1-3-4-1-2">
 <ul class="org-ul">
-<li>By reversible function or special function</li>
 <li>By Monoid structure</li>
+<li>By special function g with specific rules</li>
 </ul>
 </div>
 </li>
-<li><a id="org03cf9fc"></a>CPS transformation<br /></li>
+<li><a id="org8b2c88c"></a>CPS transformation<br /></li>
 </ol>
 </li>
 
-<li><a id="orgb990599"></a>Dynamic Programming<br />
-<div class="outline-text-5" id="text-3-1-5-2">
+<li><a id="orgff4c3d9"></a>Dynamic Programming<br />
+<div class="outline-text-5" id="text-1-3-4-2">
 <p>
 To avoid unnecessary calculation
 </p>
@@ -891,14 +690,214 @@ To avoid unnecessary calculation
 </li>
 </ol>
 </div>
+</div>
+</div>
 
-<div id="outline-container-orgb6827aa" class="outline-4">
-<h4 id="orgb6827aa"><span class="section-number-4">3.1.6</span> Applying our optimizations</h4>
-<div class="outline-text-4" id="text-3-1-6">
+
+
+<div id="outline-container-orgd959f1b" class="outline-2">
+<h2 id="orgd959f1b"><span class="section-number-2">2</span> Algorithms in <i>Haskell</i></h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org571e180" class="outline-3">
+<h3 id="org571e180"><span class="section-number-3">2.1</span> Selection sort</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li><b>A naive implementation</b></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">ssort</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Ord</span> a <span style="color: #ff6347; font-weight: bold;">=&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">ssort</span> <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
+<span style="color: #edd400; font-weight: bold;">ssort</span> xs <span style="color: #ff6347; font-weight: bold;">=</span> m <span style="color: #8ae234; font-weight: bold;">:</span> ssort <span style="color: #ff6347; font-weight: bold;">$</span> delete m xs
+  <span style="color: #729fcf; font-weight: bold;">where</span> m <span style="color: #ff6347; font-weight: bold;">=</span> minimum xs
+</pre>
+</div>
+<p>
+Well although this is not efficient, 
+this is quite clear and easy to understand.
+</p>
+
+<p>
+A more efficient implemetation of Haskell maybe:
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">split</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Ord</span> a <span style="color: #ff6347; font-weight: bold;">=&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">split</span> <span style="color: #ffd700; font-weight: bold;">[]</span> m r     <span style="color: #ff6347; font-weight: bold;">=</span> m <span style="color: #8ae234; font-weight: bold;">:</span> ssort' r
+<span style="color: #edd400; font-weight: bold;">split</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> m r <span style="color: #ff6347; font-weight: bold;">|</span> x <span style="color: #ff6347; font-weight: bold;">&lt;</span> m     <span style="color: #ff6347; font-weight: bold;">=</span> split xs x <span style="color: #ffd700;">(</span>m<span style="color: #8ae234; font-weight: bold;">:</span>r<span style="color: #ffd700;">)</span>
+                 <span style="color: #ff6347; font-weight: bold;">|</span> otherwise <span style="color: #ff6347; font-weight: bold;">=</span> split xs m <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>r<span style="color: #ffd700;">)</span>
+
+<span style="color: #edd400; font-weight: bold;">ssort'</span> <span style="color: #ffd700; font-weight: bold;">[]</span>     <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
+<span style="color: #edd400; font-weight: bold;">ssort'</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> split xs x <span style="color: #ffd700; font-weight: bold;">[]</span>
+</pre>
+</div>
+<p>
+or just make the naive one <i>tailrec</i>.
+</p>
+
+<p>
+However, this way it's not as clear as the naive one.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaf711c6" class="outline-3">
+<h3 id="orgaf711c6"><span class="section-number-3">2.2</span> Insertion sort</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+This algorithm is ubiquitous in our daily lives.
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">insert</span> k <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>k<span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">insert</span> k l<span style="color: #ff6347; font-weight: bold;">@</span><span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">|</span> k <span style="color: #ff6347; font-weight: bold;">&lt;=</span> x    <span style="color: #ff6347; font-weight: bold;">=</span> k <span style="color: #8ae234; font-weight: bold;">:</span> l
+  <span style="color: #ff6347; font-weight: bold;">|</span> otherwise <span style="color: #ff6347; font-weight: bold;">=</span> x <span style="color: #8ae234; font-weight: bold;">:</span> <span style="color: #ffd700;">(</span>insert k xs<span style="color: #ffd700;">)</span>
+
+<span style="color: #edd400; font-weight: bold;">isort</span> <span style="color: #ff6347; font-weight: bold;">=</span> foldr insert <span style="color: #ffd700; font-weight: bold;">[]</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5a328c0" class="outline-3">
+<h3 id="org5a328c0"><span class="section-number-3">2.3</span> Quick sort</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Quick sort well, is famous&#x2026;
+many people was attracted by the naive implementation in haskell&#x2026;
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">qsort</span> <span style="color: #ff6347; font-weight: bold;">::</span> ord a <span style="color: #ff6347; font-weight: bold;">=&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">qsort</span> <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
+<span style="color: #edd400; font-weight: bold;">qsort</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> qsort lower <span style="color: #ff6347; font-weight: bold;">++</span> <span style="color: #ffd700;">[</span>x<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">++</span> qsort upper
+  <span style="color: #729fcf; font-weight: bold;">where</span> lower <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>e <span style="color: #ff6347; font-weight: bold;">|</span> e <span style="color: #ff6347; font-weight: bold;">&lt;-</span> xs, e <span style="color: #ff6347; font-weight: bold;">&lt;=</span> x<span style="color: #ffd700;">]</span>
+        upper <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>e <span style="color: #ff6347; font-weight: bold;">|</span> e <span style="color: #ff6347; font-weight: bold;">&lt;-</span> xs, e <span style="color: #ff6347; font-weight: bold;">&gt;</span>  x<span style="color: #ffd700;">]</span>
+</pre>
+</div>
+
+<p>
+Well, just improve a little bit(tailrec):
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">qsort'</span> <span style="color: #ffd700; font-weight: bold;">[]</span> s     <span style="color: #ff6347; font-weight: bold;">=</span> s
+<span style="color: #edd400; font-weight: bold;">qsort'</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> s <span style="color: #ff6347; font-weight: bold;">=</span> qsort' lower <span style="color: #ffd700;">(</span>x <span style="color: #8ae234; font-weight: bold;">:</span> qsort' upper s<span style="color: #ffd700;">)</span>
+  <span style="color: #729fcf; font-weight: bold;">where</span> lower <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>e <span style="color: #ff6347; font-weight: bold;">|</span> e <span style="color: #ff6347; font-weight: bold;">&lt;-</span> xs, e <span style="color: #ff6347; font-weight: bold;">&lt;=</span> x<span style="color: #ffd700;">]</span>
+        upper <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>e <span style="color: #ff6347; font-weight: bold;">|</span> e <span style="color: #ff6347; font-weight: bold;">&lt;-</span> xs, e <span style="color: #ff6347; font-weight: bold;">&gt;</span>  x<span style="color: #ffd700;">]</span>
+</pre>
+</div>
+
+<p>
+We can also split the list in fewer passes, but I think it's not necessary.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8ddc6d9" class="outline-3">
+<h3 id="org8ddc6d9"><span class="section-number-3">2.4</span> Merge sort</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Merge sort is a well balanced algorithm.
+</p>
+
+<p>
+Firstly, we need to know how to merge two ordered lists.
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">merge</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Ord</span> a <span style="color: #ff6347; font-weight: bold;">=&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">merge</span> <span style="color: #ffd700; font-weight: bold;">[]</span> b <span style="color: #ff6347; font-weight: bold;">=</span> b
+<span style="color: #edd400; font-weight: bold;">merge</span> a <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> a
+<span style="color: #edd400; font-weight: bold;">merge</span> a<span style="color: #ff6347; font-weight: bold;">@</span><span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> b<span style="color: #ff6347; font-weight: bold;">@</span><span style="color: #ffd700;">(</span>y<span style="color: #8ae234; font-weight: bold;">:</span>ys<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">|</span> x <span style="color: #ff6347; font-weight: bold;">&lt;=</span> y    <span style="color: #ff6347; font-weight: bold;">=</span> x <span style="color: #8ae234; font-weight: bold;">:</span> merge xs b
+  <span style="color: #ff6347; font-weight: bold;">|</span> otherwise <span style="color: #ff6347; font-weight: bold;">=</span> y <span style="color: #8ae234; font-weight: bold;">:</span> merge a ys
+</pre>
+</div>
+
+<p>
+Now all we need is to split list in a balanced way.
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">
+<span style="color: #edd400; font-weight: bold;">msort</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Ord</span> a <span style="color: #ff6347; font-weight: bold;">=&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">msort</span> <span style="color: #ffd700; font-weight: bold;">[]</span>  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
+<span style="color: #edd400; font-weight: bold;">msort</span> <span style="color: #ffd700;">[</span>x<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">[</span>x<span style="color: #ffd700;">]</span>
+<span style="color: #edd400; font-weight: bold;">msort</span> xs  <span style="color: #ff6347; font-weight: bold;">=</span> merge <span style="color: #ffd700;">(</span>msort as<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>msort bs<span style="color: #ffd700;">)</span>
+  <span style="color: #729fcf; font-weight: bold;">where</span> as <span style="color: #ff6347; font-weight: bold;">=</span> take k xs
+        bs <span style="color: #ff6347; font-weight: bold;">=</span> drop k xs
+        k  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span>length xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">`div`</span> 2
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5b80036" class="outline-3">
+<h3 id="org5b80036"><span class="section-number-3">2.5</span> Heap sort</h3>
+<div class="outline-text-3" id="text-2-5">
+<pre class="example">
+UNDERWORK!
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf140ca0" class="outline-2">
+<h2 id="orgf140ca0"><span class="section-number-2">3</span> Algorithms in <i>Scala</i></h2>
+<div class="outline-text-2" id="text-3">
+<p>
+In this part, we firstly translate haskell code directly into Scala
+and then try to improve codes to a more traditional program.
+</p>
+
+<p>
+At first, we will try to be as functional as possible, every variable should
+not be changed. However, scala also support traditional variables which can
+be easily changed. We will implement both versions.
+</p>
+</div>
+
+<div id="outline-container-org770c39f" class="outline-3">
+<h3 id="org770c39f"><span class="section-number-3">3.1</span> Selection sort</h3>
+<div class="outline-text-3" id="text-3-1">
+</div>
+<div id="outline-container-orgda8f721" class="outline-4">
+<h4 id="orgda8f721"><span class="section-number-4">3.1.1</span> Naive translation in Scala</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<div class="org-src-container">
+<pre class="src src-scala">
+<span style="color: #729fcf; font-weight: bold;">object</span> <span style="color: #8ae234; font-weight: bold;">SelectionSort</span> <span style="color: #ffd700;">{</span>
+
+  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">remove</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00bfff;">](</span>x<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">A</span>, list<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span> <span style="color: #729fcf; font-weight: bold;">=</span> list diff <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00bfff;">(</span>x<span style="color: #00bfff;">)</span>
+
+  <span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">Functional version 1</span>
+  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">ssort1</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span> <span style="color: #729fcf; font-weight: bold;">&lt;%</span> <span style="color: #8ae234; font-weight: bold;">Ordered</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">](</span>xs<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #ffa500;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">List</span><span style="color: #00bfff;">[</span><span style="color: #8ae234; font-weight: bold;">A</span><span style="color: #00bfff;">]</span> <span style="color: #729fcf; font-weight: bold;">=</span> xs <span style="color: #729fcf; font-weight: bold;">match</span> <span style="color: #00bfff;">{</span>
+    <span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #8ae234; font-weight: bold;">Nil</span> <span style="color: #729fcf; font-weight: bold;">=&gt;</span> <span style="color: #8ae234; font-weight: bold;">Nil</span>
+    <span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #729fcf; font-weight: bold;">_</span>   <span style="color: #729fcf; font-weight: bold;">=&gt;</span> xs.min :: ssort1<span style="color: #ffa500;">(</span>xs remove xs.min<span style="color: #ffa500;">)</span>
+  <span style="color: #00bfff;">}</span>
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+<p>
+So far so good! Before we get into more traditional ways of Selection sort,
+Let's try our best to optimize our functional version.
+</p>
+
+<p>
+We mainly apply three optimizations: <b>tailrec</b> , <b>one-pass</b> and <b>Dynamic programming</b>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org219bbf6" class="outline-4">
+<h4 id="org219bbf6"><span class="section-number-4">3.1.2</span> Applying our optimizations</h4>
+<div class="outline-text-4" id="text-3-1-2">
 </div>
 <ol class="org-ol">
-<li><a id="orgb7417d2"></a>Choose optimizing strategy<br />
-<div class="outline-text-5" id="text-3-1-6-1">
+<li><a id="orgdf7e5bc"></a>Choose optimizing strategy<br />
+<div class="outline-text-5" id="text-3-1-2-1">
 <p>
 Now we try to optimize our <span class="underline">selection sort</span>.
 </p>
@@ -969,8 +968,8 @@ Yes.</li>
 </div>
 </li>
 
-<li><a id="orgf2af648"></a>Let's do it!<br />
-<div class="outline-text-5" id="text-3-1-6-2">
+<li><a id="orgb5c0930"></a>Let's do it!<br />
+<div class="outline-text-5" id="text-3-1-2-2">
 <div class="org-src-container">
 <pre class="src src-scala">
 <span style="color: #729fcf; font-weight: bold;">object</span> <span style="color: #8ae234; font-weight: bold;">SelectionSort</span> <span style="color: #ffd700;">{</span>
@@ -1025,18 +1024,17 @@ Realize that we need some tools to test the efficiency of our codes.
 </div>
 </div>
 
-
-<div id="outline-container-orga574f10" class="outline-3">
-<h3 id="orga574f10"><span class="section-number-3">3.2</span> Insertion sort</h3>
+<div id="outline-container-org5f17310" class="outline-3">
+<h3 id="org5f17310"><span class="section-number-3">3.2</span> Insertion sort</h3>
 </div>
 </div>
 
-<div id="outline-container-org3ac33d0" class="outline-2">
-<h2 id="org3ac33d0"><span class="section-number-2">4</span> Algorithms in <i>C++</i></h2>
+<div id="outline-container-orgeb255e5" class="outline-2">
+<h2 id="orgeb255e5"><span class="section-number-2">4</span> Algorithms in <i>C++</i></h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org2ab6912" class="outline-3">
-<h3 id="org2ab6912"><span class="section-number-3">4.1</span> Selection sort</h3>
+<div id="outline-container-orgb5551b1" class="outline-3">
+<h3 id="orgb5551b1"><span class="section-number-3">4.1</span> Selection sort</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 Since we have get tailrec form, we can easily convert the algorithm into loops.
@@ -1048,7 +1046,7 @@ Since we have get tailrec form, we can easily convert the algorithm into loops.
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-28 周二 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-29 周三 20:39</p>
+<p class="date">Created: 2020-02-14 周五 16:28</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

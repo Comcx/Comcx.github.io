@@ -61,6 +61,167 @@ Ok, now let's try to implement these algorithms in =Haskell=.
 
 *** Representation-based sorting
 
+*** Optimization strategies
+**** Tailrec
+The *tailrec* optimization is efficient and crucial for our further
+traditional implementations. However, how do we do tailrecs?
+
+***** *Simple list tailrec*
+
+To make things simple and stupid, we firstly only focus on recursions whose
+last expression only contains one recursion
+(which means we do not discuss tree recursion right now).
+
+#+BEGIN_SRC 
+rec 1 = some value
+rec x = f x (rec (h x))
+#+END_SRC
+
+Now we unfold this recursion:
+#+BEGIN_SRC 
+rec x = f x $ f (h x) $ f (h $ h x) $ f (h $ h $ h x) $ ... $ f (h $ h $ ... $ h $ x) $ (some value)
+#+END_SRC
+
+Hummmmm, it looks even more complex...
+I now have two guesses on how to do tailrec for codes like this:
+1) Build from bottom or reverse order
+2) Do /CPS/ transformation
+
+Let's try the first one first.
+To build from bottom, we need to know the most important parameter: =(h $ h $ ... $ x)=.
+To know this parameter, we need to know how many times the function =h= was
+applied to =x=. We can find some clues from the terminating pattern of =rec=.
+
+****** Reverse order
+- Our current problem:
+
+  #+BEGIN_SRC 
+  We have a function (h :: a -> a) which do transformations of x and
+  we need to figure out that how many times h applied to x in order to
+  reach the value '1'(some constant or pattern) in the terminating definiton of rec.
+  #+END_SRC
+
+******* *If h is reversible(noted h', i.e. h . h' = id)*
+
+    we can build from bottom!
+    Notice that we need to pass our value of each layer to upper layer,
+    so we need one more parameter to record our current result.
+    #+BEGIN_SRC 
+    reverseBuild f h x res = f x res
+    reverseBuild f h y res = reverseBuild f h (h' y) (f y res)
+    #+END_SRC
+    * use foldl, foldr?
+
+******* *else h is not reversible:(*
+
+    well, which means we can't get results from bottom, we have to start from
+    head since we can not calculate (h $ h $ ... $ x). Maybe we need another strategy.
+
+******* *To change order... How about =Monoid=?*
+
+    Suppose we want to get the sum of a list:
+    #+BEGIN_SRC 
+    sum [] = 0
+    sum (x:xs) = x + sum xs
+    #+END_SRC
+    where, =(+)= becomes the function =f=.
+
+    Since (a + b) + c === a + (b + c),
+    we can reverse the calculation order
+    #+BEGIN_SRC 
+    a + (b + (c + d))
+    #+END_SRC
+    to
+    #+BEGIN_SRC 
+    ((a + b) + c) + d
+    #+END_SRC
+    It's just like to say that, we can change the calculation of
+    #+BEGIN_SRC 
+    x (h x) (h $ h x) ... (h $ h $ ... $ h x)
+    #+END_SRC
+    with =f=.
+
+    Let's try to implement this transformation with our general code:
+    #+BEGIN_SRC 
+    reverseOrder f h 1 res = res
+    reverseOrder f h x res = reverseOrder f h (h x) (f x (h x))
+    #+END_SRC
+    This time we don't need =h'=!
+
+******* *Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit*
+
+    This time instead of requiring f to be satisfiled by monoid law,
+    we ourselves try to find a function =g= which satisfy the following law:
+    #+BEGIN_SRC 
+    g (g a b) c = f a (f b c)
+    #+END_SRC
+    Now we can use our trick again:
+    #+BEGIN_SRC 
+    reverseOrder' g h 1 res = res
+    reverseOrder' g h x res = reverseOrder' g h (g x) (g x (h x))
+    #+END_SRC
+   
+******* *Well, if we're not lucky.. we can't find a reverse h' nor monoid structure...*
+     
+    Two options:
+    1) We still calculate from the beginning, but we pass the result as a =List= of (h $ ..x)s.
+        But this is not efficient and ugly...
+    2) Maybe it's time for our /CPS/ approach...
+
+Time for the second idea!
+****** CPS trasformation
+
+CPS is a tool to convert recursive code to *tail call*.(note that this is different from tailrec).
+Recall our =rec= function:
+#+BEGIN_SRC 
+rec 1 = some value
+rec x = f x (rec (h x))
+#+END_SRC
+
+to /CPS/ style =>
+#+BEGIN_SRC 
+rec 1 c = c value
+rec x c = rec (h x) (c . (f x))
+#+END_SRC
+It looks like we are just building our unfolded function chain.
+Instead of accumulating results and values, we accumulate calculations(functions).
+
+In fact, CPS can be used to convert any recursive function to tail-call form.
+With CPS, we can build our executing stack from heap.
+
+**** One-pass
+Well, notice that we need to traverse the list two times:
+1) find minimum and 
+2) recursion.
+
+We can optimize by /one-pass/ just like the version in /Haskell/.
+But this is not so necessary for us to translate codes to traditinal codes.
+
+**** Dynamic Programming
+Well, for recursions like list recursions, dynamic programming is not
+quite necessary since we usually don't have too many overlapping sub-problems.
+
+However, just in case, I think that if necessary, we can use lazy evaluation
+and stream to do dynamic programming elegantly.
+
+For more dynamic programming techniques, we will discuss in later parts(tree recursions).
+
+**** Optimizations summary
+We have discussed several optimizations may be applied to list recursions.
+Let's recap!
+
+***** Tailrec
+****** Calculating from bottom if reversible
+****** Reverse calculation order
+- By Monoid structure
+- By special function g with specific rules
+****** CPS transformation 
+
+***** Dynamic Programming
+To avoid unnecessary calculation
+
+
+
 ** Algorithms in /Haskell/ 
 *** Selection sort
 - *A naive implementation*
@@ -155,7 +316,6 @@ msort xs  = merge (msort as) (msort bs)
 UNDERWORK!
 #+END_SRC
 
-
 ** Algorithms in /Scala/ 
 In this part, we firstly translate haskell code directly into Scala
 and then try to improve codes to a more traditional program.
@@ -179,173 +339,10 @@ object SelectionSort {
   }
 }
 #+END_SRC
-Well, before we get into more traditional ways of Selection sort,
+So far so good! Before we get into more traditional ways of Selection sort,
 Let's try our best to optimize our functional version.
 
 We mainly apply three optimizations: *tailrec* , *one-pass* and *Dynamic programming*.
-
-**** Tailrec
-The *tailrec* optimization is efficient and crucial for our further
-traditional implementations. However, how do we do tailrecs?
-
-- *Simple list tailrec*
-
-To make things simple and stupid, we firstly only focus on recursions whose
-last expression only contains one recursion
-(which means we do not discuss tree recursion right now).
-
-#+BEGIN_SRC 
-rec 1 = some value
-rec x = f x (rec (h x))
-#+END_SRC
-
-Now we unfold this recursion:
-#+BEGIN_SRC 
-rec x = f x $ f (h x) $ f (h $ h x) $ f (h $ h $ h x) $ ... $ f (h $ h $ ... $ h $ x) $ (some value)
-#+END_SRC
-
-Hummmmm, it looks even more complex...
-I now have two guesses on how to do tailrec for codes like this:
-1) Build from bottom or reverse order
-2) Do /CPS/ transformation
-
-Let's try the first one first.
-To build from bottom, we need to know the most important parameter: =(h $ h $ ... $ x)=.
-To know this parameter, we need to know how many times the function =h= was
-applied to =x=. We can find some clues from the terminating pattern of =rec=.
-
-
-***** Reverse order
-- Our current problem:
-
-  #+BEGIN_SRC 
-  We have a function (h :: a -> a) which do transformations of x and
-  we need to figure out that how many times h applied to x in order to
-  reach the value '1'(some constant or pattern) in the terminating definiton of rec.
-  #+END_SRC
-
-  + If h is reversible(noted h', i.e. h . h' = id)
-
-    we can build from bottom!
-    Notice that we need to pass our value of each layer to upper layer,
-    so we need one more parameter to record our current result.
-    #+BEGIN_SRC 
-    reverseBuild f h x res = f x res
-    reverseBuild f h y res = reverseBuild f h (h' y) (f y res)
-    #+END_SRC
-    * use foldl, foldr?
-
-
-  + else h is not reversible:(
-
-    well, which means we can't get results from bottom, we have to start from
-    head since we can not calculate (h $ h $ ... $ x). Maybe we need another strategy.
-
-
-  + To change order... How about =Monoid=?
-
-    Suppose we want to get the sum of a list:
-    #+BEGIN_SRC 
-    sum [] = 0
-    sum (x:xs) = x + sum xs
-    #+END_SRC
-    where, =(+)= becomes the function =f=.
-
-    Since (a + b) + c === a + (b + c),
-    we can reverse the calculation order
-    #+BEGIN_SRC 
-    a + (b + (c + d))
-    #+END_SRC
-    to
-    #+BEGIN_SRC 
-    ((a + b) + c) + d
-    #+END_SRC
-    It's just like to say that, we can change the calculation of
-    #+BEGIN_SRC 
-    x (h x) (h $ h x) ... (h $ h $ ... $ h x)
-    #+END_SRC
-    with =f=.
-
-    Let's try to implement this transformation with our general code:
-    #+BEGIN_SRC 
-    reverseOrder f h 1 res = res
-    reverseOrder f h x res = reverseOrder f h (h x) (f x (h x))
-    #+END_SRC
-    This time we don't need =h'=!
-
-
-  + Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit
-
-    This time instead of requiring f to be satisfiled by monoid law,
-    we ourselves try to find a function =g= which satisfy the following law:
-    #+BEGIN_SRC 
-    g (g a b) c = f a (f b c)
-    #+END_SRC
-    Now we can use our trick again:
-    #+BEGIN_SRC 
-    reverseOrder' g h 1 res = res
-    reverseOrder' g h x res = reverseOrder' g h (g x) (g x (h x))
-    #+END_SRC
-
-   
-  + Well, if we're not lucky.. we can't find a reverse h' nor monoid structure...
-     
-    Two options:
-    1) We still calculate from the beginning, but we pass the result as a =List= of (h $ ..x)s.
-        But this is not efficient and ugly...
-    2) Maybe it's time for our /CPS/ approach...
-
-
-Time for the second idea!
-***** CPS trasformation
-
-CPS is a tool to convert recursive code to *tail call*.(note that this is different from tailrec).
-Recall our =rec= function:
-#+BEGIN_SRC 
-rec 1 = some value
-rec x = f x (rec (h x))
-#+END_SRC
-
-to /CPS/ style =>
-#+BEGIN_SRC 
-rec 1 c = c value
-rec x c = rec (h x) (c . (f x))
-#+END_SRC
-It looks like we are just building our unfolded function chain.
-Instead of accumulating results and values, we accumulate calculations(functions).
-
-In fact, CPS can be used to convert any recursive function to tail-call form.
-With CPS, we can build our executing stack from heap.
-
-**** One-pass
-Well, notice that we need to traverse the list two times:
-1) find minimum and 
-2) recursion.
-
-We can optimize by /one-pass/ just like the version in /Haskell/.
-But this is not so necessary for us to translate codes to traditinal codes.
-
-**** Dynamic Programming
-Well, for recursions like list recursions, dynamic programming is not
-quite necessary since we usually don't have too many overlapping sub-problems.
-
-However, just in case, I think that if necessary, we can use lazy evaluation
-and stream to do dynamic programming elegantly.
-
-For more dynamic programming techniques, we will discuss in later parts(tree recursions).
-
-**** Optimizations summary
-We have discussed several optimizations may be applied to list recursions.
-Let's recap!
-
-***** Tailrec
-****** Reverse calculation order
-- By reversible function or special function
-- By Monoid structure
-****** CPS transformation 
-
-***** Dynamic Programming
-To avoid unnecessary calculation
 
 **** Applying our optimizations 
 ***** Choose optimizing strategy
@@ -391,7 +388,7 @@ Now we try to optimize our _selection sort_.
 - CPS style?
   Yes.
 
-*****  Let's do it!
+***** Let's do it!
 #+BEGIN_SRC scala
 
 object SelectionSort {
@@ -437,7 +434,6 @@ object SelectionSort {
 #+END_SRC
 
 Realize that we need some tools to test the efficiency of our codes.
-
 
 *** Insertion sort
 
