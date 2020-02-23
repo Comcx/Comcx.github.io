@@ -25,7 +25,7 @@
 *** [[../Note/HaskellShowInstanceOverlappingProblem.html][Haskell Show Instance Overlapping Problem]]
     2020.02.02
 		  
-
-
+*** [[../Note/NumberOfProperFractionsWithDenominator.html][Codewars | Number of Proper Fractions with Denominator d]]
+    2020.02.23
 
 
