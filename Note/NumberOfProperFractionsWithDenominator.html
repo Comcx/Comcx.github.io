@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-02-23 周日 19:50 -->
+<!-- 2020-02-23 周日 22:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Number of Proper Fractions with Denominator d</title>
@@ -243,19 +243,25 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgedbe6ad">1. The story begins &#x2026;</a>
+<li><a href="#org4d28162">1. The story begins &#x2026;</a>
 <ul>
-<li><a href="#orgef2ff07">1.1. The brief description</a></li>
+<li><a href="#org5b8f600">1.1. The brief description</a></li>
 </ul>
 </li>
-<li><a href="#orgf5f4972">2. Brute force</a></li>
+<li><a href="#orgf0cb832">2. Brute force</a></li>
+<li><a href="#orgcff4b4a">3. Euler's totient function</a>
+<ul>
+<li><a href="#org9667bf1">3.1. The puzzle</a></li>
+<li><a href="#org8aa4834">3.2. Implementation</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
 
-<div id="outline-container-orgedbe6ad" class="outline-2">
-<h2 id="orgedbe6ad"><span class="section-number-2">1</span> The story begins &#x2026;</h2>
+<div id="outline-container-org4d28162" class="outline-2">
+<h2 id="org4d28162"><span class="section-number-2">1</span> The story begins &#x2026;</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Today I'm working on solving the problem <b>Number of Proper Fractions with Denominator d</b> in
@@ -263,8 +269,8 @@ Today I'm working on solving the problem <b>Number of Proper Fractions with Deno
 </p>
 </div>
 
-<div id="outline-container-orgef2ff07" class="outline-3">
-<h3 id="orgef2ff07"><span class="section-number-3">1.1</span> The brief description</h3>
+<div id="outline-container-org5b8f600" class="outline-3">
+<h3 id="org5b8f600"><span class="section-number-3">1.1</span> The brief description</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 If n is the numerator and d the denominator of a fraction, 
@@ -304,15 +310,154 @@ Be ready to handle big numbers.
 </div>
 </div>
 
-<div id="outline-container-orgf5f4972" class="outline-2">
-<h2 id="orgf5f4972"><span class="section-number-2">2</span> Brute force</h2>
+<div id="outline-container-orgf0cb832" class="outline-2">
+<h2 id="orgf0cb832"><span class="section-number-2">2</span> Brute force</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Since I'm not smart enough, I simply use brute force in the first place:
 </p>
 <div class="org-src-container">
-<pre class="src src-scala">
+<pre class="src src-scala"><span style="color: #729fcf; font-weight: bold;">object</span> <span style="color: #8ae234; font-weight: bold;">Sol</span> <span style="color: #ffd700;">{</span>
+
+  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">gcd</span><span style="color: #00bfff;">(</span>a<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">Long</span>, b<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">Long</span><span style="color: #00bfff;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">Long</span> <span style="color: #729fcf; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>b == <span style="color: #8ae234; font-weight: bold;">0</span><span style="color: #00bfff;">)</span> a <span style="color: #729fcf; font-weight: bold;">else</span> gcd<span style="color: #00bfff;">(</span>b, a % b<span style="color: #00bfff;">)</span>
+  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">properFractions</span><span style="color: #00bfff;">(</span>n<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">Long</span><span style="color: #00bfff;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">Long</span> <span style="color: #729fcf; font-weight: bold;">=</span> <span style="color: #00bfff;">{</span>
+    <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>n == <span style="color: #8ae234; font-weight: bold;">1</span><span style="color: #ffa500;">)</span> <span style="color: #729fcf; font-weight: bold;">return</span> <span style="color: #8ae234; font-weight: bold;">0</span>
+    <span style="color: #729fcf; font-weight: bold;">var</span> <span style="color: #f57900; font-weight: bold;">ans</span> <span style="color: #729fcf; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">0</span>
+    <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #ffa500;">(</span>i <span style="color: #729fcf; font-weight: bold;">&lt;-</span> <span style="color: #8ae234; font-weight: bold;">1L</span> to n<span style="color: #ffa500;">)</span> <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>gcd<span style="color: #ff7f50;">(</span>i, n<span style="color: #ff7f50;">)</span> == <span style="color: #8ae234; font-weight: bold;">1</span><span style="color: #ffa500;">)</span> ans += <span style="color: #8ae234; font-weight: bold;">1</span>
+    ans
+  <span style="color: #00bfff;">}</span>
+<span style="color: #ffd700;">}</span>
 </pre>
+</div>
+<p>
+But got: <code>Execution Timed Out (12000 ms)</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcff4b4a" class="outline-2">
+<h2 id="orgcff4b4a"><span class="section-number-2">3</span> Euler's totient function</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+I tried to filter with <code>isPrime</code> function but failed again, I was not happy until I find
+<span class="underline">Euler's totient function</span>.
+</p>
+
+<p>
+In number theory, Euler's totient function counts the positive integers 
+up to a given integer n that are relatively prime to n.(relatively prime or coprime simply means gcd(a, b) == 1).
+Let's try to discover Euler's function by ourselves!
+</p>
+</div>
+
+<div id="outline-container-org9667bf1" class="outline-3">
+<h3 id="org9667bf1"><span class="section-number-3">3.1</span> The puzzle</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+Let's set up our goal:
+</p>
+<pre class="example">
+Find a function f, such that
+f n = number of factors i if(gcd(i, n) == 1)
+</pre>
+<p>
+Well, firstly, we want to find some simple cases where f can be calculated easily.
+Notice that if n is a prime number, then all we need to do is just to subtract 1 from n:
+</p>
+
+<ul class="org-ul">
+<li><p>
+Theorm 0:
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell">  f n <span style="color: #ff6347; font-weight: bold;">|</span> isPrime<span style="color: #ffd700;">(</span>n<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> n <span style="color: #ff6347; font-weight: bold;">-</span> 1
+</pre>
+</div></li>
+</ul>
+<p>
+Great! We've found something to guide our way!
+</p>
+
+<p>
+If we have some background knowledge of <i>Category theory</i>, we would try to find a
+<b>functor</b> F, such that <code>F(ab) equals F(a)F(b)</code>.
+What if our function f is a functor?
+</p>
+
+<ul class="org-ul">
+<li><p>
+Theorm 1:
+</p>
+<pre class="example">
+  If a and b are coprime(gcd(a, b) == 1), then
+  f(ab) = f(a)f(b)
+</pre>
+<p>
+This is already the pattern of <code>divide and conquer</code> method!
+</p></li>
+
+<li><p>
+Theorm 2:
+</p>
+<pre class="example">
+  If n = ab where a and b are prime numbers, then
+  f(n) 
+    = f(a)f(b)        -- from theorm 1
+    = (a - 1)(b - 1)  -- from theorm 0
+</pre></li>
+</ul>
+
+<p>
+Now everything is clear, the whole problem has been divided as a prime factor problem.
+Just factor number n and multiply them with substraction.
+</p>
+
+<ul class="org-ul">
+<li>Conclusion</li>
+</ul>
+<pre class="example">
+if n = a^pa * b^pb * ... * x^px
+f(n) = n * (1 - 1 / a) * (1 - 1 / b) * ... * (1 - 1 / x)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org8aa4834" class="outline-3">
+<h3 id="org8aa4834"><span class="section-number-3">3.2</span> Implementation</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Written in imperative <i>Scala</i>:
+</p>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #729fcf; font-weight: bold;">object</span> <span style="color: #8ae234; font-weight: bold;">Sol</span> <span style="color: #ffd700;">{</span>
+
+  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">properFractions</span><span style="color: #00bfff;">(</span>n<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">Long</span><span style="color: #00bfff;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">Long</span> <span style="color: #729fcf; font-weight: bold;">=</span> <span style="color: #00bfff;">{</span>
+    <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>n == <span style="color: #8ae234; font-weight: bold;">1</span><span style="color: #ffa500;">)</span> <span style="color: #729fcf; font-weight: bold;">return</span> <span style="color: #8ae234; font-weight: bold;">0</span>
+    <span style="color: #729fcf; font-weight: bold;">var</span> <span style="color: #f57900; font-weight: bold;">res</span> <span style="color: #729fcf; font-weight: bold;">=</span> n
+    <span style="color: #729fcf; font-weight: bold;">var</span> <span style="color: #f57900; font-weight: bold;">a</span> <span style="color: #729fcf; font-weight: bold;">=</span> n
+    <span style="color: #729fcf; font-weight: bold;">for</span> <span style="color: #ffa500;">(</span>i <span style="color: #729fcf; font-weight: bold;">&lt;-</span> <span style="color: #8ae234; font-weight: bold;">2L</span> to math.sqrt<span style="color: #ff7f50;">(</span>a<span style="color: #ff7f50;">)</span>.toLong<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+      <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #ff7f50;">(</span>a % i == <span style="color: #8ae234; font-weight: bold;">0</span><span style="color: #ff7f50;">)</span> <span style="color: #ff7f50;">{</span>
+        res <span style="color: #729fcf; font-weight: bold;">=</span> res / i * <span style="color: #00ff00;">(</span>i-1<span style="color: #00ff00;">)</span>
+        <span style="color: #729fcf; font-weight: bold;">while</span><span style="color: #00ff00;">(</span>a % i == <span style="color: #8ae234; font-weight: bold;">0</span><span style="color: #00ff00;">)</span> a /= i
+      <span style="color: #ff7f50;">}</span>
+    <span style="color: #ffa500;">}</span>
+    <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>a &gt; <span style="color: #8ae234; font-weight: bold;">1</span><span style="color: #ffa500;">)</span> res <span style="color: #729fcf; font-weight: bold;">=</span> res / a * <span style="color: #ffa500;">(</span>a-1<span style="color: #ffa500;">)</span>
+    res
+  <span style="color: #00bfff;">}</span>
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+<p>
+The time complexity is <code>O(sqrt(n))</code>.
+</p>
+
+<p>
+Functional version:
+</p>
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #8ae234; font-weight: bold;">UNDERWORK</span>
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -320,7 +465,7 @@ Since I'm not smart enough, I simply use brute force in the first place:
 <div id="postamble" class="status">
 <p class="date">Date: 2020-02-23 周日 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-02-23 周日 19:50</p>
+<p class="date">Created: 2020-02-23 周日 22:09</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
