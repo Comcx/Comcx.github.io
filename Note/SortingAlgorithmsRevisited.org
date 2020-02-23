@@ -3,6 +3,12 @@
 #+Date:   <2020-01-28 周二>
 
 
+#+SETUPFILE: org-themes/setup/theme-readtheorg.setup
+#+HTML_HEAD: <style>pre.src{background:#343131;color:white;} </style>
+#+HTML_HEAD: <style> #content{max-width:1800px;}</style>
+#+HTML_HEAD: <style> p{max-width:800px;}</style>
+
+
 We're going to revisite some main-stream sorting algorithms and
 try to implement them in a more efficient way.
 
@@ -467,6 +473,8 @@ object InsertionSort {
   def isort[A <% Ordered[A]](xs: List[A]) = ???
 }
 #+END_SRC
+
+**** Optimizing
 
 ** Algorithms in /C++/ 
 *** Selection sort

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-27 周一 21:42 -->
+<!-- 2020-02-23 周日 18:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>IO monad in JavaScript</title>
@@ -180,6 +180,15 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style>pre.src{background:#343131;color:white;} </style>
+<style> #content{max-width:1800px;}</style>
+<style> p{max-width:800px;}</style>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -234,20 +243,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org737e6c2">1. Monad in Haskell</a></li>
-<li><a href="#org983bc0f">2. Simulating IO monad in JavaScript</a>
+<li><a href="#org6895e7c">1. Monad in Haskell</a></li>
+<li><a href="#org68ea41b">2. Simulating IO monad in JavaScript</a>
 <ul>
-<li><a href="#org277a11a">2.1. Simple examples</a></li>
+<li><a href="#org9da4f86">2.1. Simple examples</a></li>
 </ul>
 </li>
-<li><a href="#org1c3f365">3. Examples with DOM</a></li>
+<li><a href="#orgb94af55">3. Examples with DOM</a></li>
 </ul>
 </div>
 </div>
-
-
-<div id="outline-container-org737e6c2" class="outline-2">
-<h2 id="org737e6c2"><span class="section-number-2">1</span> Monad in Haskell</h2>
+<div id="outline-container-org6895e7c" class="outline-2">
+<h2 id="org6895e7c"><span class="section-number-2">1</span> Monad in Haskell</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Monad is quite interesting and important for Haskell and that's why
@@ -273,8 +280,8 @@ Monad is quite interesting and important for Haskell and that's why
 </div>
 
 
-<div id="outline-container-org983bc0f" class="outline-2">
-<h2 id="org983bc0f"><span class="section-number-2">2</span> Simulating IO monad in JavaScript</h2>
+<div id="outline-container-org68ea41b" class="outline-2">
+<h2 id="org68ea41b"><span class="section-number-2">2</span> Simulating IO monad in JavaScript</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 All we need to do is to wrap side-effects into IO monad.
@@ -303,8 +310,8 @@ where <code>of</code> is for <code>return</code> and <code>then</code> is for <c
 </p>
 </div>
 
-<div id="outline-container-org277a11a" class="outline-3">
-<h3 id="org277a11a"><span class="section-number-3">2.1</span> Simple examples</h3>
+<div id="outline-container-org9da4f86" class="outline-3">
+<h3 id="org9da4f86"><span class="section-number-3">2.1</span> Simple examples</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 <pre class="src src-javascript">
@@ -342,8 +349,8 @@ We can now combine sevel IO functions quite conveniently!
 </div>
 
 
-<div id="outline-container-org1c3f365" class="outline-2">
-<h2 id="org1c3f365"><span class="section-number-2">3</span> Examples with DOM</h2>
+<div id="outline-container-orgb94af55" class="outline-2">
+<h2 id="orgb94af55"><span class="section-number-2">3</span> Examples with DOM</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Some useful functions</li>
@@ -396,7 +403,7 @@ We can now combine sevel IO functions quite conveniently!
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-27 周一 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-27 周一 21:42</p>
+<p class="date">Created: 2020-02-23 周日 18:17</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
