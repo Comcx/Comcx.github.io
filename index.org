@@ -39,9 +39,12 @@ The last thing, if you want to find me, go to this page of /comcx.fun,/ and read
 
 
 
-** [[./Frame/Content.html][Articles >>=]]
+** [[./Frame/Content.html][Articles]]
+/Do or do not, there is no try./
 
-
+** Contact me
+- *Email:*  comcx@outlook.com
+- *Github:* [[www.github.com/Comcx][Github/Comcx]]
 
 
 #+ATTR_HTML: :width 100%
