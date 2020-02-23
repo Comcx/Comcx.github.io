@@ -1,7 +1,5 @@
-#+Title:  Comcx's BLOG.index.org
+#+Title:  Comcx's world: The zen of languages
 #+AUTHOR: Comcx
-
-
 
 #+SETUPFILE: Note/org-themes/setup/theme-readtheorg.setup
 #+HTML_HEAD: <style>pre.src{background:#343131;color:white;} </style>
@@ -9,13 +7,14 @@
 #+HTML_HEAD: <style> p{max-width:800px;}</style>
 
 
-** What topics may appear in this BOLG
 
-Functional Programming, アニメ, 文学, Music, Games.
+\\
+\\
+*Functional Programming, アニメ, 文学, Music, Games.*
+#+ATTR_HTML: :width 100%
+[[file:images/steins_gate_people.jpg]]
 
 
-
-** Me, personally ...
 
 I'm *Comcx*
 
@@ -40,12 +39,12 @@ The last thing, if you want to find me, go to this page of /comcx.fun,/ and read
 
 
 
-** Articles
+** [[./Frame/Content.html][Articles >>=]]
 
 
 
 
-
-
+#+ATTR_HTML: :width 100%
+[[file:images/pl.jpg]]
 
 
