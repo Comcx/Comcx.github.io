@@ -44,7 +44,7 @@ The last thing, if you want to find me, go to this page of /comcx.fun,/ and read
 
 ** Contact me
 - *Email:*  comcx@outlook.com
-- *Github:* [[www.github.com/Comcx][Github/Comcx]]
+- *Github:* [[https://github.com/Comcx][Github/Comcx]]
 
 
 #+ATTR_HTML: :width 100%
