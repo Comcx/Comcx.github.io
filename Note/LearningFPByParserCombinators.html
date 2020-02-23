@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-30 周四 18:56 -->
+<!-- 2020-02-23 周日 18:22 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Learning Functional Programming by Parser Combinators!</title>
@@ -180,6 +180,15 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style>pre.src{background:#343131;color:white;} </style>
+<style> #content{max-width:1800px;}</style>
+<style> p{max-width:800px;}</style>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -234,30 +243,29 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org6b3ae1b">1. Ideas</a></li>
-<li><a href="#org4a94a8f">2. The main <i>Parser</i> type</a></li>
-<li><a href="#orgeeec147">3. Find strucutres and properties of Parser</a>
+<li><a href="#orgda622af">1. Ideas</a></li>
+<li><a href="#org6305f16">2. The main <i>Parser</i> type</a></li>
+<li><a href="#org27b4df8">3. Find strucutres and properties of Parser</a>
 <ul>
-<li><a href="#org2a5785e">3.1. Parser can be a <span class="underline">Functor</span>.</a></li>
-<li><a href="#orge3148ea">3.2. Parser can be an <span class="underline">Applicative</span>.</a></li>
-<li><a href="#orga29b713">3.3. Parser can be a <span class="underline">Monad</span>.</a></li>
-<li><a href="#orgec4249a">3.4. Parser can be an <span class="underline">Alternative</span>.</a></li>
-<li><a href="#orgd9f6829">3.5. Parser should be a <span class="underline">Semigroup</span>.</a></li>
-<li><a href="#orgc3c1fd6">3.6. Parser should be a <span class="underline">Monoid</span>.</a></li>
+<li><a href="#orgcb3409f">3.1. Parser can be a <span class="underline">Functor</span>.</a></li>
+<li><a href="#org31f7787">3.2. Parser can be an <span class="underline">Applicative</span>.</a></li>
+<li><a href="#org33fc90f">3.3. Parser can be a <span class="underline">Monad</span>.</a></li>
+<li><a href="#org0dbaae5">3.4. Parser can be an <span class="underline">Alternative</span>.</a></li>
+<li><a href="#org9ddcb00">3.5. Parser should be a <span class="underline">Semigroup</span>.</a></li>
+<li><a href="#org0af53fd">3.6. Parser should be a <span class="underline">Monoid</span>.</a></li>
 </ul>
 </li>
-<li><a href="#org8a60bf1">4. Our arsenal!</a>
+<li><a href="#orge305970">4. Our arsenal!</a>
 <ul>
-<li><a href="#org3fd7264">4.1. Parser Char</a></li>
+<li><a href="#org49e626f">4.1. Parser Char</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-org6b3ae1b" class="outline-2">
-<h2 id="org6b3ae1b"><span class="section-number-2">1</span> Ideas</h2>
+<div id="outline-container-orgda622af" class="outline-2">
+<h2 id="orgda622af"><span class="section-number-2">1</span> Ideas</h2>
 <div class="outline-text-2" id="text-1">
 <ol class="org-ol">
 <li>Functions are data.</li>
@@ -271,8 +279,8 @@ We can express parser functions in a more understandable way.
 </div>
 
 
-<div id="outline-container-org4a94a8f" class="outline-2">
-<h2 id="org4a94a8f"><span class="section-number-2">2</span> The main <i>Parser</i> type</h2>
+<div id="outline-container-org6305f16" class="outline-2">
+<h2 id="org6305f16"><span class="section-number-2">2</span> The main <i>Parser</i> type</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Parsers find structure within text, either to validate, or to get text into some representation. 
@@ -295,12 +303,12 @@ For example <code>"1 + 2 + 3"</code> could be parsed as <code>(1 + 2) + 3</code>
 </div>
 
 
-<div id="outline-container-orgeeec147" class="outline-2">
-<h2 id="orgeeec147"><span class="section-number-2">3</span> Find strucutres and properties of Parser</h2>
+<div id="outline-container-org27b4df8" class="outline-2">
+<h2 id="org27b4df8"><span class="section-number-2">3</span> Find strucutres and properties of Parser</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org2a5785e" class="outline-3">
-<h3 id="org2a5785e"><span class="section-number-3">3.1</span> Parser can be a <span class="underline">Functor</span>.</h3>
+<div id="outline-container-orgcb3409f" class="outline-3">
+<h3 id="orgcb3409f"><span class="section-number-3">3.1</span> Parser can be a <span class="underline">Functor</span>.</h3>
 <div class="outline-text-3" id="text-3-1">
 <pre class="example">
 instance Functor Parser where
@@ -312,8 +320,8 @@ We just first parse and then map contents.
 </div>
 </div>
 
-<div id="outline-container-orge3148ea" class="outline-3">
-<h3 id="orge3148ea"><span class="section-number-3">3.2</span> Parser can be an <span class="underline">Applicative</span>.</h3>
+<div id="outline-container-org31f7787" class="outline-3">
+<h3 id="org31f7787"><span class="section-number-3">3.2</span> Parser can be an <span class="underline">Applicative</span>.</h3>
 <div class="outline-text-3" id="text-3-2">
 <pre class="example">
 instance Applicative Parser where
@@ -328,8 +336,8 @@ the next parser.
 </div>
 </div>
 
-<div id="outline-container-orga29b713" class="outline-3">
-<h3 id="orga29b713"><span class="section-number-3">3.3</span> Parser can be a <span class="underline">Monad</span>.</h3>
+<div id="outline-container-org33fc90f" class="outline-3">
+<h3 id="org33fc90f"><span class="section-number-3">3.3</span> Parser can be a <span class="underline">Monad</span>.</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 Monad is powerful here again.
@@ -343,8 +351,8 @@ instance Monad Parser where
 </div>
 </div>
 
-<div id="outline-container-orgec4249a" class="outline-3">
-<h3 id="orgec4249a"><span class="section-number-3">3.4</span> Parser can be an <span class="underline">Alternative</span>.</h3>
+<div id="outline-container-org0dbaae5" class="outline-3">
+<h3 id="org0dbaae5"><span class="section-number-3">3.4</span> Parser can be an <span class="underline">Alternative</span>.</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 Applicative =&gt; Alternative
@@ -360,8 +368,8 @@ To complete our definition, we need monoid and semigroup.
 </div>
 </div>
 
-<div id="outline-container-orgd9f6829" class="outline-3">
-<h3 id="orgd9f6829"><span class="section-number-3">3.5</span> Parser should be a <span class="underline">Semigroup</span>.</h3>
+<div id="outline-container-org9ddcb00" class="outline-3">
+<h3 id="org9ddcb00"><span class="section-number-3">3.5</span> Parser should be a <span class="underline">Semigroup</span>.</h3>
 <div class="outline-text-3" id="text-3-5">
 <pre class="example">
 instance Semigroup (Parser a) where
@@ -370,8 +378,8 @@ instance Semigroup (Parser a) where
 </div>
 </div>
 
-<div id="outline-container-orgc3c1fd6" class="outline-3">
-<h3 id="orgc3c1fd6"><span class="section-number-3">3.6</span> Parser should be a <span class="underline">Monoid</span>.</h3>
+<div id="outline-container-org0af53fd" class="outline-3">
+<h3 id="org0af53fd"><span class="section-number-3">3.6</span> Parser should be a <span class="underline">Monoid</span>.</h3>
 <div class="outline-text-3" id="text-3-6">
 <pre class="example">
 instance Monoid (Parser a) where
@@ -382,12 +390,12 @@ instance Monoid (Parser a) where
 </div>
 
 
-<div id="outline-container-org8a60bf1" class="outline-2">
-<h2 id="org8a60bf1"><span class="section-number-2">4</span> Our arsenal!</h2>
+<div id="outline-container-orge305970" class="outline-2">
+<h2 id="orge305970"><span class="section-number-2">4</span> Our arsenal!</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org3fd7264" class="outline-3">
-<h3 id="org3fd7264"><span class="section-number-3">4.1</span> Parser Char</h3>
+<div id="outline-container-org49e626f" class="outline-3">
+<h3 id="org49e626f"><span class="section-number-3">4.1</span> Parser Char</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 Perhaps the most basic one is <code>item</code>.
@@ -421,7 +429,7 @@ oneOf = satisfy . flip elem
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-30 周四 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-30 周四 18:56</p>
+<p class="date">Created: 2020-02-23 周日 18:22</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

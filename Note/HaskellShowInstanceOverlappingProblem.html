@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-02-02 周日 20:45 -->
+<!-- 2020-02-23 周日 18:22 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>The Haskell Show instance Overlapping problem</title>
@@ -180,6 +180,15 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style>pre.src{background:#343131;color:white;} </style>
+<style> #content{max-width:1800px;}</style>
+<style> p{max-width:800px;}</style>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -234,9 +243,9 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2f8646e">1. A special trick of Haskell Prelude</a></li>
-<li><a href="#org2a5c4cf">2. Alternative solution</a></li>
-<li><a href="#orge8ab701">3. Reflection of String implementation</a></li>
+<li><a href="#org6786f19">1. A special trick of Haskell Prelude</a></li>
+<li><a href="#org39a6b77">2. Alternative solution</a></li>
+<li><a href="#org6fd6304">3. Reflection of String implementation</a></li>
 </ul>
 </div>
 </div>
@@ -250,8 +259,8 @@ then why does type <code>String</code> just works in a different way since <code
 Well, The explanation is&#x2026;
 </p>
 
-<div id="outline-container-org2f8646e" class="outline-2">
-<h2 id="org2f8646e"><span class="section-number-2">1</span> A special trick of Haskell Prelude</h2>
+<div id="outline-container-org6786f19" class="outline-2">
+<h2 id="org6786f19"><span class="section-number-2">1</span> A special trick of Haskell Prelude</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 In fact, class <code>Show</code> is not a typeclass with a mere function <code>show</code>.
@@ -278,8 +287,8 @@ instances at all.
 </div>
 </div>
 
-<div id="outline-container-org2a5c4cf" class="outline-2">
-<h2 id="org2a5c4cf"><span class="section-number-2">2</span> Alternative solution</h2>
+<div id="outline-container-org39a6b77" class="outline-2">
+<h2 id="org39a6b77"><span class="section-number-2">2</span> Alternative solution</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 An alternative solution is to use GHC extensions.
@@ -291,8 +300,8 @@ An alternative solution is to use GHC extensions.
 </div>
 
 
-<div id="outline-container-orge8ab701" class="outline-2">
-<h2 id="orge8ab701"><span class="section-number-2">3</span> Reflection of String implementation</h2>
+<div id="outline-container-org6fd6304" class="outline-2">
+<h2 id="org6fd6304"><span class="section-number-2">3</span> Reflection of String implementation</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Should type <code>String</code> be a synonym of <code>[Char]</code>?
@@ -308,7 +317,7 @@ I am not sure&#x2026;
 <div id="postamble" class="status">
 <p class="date">Date: 2020-02-02 周日 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-02-02 周日 20:45</p>
+<p class="date">Created: 2020-02-23 周日 18:22</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-26 周日 19:10 -->
+<!-- 2020-02-23 周日 18:21 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>From Recursion to Greedy algorithms: a functional perspective</title>
@@ -180,6 +180,15 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style>pre.src{background:#343131;color:white;} </style>
+<style> #content{max-width:1800px;}</style>
+<style> p{max-width:800px;}</style>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -234,51 +243,51 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org9f2832f">1. Functional Programming とは &#x2026;</a></li>
-<li><a href="#org35036b6">2. Divide and Conquer</a>
+<li><a href="#org0bb5fbf">1. Functional Programming とは &#x2026;</a></li>
+<li><a href="#orgde4b7d7">2. Divide and Conquer</a>
 <ul>
-<li><a href="#org7f1b059">2.1. Data structures by Lists</a>
+<li><a href="#org21d8c84">2.1. Data structures by Lists</a>
 <ul>
-<li><a href="#org713c559">2.1.1. Replacing</a></li>
-<li><a href="#org8107873">2.1.2. <b>Reversing lists</b></a></li>
-<li><a href="#org58c0866">2.1.3. foldl or foldr?</a></li>
+<li><a href="#orgda53735">2.1.1. Replacing</a></li>
+<li><a href="#orgfc360f6">2.1.2. <b>Reversing lists</b></a></li>
+<li><a href="#org13b77f6">2.1.3. foldl or foldr?</a></li>
 </ul>
 </li>
-<li><a href="#org80bf422">2.2. Expressions</a></li>
-<li><a href="#org4c21372">2.3. Data structures by Trees</a>
+<li><a href="#orgdc7ee85">2.2. Expressions</a></li>
+<li><a href="#org2e0e4de">2.3. Data structures by Trees</a>
 <ul>
-<li><a href="#org4ec97a5">2.3.1. Binary Tree</a></li>
-<li><a href="#orgf468b01">2.3.2. More general trees</a></li>
+<li><a href="#org330b243">2.3.1. Binary Tree</a></li>
+<li><a href="#org0ef4601">2.3.2. More general trees</a></li>
 </ul>
 </li>
-<li><a href="#org9816ddc">2.4. The answers</a>
+<li><a href="#org12fd206">2.4. The answers</a>
 <ul>
-<li><a href="#org18dbb0b">2.4.1. What is data structure?</a></li>
-<li><a href="#orga4135b8">2.4.2. What is algorithm?</a></li>
-<li><a href="#orgce9e5ac">2.4.3. Links between data structures and algorithms?</a></li>
-<li><a href="#orgeb28591">2.4.4. How to select?</a></li>
+<li><a href="#orgd55d6ed">2.4.1. What is data structure?</a></li>
+<li><a href="#org941af3e">2.4.2. What is algorithm?</a></li>
+<li><a href="#orgd2d3a56">2.4.3. Links between data structures and algorithms?</a></li>
+<li><a href="#org0bb9dad">2.4.4. How to select?</a></li>
 </ul>
 </li>
-<li><a href="#org3fb1ffe">2.5. Abstract Data Types <code>[4/7]</code></a>
+<li><a href="#org605ab19">2.5. Abstract Data Types <code>[4/7]</code></a>
 <ul>
-<li><a href="#orgee149a8">2.5.1. <span class="done DONE">DONE</span> Stack</a></li>
-<li><a href="#org6323f0b">2.5.2. <span class="done DONE">DONE</span> Queue</a></li>
-<li><a href="#orgc173af8">2.5.3. <span class="todo TODO">TODO</span> Heap</a></li>
-<li><a href="#orgc47e7a4">2.5.4. <span class="todo NEXT">NEXT</span> Set</a></li>
-<li><a href="#org9c5029f">2.5.5. <span class="done CANCELLED">CANCELLED</span> Vector</a></li>
-<li><a href="#org53a7351">2.5.6. <span class="done CANCELLED">CANCELLED</span> Table</a></li>
-<li><a href="#org947ea09">2.5.7. <span class="todo NEXT">NEXT</span> More Trees <code>[1/3]</code></a></li>
+<li><a href="#orgcf3ed85">2.5.1. <span class="done DONE">DONE</span> Stack</a></li>
+<li><a href="#orgd9e3457">2.5.2. <span class="done DONE">DONE</span> Queue</a></li>
+<li><a href="#org0616d1d">2.5.3. <span class="todo TODO">TODO</span> Heap</a></li>
+<li><a href="#org902fe42">2.5.4. <span class="todo NEXT">NEXT</span> Set</a></li>
+<li><a href="#org6ce444e">2.5.5. <span class="done CANCELLED">CANCELLED</span> Vector</a></li>
+<li><a href="#org5cec62c">2.5.6. <span class="done CANCELLED">CANCELLED</span> Table</a></li>
+<li><a href="#orgb938449">2.5.7. <span class="todo NEXT">NEXT</span> More Trees <code>[1/3]</code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org50c75b9">3. Dynamic Programming</a>
+<li><a href="#org0e5a12b">3. Dynamic Programming</a>
 <ul>
-<li><a href="#orgbe17b49">3.1. A dynamic programming example by expanding data structure</a></li>
-<li><a href="#org39fd440">3.2. A dynamic programming example by using extra data structure</a></li>
+<li><a href="#orgb6c1207">3.1. A dynamic programming example by expanding data structure</a></li>
+<li><a href="#orge924e9d">3.2. A dynamic programming example by using extra data structure</a></li>
 </ul>
 </li>
-<li><a href="#orgfa5a815">4. Greedy</a></li>
+<li><a href="#orgc592a3d">4. Greedy</a></li>
 </ul>
 </div>
 </div>
@@ -302,8 +311,8 @@ be good at translate functional programs into other languages.
 </p>
 
 
-<div id="outline-container-org9f2832f" class="outline-2">
-<h2 id="org9f2832f"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
+<div id="outline-container-org0bb5fbf" class="outline-2">
+<h2 id="org0bb5fbf"><span class="section-number-2">1</span> Functional Programming とは &#x2026;</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 A functional programming language should have the following features:
@@ -330,8 +339,8 @@ A functional programming language may have the following features:
 </div>
 </div>
 
-<div id="outline-container-org35036b6" class="outline-2">
-<h2 id="org35036b6"><span class="section-number-2">2</span> Divide and Conquer</h2>
+<div id="outline-container-orgde4b7d7" class="outline-2">
+<h2 id="orgde4b7d7"><span class="section-number-2">2</span> Divide and Conquer</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Before starting to explore recursions, let us first reflect some questions:
@@ -344,8 +353,8 @@ Before starting to explore recursions, let us first reflect some questions:
 </ol>
 </div>
 
-<div id="outline-container-org7f1b059" class="outline-3">
-<h3 id="org7f1b059"><span class="section-number-3">2.1</span> Data structures by Lists</h3>
+<div id="outline-container-org21d8c84" class="outline-3">
+<h3 id="org21d8c84"><span class="section-number-3">2.1</span> Data structures by Lists</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 In functional world, a very common and heavy used data structure is <b>List a(or [a] in haskell)</b>.
@@ -358,8 +367,8 @@ Let's look at its definition first:
 </div>
 </div>
 
-<div id="outline-container-org713c559" class="outline-4">
-<h4 id="org713c559"><span class="section-number-4">2.1.1</span> Replacing</h4>
+<div id="outline-container-orgda53735" class="outline-4">
+<h4 id="orgda53735"><span class="section-number-4">2.1.1</span> Replacing</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 If we regard that <code>List</code> is just a function which receive a type and output a type, then we can rewrite
@@ -404,8 +413,8 @@ To solve a problem, we only need to solve one sub-problem before.(this give us h
 </div>
 </div>
 
-<div id="outline-container-org8107873" class="outline-4">
-<h4 id="org8107873"><span class="section-number-4">2.1.2</span> <b>Reversing lists</b></h4>
+<div id="outline-container-orgfc360f6" class="outline-4">
+<h4 id="orgfc360f6"><span class="section-number-4">2.1.2</span> <b>Reversing lists</b></h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 One more interesting thing is that Haskell also have the function <code>foldl.</code> 
@@ -443,8 +452,8 @@ Great! Try to reverse a list using foldl:
 </div>
 </div>
 
-<div id="outline-container-org58c0866" class="outline-4">
-<h4 id="org58c0866"><span class="section-number-4">2.1.3</span> foldl or foldr?</h4>
+<div id="outline-container-org13b77f6" class="outline-4">
+<h4 id="org13b77f6"><span class="section-number-4">2.1.3</span> foldl or foldr?</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <ol class="org-ol">
 <li>If we are in a stack model, then foldl can be used without worrying about stackoverflow.</li>
@@ -455,8 +464,8 @@ be an instance of typeclass <span class="underline">Monoid</span>.</li>
 </div>
 </div>
 
-<div id="outline-container-org80bf422" class="outline-3">
-<h3 id="org80bf422"><span class="section-number-3">2.2</span> Expressions</h3>
+<div id="outline-container-orgdc7ee85" class="outline-3">
+<h3 id="orgdc7ee85"><span class="section-number-3">2.2</span> Expressions</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 In the last part, we talked about data structures. However, a new question raised that,
@@ -558,8 +567,8 @@ Finally we feel that we've got better understanding of expressions&#x2026;(altho
 </div>
 </div>
 
-<div id="outline-container-org4c21372" class="outline-3">
-<h3 id="org4c21372"><span class="section-number-3">2.3</span> Data structures by Trees</h3>
+<div id="outline-container-org2e0e4de" class="outline-3">
+<h3 id="org2e0e4de"><span class="section-number-3">2.3</span> Data structures by Trees</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Unlike <i>Lists,</i> Trees allow us to divide problems into many sub-problems.
@@ -567,8 +576,8 @@ To make things simple and clear, we first focus on <span class="underline">binar
 </p>
 </div>
 
-<div id="outline-container-org4ec97a5" class="outline-4">
-<h4 id="org4ec97a5"><span class="section-number-4">2.3.1</span> Binary Tree</h4>
+<div id="outline-container-org330b243" class="outline-4">
+<h4 id="org330b243"><span class="section-number-4">2.3.1</span> Binary Tree</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <div class="org-src-container">
 <pre class="src src-haskell">
@@ -653,7 +662,7 @@ Now we can add all numbers of <code>BinTree Int</code>.
 </div>
 
 <ol class="org-ol">
-<li><a id="orge4bf8ad"></a>Using tricks as foldl in Lists<br />
+<li><a id="org35bfce8"></a>Using tricks as foldl in Lists<br />
 <div class="outline-text-5" id="text-2-3-1-1">
 <p>
 If we want to traverse a binary tree in an inorder order:
@@ -695,8 +704,8 @@ Finally we have:
 </ol>
 </div>
 
-<div id="outline-container-orgf468b01" class="outline-4">
-<h4 id="orgf468b01"><span class="section-number-4">2.3.2</span> More general trees</h4>
+<div id="outline-container-org0ef4601" class="outline-4">
+<h4 id="org0ef4601"><span class="section-number-4">2.3.2</span> More general trees</h4>
 <div class="outline-text-4" id="text-2-3-2">
 <div class="org-src-container">
 <pre class="src src-haskell">
@@ -729,16 +738,16 @@ or
 </div>
 </div>
 
-<div id="outline-container-org9816ddc" class="outline-3">
-<h3 id="org9816ddc"><span class="section-number-3">2.4</span> The answers</h3>
+<div id="outline-container-org12fd206" class="outline-3">
+<h3 id="org12fd206"><span class="section-number-3">2.4</span> The answers</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 OK! now I may answer the three questions before(may be wrong, only my views):
 </p>
 </div>
 
-<div id="outline-container-org18dbb0b" class="outline-4">
-<h4 id="org18dbb0b"><span class="section-number-4">2.4.1</span> What is data structure?</h4>
+<div id="outline-container-orgd55d6ed" class="outline-4">
+<h4 id="orgd55d6ed"><span class="section-number-4">2.4.1</span> What is data structure?</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <p>
 Data structures are recursion proto structures which can be used to solve problems.
@@ -746,8 +755,8 @@ Data structures are recursion proto structures which can be used to solve proble
 </div>
 </div>
 
-<div id="outline-container-orga4135b8" class="outline-4">
-<h4 id="orga4135b8"><span class="section-number-4">2.4.2</span> What is algorithm?</h4>
+<div id="outline-container-org941af3e" class="outline-4">
+<h4 id="org941af3e"><span class="section-number-4">2.4.2</span> What is algorithm?</h4>
 <div class="outline-text-4" id="text-2-4-2">
 <p>
 Algorithms are <span class="underline">foldable</span> data structures.
@@ -755,8 +764,8 @@ Algorithms are <span class="underline">foldable</span> data structures.
 </div>
 </div>
 
-<div id="outline-container-orgce9e5ac" class="outline-4">
-<h4 id="orgce9e5ac"><span class="section-number-4">2.4.3</span> Links between data structures and algorithms?</h4>
+<div id="outline-container-orgd2d3a56" class="outline-4">
+<h4 id="orgd2d3a56"><span class="section-number-4">2.4.3</span> Links between data structures and algorithms?</h4>
 <div class="outline-text-4" id="text-2-4-3">
 <p>
 Data structures can be easily converted to algorithms.
@@ -765,8 +774,8 @@ Algorithms can be used to generate data structures.
 </div>
 </div>
 
-<div id="outline-container-orgeb28591" class="outline-4">
-<h4 id="orgeb28591"><span class="section-number-4">2.4.4</span> How to select?</h4>
+<div id="outline-container-org0bb9dad" class="outline-4">
+<h4 id="org0bb9dad"><span class="section-number-4">2.4.4</span> How to select?</h4>
 <div class="outline-text-4" id="text-2-4-4">
 <p>
 To select data structures with respect to different kind os algorithms,
@@ -777,8 +786,8 @@ as far as possible.
 </div>
 </div>
 
-<div id="outline-container-org3fb1ffe" class="outline-3">
-<h3 id="org3fb1ffe"><span class="section-number-3">2.5</span> Abstract Data Types <code>[4/7]</code></h3>
+<div id="outline-container-org605ab19" class="outline-3">
+<h3 id="org605ab19"><span class="section-number-3">2.5</span> Abstract Data Types <code>[4/7]</code></h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 In fact, data structures we talked before are <span class="underline">Algebra Data Structures(ADT)</span>.
@@ -786,8 +795,8 @@ However, we can generize our types a little bit, we can define types by actions.
 </p>
 </div>
 
-<div id="outline-container-orgee149a8" class="outline-4">
-<h4 id="orgee149a8"><span class="section-number-4">2.5.1</span> <span class="done DONE">DONE</span> Stack</h4>
+<div id="outline-container-orgcf3ed85" class="outline-4">
+<h4 id="orgcf3ed85"><span class="section-number-4">2.5.1</span> <span class="done DONE">DONE</span> Stack</h4>
 <div class="outline-text-4" id="text-2-5-1">
 <p>
 The <code>Stack</code> implementation is quite straight-forward.
@@ -820,8 +829,8 @@ Each step is in <code>O(1)</code> steps.
 </div>
 </div>
 
-<div id="outline-container-org6323f0b" class="outline-4">
-<h4 id="org6323f0b"><span class="section-number-4">2.5.2</span> <span class="done DONE">DONE</span> Queue</h4>
+<div id="outline-container-orgd9e3457" class="outline-4">
+<h4 id="orgd9e3457"><span class="section-number-4">2.5.2</span> <span class="done DONE">DONE</span> Queue</h4>
 <div class="outline-text-4" id="text-2-5-2">
 <div class="org-src-container">
 <pre class="src src-haskell">
@@ -834,7 +843,7 @@ Each step is in <code>O(1)</code> steps.
 </div>
 </div>
 <ol class="org-ol">
-<li><a id="org58cc4ac"></a>A naive implementation<br />
+<li><a id="orgeb2cf63"></a>A naive implementation<br />
 <div class="outline-text-5" id="text-2-5-2-1">
 <div class="org-src-container">
 <pre class="src src-haskell">
@@ -858,7 +867,7 @@ Each step is in <code>O(1)</code> steps.
 </div>
 </li>
 
-<li><a id="org3364422"></a>Another implementation<br />
+<li><a id="org19db3ff"></a>Another implementation<br />
 <div class="outline-text-5" id="text-2-5-2-2">
 <div class="org-src-container">
 <pre class="src src-haskell">
@@ -887,7 +896,7 @@ operations so that the worest case for any dequeue operation is in <code>O(logn)
 </div>
 </li>
 
-<li><a id="org51e8207"></a>Priority queue<br />
+<li><a id="org243f534"></a>Priority queue<br />
 <div class="outline-text-5" id="text-2-5-2-3">
 <p>
 A priority queue is a queue in which each item has a priority associated with it.
@@ -896,7 +905,7 @@ The <code>dequeue</code> operation always removes the item with the highest(or l
 </div>
 
 <ol class="org-ol">
-<li><a id="org9619981"></a>A naive implementation<br />
+<li><a id="orgfafc88c"></a>A naive implementation<br />
 <div class="outline-text-6" id="text-2-5-2-3-1">
 <div class="org-src-container">
 <pre class="src src-haskell">
@@ -921,14 +930,14 @@ The <code>dequeue</code> operation always removes the item with the highest(or l
 </div>
 </li>
 
-<li><a id="org994da63"></a>Implementation with heap<br /></li>
+<li><a id="org77cd605"></a>Implementation with heap<br /></li>
 </ol>
 </li>
 </ol>
 </div>
 
-<div id="outline-container-orgc173af8" class="outline-4">
-<h4 id="orgc173af8"><span class="section-number-4">2.5.3</span> <span class="todo TODO">TODO</span> Heap</h4>
+<div id="outline-container-org0616d1d" class="outline-4">
+<h4 id="org0616d1d"><span class="section-number-4">2.5.3</span> <span class="todo TODO">TODO</span> Heap</h4>
 <div class="outline-text-4" id="text-2-5-3">
 <ul class="org-ul">
 <li>Definition</li>
@@ -946,8 +955,8 @@ The <code>dequeue</code> operation always removes the item with the highest(or l
 
 
 
-<div id="outline-container-orgc47e7a4" class="outline-4">
-<h4 id="orgc47e7a4"><span class="section-number-4">2.5.4</span> <span class="todo NEXT">NEXT</span> Set</h4>
+<div id="outline-container-org902fe42" class="outline-4">
+<h4 id="org902fe42"><span class="section-number-4">2.5.4</span> <span class="todo NEXT">NEXT</span> Set</h4>
 <div class="outline-text-4" id="text-2-5-4">
 <div class="org-src-container">
 <pre class="src src-haskell">
@@ -961,22 +970,22 @@ The <code>dequeue</code> operation always removes the item with the highest(or l
 </div>
 
 <ol class="org-ol">
-<li><a id="org27c892a"></a>List implementations<br /></li>
+<li><a id="org873ea23"></a>List implementations<br /></li>
 </ol>
 </div>
 
-<div id="outline-container-org9c5029f" class="outline-4">
-<h4 id="org9c5029f"><span class="section-number-4">2.5.5</span> <span class="done CANCELLED">CANCELLED</span> Vector</h4>
+<div id="outline-container-org6ce444e" class="outline-4">
+<h4 id="org6ce444e"><span class="section-number-4">2.5.5</span> <span class="done CANCELLED">CANCELLED</span> Vector</h4>
 </div>
-<div id="outline-container-org53a7351" class="outline-4">
-<h4 id="org53a7351"><span class="section-number-4">2.5.6</span> <span class="done CANCELLED">CANCELLED</span> Table</h4>
+<div id="outline-container-org5cec62c" class="outline-4">
+<h4 id="org5cec62c"><span class="section-number-4">2.5.6</span> <span class="done CANCELLED">CANCELLED</span> Table</h4>
 </div>
-<div id="outline-container-org947ea09" class="outline-4">
-<h4 id="org947ea09"><span class="section-number-4">2.5.7</span> <span class="todo NEXT">NEXT</span> More Trees <code>[1/3]</code></h4>
+<div id="outline-container-orgb938449" class="outline-4">
+<h4 id="orgb938449"><span class="section-number-4">2.5.7</span> <span class="todo NEXT">NEXT</span> More Trees <code>[1/3]</code></h4>
 <div class="outline-text-4" id="text-2-5-7">
 </div>
 <ol class="org-ol">
-<li><a id="orga2e1763"></a><span class="done DONE">DONE</span> Binary Search Tree<br />
+<li><a id="orgb21bd2b"></a><span class="done DONE">DONE</span> Binary Search Tree<br />
 <div class="outline-text-5" id="text-2-5-7-1">
 <ul class="org-ul">
 <li>Definition</li>
@@ -1073,23 +1082,23 @@ It's possible to build a tree with a minimum depth:
 </div>
 </li>
 
-<li><a id="org6083cb2"></a><span class="todo TODO">TODO</span> AVL Tree<br /></li>
-<li><a id="orge95b6ed"></a><span class="todo TODO">TODO</span> Red-black Tree<br /></li>
+<li><a id="org6c1213a"></a><span class="todo TODO">TODO</span> AVL Tree<br /></li>
+<li><a id="orgd462e90"></a><span class="todo TODO">TODO</span> Red-black Tree<br /></li>
 </ol>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org50c75b9" class="outline-2">
-<h2 id="org50c75b9"><span class="section-number-2">3</span> Dynamic Programming</h2>
+<div id="outline-container-org0e5a12b" class="outline-2">
+<h2 id="org0e5a12b"><span class="section-number-2">3</span> Dynamic Programming</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Dynamic programming is about finding similar sub structures.
 </p>
 </div>
 
-<div id="outline-container-orgbe17b49" class="outline-3">
-<h3 id="orgbe17b49"><span class="section-number-3">3.1</span> A dynamic programming example by expanding data structure</h3>
+<div id="outline-container-orgb6c1207" class="outline-3">
+<h3 id="orgb6c1207"><span class="section-number-3">3.1</span> A dynamic programming example by expanding data structure</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Suppose we want to insert a node at the lowest level of the smallest sub-tree.
@@ -1131,8 +1140,8 @@ So let's take more examples.
 </div>
 </div>
 
-<div id="outline-container-org39fd440" class="outline-3">
-<h3 id="org39fd440"><span class="section-number-3">3.2</span> A dynamic programming example by using extra data structure</h3>
+<div id="outline-container-orge924e9d" class="outline-3">
+<h3 id="orge924e9d"><span class="section-number-3">3.2</span> A dynamic programming example by using extra data structure</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 A well-known data structre used frequently in dynamic programming is <code>Array</code>.
@@ -1142,14 +1151,14 @@ A well-known data structre used frequently in dynamic programming is <code>Array
 </div>
 
 
-<div id="outline-container-orgfa5a815" class="outline-2">
-<h2 id="orgfa5a815"><span class="section-number-2">4</span> Greedy</h2>
+<div id="outline-container-orgc592a3d" class="outline-2">
+<h2 id="orgc592a3d"><span class="section-number-2">4</span> Greedy</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-22 周三 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-01-26 周日 19:10</p>
+<p class="date">Created: 2020-02-23 周日 18:21</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
