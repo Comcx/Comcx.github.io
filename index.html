@@ -1,187 +1,309 @@
-<!DOCTYPE html>
-<html>
-    <head>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-02-23 周日 18:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Comcx's BLOG.index.org</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Comcx" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
 
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Comcx's world</title>
-	<style>
-	 body {
-	     font-family: "Lato", sans-serif;
-	 }
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<style>pre.src{background:#343131;color:white;} </style>
+<style> #content{max-width:1800px;}</style>
+<style> p{max-width:800px;}</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
 
-	 .sidenav {
-	     height: 100%;
-	     width: 0;
-	     position: fixed;
-	     z-index: 1;
-	     top: 0;
-	     left: 0;
-	     background-color: #111;
-	     overflow-x: hidden;
-	     transition: 0.5s;
-	     padding-top: 60px;
-	 }
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
 
-	 .sidenav a {
-	     padding: 8px 8px 8px 32px;
-	     text-decoration: none;
-	     font-size: 18px;
-	     color: #818181;
-	     display: block;
-	     transition: 0.3s;
-	 }
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
 
-	 .sidenav a:hover {
-	     color: #f1f1f1;
-	 }
-
-	 .sidenav .closebtn {
-	     position: absolute;
-	     top: 0;
-	     right: 20px;
-	     font-size: 20px;
-	     margin-left: 40px;
-	 }
-
-	 #main {
-	     transition: margin-left .5s;
-	     padding: 16px;
-	     
-	 }
-
-
-
-	 @media screen and (max-height: 450px) {
-	     .sidenav {padding-top: 15px;}
-	     .sidenav a {font-size: 18px;}
-	 }
-	 
-	 #show {
-	     font-size: 18px;
-	     color: #990099;
-	     text-align: right;
-	 }
-
-	 a {
-	     font-size: 18px;
-	 }
-
-	 p.Y {
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
 
 
-	     font-size: 24px;
-	 }
-	</style>
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Comcx's BLOG.index.org</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org25515d6">1. What topics may appear in this BOLG</a></li>
+<li><a href="#org27e3f87">2. Me, personally &#x2026;</a></li>
+<li><a href="#orgac77d48">3. Articles</a></li>
+</ul>
+</div>
+</div>
 
-	<script>
-	 var timer=null;
-	 function displayClock(num){//num是传入的startClock中的动态值
-	     if(num<10){
-		 return "0"+num;
-	     }
-	     else{
-		 return num;
-	     }
-	 }
-	 //停止计时
-	 function stopClock(){
-	     clearTimeout(timer);
-	 }
-	 //开始计时
-	 function startClock(){
-	     var time =new Date();
-	     var hours=displayClock(time.getHours())+":";
-	     var minutes=displayClock(time.getMinutes())+":";
-	     var seconds=displayClock(time.getSeconds());
-	     //显示时间
-	     show.innerHTML=hours+minutes+seconds;//在id为show的块区域显示
-	     timer=setTimeout("startClock()",1000);//延时器
-	 }
-	</script>
-    </head>
 
-    <body onload="startClock()" onunload="stopClock()">
-
-	<div id="mySidenav" class="sidenav">
-	    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-	    <a href="/Frame/About.html">About me</a>
-	    <a href="#">Category</a>
-	    <a href="#">Content</a>
-	    <a href="#">Contact</a>
-            <a href="#"></a>
-	    <a href="#"></a>
-	    <a href="#"></a>
-	    <a href="#"></a>
-	    <a href="https://github.com/Comcx"><i>Github</i></a>
-	</div>
-	
-	<div id="main">
-	    <span style="font-size:16px;cursor:pointer" onclick="openNav()">
-		<font color="grey">&#9776;</font>
-		Menu
-	    </span>
-	    <br><br>
-	    <img src="images/haskell_book.png" style="float:right" width="330"/>
-	    <h1><font color="purple">&lambda;</font> Comcx's world</h1>
-	    <i>Functional Programming, アニメ, 文学, Music, Games.</i>
-
-	    <br>
-	    <p>Email: comcx@outlook.com</p><br>
-
-	    <br><br><br>
-	    <h2><font color="#006666">Omniselector</font> </h2>
-	    <hr>
-	    <div id="show"></div>
-	      <a href="/Note/DragonScript.html">
-		    <b>Fighting with Ender Dragon</b></a><br>
-	            2020.01.23<br><br>
-              <a href="/Note/Emacs.html">
-		    <b>Emacs Cheet Sheet</b></a><br>
-                    2020.01.22<br><br>
-              <a href="/Note/FromRecursionToGreedy.html">
-		    <b>From Recursion to Greedy algorithms: a functional perspective</b></a><br>
-	            2020.01.24<br><br>
-	      <a href="/Note/IOMonadInJavaScript.html">
-		  <b>IO Monad in JavaScript!</b></a><br>
-	          2020.01.27<br><br>
-              <a href="/Note/SortingAlgorithmsRevisited.html">
-		  <b>Sorting algorithms revisited</b></a><br>
-	          2020.01.29<br /><br />
-	      <a href="/Note/LearningFPByParserCombinators.html">
-		  <b>Learning Functional Programming by Parser Combinators!</b></a><br />
-		  2020.01.30<br /><br />
-	      <a href="/Note/HaskellShowInstanceOverlappingProblem.html">
-		  <b>Haskell Show Instance Overlapping Problem</b></a><br />
-		  2020.02.02<br /><br />
-		  
-	      <br />
-                
-	      
-	</div>
-	<div id="content">
-	    
-	</div>
+<div id="outline-container-org25515d6" class="outline-2">
+<h2 id="org25515d6"><span class="section-number-2">1</span> What topics may appear in this BOLG</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Functional Programming, アニメ, 文学, Music, Games.
+</p>
+</div>
+</div>
 
 
 
-	<script>
-	 function openNav() {
-	   document.getElementById("mySidenav").style.width = "240px";
-	   document.getElementById("main").style.marginLeft = "240px";
-	 }
+<div id="outline-container-org27e3f87" class="outline-2">
+<h2 id="org27e3f87"><span class="section-number-2">2</span> Me, personally &#x2026;</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+I'm <b>Comcx</b>
+</p>
 
-	 function closeNav() {
-	   document.getElementById("mySidenav").style.width = "0";
-	   document.getElementById("main").style.marginLeft = "0";
-	 }
-	</script>
+<p>
+This is a very simple and light-weight personal blog.
+I am just trying to make things simple and stupid.
+</p>
+
+<p>
+This blog may mainly contain articles on <span class="underline">Math</span>, <span class="underline">Functional Programming</span>, <span class="underline">Linguistics</span> and <span class="underline">Animations</span>.
+I'm just a person who's trying to get better understanding of the world and
+to get better programming skills. My goal is to <b>create a programming language</b> which can
+satisfy me while programming.
+</p>
+
+<p>
+I tried to program with <i>C++,</i> <i>Scala,</i> <i>Haskell,</i> <i>Racket</i> and many other interesting programming languages.
+They all in a sense makes me get better understanding of programming(especially Scala and Haskell).
+</p>
+
+<p>
+The life is short and I may not be smart enough to achieve my goal, but I really love all these things.
+The articles and ideas may looks stupid, but I think they will become valuable some day in the future.
+</p>
 
 
 
+
+<p>
+The last thing, if you want to find me, go to this page of <i>comcx.fun,</i> and read me again.
+</p>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgac77d48" class="outline-2">
+<h2 id="orgac77d48"><span class="section-number-2">3</span> Articles</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Comcx</p>
+<p class="date">Created: 2020-02-23 周日 18:35</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
 </body>
 </html>
-
-
-
-
-
