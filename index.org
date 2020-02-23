@@ -6,7 +6,7 @@
 #+HTML_HEAD: <style> #content{max-width:1800px;}</style>
 #+HTML_HEAD: <style> p{max-width:800px;}</style>
 
-
+#+HTML_HEAD: <link rel="icon" type="image/x-icon" href="images/digimon-icon.png" />
 
 \\
 \\
@@ -19,7 +19,7 @@
 I'm *Comcx*
 
 This is a very simple and light-weight personal blog.
-I am just trying to make things simple and stupid.
+I am just trying to make things simple *but not* stupid(actually because I'm lazy).
 
 This blog may mainly contain articles on _Math_, _Functional Programming_, _Linguistics_ and _Animations_.
 I'm just a person who's trying to get better understanding of the world and
@@ -42,9 +42,46 @@ The last thing, if you want to find me, go to this page of /comcx.fun,/ and read
 ** [[./Frame/Content.html][Articles]]
 /Do or do not, there is no try./
 
+
+** Category
+*** Functional Programming
+- Learning Haskell and Agda, trying to be practical with Scala.
+- Learning actor model and concurrent programming with Erlang and Elixir.
+- Learning Rust to master high perfermance and safe programming.
+
+*** Mathematics
+- Advanced algrbra
+- Category theory
+- Type theory
+
+*** Anime
+- Attack on Titan
+- Stein's Gate
+- Death Note
+
+*** Music
+- Learning piano
+- Learning music theory
+
+*** Movie 
+*** Drawing
+*** Game
+- Minecraft
+- Terraria
+- Unity
+- Blender
+- LOVE2D
+
+*** Other
+
+
 ** Contact me
 - *Email:*  comcx@outlook.com
 - *Github:* [[https://github.com/Comcx][Github/Comcx]]
+
+
+
+
 
 
 #+ATTR_HTML: :width 100%
