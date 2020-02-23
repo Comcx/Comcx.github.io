@@ -7,20 +7,19 @@
 #+HTML_HEAD: <style> #content{max-width:1800px;}</style>
 #+HTML_HEAD: <style> p{max-width:800px;}</style>
 
-\\
 
 ** Articles
 *** [[../Note/FromRecursionToGreedy.html][From Recursion to Greedy algorithms: a functional perspective]]
-    2020.01.24
+    2020.01.24\\
     There's an important leanring and developing chain of traditional algorithms:
     =Divide and Conquer(recursion) ---> Dynamic Programming(mermorization) --> Greedy= 
  
 *** [[../Note/IOMonadInJavaScript.html][IO Monad in JavaScript!]]
-    2020.01.27
+    2020.01.27\\
     Monad >>= \m => interesting, right?
          
 *** [[../Note/SortingAlgorithmsRevisited.html][Sorting algorithms revisited]]
-    2020.01.29
+    2020.01.29\\
     We're going to revisite some main-stream sorting algorithms and
     try to implement them in a more efficient way.
 
@@ -31,13 +30,13 @@
     Finally, we translate Scala codes into _C++_ (some even C:).
 	 
 *** [[../Note/LearningFPByParserCombinators.html][Learning Functional Programming by Parser Combinators!]]
-    2020.01.30
+    2020.01.30\\
 	      
 *** [[../Note/HaskellShowInstanceOverlappingProblem.html][Haskell Show Instance Overlapping Problem]]
-    2020.02.02
+    2020.02.02\\
     Same question encountered when I designed /Nona/...
 		  
 *** [[../Note/NumberOfProperFractionsWithDenominator.html][Codewars | Number of Proper Fractions with Denominator d]]
-    2020.02.23
+    2020.02.23\\
 
 
