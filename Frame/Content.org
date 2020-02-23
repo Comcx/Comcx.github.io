@@ -12,18 +12,30 @@
 ** Articles
 *** [[../Note/FromRecursionToGreedy.html][From Recursion to Greedy algorithms: a functional perspective]]
     2020.01.24
+    There's an important leanring and developing chain of traditional algorithms:
+    =Divide and Conquer(recursion) ---> Dynamic Programming(mermorization) --> Greedy= 
  
 *** [[../Note/IOMonadInJavaScript.html][IO Monad in JavaScript!]]
     2020.01.27
+    Monad >>= \m => interesting, right?
          
 *** [[../Note/SortingAlgorithmsRevisited.html][Sorting algorithms revisited]]
     2020.01.29
+    We're going to revisite some main-stream sorting algorithms and
+    try to implement them in a more efficient way.
+
+    To make things simple, we choose _Haskell_ to describe basic recursions and
+    ideas, then we directly translate haskell codes into _Scala_ since Scala serves
+    a great role between purely functional way and more traditional ways.
+
+    Finally, we translate Scala codes into _C++_ (some even C:).
 	 
 *** [[../Note/LearningFPByParserCombinators.html][Learning Functional Programming by Parser Combinators!]]
     2020.01.30
 	      
 *** [[../Note/HaskellShowInstanceOverlappingProblem.html][Haskell Show Instance Overlapping Problem]]
     2020.02.02
+    Same question encountered when I designed /Nona/...
 		  
 *** [[../Note/NumberOfProperFractionsWithDenominator.html][Codewars | Number of Proper Fractions with Denominator d]]
     2020.02.23

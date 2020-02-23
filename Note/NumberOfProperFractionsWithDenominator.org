@@ -39,7 +39,10 @@ Be ready to handle big numbers.
 
 ** Brute force
 
+Since I'm not smart enough, I simply use brute force in the first place:
+#+BEGIN_SRC scala
 
+#+END_SRC
 
 
 
