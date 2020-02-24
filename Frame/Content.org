@@ -48,8 +48,8 @@
     *2020.02.23*\\
     (Euler's totient function :-)
 
-*** Prime Factorization
-    *2020.02.24* 
+*** [[../Note/PrimeFactorization.html][Prime Factorization]]
+    *2020.02.24*\\
     Prime numbers are interesting
 
 
