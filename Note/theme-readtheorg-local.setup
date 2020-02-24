@@ -1,0 +1,15 @@
+# -*- mode: org; -*-
+
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-themes/styles/readtheorg/css/htmlize.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-themes/styles/readtheorg/css/readtheorg.css"/>
+
+#+HTML_HEAD: <script type="text/javascript" src="org-themes/styles/lib/js/jquery.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="org-themes/styles/lib/js/bootstrap.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="org-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="org-themes/styles/readtheorg/js/readtheorg.js"></script>
+
+#+HTML_HEAD: <style>pre.src{background:#343131;color:white;} </style>
+#+HTML_HEAD: <style> #content{max-width:1800px;}</style>
+#+HTML_HEAD: <style> p{max-width:800px;}</style>
+
+#+HTML_HEAD: <link rel="icon" type="image/x-icon" href="../images/digimon-icon.png" />

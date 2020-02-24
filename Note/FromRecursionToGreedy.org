@@ -3,10 +3,8 @@
 #+Date:   <2020-01-22 三>
 
 
-#+SETUPFILE: org-themes/setup/theme-readtheorg.setup
-#+HTML_HEAD: <style>pre.src{background:#343131;color:white;} </style>
-#+HTML_HEAD: <style> #content{max-width:1800px;}</style>
-#+HTML_HEAD: <style> p{max-width:800px;}</style>
+#+SETUPFILE: theme-readtheorg-local.setup
+
 
 There's an important leanring and developing chain of traditional algorithms:
 
