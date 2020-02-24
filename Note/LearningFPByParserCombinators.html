@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-02-24 周一 12:28 -->
+<!-- 2020-02-24 周一 12:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Learning Functional Programming by Parser Combinators!</title>
@@ -244,21 +244,21 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5160c52">1. Ideas</a></li>
-<li><a href="#orgb1a26b6">2. The main <i>Parser</i> type</a></li>
-<li><a href="#org39eafc0">3. Find strucutres and properties of Parser</a>
+<li><a href="#orgc92bce2">1. Ideas</a></li>
+<li><a href="#org9efc61c">2. The main <i>Parser</i> type</a></li>
+<li><a href="#org1c2ab4d">3. Find strucutres and properties of Parser</a>
 <ul>
-<li><a href="#org0bc11a7">3.1. Parser can be a <span class="underline">Functor</span>.</a></li>
-<li><a href="#org5e37438">3.2. Parser can be an <span class="underline">Applicative</span>.</a></li>
-<li><a href="#org2aedd8a">3.3. Parser can be a <span class="underline">Monad</span>.</a></li>
-<li><a href="#orge01a98d">3.4. Parser can be an <span class="underline">Alternative</span>.</a></li>
-<li><a href="#org87025b8">3.5. Parser should be a <span class="underline">Semigroup</span>.</a></li>
-<li><a href="#org8435c18">3.6. Parser should be a <span class="underline">Monoid</span>.</a></li>
+<li><a href="#orgb0249aa">3.1. Parser can be a <span class="underline">Functor</span>.</a></li>
+<li><a href="#orge30e961">3.2. Parser can be an <span class="underline">Applicative</span>.</a></li>
+<li><a href="#org9a52ad2">3.3. Parser can be a <span class="underline">Monad</span>.</a></li>
+<li><a href="#orgc42d3a8">3.4. Parser can be an <span class="underline">Alternative</span>.</a></li>
+<li><a href="#org2981011">3.5. Parser should be a <span class="underline">Semigroup</span>.</a></li>
+<li><a href="#org416efd4">3.6. Parser should be a <span class="underline">Monoid</span>.</a></li>
 </ul>
 </li>
-<li><a href="#orgaaca16a">4. Our arsenal!</a>
+<li><a href="#orgc08ab6f">4. Our arsenal!</a>
 <ul>
-<li><a href="#org8afc595">4.1. Parser Char</a></li>
+<li><a href="#org3be4ad3">4.1. Parser Char</a></li>
 </ul>
 </li>
 </ul>
@@ -266,8 +266,8 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org5160c52" class="outline-2">
-<h2 id="org5160c52"><span class="section-number-2">1</span> Ideas</h2>
+<div id="outline-container-orgc92bce2" class="outline-2">
+<h2 id="orgc92bce2"><span class="section-number-2">1</span> Ideas</h2>
 <div class="outline-text-2" id="text-1">
 <ol class="org-ol">
 <li>Functions are data.</li>
@@ -281,8 +281,8 @@ We can express parser functions in a more understandable way.
 </div>
 
 
-<div id="outline-container-orgb1a26b6" class="outline-2">
-<h2 id="orgb1a26b6"><span class="section-number-2">2</span> The main <i>Parser</i> type</h2>
+<div id="outline-container-org9efc61c" class="outline-2">
+<h2 id="org9efc61c"><span class="section-number-2">2</span> The main <i>Parser</i> type</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Parsers find structure within text, either to validate, or to get text into some representation. 
@@ -291,9 +291,10 @@ we expect a value of an integer type as result of the parser.
 Therefore we parametrize our parser over the type of the expected value, this leads to the following definition.
 </p>
 
-<pre class="example">
-newtype Parser a = P { parse :: String -&gt; [(String, a)] }
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">newtype</span> <span style="color: #8ae234; font-weight: bold;">Parser</span> a <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">P</span> <span style="color: #ffd700;">{</span> parse <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">String</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #00bfff;">[</span><span style="color: #ffa500;">(</span><span style="color: #8ae234; font-weight: bold;">String</span>, a<span style="color: #ffa500;">)</span><span style="color: #00bfff;">]</span> <span style="color: #ffd700;">}</span>
 </pre>
+</div>
 
 <p>
 It's just a function of the input string, returning a list of possible outcomes! 
@@ -305,32 +306,34 @@ For example <code>"1 + 2 + 3"</code> could be parsed as <code>(1 + 2) + 3</code>
 </div>
 
 
-<div id="outline-container-org39eafc0" class="outline-2">
-<h2 id="org39eafc0"><span class="section-number-2">3</span> Find strucutres and properties of Parser</h2>
+<div id="outline-container-org1c2ab4d" class="outline-2">
+<h2 id="org1c2ab4d"><span class="section-number-2">3</span> Find strucutres and properties of Parser</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org0bc11a7" class="outline-3">
-<h3 id="org0bc11a7"><span class="section-number-3">3.1</span> Parser can be a <span class="underline">Functor</span>.</h3>
+<div id="outline-container-orgb0249aa" class="outline-3">
+<h3 id="orgb0249aa"><span class="section-number-3">3.1</span> Parser can be a <span class="underline">Functor</span>.</h3>
 <div class="outline-text-3" id="text-3-1">
-<pre class="example">
-instance Functor Parser where
-  fmap f p = P $ \xs -&gt; [ (f x, s) | (x, s) &lt;- parse p xs ]
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Functor</span> <span style="color: #8ae234; font-weight: bold;">Parser</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  fmap f p <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">P</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">\</span>xs <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span> <span style="color: #00bfff;">(</span>f x, s<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">|</span> <span style="color: #00bfff;">(</span>x, s<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">&lt;-</span> parse p xs <span style="color: #ffd700;">]</span>
 </pre>
+</div>
 <p>
 We just first parse and then map contents.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org5e37438" class="outline-3">
-<h3 id="org5e37438"><span class="section-number-3">3.2</span> Parser can be an <span class="underline">Applicative</span>.</h3>
+<div id="outline-container-orge30e961" class="outline-3">
+<h3 id="orge30e961"><span class="section-number-3">3.2</span> Parser can be an <span class="underline">Applicative</span>.</h3>
 <div class="outline-text-3" id="text-3-2">
-<pre class="example">
-instance Applicative Parser where
-  pure x = P $ \xs -&gt; [(x, xs)]
-  (P f) &lt;*&gt; (P a) = P $ 
-    \xs -&gt; [ (f' x, s2) | (f', s1) &lt;- f xs, (x, s2) &lt;- a s1 ]
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Applicative</span> <span style="color: #8ae234; font-weight: bold;">Parser</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  pure x <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">P</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">\</span>xs <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span><span style="color: #00bfff;">(</span>x, xs<span style="color: #00bfff;">)</span><span style="color: #ffd700;">]</span>
+  <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">P</span> f<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">&lt;*&gt;</span> <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">P</span> a<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">P</span> <span style="color: #ff6347; font-weight: bold;">$</span> 
+    <span style="color: #ff6347; font-weight: bold;">\</span>xs <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span> <span style="color: #00bfff;">(</span>f' x, s2<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">|</span> <span style="color: #00bfff;">(</span>f', s1<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">&lt;-</span> f xs, <span style="color: #00bfff;">(</span>x, s2<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">&lt;-</span> a s1 <span style="color: #ffd700;">]</span>
 </pre>
+</div>
 <p>
 Again, we first apply the first parser and then map the funtion to every results of
 the next parser.
@@ -338,76 +341,81 @@ the next parser.
 </div>
 </div>
 
-<div id="outline-container-org2aedd8a" class="outline-3">
-<h3 id="org2aedd8a"><span class="section-number-3">3.3</span> Parser can be a <span class="underline">Monad</span>.</h3>
+<div id="outline-container-org9a52ad2" class="outline-3">
+<h3 id="org9a52ad2"><span class="section-number-3">3.3</span> Parser can be a <span class="underline">Monad</span>.</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 Monad is powerful here again.
 </p>
-<pre class="example">
-instance Monad Parser where
-  return = pure
-  (P p) &gt;&gt;= f = P $
-    \xs -&gt; [ parse (f x) s | (x, s) &lt;- p xs ]
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Monad</span> <span style="color: #8ae234; font-weight: bold;">Parser</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  return <span style="color: #ff6347; font-weight: bold;">=</span> pure
+  <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">P</span> p<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">&gt;&gt;=</span> f <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">P</span> <span style="color: #ff6347; font-weight: bold;">$</span>
+    <span style="color: #ff6347; font-weight: bold;">\</span>xs <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span> parse <span style="color: #00bfff;">(</span>f x<span style="color: #00bfff;">)</span> s <span style="color: #ff6347; font-weight: bold;">|</span> <span style="color: #00bfff;">(</span>x, s<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">&lt;-</span> p xs <span style="color: #ffd700;">]</span>
 </pre>
 </div>
 </div>
+</div>
 
-<div id="outline-container-orge01a98d" class="outline-3">
-<h3 id="orge01a98d"><span class="section-number-3">3.4</span> Parser can be an <span class="underline">Alternative</span>.</h3>
+<div id="outline-container-orgc42d3a8" class="outline-3">
+<h3 id="orgc42d3a8"><span class="section-number-3">3.4</span> Parser can be an <span class="underline">Alternative</span>.</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 Applicative =&gt; Alternative
 </p>
-<pre class="example">
-instance Alternative Parser where
-  empty = mempty
-  p &lt;|&gt; q = P $ \xs -&gt; parse (p &lt;&gt; q) xs
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Alternative</span> <span style="color: #8ae234; font-weight: bold;">Parser</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  empty <span style="color: #ff6347; font-weight: bold;">=</span> mempty
+  p <span style="color: #ff6347; font-weight: bold;">&lt;|&gt;</span> q <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">P</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">\</span>xs <span style="color: #ff6347; font-weight: bold;">-&gt;</span> parse <span style="color: #ffd700;">(</span>p <span style="color: #ff6347; font-weight: bold;">&lt;&gt;</span> q<span style="color: #ffd700;">)</span> xs
 </pre>
+</div>
 <p>
 To complete our definition, we need monoid and semigroup.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org87025b8" class="outline-3">
-<h3 id="org87025b8"><span class="section-number-3">3.5</span> Parser should be a <span class="underline">Semigroup</span>.</h3>
+<div id="outline-container-org2981011" class="outline-3">
+<h3 id="org2981011"><span class="section-number-3">3.5</span> Parser should be a <span class="underline">Semigroup</span>.</h3>
 <div class="outline-text-3" id="text-3-5">
-<pre class="example">
-instance Semigroup (Parser a) where
-  p &lt;&gt; q = P $ \xs -&gt; parse p xs &lt;&gt; parse q xs
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Semigroup</span> <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Parser</span> a<span style="color: #ffd700;">)</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  p <span style="color: #ff6347; font-weight: bold;">&lt;&gt;</span> q <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">P</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">\</span>xs <span style="color: #ff6347; font-weight: bold;">-&gt;</span> parse p xs <span style="color: #ff6347; font-weight: bold;">&lt;&gt;</span> parse q xs
 </pre>
 </div>
 </div>
+</div>
 
-<div id="outline-container-org8435c18" class="outline-3">
-<h3 id="org8435c18"><span class="section-number-3">3.6</span> Parser should be a <span class="underline">Monoid</span>.</h3>
+<div id="outline-container-org416efd4" class="outline-3">
+<h3 id="org416efd4"><span class="section-number-3">3.6</span> Parser should be a <span class="underline">Monoid</span>.</h3>
 <div class="outline-text-3" id="text-3-6">
-<pre class="example">
-instance Monoid (Parser a) where
-  mempty = P $ \xs -&gt; []
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Monoid</span> <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Parser</span> a<span style="color: #ffd700;">)</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  mempty <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">P</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">\</span>xs <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
 </pre>
 </div>
 </div>
 </div>
+</div>
 
 
-<div id="outline-container-orgaaca16a" class="outline-2">
-<h2 id="orgaaca16a"><span class="section-number-2">4</span> Our arsenal!</h2>
+<div id="outline-container-orgc08ab6f" class="outline-2">
+<h2 id="orgc08ab6f"><span class="section-number-2">4</span> Our arsenal!</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org8afc595" class="outline-3">
-<h3 id="org8afc595"><span class="section-number-3">4.1</span> Parser Char</h3>
+<div id="outline-container-org3be4ad3" class="outline-3">
+<h3 id="org3be4ad3"><span class="section-number-3">4.1</span> Parser Char</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 Perhaps the most basic one is <code>item</code>.
 </p>
-<pre class="example">
-item :: Parser Char
-item = P $ \xs -&gt; case xs of
-  []     -&gt; []
-  (x:xs) -&gt; [(x, xs)]
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">item</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">Parser</span> <span style="color: #8ae234; font-weight: bold;">Char</span>
+<span style="color: #edd400; font-weight: bold;">item</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">P</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">\</span>xs <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #729fcf; font-weight: bold;">case</span> xs <span style="color: #729fcf; font-weight: bold;">of</span>
+  <span style="color: #ffd700; font-weight: bold;">[]</span>     <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700; font-weight: bold;">[]</span>
+  <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ffd700;">[</span><span style="color: #00bfff;">(</span>x, xs<span style="color: #00bfff;">)</span><span style="color: #ffd700;">]</span>
 </pre>
+</div>
 <p>
 We just get the head character of the raw string.
 </p>
@@ -415,15 +423,16 @@ We just get the head character of the raw string.
 <p>
 Now we can add some constraints of Parser Char:
 </p>
-<pre class="example">
-satisfy :: (Char -&gt; Bool) -&gt; Parser Char
-satisfy c = do
-  x &lt;- item
-  if c x then return x else empty
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">satisfy</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">Char</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Bool</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Parser</span> <span style="color: #8ae234; font-weight: bold;">Char</span>
+<span style="color: #edd400; font-weight: bold;">satisfy</span> c <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">do</span>
+  x <span style="color: #ff6347; font-weight: bold;">&lt;-</span> item
+  <span style="color: #729fcf; font-weight: bold;">if</span> c x <span style="color: #729fcf; font-weight: bold;">then</span> return x <span style="color: #729fcf; font-weight: bold;">else</span> empty
 
-oneOf :: String -&gt; Parser Char
-oneOf = satisfy . flip elem
+<span style="color: #edd400; font-weight: bold;">oneOf</span> <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #8ae234; font-weight: bold;">String</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">Parser</span> <span style="color: #8ae234; font-weight: bold;">Char</span>
+<span style="color: #edd400; font-weight: bold;">oneOf</span> <span style="color: #ff6347; font-weight: bold;">=</span> satisfy <span style="color: #ff6347; font-weight: bold;">.</span> flip elem
 </pre>
+</div>
 </div>
 </div>
 </div>
@@ -431,7 +440,7 @@ oneOf = satisfy . flip elem
 <div id="postamble" class="status">
 <p class="date">Date: 2020-01-30 周四 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-02-24 周一 12:28</p>
+<p class="date">Created: 2020-02-24 周一 12:43</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

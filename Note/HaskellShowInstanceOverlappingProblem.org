@@ -14,7 +14,7 @@ Well, The explanation is...
 ** A special trick of Haskell Prelude
 In fact, class =Show= is not a typeclass with a mere function =show=.
 In =Prelude=, it is:
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 class Show a where
   show :: a -> String
   showList :: [a] -> String
@@ -33,7 +33,7 @@ instances at all.
 
 ** Alternative solution
 An alternative solution is to use GHC extensions.
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 {-# LANGUAGE OverlappingInstances #-}
 #+END_SRC
 

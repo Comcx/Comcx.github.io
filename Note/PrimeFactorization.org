@@ -1,0 +1,129 @@
+#+Title:  Prime Factorization
+#+Author: Comcx
+
+
+#+SETUPFILE: theme-readtheorg-local.setup
+
+I suddenly wondered that what's the best way to do _prime factorization_.
+
+Looking back on old katas in codewars, I found the kata: [[https://www.codewars.com/kata/54d512e62a5e54c96200019e/][Primes in Numbers]].
+
+** Description of the kata
+Given a positive number n > 1 find the prime factor decomposition of n. The result will be a string with the following form :
+#+BEGIN_SRC 
+ "(p1**n1)(p2**n2)...(pk**nk)"
+#+END_SRC
+with the p(i) in increasing order and n(i) empty if n(i) is 1.
+
+#+BEGIN_SRC 
+Example: n = 86240 should return "(2**5)(5)(7**2)(11)"
+#+END_SRC
+
+** Solution in Scala
+*** Imperative version
+#+BEGIN_SRC scala
+object PrimeDecomp {
+
+  def isPrime(n: Int): Boolean = {
+    if (n == 2) true
+    else if (n < 2 || n % 2 == 0) false
+    else Stream.from(3, 2).takeWhile(i => i * i < n + 1).forall(i => n % i != 0)
+  }
+  def factors(m: Int): String = {
+    var xs = Vector[Tuple2[Int, Int]]()
+    var cur = 0
+    var n = m
+    var i = 2
+    while(n > i) {
+      if(n % i == 0 && isPrime(i)) {
+        cur = 0
+        while(n % i == 0) {cur += 1; n /= i}
+        if(cur != 0) xs = xs :+ (i, cur)
+      }
+      i += 1
+    }
+    xs = xs :+ (n, 1)
+    xs.map{ case (i, c) =>
+      if(c == 1) "("+ i +")"
+      else "("+ i + "**" + c + ")"
+    }.mkString("")
+  }
+}
+#+END_SRC
+It looks really wordy...
+
+*** Moving forward
+Let's try to be more functional...
+#+BEGIN_SRC scala
+object PrimeDecomp {
+
+  def factors(m: Int): String = Iterator
+    .iterate((List[Int](), m, 2)) {
+      case (acc, x, a) if x % a == 0 => (a :: acc, x/a, a)
+      case (acc, x, a) if a * a <= x => (acc, x, a+1)
+      case (acc, x, a)               => (x :: acc, x, a)
+    }
+    .dropWhile { case (_, x, a) => a*a <= x }.drop(1).next._1
+    .groupMapReduce(identity)(_ => 1)(_ + _)
+    .toSeq.sorted
+    .map {
+      case (factor, 1)     => s"($factor)"
+      case (factor, count) => s"($factor**$count)"
+    }
+    .mkString
+}
+#+END_SRC
+Well, basically, this version is just the same algorithm compared with imperative one.
+
+Let's translate the algorithm to _Haskell_ version to make things a bit more clear.
+#+BEGIN_SRC haskell
+factorize n = divs n primesList where
+  divs n ds@(d:t) | d*d > n    = [n | n > 1]
+                  | r == 0     =  d : divs q ds
+                  | otherwise  =      divs n t
+    where  (q, r) = quotRem n d
+#+END_SRC
+
+** Generating list of primes
+It looks the basic algorithm is simple, but that's not the end of our journey.
+
+*** A puzzle
+#+BEGIN_SRC scala
+lazy val ps: Stream[Int] = 
+  2 #:: Stream.from(3).filter(i => ps.takeWhile{j => j * j <= i}.forall{k => i % k > 0})
+#+END_SRC
+This is a lazy list which can be used to generate prime numbers.
+How does this work?
+
+The definition starts out with 2 #:: .... This just says that the first number in the sequence is 2 - simple enough so far.
+
+The next part defines the rest of the prime numbers. 
+We can start with all the counting numbers starting at 3 (Stream.from(3)), 
+but we obviously need to filter a bunch of these numbers out (i.e., all the composites). 
+
+So let's consider each number i. 
+If i is not a multiple of a lesser prime number, then i is prime. 
+That is, i is prime if, for all primes k less than i, i % k > 0. 
+In Scala, we could express this as
+#+BEGIN_SRC scala
+nums.filter(i => ps.takeWhile(k => k < i).forall(k => i % k > 0))
+#+END_SRC
+
+However, it isn't actually necessary to check all lesser prime numbers -- 
+we really only need to check the prime numbers whose 
+square is less than or equal to i (this is a fact from number theory*). 
+So we could instead write
+#+BEGIN_SRC scala
+nums.filter(i => ps.takeWhile(k => k * k <= i).forall(k => i % k > 0))
+#+END_SRC
+
+Finally we get our definition.
+
+
+
+
+
+
+
+
+

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-02-24 周一 12:30 -->
+<!-- 2020-02-24 周一 17:52 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Number of Proper Fractions with Denominator d</title>
@@ -244,16 +244,16 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org789f706">1. The story begins &#x2026;</a>
+<li><a href="#orgd37c1e6">1. The story begins &#x2026;</a>
 <ul>
-<li><a href="#orge2b54ab">1.1. The brief description</a></li>
+<li><a href="#orgce34f56">1.1. The brief description</a></li>
 </ul>
 </li>
-<li><a href="#org6fc91df">2. Brute force</a></li>
-<li><a href="#org7831a50">3. Euler's totient function</a>
+<li><a href="#orgd6ec622">2. Brute force</a></li>
+<li><a href="#org74fe2ef">3. Euler's totient function</a>
 <ul>
-<li><a href="#org204dada">3.1. The puzzle</a></li>
-<li><a href="#orgb86524e">3.2. Implementation</a></li>
+<li><a href="#org5b17a44">3.1. The puzzle</a></li>
+<li><a href="#orga69cde1">3.2. Implementation</a></li>
 </ul>
 </li>
 </ul>
@@ -261,8 +261,8 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org789f706" class="outline-2">
-<h2 id="org789f706"><span class="section-number-2">1</span> The story begins &#x2026;</h2>
+<div id="outline-container-orgd37c1e6" class="outline-2">
+<h2 id="orgd37c1e6"><span class="section-number-2">1</span> The story begins &#x2026;</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Today I'm working on solving the problem <b>Number of Proper Fractions with Denominator d</b> in
@@ -270,8 +270,8 @@ Today I'm working on solving the problem <b>Number of Proper Fractions with Deno
 </p>
 </div>
 
-<div id="outline-container-orge2b54ab" class="outline-3">
-<h3 id="orge2b54ab"><span class="section-number-3">1.1</span> The brief description</h3>
+<div id="outline-container-orgce34f56" class="outline-3">
+<h3 id="orgce34f56"><span class="section-number-3">1.1</span> The brief description</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 If n is the numerator and d the denominator of a fraction, 
@@ -311,8 +311,8 @@ Be ready to handle big numbers.
 </div>
 </div>
 
-<div id="outline-container-org6fc91df" class="outline-2">
-<h2 id="org6fc91df"><span class="section-number-2">2</span> Brute force</h2>
+<div id="outline-container-orgd6ec622" class="outline-2">
+<h2 id="orgd6ec622"><span class="section-number-2">2</span> Brute force</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Since I'm not smart enough, I simply use brute force in the first place:
@@ -336,8 +336,8 @@ But got: <code>Execution Timed Out (12000 ms)</code>.
 </div>
 </div>
 
-<div id="outline-container-org7831a50" class="outline-2">
-<h2 id="org7831a50"><span class="section-number-2">3</span> Euler's totient function</h2>
+<div id="outline-container-org74fe2ef" class="outline-2">
+<h2 id="org74fe2ef"><span class="section-number-2">3</span> Euler's totient function</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 I tried to filter with <code>isPrime</code> function but failed again, I was not happy until I find
@@ -351,8 +351,8 @@ Let's try to discover Euler's function by ourselves!
 </p>
 </div>
 
-<div id="outline-container-org204dada" class="outline-3">
-<h3 id="org204dada"><span class="section-number-3">3.1</span> The puzzle</h3>
+<div id="outline-container-org5b17a44" class="outline-3">
+<h3 id="org5b17a44"><span class="section-number-3">3.1</span> The puzzle</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Let's set up our goal:
@@ -423,8 +423,8 @@ f(n) = n * (1 - 1 / a) * (1 - 1 / b) * ... * (1 - 1 / x)
 </div>
 </div>
 
-<div id="outline-container-orgb86524e" class="outline-3">
-<h3 id="orgb86524e"><span class="section-number-3">3.2</span> Implementation</h3>
+<div id="outline-container-orga69cde1" class="outline-3">
+<h3 id="orga69cde1"><span class="section-number-3">3.2</span> Implementation</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 Written in imperative <i>Scala</i>:
@@ -456,7 +456,12 @@ The time complexity is <code>O(sqrt(n))</code>.
 Functional version:
 </p>
 <div class="org-src-container">
-<pre class="src src-scala"><span style="color: #8ae234; font-weight: bold;">UNDERWORK</span>
+<pre class="src src-scala"><span style="color: #729fcf; font-weight: bold;">object</span> <span style="color: #8ae234; font-weight: bold;">Sol</span> <span style="color: #ffd700;">{</span>
+
+  <span style="color: #729fcf; font-weight: bold;">def</span> <span style="color: #edd400; font-weight: bold;">properFractions</span><span style="color: #00bfff;">(</span>n<span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">Long</span><span style="color: #00bfff;">)</span><span style="color: #729fcf; font-weight: bold;">:</span> <span style="color: #8ae234; font-weight: bold;">Long</span> <span style="color: #729fcf; font-weight: bold;">=</span> <span style="color: #00bfff;">{</span>
+    
+  <span style="color: #00bfff;">}</span>
+<span style="color: #ffd700;">}</span>
 </pre>
 </div>
 </div>
@@ -466,7 +471,7 @@ Functional version:
 <div id="postamble" class="status">
 <p class="date">Date: 2020-02-23 周日 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-02-24 周一 12:30</p>
+<p class="date">Created: 2020-02-24 周一 17:52</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

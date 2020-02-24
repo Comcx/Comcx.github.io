@@ -18,7 +18,7 @@ For example, in case we want to parse an integer from a string,
 we expect a value of an integer type as result of the parser. 
 Therefore we parametrize our parser over the type of the expected value, this leads to the following definition.
 
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 newtype Parser a = P { parse :: String -> [(String, a)] }
 #+END_SRC
 
@@ -30,14 +30,14 @@ For example ="1 + 2 + 3"= could be parsed as =(1 + 2) + 3= or =1 + (2 + 3)=.
 
 ** Find strucutres and properties of Parser
 *** Parser can be a _Functor_.
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 instance Functor Parser where
   fmap f p = P $ \xs -> [ (f x, s) | (x, s) <- parse p xs ]
 #+END_SRC
 We just first parse and then map contents.
 
 *** Parser can be an _Applicative_.
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 instance Applicative Parser where
   pure x = P $ \xs -> [(x, xs)]
   (P f) <*> (P a) = P $ 
@@ -48,7 +48,7 @@ the next parser.
 
 *** Parser can be a _Monad_.
 Monad is powerful here again.
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 instance Monad Parser where
   return = pure
   (P p) >>= f = P $
@@ -57,7 +57,7 @@ instance Monad Parser where
 
 *** Parser can be an _Alternative_.
 Applicative => Alternative
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 instance Alternative Parser where
   empty = mempty
   p <|> q = P $ \xs -> parse (p <> q) xs
@@ -65,13 +65,13 @@ instance Alternative Parser where
 To complete our definition, we need monoid and semigroup.
 
 *** Parser should be a _Semigroup_.
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 instance Semigroup (Parser a) where
   p <> q = P $ \xs -> parse p xs <> parse q xs
 #+END_SRC
 
 *** Parser should be a _Monoid_.
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 instance Monoid (Parser a) where
   mempty = P $ \xs -> []
 #+END_SRC
@@ -80,7 +80,7 @@ instance Monoid (Parser a) where
 ** Our arsenal!
 *** Parser Char
 Perhaps the most basic one is =item=.
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 item :: Parser Char
 item = P $ \xs -> case xs of
   []     -> []
@@ -89,7 +89,7 @@ item = P $ \xs -> case xs of
 We just get the head character of the raw string.
 
 Now we can add some constraints of Parser Char:
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 satisfy :: (Char -> Bool) -> Parser Char
 satisfy c = do
   x <- item

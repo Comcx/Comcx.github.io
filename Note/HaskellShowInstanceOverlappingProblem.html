@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-02-24 周一 12:27 -->
+<!-- 2020-02-24 周一 12:42 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>The Haskell Show instance Overlapping problem</title>
@@ -244,9 +244,9 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2c9f07b">1. A special trick of Haskell Prelude</a></li>
-<li><a href="#org05fd24e">2. Alternative solution</a></li>
-<li><a href="#org76507ac">3. Reflection of String implementation</a></li>
+<li><a href="#org4b59208">1. A special trick of Haskell Prelude</a></li>
+<li><a href="#org1074b9a">2. Alternative solution</a></li>
+<li><a href="#orgb879ae1">3. Reflection of String implementation</a></li>
 </ul>
 </div>
 </div>
@@ -260,26 +260,27 @@ then why does type <code>String</code> just works in a different way since <code
 Well, The explanation is&#x2026;
 </p>
 
-<div id="outline-container-org2c9f07b" class="outline-2">
-<h2 id="org2c9f07b"><span class="section-number-2">1</span> A special trick of Haskell Prelude</h2>
+<div id="outline-container-org4b59208" class="outline-2">
+<h2 id="org4b59208"><span class="section-number-2">1</span> A special trick of Haskell Prelude</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 In fact, class <code>Show</code> is not a typeclass with a mere function <code>show</code>.
 In <code>Prelude</code>, it is:
 </p>
-<pre class="example">
-class Show a where
-  show :: a -&gt; String
-  showList :: [a] -&gt; String
-  showList = default implementation for showList
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">class</span> <span style="color: #8ae234; font-weight: bold;">Show</span> a <span style="color: #729fcf; font-weight: bold;">where</span>
+  show <span style="color: #ff6347; font-weight: bold;">::</span> a <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">String</span>
+  showList <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #8ae234; font-weight: bold;">String</span>
+  showList <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">default</span> implementation for showList
 
-instance Show Char where
-  show = ...
-  showList = specific implementation for String
+<span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Show</span> <span style="color: #8ae234; font-weight: bold;">Char</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  show <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ff6347; font-weight: bold;">...</span>
+  showList <span style="color: #ff6347; font-weight: bold;">=</span> specific implementation for <span style="color: #8ae234; font-weight: bold;">String</span>
 
-instance Show a =&gt; Show [a] where
-  show = showList
+<span style="color: #729fcf; font-weight: bold;">instance</span> <span style="color: #8ae234; font-weight: bold;">Show</span> a <span style="color: #ff6347; font-weight: bold;">=&gt;</span> <span style="color: #8ae234; font-weight: bold;">Show</span> <span style="color: #ffd700;">[</span>a<span style="color: #ffd700;">]</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  show <span style="color: #ff6347; font-weight: bold;">=</span> showList
 </pre>
+</div>
 <p>
 By putting the showList function into the Show class, we get
 a special treatment of Strings in Haskell 98, without any overlapping
@@ -288,21 +289,22 @@ instances at all.
 </div>
 </div>
 
-<div id="outline-container-org05fd24e" class="outline-2">
-<h2 id="org05fd24e"><span class="section-number-2">2</span> Alternative solution</h2>
+<div id="outline-container-org1074b9a" class="outline-2">
+<h2 id="org1074b9a"><span class="section-number-2">2</span> Alternative solution</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 An alternative solution is to use GHC extensions.
 </p>
-<pre class="example">
-{-# LANGUAGE OverlappingInstances #-}
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf;">{-# LANGUAGE OverlappingInstances #-}</span>
 </pre>
 </div>
 </div>
+</div>
 
 
-<div id="outline-container-org76507ac" class="outline-2">
-<h2 id="org76507ac"><span class="section-number-2">3</span> Reflection of String implementation</h2>
+<div id="outline-container-orgb879ae1" class="outline-2">
+<h2 id="orgb879ae1"><span class="section-number-2">3</span> Reflection of String implementation</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Should type <code>String</code> be a synonym of <code>[Char]</code>?
@@ -318,7 +320,7 @@ I am not sure&#x2026;
 <div id="postamble" class="status">
 <p class="date">Date: 2020-02-02 周日 00:00</p>
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-02-24 周一 12:27</p>
+<p class="date">Created: 2020-02-24 周一 12:42</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

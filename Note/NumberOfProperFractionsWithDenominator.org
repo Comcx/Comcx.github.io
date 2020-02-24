@@ -127,7 +127,12 @@ The time complexity is =O(sqrt(n))=.
 
 Functional version:
 #+BEGIN_SRC scala
-UNDERWORK
+object Sol {
+
+  def properFractions(n: Long): Long = {
+    
+  }
+}
 #+END_SRC
 
 
