@@ -52,4 +52,11 @@
     *2020.02.24*\\
     Prime numbers are interesting
 
+*** [[../Note/Tailrec.html][Tail recursion optimization translation]]
+    *2020.02.27*\\
+    Many algorithms can be expressed concisely and elegantly in functional languages with recursions.
+    However, not all languages support automatic optimizations respect to functional algorithms and,
+    some languages(such as /Scala/), although support basic =@tailrec= optimizations by code transformation,
+    they still can not do some agressive tailrec optimizations such as =CPS tailrec=.
+
 

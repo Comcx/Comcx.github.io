@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-02-26 周三 21:14 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tail recursion optimization</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Comcx" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="org-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="org-themes/styles/readtheorg/css/readtheorg.css"/>
+<script type="text/javascript" src="org-themes/styles/lib/js/jquery.min.js"></script>
+<script type="text/javascript" src="org-themes/styles/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="org-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="org-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style>pre.src{background:#343131;color:white;} </style>
+<style> #content{max-width:1800px;}</style>
+<style> p{max-width:800px;}</style>
+<link rel="icon" type="image/x-icon" href="../images/digimon-icon.png" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Tail recursion optimization</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgaab89cd">1. Tailrec strategies</a>
+<ul>
+<li><a href="#orgce4341a">1.1. Linear recursion</a>
+<ul>
+<li><a href="#org0a5a72b">1.1.1. Formalization</a></li>
+<li><a href="#orgefafb2a">1.1.2. Reverse order</a></li>
+<li><a href="#orgd851824">1.1.3. CPS trasformation</a></li>
+<li><a href="#orgf8977a9">1.1.4. Summary</a></li>
+</ul>
+</li>
+<li><a href="#org90a0056">1.2. Tree recursion</a></li>
+</ul>
+</li>
+<li><a href="#org0b833b8">2. Examples</a>
+<ul>
+<li><a href="#orgc22cac7">2.1. Selection sort</a></li>
+<li><a href="#org6faedc7">2.2. Fibonacci</a></li>
+<li><a href="#org16f888e">2.3. Permutations</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+Many algorithms can be expressed concisely and elegantly in functional languages with recursions.
+However, not all languages support automatic optimizations respect to functional algorithms and,
+some languages(such as <i>Scala</i>), although support basic <code>@tailrec</code> optimizations by code transformation,
+they still can not do some agressive tailrec optimizations such as <code>CPS tailrec</code>.
+</p>
+
+<p>
+Therefore, we need to transform programs by hand. With this technique, we can use functional style
+fearlessly for that we can translate our code into traditional imperative ways.
+</p>
+
+<p>
+In studying this, <b>Scala</b> can play an important role in tranlating our programs since <i>Scala</i> support
+many different programming strategies. To make our method more impressive, we will finally try to translate
+programs into effective <b>C++</b> codes.
+</p>
+
+<p>
+We follow this program route:
+</p>
+<pre class="example">
+Haskell ==&gt; Scala ==&gt; C++
+</pre>
+
+<p>
+(This is just a try, still not sure if I can make it :-)
+</p>
+
+
+<div id="outline-container-orgaab89cd" class="outline-2">
+<h2 id="orgaab89cd"><span class="section-number-2">1</span> Tailrec strategies</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgce4341a" class="outline-3">
+<h3 id="orgce4341a"><span class="section-number-3">1.1</span> Linear recursion</h3>
+<div class="outline-text-3" id="text-1-1">
+</div>
+<div id="outline-container-org0a5a72b" class="outline-4">
+<h4 id="org0a5a72b"><span class="section-number-4">1.1.1</span> Formalization</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+To make things simple but not stupid, we firstly only focus on recursions whose
+last expression only contains one recursion
+(which means we do not discuss tree recursion right now).
+</p>
+
+<pre class="example">
+rec 1 = some value
+rec x = f x (rec (h x))
+</pre>
+
+<p>
+Now we unfold this recursion:
+</p>
+<pre class="example">
+rec x = f x $ f (h x) $ f (h $ h x) $ f (h $ h $ h x) $ ... $ f (h $ h $ ... $ h $ x) $ (some value)
+</pre>
+
+<p>
+Hummmmm, it looks even more complex&#x2026;
+I now have two guesses on how to do tailrec for codes like this:
+</p>
+<ol class="org-ol">
+<li>Build from bottom or reverse order</li>
+<li>Do <i>CPS</i> transformation</li>
+</ol>
+
+<p>
+Let's try the first one first.
+To build from bottom, we need to know the most important parameter: <code>(h $ h $ ... $ x)</code>.
+To know this parameter, we need to know how many times the function <code>h</code> was
+applied to <code>x</code>. We can find some clues from the terminating pattern of <code>rec</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgefafb2a" class="outline-4">
+<h4 id="orgefafb2a"><span class="section-number-4">1.1.2</span> Reverse order</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<ul class="org-ul">
+<li><p>
+Our current problem:
+</p>
+
+<pre class="example">
+  We have a function (h :: a -&gt; a) which do transformations of x and
+  we need to figure out that how many times h applied to x in order to
+  reach the value '1'(some constant or pattern) in the terminating definiton of rec.
+</pre></li>
+</ul>
+</div>
+
+<ol class="org-ol">
+<li><a id="org0abdc08"></a><b>If h is reversible(noted h', i.e. h . h' = id)</b><br />
+<div class="outline-text-5" id="text-1-1-2-1">
+<p>
+we can build from bottom!
+Notice that we need to pass our value of each layer to upper layer,
+so we need one more parameter to record our current result.
+</p>
+<pre class="example">
+    reverseBuild f h x res = f x res
+    reverseBuild f h y res = reverseBuild f h (h' y) (f y res)
+</pre>
+<ul class="org-ul">
+<li>use foldl, foldr?</li>
+</ul>
+</div>
+</li>
+
+<li><a id="org2a7941b"></a><b>else h is not reversible:(</b><br />
+<div class="outline-text-5" id="text-1-1-2-2">
+<p>
+well, which means we can't get results from bottom, we have to start from
+head since we can not calculate (h $ h $ &#x2026; $ x). Maybe we need another strategy.
+</p>
+</div>
+</li>
+
+<li><a id="org284635c"></a><b>To change order&#x2026; How about <code>Monoid</code>?</b><br />
+<div class="outline-text-5" id="text-1-1-2-3">
+<p>
+Suppose we want to get the sum of a list:
+</p>
+<pre class="example">
+    sum [] = 0
+    sum (x:xs) = x + sum xs
+</pre>
+<p>
+where, <code>(+)</code> becomes the function <code>f</code>.
+</p>
+
+<p>
+Since (a + b) + c <code>=</code> a + (b + c),
+we can reverse the calculation order
+</p>
+<pre class="example">
+    a + (b + (c + d))
+</pre>
+<p>
+to
+</p>
+<pre class="example">
+    ((a + b) + c) + d
+</pre>
+<p>
+It's just like to say that, we can change the calculation of
+</p>
+<pre class="example">
+    x (h x) (h $ h x) ... (h $ h $ ... $ h x)
+</pre>
+<p>
+with <code>f</code>.
+</p>
+
+<p>
+Let's try to implement this transformation with our general code:
+</p>
+<pre class="example">
+    reverseOrder f h 1 res = res
+    reverseOrder f h x res = reverseOrder f h (h x) (f x (h x))
+</pre>
+<p>
+This time we don't need <code>h'</code>!
+</p>
+</div>
+</li>
+
+<li><a id="orgc328eef"></a><b>Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit</b><br />
+<div class="outline-text-5" id="text-1-1-2-4">
+<p>
+This time instead of requiring f to be satisfiled by monoid law,
+we ourselves try to find a function <code>g</code> which satisfy the following law:
+</p>
+<pre class="example">
+    g (g a b) c = f a (f b c)
+</pre>
+<p>
+Now we can use our trick again:
+</p>
+<pre class="example">
+    reverseOrder' g h 1 res = res
+    reverseOrder' g h x res = reverseOrder' g h (h x) (g x (h x))
+</pre>
+
+<p>
+Even more general(although harder&#x2026;), we can generalize function <code>h</code> too.
+Suppose we have our special function <code>g</code> and a new h function <code>p</code>.
+</p>
+
+<p>
+We have general rule:
+</p>
+<pre class="example">
+    g (g x (p x)) (p $ p x) = f x (f (h x) (h $ h x))
+    or(with extra start x0)
+    g (g (g a x) (p x)) (p $ p x) = f x (f (h x) (h $ (h x)))
+</pre>
+<p>
+What's more? We may Just add a new start data x0(just like foldl :-)
+</p>
+
+<p>
+The final version with extra x0(a is x0 at first):
+</p>
+<pre class="example">
+    reverseOrder'' g p a 1 res = res
+    reverseOrder'' g p a x res = reverseOrder'' g p (p x) (g a x)
+</pre>
+</div>
+</li>
+
+<li><a id="org893d429"></a><b>Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x2026;</b><br />
+<div class="outline-text-5" id="text-1-1-2-5">
+<p>
+Two options:
+</p>
+<ol class="org-ol">
+<li>We still calculate from the beginning, but we pass the result as a <code>List</code> of (h $ ..x)s.
+But this is not efficient and ugly&#x2026;</li>
+<li>Maybe it's time for our <i>CPS</i> approach&#x2026;</li>
+</ol>
+
+<p>
+Time for the second idea!
+</p>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-orgd851824" class="outline-4">
+<h4 id="orgd851824"><span class="section-number-4">1.1.3</span> CPS trasformation</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+CPS is a tool to convert recursive code to <b>tail call</b>.(note that this is different from tailrec).
+Recall our <code>rec</code> function:
+</p>
+<pre class="example">
+rec 1 = some value
+rec x = f x (rec (h x))
+</pre>
+
+<p>
+to <i>CPS</i> style =&gt;
+</p>
+<pre class="example">
+rec 1 c = c value
+rec x c = rec (h x) (c . (f x))
+</pre>
+<p>
+It looks like we are just building our unfolded function chain.
+Instead of accumulating results and values, we accumulate calculations(functions).
+</p>
+
+<p>
+In fact, CPS can be used to convert any recursive function to tail-call form.
+With CPS, we can build our executing stack from heap.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf8977a9" class="outline-4">
+<h4 id="orgf8977a9"><span class="section-number-4">1.1.4</span> Summary</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+We have discussed several optimizations may be applied to list recursions.
+Let's recap!
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="org8136cd5"></a>Tailrec<br />
+<ol class="org-ol">
+<li><a id="org70dd803"></a>Calculating from bottom if reversible<br /></li>
+<li><a id="orgf988c2b"></a>Reverse calculation order<br />
+<div class="outline-text-6" id="text-1-1-4-1-2">
+<ul class="org-ul">
+<li>By Monoid structure</li>
+<li>By special function g with specific rules</li>
+</ul>
+</div>
+</li>
+<li><a id="org0200036"></a>CPS transformation<br /></li>
+</ol>
+</li>
+
+<li><a id="org5bf7a73"></a>Dynamic Programming<br /></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org90a0056" class="outline-3">
+<h3 id="org90a0056"><span class="section-number-3">1.2</span> Tree recursion</h3>
+</div>
+</div>
+
+
+<div id="outline-container-org0b833b8" class="outline-2">
+<h2 id="org0b833b8"><span class="section-number-2">2</span> Examples</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgc22cac7" class="outline-3">
+<h3 id="orgc22cac7"><span class="section-number-3">2.1</span> Selection sort</h3>
+</div>
+<div id="outline-container-org6faedc7" class="outline-3">
+<h3 id="org6faedc7"><span class="section-number-3">2.2</span> Fibonacci</h3>
+</div>
+<div id="outline-container-org16f888e" class="outline-3">
+<h3 id="org16f888e"><span class="section-number-3">2.3</span> Permutations</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Comcx</p>
+<p class="date">Created: 2020-02-26 周三 21:14</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
