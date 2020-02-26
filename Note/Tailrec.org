@@ -207,6 +207,36 @@ rec' x a
   = p (rec x) a
   = p (f x (rec (g x)) (rec (h x))) a
 #+END_SRC
+What if...
+#+BEGIN_SRC haskell
+p (f x (rec (g x)) (rec (h x))) a 
+  = (rec (g x)) `f x` (rec (h x)) `p` a
+  if f x a b == a `q` x `q` b
+  = (rec (g x)) `q` x `q` (rec (h x)) `p` a
+  = (rec (g x)) `q` x `q` (p (rec (h x)) a)
+  = (rec (g x)) `q` x `q` (rec' (h x) a)
+  if p == q
+  = (rec (g x)) `p` x `p` (rec' (h x) a)
+  if (a `p` b) `p` c == a `p` (b `p` c)
+  = (rec (g x)) `p` (x `p` (rec' (h x) a))
+  = p (rec (g x)) (p x (rec' (h x) a))
+  = rec' (g x) (p x (rec' (h x) a))
+#+END_SRC
+Wait! we have made too many assumptions!
+Let's list them all:
+#+BEGIN_SRC
+1. rec' x a = p (rec x) a
+2. f x a b = a `p` x `p` b
+3. (a `p` x) `p` b = a `p` (x `p` b)
+#+END_SRC
+In words, we can find a function =p=, which 
+1) can be expressed as a composition of
+   raw tree recursion version and a accumulation value
+2) Function =f= can in raw tree recursion can be decomposed as compositions of function =p=.
+3) Function =p= satisfy _Monoid law_.
+
+These constraints looks really strict and ugly...
+
 
 
 **** N-branch tree recursion
