@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-02-26 周三 22:13 -->
+<!-- 2020-02-26 周三 22:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tail recursion optimization</title>
@@ -244,29 +244,29 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org977c47b">1. Tailrec strategies</a>
+<li><a href="#orgfab54c8">1. Tailrec strategies</a>
 <ul>
-<li><a href="#org1543bf6">1.1. Linear recursion</a>
+<li><a href="#org395588f">1.1. Linear recursion</a>
 <ul>
-<li><a href="#org3d35bac">1.1.1. Formalization</a></li>
-<li><a href="#org39fbdb1">1.1.2. Reverse order</a></li>
-<li><a href="#org7786bce">1.1.3. CPS trasformation</a></li>
-<li><a href="#orgf4137d1">1.1.4. Summary</a></li>
+<li><a href="#orgde9bdf3">1.1.1. Formalization</a></li>
+<li><a href="#org80fcf44">1.1.2. Reverse order</a></li>
+<li><a href="#orgd4d3431">1.1.3. CPS trasformation</a></li>
+<li><a href="#org9fbdd0d">1.1.4. Summary</a></li>
 </ul>
 </li>
-<li><a href="#org851f400">1.2. Tree recursion</a>
+<li><a href="#org18f9b21">1.2. Tree recursion</a>
 <ul>
-<li><a href="#org9bd829b">1.2.1. Two-branch tree recursion</a></li>
-<li><a href="#orgb95c791">1.2.2. N-branch tree recursion</a></li>
+<li><a href="#orge8f2ddb">1.2.1. Two-branch tree recursion</a></li>
+<li><a href="#org90a4c7c">1.2.2. N-branch tree recursion</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgffbeb7f">2. Examples</a>
+<li><a href="#orgd5cddf5">2. Examples</a>
 <ul>
-<li><a href="#org7b38c40">2.1. Selection sort</a></li>
-<li><a href="#org4beef8b">2.2. Fibonacci</a></li>
-<li><a href="#orga8562c2">2.3. Permutations</a></li>
+<li><a href="#org6911735">2.1. Selection sort</a></li>
+<li><a href="#orga0abe8c">2.2. Fibonacci</a></li>
+<li><a href="#org38b745c">2.3. Permutations</a></li>
 </ul>
 </li>
 </ul>
@@ -302,16 +302,16 @@ Haskell ==&gt; Scala ==&gt; C++
 </p>
 
 
-<div id="outline-container-org977c47b" class="outline-2">
-<h2 id="org977c47b"><span class="section-number-2">1</span> Tailrec strategies</h2>
+<div id="outline-container-orgfab54c8" class="outline-2">
+<h2 id="orgfab54c8"><span class="section-number-2">1</span> Tailrec strategies</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org1543bf6" class="outline-3">
-<h3 id="org1543bf6"><span class="section-number-3">1.1</span> Linear recursion</h3>
+<div id="outline-container-org395588f" class="outline-3">
+<h3 id="org395588f"><span class="section-number-3">1.1</span> Linear recursion</h3>
 <div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-org3d35bac" class="outline-4">
-<h4 id="org3d35bac"><span class="section-number-4">1.1.1</span> Formalization</h4>
+<div id="outline-container-orgde9bdf3" class="outline-4">
+<h4 id="orgde9bdf3"><span class="section-number-4">1.1.1</span> Formalization</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 To make things simple but not stupid, we firstly only focus on recursions whose
@@ -351,8 +351,8 @@ applied to <code>x</code>. We can find some clues from the terminating pattern o
 </div>
 </div>
 
-<div id="outline-container-org39fbdb1" class="outline-4">
-<h4 id="org39fbdb1"><span class="section-number-4">1.1.2</span> Reverse order</h4>
+<div id="outline-container-org80fcf44" class="outline-4">
+<h4 id="org80fcf44"><span class="section-number-4">1.1.2</span> Reverse order</h4>
 <div class="outline-text-4" id="text-1-1-2">
 <ul class="org-ul">
 <li><p>
@@ -368,7 +368,7 @@ Our current problem:
 </div>
 
 <ol class="org-ol">
-<li><a id="orgf74fa1c"></a><b>If h is reversible(noted h', i.e. h . h' = id)</b><br />
+<li><a id="org166f52c"></a><b>If h is reversible(noted h', i.e. h . h' = id)</b><br />
 <div class="outline-text-5" id="text-1-1-2-1">
 <p>
 we can build from bottom!
@@ -386,7 +386,7 @@ so we need one more parameter to record our current result.
 </div>
 </li>
 
-<li><a id="orgf6cad6b"></a><b>else h is not reversible:(</b><br />
+<li><a id="orgc55e914"></a><b>else h is not reversible:(</b><br />
 <div class="outline-text-5" id="text-1-1-2-2">
 <p>
 well, which means we can't get results from bottom, we have to start from
@@ -395,7 +395,7 @@ head since we can not calculate (h $ h $ &#x2026; $ x). Maybe we need another st
 </div>
 </li>
 
-<li><a id="orgfffb8b1"></a><b>To change order&#x2026; How about <code>Monoid</code>?</b><br />
+<li><a id="orge7a9c9a"></a><b>To change order&#x2026; How about <code>Monoid</code>?</b><br />
 <div class="outline-text-5" id="text-1-1-2-3">
 <p>
 Suppose we want to get the sum of a list:
@@ -449,7 +449,7 @@ This time we don't need <code>h'</code>!
 </div>
 </li>
 
-<li><a id="org5f3d60d"></a><b>Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit</b><br />
+<li><a id="orgd6c3059"></a><b>Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit</b><br />
 <div class="outline-text-5" id="text-1-1-2-4">
 <p>
 This time instead of requiring f to be satisfiled by monoid law,
@@ -497,7 +497,7 @@ The final version with extra x0(a is x0 at first):
 </div>
 </li>
 
-<li><a id="orgf726c68"></a><b>Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x2026;</b><br />
+<li><a id="orgb3894bc"></a><b>Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x2026;</b><br />
 <div class="outline-text-5" id="text-1-1-2-5">
 <p>
 Two options:
@@ -515,8 +515,8 @@ Time for the second idea!
 </li>
 </ol>
 </div>
-<div id="outline-container-org7786bce" class="outline-4">
-<h4 id="org7786bce"><span class="section-number-4">1.1.3</span> CPS trasformation</h4>
+<div id="outline-container-orgd4d3431" class="outline-4">
+<h4 id="orgd4d3431"><span class="section-number-4">1.1.3</span> CPS trasformation</h4>
 <div class="outline-text-4" id="text-1-1-3">
 <p>
 CPS is a tool to convert recursive code to <b>tail call</b>.(note that this is different from tailrec).
@@ -548,8 +548,8 @@ With CPS, we can build our executing stack from heap.
 </div>
 </div>
 
-<div id="outline-container-orgf4137d1" class="outline-4">
-<h4 id="orgf4137d1"><span class="section-number-4">1.1.4</span> Summary</h4>
+<div id="outline-container-org9fbdd0d" class="outline-4">
+<h4 id="org9fbdd0d"><span class="section-number-4">1.1.4</span> Summary</h4>
 <div class="outline-text-4" id="text-1-1-4">
 <p>
 We have discussed several optimizations may be applied to list recursions.
@@ -558,10 +558,10 @@ Let's recap!
 </div>
 
 <ol class="org-ol">
-<li><a id="org38f89d8"></a>Tailrec<br />
+<li><a id="orgf0a3e8e"></a>Tailrec<br />
 <ol class="org-ol">
-<li><a id="org3c6133d"></a>Calculating from bottom if reversible<br /></li>
-<li><a id="orga0957b0"></a>Reverse calculation order<br />
+<li><a id="org000cdc8"></a>Calculating from bottom if reversible<br /></li>
+<li><a id="org3432e17"></a>Reverse calculation order<br />
 <div class="outline-text-6" id="text-1-1-4-1-2">
 <ul class="org-ul">
 <li>By Monoid structure</li>
@@ -569,28 +569,28 @@ Let's recap!
 </ul>
 </div>
 </li>
-<li><a id="org29c0744"></a>CPS transformation<br /></li>
+<li><a id="org5a86b43"></a>CPS transformation<br /></li>
 </ol>
 </li>
 
-<li><a id="org0c8bb87"></a>Dynamic Programming<br /></li>
+<li><a id="orgfb86f6b"></a>Dynamic Programming<br /></li>
 </ol>
 </div>
 </div>
 
-<div id="outline-container-org851f400" class="outline-3">
-<h3 id="org851f400"><span class="section-number-3">1.2</span> Tree recursion</h3>
+<div id="outline-container-org18f9b21" class="outline-3">
+<h3 id="org18f9b21"><span class="section-number-3">1.2</span> Tree recursion</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Well, it seems that linear tailrec is not easy now, how about tree tailrec?
 </p>
 </div>
-<div id="outline-container-org9bd829b" class="outline-4">
-<h4 id="org9bd829b"><span class="section-number-4">1.2.1</span> Two-branch tree recursion</h4>
+<div id="outline-container-orge8f2ddb" class="outline-4">
+<h4 id="orge8f2ddb"><span class="section-number-4">1.2.1</span> Two-branch tree recursion</h4>
 <div class="outline-text-4" id="text-1-2-1">
 </div>
 <ol class="org-ol">
-<li><a id="orgd9497a2"></a>Formalization<br />
+<li><a id="org12dbc14"></a>Formalization<br />
 <div class="outline-text-5" id="text-1-2-1-1">
 <div class="org-src-container">
 <pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 <span style="color: #ff6347;">=</span> some value
@@ -615,7 +615,7 @@ It looks like we are traversing all possible permutations of function <code>g</c
 </div>
 </li>
 
-<li><a id="orgc827edb"></a>A simple try<br />
+<li><a id="org0d6371c"></a>A simple try<br />
 <div class="outline-text-5" id="text-1-2-1-2">
 <p>
 A very simple idea is that if we can tailrec <code>rec</code>, then we want to cache result of last step:
@@ -665,6 +665,52 @@ raw tree recursion version and a accumulation value</li>
 
 <p>
 These constraints looks really strict and ugly&#x2026;
+The first condition is easy to reach since we can simply build a function <code>p</code>.
+The second is hard. we need to decompose <code>f</code> to our built function <code>p</code>.
+Well, I want to have a try.
+</p>
+
+<p>
+Can this strategy solve <code>fib</code> problem?
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">fib</span> 0 <span style="color: #ff6347;">=</span> 0
+<span style="color: #edd400; font-weight: bold;">fib</span> 1 <span style="color: #ff6347;">=</span> 1
+<span style="color: #edd400; font-weight: bold;">fib</span> n <span style="color: #ff6347;">=</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">+</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>2<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+
+<span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ff6347;">=</span> fib
+<span style="color: #edd400; font-weight: bold;">f</span> x a b <span style="color: #ff6347;">=</span> a <span style="color: #ff6347;">+</span> b
+<span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ff6347;">=</span> <span style="color: #ffd700;">(</span>minus 1<span style="color: #ffd700;">)</span>
+<span style="color: #edd400; font-weight: bold;">h</span> <span style="color: #ff6347;">=</span> <span style="color: #ffd700;">(</span>minus 2<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+<p>
+OK, Let's build function <code>p</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">fib'</span> n a 
+  <span style="color: #ff6347;">=</span> fib n <span style="color: #ff6347;">+</span> a
+  <span style="color: #ff6347;">=</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">+</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>2<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">+</span> a
+  <span style="color: #ff6347;">=</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">+</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>2<span style="color: #ffd700;">)</span> a
+  <span style="color: #ff6347;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347;">-</span>2<span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+<p>
+Therefore,
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">fib'</span> 0 a <span style="color: #ff6347;">=</span> a
+<span style="color: #edd400; font-weight: bold;">fib'</span> 1 a <span style="color: #ff6347;">=</span> 1 <span style="color: #ff6347;">+</span> a
+<span style="color: #edd400; font-weight: bold;">fib'</span> n a <span style="color: #ff6347;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347;">-</span>2<span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+<p>
+We succeeded!
+However, this is just our first baby step, this is just <code>tail call</code>, not <code>tailrec</code>.
 </p>
 </div>
 </li>
@@ -673,30 +719,30 @@ These constraints looks really strict and ugly&#x2026;
 
 
 
-<div id="outline-container-orgb95c791" class="outline-4">
-<h4 id="orgb95c791"><span class="section-number-4">1.2.2</span> N-branch tree recursion</h4>
+<div id="outline-container-org90a4c7c" class="outline-4">
+<h4 id="org90a4c7c"><span class="section-number-4">1.2.2</span> N-branch tree recursion</h4>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgffbeb7f" class="outline-2">
-<h2 id="orgffbeb7f"><span class="section-number-2">2</span> Examples</h2>
+<div id="outline-container-orgd5cddf5" class="outline-2">
+<h2 id="orgd5cddf5"><span class="section-number-2">2</span> Examples</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org7b38c40" class="outline-3">
-<h3 id="org7b38c40"><span class="section-number-3">2.1</span> Selection sort</h3>
+<div id="outline-container-org6911735" class="outline-3">
+<h3 id="org6911735"><span class="section-number-3">2.1</span> Selection sort</h3>
 </div>
-<div id="outline-container-org4beef8b" class="outline-3">
-<h3 id="org4beef8b"><span class="section-number-3">2.2</span> Fibonacci</h3>
+<div id="outline-container-orga0abe8c" class="outline-3">
+<h3 id="orga0abe8c"><span class="section-number-3">2.2</span> Fibonacci</h3>
 </div>
-<div id="outline-container-orga8562c2" class="outline-3">
-<h3 id="orga8562c2"><span class="section-number-3">2.3</span> Permutations</h3>
+<div id="outline-container-org38b745c" class="outline-3">
+<h3 id="org38b745c"><span class="section-number-3">2.3</span> Permutations</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-02-26 周三 22:13</p>
+<p class="date">Created: 2020-02-26 周三 22:44</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -236,6 +236,40 @@ In words, we can find a function =p=, which
 3) Function =p= satisfy _Monoid law_.
 
 These constraints looks really strict and ugly...
+The first condition is easy to reach since we can simply build a function =p=.
+The second is hard. we need to decompose =f= to our built function =p=.
+Well, I want to have a try.
+
+Can this strategy solve =fib= problem?
+#+BEGIN_SRC haskell
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
+#+END_SRC
+#+BEGIN_SRC haskell
+rec x = f x (rec (g x)) (rec (h x))
+
+rec = fib
+f x a b = a + b
+g = (minus 1)
+h = (minus 2)
+#+END_SRC
+OK, Let's build function =p=.
+#+BEGIN_SRC haskell
+fib' n a 
+  = fib n + a
+  = fib (n-1) + fib (n-2) + a
+  = fib (n-1) + fib' (n-2) a
+  = fib' (n-1) (fib' (n-2) a)
+#+END_SRC
+Therefore,
+#+BEGIN_SRC haskell
+fib' 0 a = a
+fib' 1 a = 1 + a
+fib' n a = fib' (n-1) (fib' (n-2) a)
+#+END_SRC
+We succeeded!
+However, this is just our first baby step, this is just =tail call=, not =tailrec=.
 
 
 
