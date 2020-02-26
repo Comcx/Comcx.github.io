@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-02-26 周三 21:14 -->
+<!-- 2020-02-26 周三 21:41 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tail recursion optimization</title>
@@ -244,24 +244,29 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgaab89cd">1. Tailrec strategies</a>
+<li><a href="#org80cceb5">1. Tailrec strategies</a>
 <ul>
-<li><a href="#orgce4341a">1.1. Linear recursion</a>
+<li><a href="#org354eb0e">1.1. Linear recursion</a>
 <ul>
-<li><a href="#org0a5a72b">1.1.1. Formalization</a></li>
-<li><a href="#orgefafb2a">1.1.2. Reverse order</a></li>
-<li><a href="#orgd851824">1.1.3. CPS trasformation</a></li>
-<li><a href="#orgf8977a9">1.1.4. Summary</a></li>
+<li><a href="#orgcd96a06">1.1.1. Formalization</a></li>
+<li><a href="#org039c9a3">1.1.2. Reverse order</a></li>
+<li><a href="#org95b25a1">1.1.3. CPS trasformation</a></li>
+<li><a href="#orgf9e5862">1.1.4. Summary</a></li>
 </ul>
 </li>
-<li><a href="#org90a0056">1.2. Tree recursion</a></li>
+<li><a href="#org2a95e92">1.2. Tree recursion</a>
+<ul>
+<li><a href="#org1df2382">1.2.1. Two-branch tree recursion</a></li>
+<li><a href="#orgfb57062">1.2.2. N-branch tree recursion</a></li>
 </ul>
 </li>
-<li><a href="#org0b833b8">2. Examples</a>
+</ul>
+</li>
+<li><a href="#orgfb8fb01">2. Examples</a>
 <ul>
-<li><a href="#orgc22cac7">2.1. Selection sort</a></li>
-<li><a href="#org6faedc7">2.2. Fibonacci</a></li>
-<li><a href="#org16f888e">2.3. Permutations</a></li>
+<li><a href="#org8a8a7a9">2.1. Selection sort</a></li>
+<li><a href="#org550c0fe">2.2. Fibonacci</a></li>
+<li><a href="#org12ad76a">2.3. Permutations</a></li>
 </ul>
 </li>
 </ul>
@@ -297,16 +302,16 @@ Haskell ==&gt; Scala ==&gt; C++
 </p>
 
 
-<div id="outline-container-orgaab89cd" class="outline-2">
-<h2 id="orgaab89cd"><span class="section-number-2">1</span> Tailrec strategies</h2>
+<div id="outline-container-org80cceb5" class="outline-2">
+<h2 id="org80cceb5"><span class="section-number-2">1</span> Tailrec strategies</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgce4341a" class="outline-3">
-<h3 id="orgce4341a"><span class="section-number-3">1.1</span> Linear recursion</h3>
+<div id="outline-container-org354eb0e" class="outline-3">
+<h3 id="org354eb0e"><span class="section-number-3">1.1</span> Linear recursion</h3>
 <div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-org0a5a72b" class="outline-4">
-<h4 id="org0a5a72b"><span class="section-number-4">1.1.1</span> Formalization</h4>
+<div id="outline-container-orgcd96a06" class="outline-4">
+<h4 id="orgcd96a06"><span class="section-number-4">1.1.1</span> Formalization</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 To make things simple but not stupid, we firstly only focus on recursions whose
@@ -314,17 +319,19 @@ last expression only contains one recursion
 (which means we do not discuss tree recursion right now).
 </p>
 
-<pre class="example">
-rec 1 = some value
-rec x = f x (rec (h x))
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 <span style="color: #ff6347;">=</span> some value
+<span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
+</div>
 
 <p>
 Now we unfold this recursion:
 </p>
-<pre class="example">
-rec x = f x $ f (h x) $ f (h $ h x) $ f (h $ h $ h x) $ ... $ f (h $ h $ ... $ h $ x) $ (some value)
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347;">=</span> f x <span style="color: #ff6347;">$</span> f <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">$</span> f <span style="color: #ffd700;">(</span>h <span style="color: #ff6347;">$</span> h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">$</span> f <span style="color: #ffd700;">(</span>h <span style="color: #ff6347;">$</span> h <span style="color: #ff6347;">$</span> h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">$</span> <span style="color: #ff6347;">...</span> <span style="color: #ff6347;">$</span> f <span style="color: #ffd700;">(</span>h <span style="color: #ff6347;">$</span> h <span style="color: #ff6347;">$</span> <span style="color: #ff6347;">...</span> <span style="color: #ff6347;">$</span> h <span style="color: #ff6347;">$</span> x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">$</span> <span style="color: #ffd700;">(</span>some value<span style="color: #ffd700;">)</span>
 </pre>
+</div>
 
 <p>
 Hummmmm, it looks even more complex&#x2026;
@@ -344,8 +351,8 @@ applied to <code>x</code>. We can find some clues from the terminating pattern o
 </div>
 </div>
 
-<div id="outline-container-orgefafb2a" class="outline-4">
-<h4 id="orgefafb2a"><span class="section-number-4">1.1.2</span> Reverse order</h4>
+<div id="outline-container-org039c9a3" class="outline-4">
+<h4 id="org039c9a3"><span class="section-number-4">1.1.2</span> Reverse order</h4>
 <div class="outline-text-4" id="text-1-1-2">
 <ul class="org-ul">
 <li><p>
@@ -361,24 +368,25 @@ Our current problem:
 </div>
 
 <ol class="org-ol">
-<li><a id="org0abdc08"></a><b>If h is reversible(noted h', i.e. h . h' = id)</b><br />
+<li><a id="org16e8762"></a><b>If h is reversible(noted h', i.e. h . h' = id)</b><br />
 <div class="outline-text-5" id="text-1-1-2-1">
 <p>
 we can build from bottom!
 Notice that we need to pass our value of each layer to upper layer,
 so we need one more parameter to record our current result.
 </p>
-<pre class="example">
-    reverseBuild f h x res = f x res
-    reverseBuild f h y res = reverseBuild f h (h' y) (f y res)
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseBuild</span> f h x res <span style="color: #ff6347;">=</span> f x res
+<span style="color: #edd400; font-weight: bold;">reverseBuild</span> f h y res <span style="color: #ff6347;">=</span> reverseBuild f h <span style="color: #ffd700;">(</span>h' y<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>f y res<span style="color: #ffd700;">)</span>
 </pre>
+</div>
 <ul class="org-ul">
 <li>use foldl, foldr?</li>
 </ul>
 </div>
 </li>
 
-<li><a id="org2a7941b"></a><b>else h is not reversible:(</b><br />
+<li><a id="orgde2a41f"></a><b>else h is not reversible:(</b><br />
 <div class="outline-text-5" id="text-1-1-2-2">
 <p>
 well, which means we can't get results from bottom, we have to start from
@@ -387,15 +395,16 @@ head since we can not calculate (h $ h $ &#x2026; $ x). Maybe we need another st
 </div>
 </li>
 
-<li><a id="org284635c"></a><b>To change order&#x2026; How about <code>Monoid</code>?</b><br />
+<li><a id="org209c3a7"></a><b>To change order&#x2026; How about <code>Monoid</code>?</b><br />
 <div class="outline-text-5" id="text-1-1-2-3">
 <p>
 Suppose we want to get the sum of a list:
 </p>
-<pre class="example">
-    sum [] = 0
-    sum (x:xs) = x + sum xs
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">sum</span> <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347;">=</span> 0
+<span style="color: #edd400; font-weight: bold;">sum</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">=</span> x <span style="color: #ff6347;">+</span> sum xs
 </pre>
+</div>
 <p>
 where, <code>(+)</code> becomes the function <code>f</code>.
 </p>
@@ -404,21 +413,24 @@ where, <code>(+)</code> becomes the function <code>f</code>.
 Since (a + b) + c <code>=</code> a + (b + c),
 we can reverse the calculation order
 </p>
-<pre class="example">
-    a + (b + (c + d))
+<div class="org-src-container">
+<pre class="src src-haskell">a <span style="color: #edd400; font-weight: bold;">+</span> <span style="color: #ffd700;">(</span>b <span style="color: #ff6347;">+</span> <span style="color: #00bfff;">(</span>c <span style="color: #ff6347;">+</span> d<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
+</div>
 <p>
 to
 </p>
-<pre class="example">
-    ((a + b) + c) + d
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #ffd700;">(</span><span style="color: #00bfff;">(</span>a <span style="color: #ff6347;">+</span> b<span style="color: #00bfff;">)</span> <span style="color: #ff6347;">+</span> c<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">+</span> d
 </pre>
+</div>
 <p>
 It's just like to say that, we can change the calculation of
 </p>
-<pre class="example">
-    x (h x) (h $ h x) ... (h $ h $ ... $ h x)
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">x</span> <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>h <span style="color: #ff6347;">$</span> h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">...</span> <span style="color: #ffd700;">(</span>h <span style="color: #ff6347;">$</span> h <span style="color: #ff6347;">$</span> <span style="color: #ff6347;">...</span> <span style="color: #ff6347;">$</span> h x<span style="color: #ffd700;">)</span>
 </pre>
+</div>
 <p>
 with <code>f</code>.
 </p>
@@ -426,32 +438,35 @@ with <code>f</code>.
 <p>
 Let's try to implement this transformation with our general code:
 </p>
-<pre class="example">
-    reverseOrder f h 1 res = res
-    reverseOrder f h x res = reverseOrder f h (h x) (f x (h x))
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseOrder</span> f h 1 res <span style="color: #ff6347;">=</span> res
+<span style="color: #edd400; font-weight: bold;">reverseOrder</span> f h x res <span style="color: #ff6347;">=</span> reverseOrder f h <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>f x <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
+</div>
 <p>
 This time we don't need <code>h'</code>!
 </p>
 </div>
 </li>
 
-<li><a id="orgc328eef"></a><b>Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit</b><br />
+<li><a id="orge4611a3"></a><b>Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit</b><br />
 <div class="outline-text-5" id="text-1-1-2-4">
 <p>
 This time instead of requiring f to be satisfiled by monoid law,
 we ourselves try to find a function <code>g</code> which satisfy the following law:
 </p>
-<pre class="example">
-    g (g a b) c = f a (f b c)
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ffd700;">(</span>g a b<span style="color: #ffd700;">)</span> c <span style="color: #ff6347;">=</span> f a <span style="color: #ffd700;">(</span>f b c<span style="color: #ffd700;">)</span>
 </pre>
+</div>
 <p>
 Now we can use our trick again:
 </p>
-<pre class="example">
-    reverseOrder' g h 1 res = res
-    reverseOrder' g h x res = reverseOrder' g h (h x) (g x (h x))
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseOrder'</span> g h 1 res <span style="color: #ff6347;">=</span> res
+<span style="color: #edd400; font-weight: bold;">reverseOrder'</span> g h x res <span style="color: #ff6347;">=</span> reverseOrder' g h <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>g x <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
+</div>
 
 <p>
 Even more general(although harder&#x2026;), we can generalize function <code>h</code> too.
@@ -461,11 +476,12 @@ Suppose we have our special function <code>g</code> and a new h function <code>p
 <p>
 We have general rule:
 </p>
-<pre class="example">
-    g (g x (p x)) (p $ p x) = f x (f (h x) (h $ h x))
-    or(with extra start x0)
-    g (g (g a x) (p x)) (p $ p x) = f x (f (h x) (h $ (h x)))
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ffd700;">(</span>g x <span style="color: #00bfff;">(</span>p x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>p <span style="color: #ff6347;">$</span> p x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span>f <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span>h <span style="color: #ff6347;">$</span> h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+or<span style="color: #ffd700;">(</span>with extra start x0<span style="color: #ffd700;">)</span>
+<span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ffd700;">(</span>g <span style="color: #00bfff;">(</span>g a x<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span>p x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>p <span style="color: #ff6347;">$</span> p x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span>f <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span>h <span style="color: #ff6347;">$</span> <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
+</div>
 <p>
 What's more? We may Just add a new start data x0(just like foldl :-)
 </p>
@@ -473,14 +489,15 @@ What's more? We may Just add a new start data x0(just like foldl :-)
 <p>
 The final version with extra x0(a is x0 at first):
 </p>
-<pre class="example">
-    reverseOrder'' g p a 1 res = res
-    reverseOrder'' g p a x res = reverseOrder'' g p (p x) (g a x)
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseOrder''</span> g p a 1 res <span style="color: #ff6347;">=</span> res
+<span style="color: #edd400; font-weight: bold;">reverseOrder''</span> g p a x res <span style="color: #ff6347;">=</span> reverseOrder'' g p <span style="color: #ffd700;">(</span>p x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>g a x<span style="color: #ffd700;">)</span>
 </pre>
+</div>
 </div>
 </li>
 
-<li><a id="org893d429"></a><b>Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x2026;</b><br />
+<li><a id="org4b56e98"></a><b>Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x2026;</b><br />
 <div class="outline-text-5" id="text-1-1-2-5">
 <p>
 Two options:
@@ -498,25 +515,27 @@ Time for the second idea!
 </li>
 </ol>
 </div>
-<div id="outline-container-orgd851824" class="outline-4">
-<h4 id="orgd851824"><span class="section-number-4">1.1.3</span> CPS trasformation</h4>
+<div id="outline-container-org95b25a1" class="outline-4">
+<h4 id="org95b25a1"><span class="section-number-4">1.1.3</span> CPS trasformation</h4>
 <div class="outline-text-4" id="text-1-1-3">
 <p>
 CPS is a tool to convert recursive code to <b>tail call</b>.(note that this is different from tailrec).
 Recall our <code>rec</code> function:
 </p>
-<pre class="example">
-rec 1 = some value
-rec x = f x (rec (h x))
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 <span style="color: #ff6347;">=</span> some value
+<span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
+</div>
 
 <p>
 to <i>CPS</i> style =&gt;
 </p>
-<pre class="example">
-rec 1 c = c value
-rec x c = rec (h x) (c . (f x))
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 c <span style="color: #ff6347;">=</span> c value
+<span style="color: #729fcf; font-weight: bold;">rec</span> x c <span style="color: #ff6347;">=</span> <span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>c <span style="color: #ff6347;">.</span> <span style="color: #00bfff;">(</span>f x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
+</div>
 <p>
 It looks like we are just building our unfolded function chain.
 Instead of accumulating results and values, we accumulate calculations(functions).
@@ -529,8 +548,8 @@ With CPS, we can build our executing stack from heap.
 </div>
 </div>
 
-<div id="outline-container-orgf8977a9" class="outline-4">
-<h4 id="orgf8977a9"><span class="section-number-4">1.1.4</span> Summary</h4>
+<div id="outline-container-orgf9e5862" class="outline-4">
+<h4 id="orgf9e5862"><span class="section-number-4">1.1.4</span> Summary</h4>
 <div class="outline-text-4" id="text-1-1-4">
 <p>
 We have discussed several optimizations may be applied to list recursions.
@@ -539,10 +558,10 @@ Let's recap!
 </div>
 
 <ol class="org-ol">
-<li><a id="org8136cd5"></a>Tailrec<br />
+<li><a id="orgcad7783"></a>Tailrec<br />
 <ol class="org-ol">
-<li><a id="org70dd803"></a>Calculating from bottom if reversible<br /></li>
-<li><a id="orgf988c2b"></a>Reverse calculation order<br />
+<li><a id="org35209cf"></a>Calculating from bottom if reversible<br /></li>
+<li><a id="org3a6458a"></a>Reverse calculation order<br />
 <div class="outline-text-6" id="text-1-1-4-1-2">
 <ul class="org-ul">
 <li>By Monoid structure</li>
@@ -550,39 +569,93 @@ Let's recap!
 </ul>
 </div>
 </li>
-<li><a id="org0200036"></a>CPS transformation<br /></li>
+<li><a id="org6a42479"></a>CPS transformation<br /></li>
 </ol>
 </li>
 
-<li><a id="org5bf7a73"></a>Dynamic Programming<br /></li>
+<li><a id="org29e16d1"></a>Dynamic Programming<br /></li>
 </ol>
 </div>
 </div>
 
-<div id="outline-container-org90a0056" class="outline-3">
-<h3 id="org90a0056"><span class="section-number-3">1.2</span> Tree recursion</h3>
+<div id="outline-container-org2a95e92" class="outline-3">
+<h3 id="org2a95e92"><span class="section-number-3">1.2</span> Tree recursion</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Well, it seems that linear tailrec is not easy now, how about tree tailrec?
+</p>
 </div>
+<div id="outline-container-org1df2382" class="outline-4">
+<h4 id="org1df2382"><span class="section-number-4">1.2.1</span> Two-branch tree recursion</h4>
+<div class="outline-text-4" id="text-1-2-1">
+</div>
+<ol class="org-ol">
+<li><a id="org41fb4d5"></a>Formalization<br />
+<div class="outline-text-5" id="text-1-2-1-1">
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 <span style="color: #ff6347;">=</span> some value
+<span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+</pre>
+</div>
+<p>
+If we unfold thie expression, this expression can be a very large binary-tree.
+</p>
+<pre class="example">
+                               f x
+                     /                     \
+          f $ g x                                 f $ h x
+        /         \                            /           \
+f $ g x $ g x     f $ g x $ h x    f $ h x $ g x            f $ h x $ h x
+
+...
+</pre>
+<p>
+It looks like we are traversing all possible permutations of function <code>g</code> and <code>h</code> compositions
+</p>
+</div>
+</li>
+
+<li><a id="orgc67fcce"></a>A simple try<br />
+<div class="outline-text-5" id="text-1-2-1-2">
+<p>
+A very simple idea is that if we can tailrec <code>rec</code>, then we want to cache result of last step:
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">rec'</span> x a 
+  <span style="color: #ff6347;">=</span> p <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> x<span style="color: #ffd700;">)</span> a
+  <span style="color: #ff6347;">=</span> p <span style="color: #ffd700;">(</span>f x <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffa500;">(</span>g x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> a
+</pre>
+</div>
+</div>
+</li>
+</ol>
 </div>
 
 
-<div id="outline-container-org0b833b8" class="outline-2">
-<h2 id="org0b833b8"><span class="section-number-2">2</span> Examples</h2>
+<div id="outline-container-orgfb57062" class="outline-4">
+<h4 id="orgfb57062"><span class="section-number-4">1.2.2</span> N-branch tree recursion</h4>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfb8fb01" class="outline-2">
+<h2 id="orgfb8fb01"><span class="section-number-2">2</span> Examples</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgc22cac7" class="outline-3">
-<h3 id="orgc22cac7"><span class="section-number-3">2.1</span> Selection sort</h3>
+<div id="outline-container-org8a8a7a9" class="outline-3">
+<h3 id="org8a8a7a9"><span class="section-number-3">2.1</span> Selection sort</h3>
 </div>
-<div id="outline-container-org6faedc7" class="outline-3">
-<h3 id="org6faedc7"><span class="section-number-3">2.2</span> Fibonacci</h3>
+<div id="outline-container-org550c0fe" class="outline-3">
+<h3 id="org550c0fe"><span class="section-number-3">2.2</span> Fibonacci</h3>
 </div>
-<div id="outline-container-org16f888e" class="outline-3">
-<h3 id="org16f888e"><span class="section-number-3">2.3</span> Permutations</h3>
+<div id="outline-container-org12ad76a" class="outline-3">
+<h3 id="org12ad76a"><span class="section-number-3">2.3</span> Permutations</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-02-26 周三 21:14</p>
+<p class="date">Created: 2020-02-26 周三 21:41</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

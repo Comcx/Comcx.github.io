@@ -32,13 +32,13 @@ To make things simple but not stupid, we firstly only focus on recursions whose
 last expression only contains one recursion
 (which means we do not discuss tree recursion right now).
 
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 rec 1 = some value
 rec x = f x (rec (h x))
 #+END_SRC
 
 Now we unfold this recursion:
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 rec x = f x $ f (h x) $ f (h $ h x) $ f (h $ h $ h x) $ ... $ f (h $ h $ ... $ h $ x) $ (some value)
 #+END_SRC
 
@@ -66,10 +66,10 @@ applied to =x=. We can find some clues from the terminating pattern of =rec=.
     we can build from bottom!
     Notice that we need to pass our value of each layer to upper layer,
     so we need one more parameter to record our current result.
-    #+BEGIN_SRC 
-    reverseBuild f h x res = f x res
-    reverseBuild f h y res = reverseBuild f h (h' y) (f y res)
-    #+END_SRC
+#+BEGIN_SRC haskell
+reverseBuild f h x res = f x res
+reverseBuild f h y res = reverseBuild f h (h' y) (f y res)
+#+END_SRC
     * use foldl, foldr?
 
 ***** *else h is not reversible:(*
@@ -80,63 +80,63 @@ applied to =x=. We can find some clues from the terminating pattern of =rec=.
 ***** *To change order... How about =Monoid=?*
 
     Suppose we want to get the sum of a list:
-    #+BEGIN_SRC 
-    sum [] = 0
-    sum (x:xs) = x + sum xs
-    #+END_SRC
+#+BEGIN_SRC haskell
+sum [] = 0
+sum (x:xs) = x + sum xs
+#+END_SRC
     where, =(+)= becomes the function =f=.
 
     Since (a + b) + c === a + (b + c),
     we can reverse the calculation order
-    #+BEGIN_SRC 
-    a + (b + (c + d))
-    #+END_SRC
+#+BEGIN_SRC haskell
+a + (b + (c + d))
+#+END_SRC
     to
-    #+BEGIN_SRC 
-    ((a + b) + c) + d
-    #+END_SRC
+#+BEGIN_SRC haskell
+((a + b) + c) + d
+#+END_SRC
     It's just like to say that, we can change the calculation of
-    #+BEGIN_SRC 
-    x (h x) (h $ h x) ... (h $ h $ ... $ h x)
-    #+END_SRC
+#+BEGIN_SRC haskell
+x (h x) (h $ h x) ... (h $ h $ ... $ h x)
+#+END_SRC
     with =f=.
 
     Let's try to implement this transformation with our general code:
-    #+BEGIN_SRC 
-    reverseOrder f h 1 res = res
-    reverseOrder f h x res = reverseOrder f h (h x) (f x (h x))
-    #+END_SRC
+#+BEGIN_SRC haskell
+reverseOrder f h 1 res = res
+reverseOrder f h x res = reverseOrder f h (h x) (f x (h x))
+#+END_SRC
     This time we don't need =h'=!
 
 ***** *Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit*
 
     This time instead of requiring f to be satisfiled by monoid law,
     we ourselves try to find a function =g= which satisfy the following law:
-    #+BEGIN_SRC 
-    g (g a b) c = f a (f b c)
-    #+END_SRC
+#+BEGIN_SRC haskell
+g (g a b) c = f a (f b c)
+#+END_SRC
     Now we can use our trick again:
-    #+BEGIN_SRC 
-    reverseOrder' g h 1 res = res
-    reverseOrder' g h x res = reverseOrder' g h (h x) (g x (h x))
-    #+END_SRC
+#+BEGIN_SRC haskell
+reverseOrder' g h 1 res = res
+reverseOrder' g h x res = reverseOrder' g h (h x) (g x (h x))
+#+END_SRC
 
     Even more general(although harder...), we can generalize function =h= too.
     Suppose we have our special function =g= and a new h function =p=.
     
     We have general rule:
-    #+BEGIN_SRC 
-    g (g x (p x)) (p $ p x) = f x (f (h x) (h $ h x))
-    or(with extra start x0)
-    g (g (g a x) (p x)) (p $ p x) = f x (f (h x) (h $ (h x)))
-    #+END_SRC
+#+BEGIN_SRC haskell
+g (g x (p x)) (p $ p x) = f x (f (h x) (h $ h x))
+or(with extra start x0)
+g (g (g a x) (p x)) (p $ p x) = f x (f (h x) (h $ (h x)))
+#+END_SRC
     What's more? We may Just add a new start data x0(just like foldl :-)
 
     The final version with extra x0(a is x0 at first):
-    #+BEGIN_SRC 
-    reverseOrder'' g p a 1 res = res
-    reverseOrder'' g p a x res = reverseOrder'' g p (p x) (g a x)
-    #+END_SRC
+#+BEGIN_SRC haskell
+reverseOrder'' g p a 1 res = res
+reverseOrder'' g p a x res = reverseOrder'' g p (p x) (g a x)
+#+END_SRC
    
 ***** *Well, if we're not lucky.. we can't find a reverse h' nor monoid structure...*
      
@@ -150,13 +150,13 @@ Time for the second idea!
 
 CPS is a tool to convert recursive code to *tail call*.(note that this is different from tailrec).
 Recall our =rec= function:
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 rec 1 = some value
 rec x = f x (rec (h x))
 #+END_SRC
 
 to /CPS/ style =>
-#+BEGIN_SRC 
+#+BEGIN_SRC haskell
 rec 1 c = c value
 rec x c = rec (h x) (c . (f x))
 #+END_SRC
@@ -180,7 +180,36 @@ Let's recap!
 ***** Dynamic Programming
 
 *** Tree recursion
+Well, it seems that linear tailrec is not easy now, how about tree tailrec?
+**** Two-branch tree recursion
+***** Formalization
+#+BEGIN_SRC haskell
+rec 1 = some value
+rec x = f x (rec (g x)) (rec (h x))
+#+END_SRC
+If we unfold thie expression, this expression can be a very large binary-tree.
+#+BEGIN_SRC 
+                               f x
+                     /                     \
+          f $ g x                                 f $ h x
+        /         \                            /           \
+f $ g x $ g x     f $ g x $ h x    f $ h x $ g x            f $ h x $ h x
 
+...
+#+END_SRC
+It looks like we are traversing all possible permutations of function =g= and =h= compositions
+
+***** A simple try 
+
+A very simple idea is that if we can tailrec =rec=, then we want to cache result of last step:
+#+BEGIN_SRC haskell
+rec' x a 
+  = p (rec x) a
+  = p (f x (rec (g x)) (rec (h x))) a
+#+END_SRC
+
+
+**** N-branch tree recursion
 
 ** Examples
 *** Selection sort
