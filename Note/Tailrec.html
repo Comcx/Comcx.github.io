@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-02-26 周三 22:44 -->
+<!-- 2020-02-27 周四 15:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tail recursion optimization</title>
@@ -244,29 +244,29 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgfab54c8">1. Tailrec strategies</a>
+<li><a href="#org7560702">1. Tailrec strategies</a>
 <ul>
-<li><a href="#org395588f">1.1. Linear recursion</a>
+<li><a href="#orge08ea49">1.1. Linear recursion</a>
 <ul>
-<li><a href="#orgde9bdf3">1.1.1. Formalization</a></li>
-<li><a href="#org80fcf44">1.1.2. Reverse order</a></li>
-<li><a href="#orgd4d3431">1.1.3. CPS trasformation</a></li>
-<li><a href="#org9fbdd0d">1.1.4. Summary</a></li>
+<li><a href="#orgc2ecb35">1.1.1. Formalization</a></li>
+<li><a href="#org648e653">1.1.2. Reverse order</a></li>
+<li><a href="#org6aa29b2">1.1.3. CPS trasformation</a></li>
+<li><a href="#org3bb984d">1.1.4. Summary</a></li>
 </ul>
 </li>
-<li><a href="#org18f9b21">1.2. Tree recursion</a>
+<li><a href="#org7101b28">1.2. Tree recursion</a>
 <ul>
-<li><a href="#orge8f2ddb">1.2.1. Two-branch tree recursion</a></li>
-<li><a href="#org90a4c7c">1.2.2. N-branch tree recursion</a></li>
+<li><a href="#orgf6f4158">1.2.1. Two-branch tree recursion</a></li>
+<li><a href="#org0d2e37c">1.2.2. N-branch tree recursion</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgd5cddf5">2. Examples</a>
+<li><a href="#org03c6b61">2. Examples</a>
 <ul>
-<li><a href="#org6911735">2.1. Selection sort</a></li>
-<li><a href="#orga0abe8c">2.2. Fibonacci</a></li>
-<li><a href="#org38b745c">2.3. Permutations</a></li>
+<li><a href="#org2dc0fe4">2.1. Selection sort</a></li>
+<li><a href="#orgc3a5aed">2.2. Fibonacci</a></li>
+<li><a href="#orgdb48d53">2.3. Permutations</a></li>
 </ul>
 </li>
 </ul>
@@ -302,16 +302,16 @@ Haskell ==&gt; Scala ==&gt; C++
 </p>
 
 
-<div id="outline-container-orgfab54c8" class="outline-2">
-<h2 id="orgfab54c8"><span class="section-number-2">1</span> Tailrec strategies</h2>
+<div id="outline-container-org7560702" class="outline-2">
+<h2 id="org7560702"><span class="section-number-2">1</span> Tailrec strategies</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org395588f" class="outline-3">
-<h3 id="org395588f"><span class="section-number-3">1.1</span> Linear recursion</h3>
+<div id="outline-container-orge08ea49" class="outline-3">
+<h3 id="orge08ea49"><span class="section-number-3">1.1</span> Linear recursion</h3>
 <div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-orgde9bdf3" class="outline-4">
-<h4 id="orgde9bdf3"><span class="section-number-4">1.1.1</span> Formalization</h4>
+<div id="outline-container-orgc2ecb35" class="outline-4">
+<h4 id="orgc2ecb35"><span class="section-number-4">1.1.1</span> Formalization</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 To make things simple but not stupid, we firstly only focus on recursions whose
@@ -320,8 +320,8 @@ last expression only contains one recursion
 </p>
 
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 <span style="color: #ff6347;">=</span> some value
-<span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 <span style="color: #ff6347; font-weight: bold;">=</span> some value
+<span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347; font-weight: bold;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
 </div>
 
@@ -329,7 +329,7 @@ last expression only contains one recursion
 Now we unfold this recursion:
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347;">=</span> f x <span style="color: #ff6347;">$</span> f <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">$</span> f <span style="color: #ffd700;">(</span>h <span style="color: #ff6347;">$</span> h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">$</span> f <span style="color: #ffd700;">(</span>h <span style="color: #ff6347;">$</span> h <span style="color: #ff6347;">$</span> h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">$</span> <span style="color: #ff6347;">...</span> <span style="color: #ff6347;">$</span> f <span style="color: #ffd700;">(</span>h <span style="color: #ff6347;">$</span> h <span style="color: #ff6347;">$</span> <span style="color: #ff6347;">...</span> <span style="color: #ff6347;">$</span> h <span style="color: #ff6347;">$</span> x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">$</span> <span style="color: #ffd700;">(</span>some value<span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347; font-weight: bold;">=</span> f x <span style="color: #ff6347; font-weight: bold;">$</span> f <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> f <span style="color: #ffd700;">(</span>h <span style="color: #ff6347; font-weight: bold;">$</span> h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> f <span style="color: #ffd700;">(</span>h <span style="color: #ff6347; font-weight: bold;">$</span> h <span style="color: #ff6347; font-weight: bold;">$</span> h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">...</span> <span style="color: #ff6347; font-weight: bold;">$</span> f <span style="color: #ffd700;">(</span>h <span style="color: #ff6347; font-weight: bold;">$</span> h <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">...</span> <span style="color: #ff6347; font-weight: bold;">$</span> h <span style="color: #ff6347; font-weight: bold;">$</span> x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ffd700;">(</span>some value<span style="color: #ffd700;">)</span>
 </pre>
 </div>
 
@@ -351,8 +351,8 @@ applied to <code>x</code>. We can find some clues from the terminating pattern o
 </div>
 </div>
 
-<div id="outline-container-org80fcf44" class="outline-4">
-<h4 id="org80fcf44"><span class="section-number-4">1.1.2</span> Reverse order</h4>
+<div id="outline-container-org648e653" class="outline-4">
+<h4 id="org648e653"><span class="section-number-4">1.1.2</span> Reverse order</h4>
 <div class="outline-text-4" id="text-1-1-2">
 <ul class="org-ul">
 <li><p>
@@ -368,7 +368,7 @@ Our current problem:
 </div>
 
 <ol class="org-ol">
-<li><a id="org166f52c"></a><b>If h is reversible(noted h', i.e. h . h' = id)</b><br />
+<li><a id="org0dfc995"></a><b>If h is reversible(noted h', i.e. h . h' = id)</b><br />
 <div class="outline-text-5" id="text-1-1-2-1">
 <p>
 we can build from bottom!
@@ -376,8 +376,8 @@ Notice that we need to pass our value of each layer to upper layer,
 so we need one more parameter to record our current result.
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseBuild</span> f h x res <span style="color: #ff6347;">=</span> f x res
-<span style="color: #edd400; font-weight: bold;">reverseBuild</span> f h y res <span style="color: #ff6347;">=</span> reverseBuild f h <span style="color: #ffd700;">(</span>h' y<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>f y res<span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseBuild</span> f h x res <span style="color: #ff6347; font-weight: bold;">=</span> f x res
+<span style="color: #edd400; font-weight: bold;">reverseBuild</span> f h y res <span style="color: #ff6347; font-weight: bold;">=</span> reverseBuild f h <span style="color: #ffd700;">(</span>h' y<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>f y res<span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <ul class="org-ul">
@@ -386,7 +386,7 @@ so we need one more parameter to record our current result.
 </div>
 </li>
 
-<li><a id="orgc55e914"></a><b>else h is not reversible:(</b><br />
+<li><a id="orga69223b"></a><b>else h is not reversible:(</b><br />
 <div class="outline-text-5" id="text-1-1-2-2">
 <p>
 well, which means we can't get results from bottom, we have to start from
@@ -395,14 +395,14 @@ head since we can not calculate (h $ h $ &#x2026; $ x). Maybe we need another st
 </div>
 </li>
 
-<li><a id="orge7a9c9a"></a><b>To change order&#x2026; How about <code>Monoid</code>?</b><br />
+<li><a id="orgbd8d8cc"></a><b>To change order&#x2026; How about <code>Monoid</code>?</b><br />
 <div class="outline-text-5" id="text-1-1-2-3">
 <p>
 Suppose we want to get the sum of a list:
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">sum</span> <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347;">=</span> 0
-<span style="color: #edd400; font-weight: bold;">sum</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">=</span> x <span style="color: #ff6347;">+</span> sum xs
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">sum</span> <span style="color: #ffd700; font-weight: bold;">[]</span> <span style="color: #ff6347; font-weight: bold;">=</span> 0
+<span style="color: #edd400; font-weight: bold;">sum</span> <span style="color: #ffd700;">(</span>x<span style="color: #8ae234; font-weight: bold;">:</span>xs<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> x <span style="color: #ff6347; font-weight: bold;">+</span> sum xs
 </pre>
 </div>
 <p>
@@ -414,21 +414,21 @@ Since (a + b) + c <code>=</code> a + (b + c),
 we can reverse the calculation order
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell">a <span style="color: #edd400; font-weight: bold;">+</span> <span style="color: #ffd700;">(</span>b <span style="color: #ff6347;">+</span> <span style="color: #00bfff;">(</span>c <span style="color: #ff6347;">+</span> d<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<pre class="src src-haskell">a <span style="color: #edd400; font-weight: bold;">+</span> <span style="color: #ffd700;">(</span>b <span style="color: #ff6347; font-weight: bold;">+</span> <span style="color: #00bfff;">(</span>c <span style="color: #ff6347; font-weight: bold;">+</span> d<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <p>
 to
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #ffd700;">(</span><span style="color: #00bfff;">(</span>a <span style="color: #ff6347;">+</span> b<span style="color: #00bfff;">)</span> <span style="color: #ff6347;">+</span> c<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">+</span> d
+<pre class="src src-haskell"><span style="color: #ffd700;">(</span><span style="color: #00bfff;">(</span>a <span style="color: #ff6347; font-weight: bold;">+</span> b<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> c<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> d
 </pre>
 </div>
 <p>
 It's just like to say that, we can change the calculation of
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">x</span> <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>h <span style="color: #ff6347;">$</span> h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">...</span> <span style="color: #ffd700;">(</span>h <span style="color: #ff6347;">$</span> h <span style="color: #ff6347;">$</span> <span style="color: #ff6347;">...</span> <span style="color: #ff6347;">$</span> h x<span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">x</span> <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>h <span style="color: #ff6347; font-weight: bold;">$</span> h x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">...</span> <span style="color: #ffd700;">(</span>h <span style="color: #ff6347; font-weight: bold;">$</span> h <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ff6347; font-weight: bold;">...</span> <span style="color: #ff6347; font-weight: bold;">$</span> h x<span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <p>
@@ -439,8 +439,8 @@ with <code>f</code>.
 Let's try to implement this transformation with our general code:
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseOrder</span> f h 1 res <span style="color: #ff6347;">=</span> res
-<span style="color: #edd400; font-weight: bold;">reverseOrder</span> f h x res <span style="color: #ff6347;">=</span> reverseOrder f h <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>f x <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseOrder</span> f h 1 res <span style="color: #ff6347; font-weight: bold;">=</span> res
+<span style="color: #edd400; font-weight: bold;">reverseOrder</span> f h x res <span style="color: #ff6347; font-weight: bold;">=</span> reverseOrder f h <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>f x <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <p>
@@ -449,22 +449,22 @@ This time we don't need <code>h'</code>!
 </div>
 </li>
 
-<li><a id="orgd6c3059"></a><b>Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit</b><br />
+<li><a id="org9ff3ecf"></a><b>Being inspired by monoid, maybe be we can again generize our 'monoid approach' a little bit</b><br />
 <div class="outline-text-5" id="text-1-1-2-4">
 <p>
 This time instead of requiring f to be satisfiled by monoid law,
 we ourselves try to find a function <code>g</code> which satisfy the following law:
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ffd700;">(</span>g a b<span style="color: #ffd700;">)</span> c <span style="color: #ff6347;">=</span> f a <span style="color: #ffd700;">(</span>f b c<span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ffd700;">(</span>g a b<span style="color: #ffd700;">)</span> c <span style="color: #ff6347; font-weight: bold;">=</span> f a <span style="color: #ffd700;">(</span>f b c<span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <p>
 Now we can use our trick again:
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseOrder'</span> g h 1 res <span style="color: #ff6347;">=</span> res
-<span style="color: #edd400; font-weight: bold;">reverseOrder'</span> g h x res <span style="color: #ff6347;">=</span> reverseOrder' g h <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>g x <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseOrder'</span> g h 1 res <span style="color: #ff6347; font-weight: bold;">=</span> res
+<span style="color: #edd400; font-weight: bold;">reverseOrder'</span> g h x res <span style="color: #ff6347; font-weight: bold;">=</span> reverseOrder' g h <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>g x <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
 </div>
 
@@ -477,9 +477,9 @@ Suppose we have our special function <code>g</code> and a new h function <code>p
 We have general rule:
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ffd700;">(</span>g x <span style="color: #00bfff;">(</span>p x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>p <span style="color: #ff6347;">$</span> p x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span>f <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span>h <span style="color: #ff6347;">$</span> h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ffd700;">(</span>g x <span style="color: #00bfff;">(</span>p x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>p <span style="color: #ff6347; font-weight: bold;">$</span> p x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> f x <span style="color: #ffd700;">(</span>f <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span>h <span style="color: #ff6347; font-weight: bold;">$</span> h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 or<span style="color: #ffd700;">(</span>with extra start x0<span style="color: #ffd700;">)</span>
-<span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ffd700;">(</span>g <span style="color: #00bfff;">(</span>g a x<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span>p x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>p <span style="color: #ff6347;">$</span> p x<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span>f <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span>h <span style="color: #ff6347;">$</span> <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ffd700;">(</span>g <span style="color: #00bfff;">(</span>g a x<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span>p x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>p <span style="color: #ff6347; font-weight: bold;">$</span> p x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> f x <span style="color: #ffd700;">(</span>f <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span>h <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <p>
@@ -490,14 +490,14 @@ What's more? We may Just add a new start data x0(just like foldl :-)
 The final version with extra x0(a is x0 at first):
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseOrder''</span> g p a 1 res <span style="color: #ff6347;">=</span> res
-<span style="color: #edd400; font-weight: bold;">reverseOrder''</span> g p a x res <span style="color: #ff6347;">=</span> reverseOrder'' g p <span style="color: #ffd700;">(</span>p x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>g a x<span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">reverseOrder''</span> g p a 1 res <span style="color: #ff6347; font-weight: bold;">=</span> res
+<span style="color: #edd400; font-weight: bold;">reverseOrder''</span> g p a x res <span style="color: #ff6347; font-weight: bold;">=</span> reverseOrder'' g p <span style="color: #ffd700;">(</span>p x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>g a x<span style="color: #ffd700;">)</span>
 </pre>
 </div>
 </div>
 </li>
 
-<li><a id="orgb3894bc"></a><b>Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x2026;</b><br />
+<li><a id="orgf5b3591"></a><b>Well, if we're not lucky.. we can't find a reverse h' nor monoid structure&#x2026;</b><br />
 <div class="outline-text-5" id="text-1-1-2-5">
 <p>
 Two options:
@@ -515,16 +515,16 @@ Time for the second idea!
 </li>
 </ol>
 </div>
-<div id="outline-container-orgd4d3431" class="outline-4">
-<h4 id="orgd4d3431"><span class="section-number-4">1.1.3</span> CPS trasformation</h4>
+<div id="outline-container-org6aa29b2" class="outline-4">
+<h4 id="org6aa29b2"><span class="section-number-4">1.1.3</span> CPS trasformation</h4>
 <div class="outline-text-4" id="text-1-1-3">
 <p>
 CPS is a tool to convert recursive code to <b>tail call</b>.(note that this is different from tailrec).
 Recall our <code>rec</code> function:
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 <span style="color: #ff6347;">=</span> some value
-<span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 <span style="color: #ff6347; font-weight: bold;">=</span> some value
+<span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347; font-weight: bold;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
 </div>
 
@@ -532,8 +532,8 @@ Recall our <code>rec</code> function:
 to <i>CPS</i> style =&gt;
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 c <span style="color: #ff6347;">=</span> c value
-<span style="color: #729fcf; font-weight: bold;">rec</span> x c <span style="color: #ff6347;">=</span> <span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>c <span style="color: #ff6347;">.</span> <span style="color: #00bfff;">(</span>f x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 c <span style="color: #ff6347; font-weight: bold;">=</span> c value
+<span style="color: #729fcf; font-weight: bold;">rec</span> x c <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffd700;">(</span>h x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>c <span style="color: #ff6347; font-weight: bold;">.</span> <span style="color: #00bfff;">(</span>f x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <p>
@@ -548,8 +548,8 @@ With CPS, we can build our executing stack from heap.
 </div>
 </div>
 
-<div id="outline-container-org9fbdd0d" class="outline-4">
-<h4 id="org9fbdd0d"><span class="section-number-4">1.1.4</span> Summary</h4>
+<div id="outline-container-org3bb984d" class="outline-4">
+<h4 id="org3bb984d"><span class="section-number-4">1.1.4</span> Summary</h4>
 <div class="outline-text-4" id="text-1-1-4">
 <p>
 We have discussed several optimizations may be applied to list recursions.
@@ -558,10 +558,10 @@ Let's recap!
 </div>
 
 <ol class="org-ol">
-<li><a id="orgf0a3e8e"></a>Tailrec<br />
+<li><a id="orge3b7705"></a>Tailrec<br />
 <ol class="org-ol">
-<li><a id="org000cdc8"></a>Calculating from bottom if reversible<br /></li>
-<li><a id="org3432e17"></a>Reverse calculation order<br />
+<li><a id="orgf0c2a62"></a>Calculating from bottom if reversible<br /></li>
+<li><a id="orgab8d50f"></a>Reverse calculation order<br />
 <div class="outline-text-6" id="text-1-1-4-1-2">
 <ul class="org-ul">
 <li>By Monoid structure</li>
@@ -569,32 +569,32 @@ Let's recap!
 </ul>
 </div>
 </li>
-<li><a id="org5a86b43"></a>CPS transformation<br /></li>
+<li><a id="orgc58c11a"></a>CPS transformation<br /></li>
 </ol>
 </li>
 
-<li><a id="orgfb86f6b"></a>Dynamic Programming<br /></li>
+<li><a id="org6f19b0d"></a>Dynamic Programming<br /></li>
 </ol>
 </div>
 </div>
 
-<div id="outline-container-org18f9b21" class="outline-3">
-<h3 id="org18f9b21"><span class="section-number-3">1.2</span> Tree recursion</h3>
+<div id="outline-container-org7101b28" class="outline-3">
+<h3 id="org7101b28"><span class="section-number-3">1.2</span> Tree recursion</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Well, it seems that linear tailrec is not easy now, how about tree tailrec?
 </p>
 </div>
-<div id="outline-container-orge8f2ddb" class="outline-4">
-<h4 id="orge8f2ddb"><span class="section-number-4">1.2.1</span> Two-branch tree recursion</h4>
+<div id="outline-container-orgf6f4158" class="outline-4">
+<h4 id="orgf6f4158"><span class="section-number-4">1.2.1</span> Two-branch tree recursion</h4>
 <div class="outline-text-4" id="text-1-2-1">
 </div>
 <ol class="org-ol">
-<li><a id="org12dbc14"></a>Formalization<br />
+<li><a id="org79b198c"></a>Formalization<br />
 <div class="outline-text-5" id="text-1-2-1-1">
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 <span style="color: #ff6347;">=</span> some value
-<span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> 1 <span style="color: #ff6347; font-weight: bold;">=</span> some value
+<span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347; font-weight: bold;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <p>
@@ -615,15 +615,15 @@ It looks like we are traversing all possible permutations of function <code>g</c
 </div>
 </li>
 
-<li><a id="org0d6371c"></a>A simple try<br />
+<li><a id="org6c851d1"></a>A simple try(baby step)<br />
 <div class="outline-text-5" id="text-1-2-1-2">
 <p>
 A very simple idea is that if we can tailrec <code>rec</code>, then we want to cache result of last step:
 </p>
 <div class="org-src-container">
 <pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">rec'</span> x a 
-  <span style="color: #ff6347;">=</span> p <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> x<span style="color: #ffd700;">)</span> a
-  <span style="color: #ff6347;">=</span> p <span style="color: #ffd700;">(</span>f x <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffa500;">(</span>g x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> a
+  <span style="color: #ff6347; font-weight: bold;">=</span> p <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> x<span style="color: #ffd700;">)</span> a
+  <span style="color: #ff6347; font-weight: bold;">=</span> p <span style="color: #ffd700;">(</span>f x <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffa500;">(</span>g x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> a
 </pre>
 </div>
 <p>
@@ -631,17 +631,17 @@ What if&#x2026;
 </p>
 <div class="org-src-container">
 <pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">p</span> <span style="color: #ffd700;">(</span>f x <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffa500;">(</span>g x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> a 
-  <span style="color: #ff6347;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> `f x` <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347;">`p`</span> a
-  <span style="color: #729fcf; font-weight: bold;">if</span> f x a b <span style="color: #ff6347;">==</span> a <span style="color: #ff6347;">`q`</span> x <span style="color: #ff6347;">`q`</span> b
-  <span style="color: #ff6347;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347;">`q`</span> x <span style="color: #ff6347;">`q`</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347;">`p`</span> a
-  <span style="color: #ff6347;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347;">`q`</span> x <span style="color: #ff6347;">`q`</span> <span style="color: #ffd700;">(</span>p <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
-  <span style="color: #ff6347;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347;">`q`</span> x <span style="color: #ff6347;">`q`</span> <span style="color: #ffd700;">(</span>rec' <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
-  <span style="color: #729fcf; font-weight: bold;">if</span> p <span style="color: #ff6347;">==</span> q
-  <span style="color: #ff6347;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347;">`p`</span> x <span style="color: #ff6347;">`p`</span> <span style="color: #ffd700;">(</span>rec' <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
-  <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #ffd700;">(</span>a <span style="color: #ff6347;">`p`</span> b<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">`p`</span> c <span style="color: #ff6347;">==</span> a <span style="color: #ff6347;">`p`</span> <span style="color: #ffd700;">(</span>b <span style="color: #ff6347;">`p`</span> c<span style="color: #ffd700;">)</span>
-  <span style="color: #ff6347;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347;">`p`</span> <span style="color: #ffd700;">(</span>x <span style="color: #ff6347;">`p`</span> <span style="color: #00bfff;">(</span>rec' <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span> a<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
-  <span style="color: #ff6347;">=</span> p <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>p x <span style="color: #00bfff;">(</span>rec' <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span> a<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
-  <span style="color: #ff6347;">=</span> rec' <span style="color: #ffd700;">(</span>g x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>p x <span style="color: #00bfff;">(</span>rec' <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span> a<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> `f x` <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">`p`</span> a
+  <span style="color: #729fcf; font-weight: bold;">if</span> f x a b <span style="color: #ff6347; font-weight: bold;">==</span> a <span style="color: #ff6347; font-weight: bold;">`q`</span> x <span style="color: #ff6347; font-weight: bold;">`q`</span> b
+  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">`q`</span> x <span style="color: #ff6347; font-weight: bold;">`q`</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">`p`</span> a
+  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">`q`</span> x <span style="color: #ff6347; font-weight: bold;">`q`</span> <span style="color: #ffd700;">(</span>p <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">`q`</span> x <span style="color: #ff6347; font-weight: bold;">`q`</span> <span style="color: #ffd700;">(</span>rec' <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
+  <span style="color: #729fcf; font-weight: bold;">if</span> p <span style="color: #ff6347; font-weight: bold;">==</span> q
+  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">`p`</span> x <span style="color: #ff6347; font-weight: bold;">`p`</span> <span style="color: #ffd700;">(</span>rec' <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
+  <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #ffd700;">(</span>a <span style="color: #ff6347; font-weight: bold;">`p`</span> b<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">`p`</span> c <span style="color: #ff6347; font-weight: bold;">==</span> a <span style="color: #ff6347; font-weight: bold;">`p`</span> <span style="color: #ffd700;">(</span>b <span style="color: #ff6347; font-weight: bold;">`p`</span> c<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">`p`</span> <span style="color: #ffd700;">(</span>x <span style="color: #ff6347; font-weight: bold;">`p`</span> <span style="color: #00bfff;">(</span>rec' <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span> a<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> p <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>p x <span style="color: #00bfff;">(</span>rec' <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span> a<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> rec' <span style="color: #ffd700;">(</span>g x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>p x <span style="color: #00bfff;">(</span>rec' <span style="color: #ffa500;">(</span>h x<span style="color: #ffa500;">)</span> a<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <p>
@@ -674,18 +674,18 @@ Well, I want to have a try.
 Can this strategy solve <code>fib</code> problem?
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">fib</span> 0 <span style="color: #ff6347;">=</span> 0
-<span style="color: #edd400; font-weight: bold;">fib</span> 1 <span style="color: #ff6347;">=</span> 1
-<span style="color: #edd400; font-weight: bold;">fib</span> n <span style="color: #ff6347;">=</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">+</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>2<span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">fib</span> 0 <span style="color: #ff6347; font-weight: bold;">=</span> 0
+<span style="color: #edd400; font-weight: bold;">fib</span> 1 <span style="color: #ff6347; font-weight: bold;">=</span> 1
+<span style="color: #edd400; font-weight: bold;">fib</span> n <span style="color: #ff6347; font-weight: bold;">=</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347; font-weight: bold;">=</span> f x <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
 
-<span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ff6347;">=</span> fib
-<span style="color: #edd400; font-weight: bold;">f</span> x a b <span style="color: #ff6347;">=</span> a <span style="color: #ff6347;">+</span> b
-<span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ff6347;">=</span> <span style="color: #ffd700;">(</span>minus 1<span style="color: #ffd700;">)</span>
-<span style="color: #edd400; font-weight: bold;">h</span> <span style="color: #ff6347;">=</span> <span style="color: #ffd700;">(</span>minus 2<span style="color: #ffd700;">)</span>
+<span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ff6347; font-weight: bold;">=</span> fib
+<span style="color: #edd400; font-weight: bold;">f</span> x a b <span style="color: #ff6347; font-weight: bold;">=</span> a <span style="color: #ff6347; font-weight: bold;">+</span> b
+<span style="color: #edd400; font-weight: bold;">g</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span>minus 1<span style="color: #ffd700;">)</span>
+<span style="color: #edd400; font-weight: bold;">h</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span>minus 2<span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <p>
@@ -693,19 +693,19 @@ OK, Let's build function <code>p</code>.
 </p>
 <div class="org-src-container">
 <pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">fib'</span> n a 
-  <span style="color: #ff6347;">=</span> fib n <span style="color: #ff6347;">+</span> a
-  <span style="color: #ff6347;">=</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">+</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>2<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">+</span> a
-  <span style="color: #ff6347;">=</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347;">+</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>2<span style="color: #ffd700;">)</span> a
-  <span style="color: #ff6347;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347;">-</span>2<span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> fib n <span style="color: #ff6347; font-weight: bold;">+</span> a
+  <span style="color: #ff6347; font-weight: bold;">=</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> a
+  <span style="color: #ff6347; font-weight: bold;">=</span> fib <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #ffd700;">)</span> a
+  <span style="color: #ff6347; font-weight: bold;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <p>
 Therefore,
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">fib'</span> 0 a <span style="color: #ff6347;">=</span> a
-<span style="color: #edd400; font-weight: bold;">fib'</span> 1 a <span style="color: #ff6347;">=</span> 1 <span style="color: #ff6347;">+</span> a
-<span style="color: #edd400; font-weight: bold;">fib'</span> n a <span style="color: #ff6347;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347;">-</span>2<span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">fib'</span> 0 a <span style="color: #ff6347; font-weight: bold;">=</span> a
+<span style="color: #edd400; font-weight: bold;">fib'</span> 1 a <span style="color: #ff6347; font-weight: bold;">=</span> 1 <span style="color: #ff6347; font-weight: bold;">+</span> a
+<span style="color: #edd400; font-weight: bold;">fib'</span> n a <span style="color: #ff6347; font-weight: bold;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #00bfff;">)</span> a<span style="color: #ffd700;">)</span>
 </pre>
 </div>
 <p>
@@ -714,35 +714,197 @@ However, this is just our first baby step, this is just <code>tail call</code>, 
 </p>
 </div>
 </li>
+
+<li><a id="orga7d142c"></a>To the real tailrec!<br />
+<div class="outline-text-5" id="text-1-2-1-3">
+<p>
+We all know that <code>fibonacci</code> problem can be expressed as loops which is real <code>tailrec</code>.
+Many tree-recursions can be optimized as tailrecs. Clearly that we need to step further.
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="org0c30b33"></a>What have we done?<br />
+<div class="outline-text-6" id="text-1-2-1-3-1">
+<p>
+Let's just use our <code>fibonacci</code> example.
+Although we have successfully defined our <span class="underline">tail call</span> function, we can not see what's happening inside.
+Let's unfold function <code>fib'</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">fib'</span> n 0
+  <span style="color: #ff6347; font-weight: bold;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>1<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #00bfff;">)</span> 0<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>3<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #00bfff;">)</span> 0<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>3<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>3<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #00bfff;">)</span> 0<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>5<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>3<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #00bfff;">)</span> 0<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">...</span>
+</pre>
+</div>
+<p>
+We have generated a foldable list!
+However, if we want to get the result inside, we need to handle the most inner term:
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #edd400; font-weight: bold;">fib'</span> <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>5<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>3<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>2<span style="color: #00bfff;">)</span> 0<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>5<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>3<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>3<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #00bfff;">)</span> 0<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>5<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>3<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>3<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>5<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>6<span style="color: #00bfff;">)</span> 0<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">=</span> fib' <span style="color: #ffd700;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>5<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>4<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>3<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>3<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>5<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>7<span style="color: #00bfff;">)</span> <span style="color: #ff6347; font-weight: bold;">$</span> fib' <span style="color: #00bfff;">(</span>n<span style="color: #ff6347; font-weight: bold;">-</span>8<span style="color: #00bfff;">)</span> 0<span style="color: #ffd700;">)</span>
+  <span style="color: #ff6347; font-weight: bold;">...</span>
+</pre>
+</div>
+<p>
+OK, enough!
+Whenever we get an inner result, we need to re-unfold our whole expression!
+This looks no difference between tree-recursion version!
+But this <code>tail call</code> version is in fact faster than raw tree-recursion in <i>Haskell(because of Haskell's laziness, implied CPS)</i>, 
+and we can see stack-accumulating-like progress directly!
+</p>
+</div>
+</li>
+
+<li><a id="org78d8d73"></a>Where to go next?<br />
+<div class="outline-text-6" id="text-1-2-1-3-2">
+<p>
+So far, we have not figured out any useful technique at all&#x2026;
+I plan to try to understand <span class="underline">real tailrec</span> of <code>fib</code> directly.
+</p>
+</div>
+</li>
+</ol>
+</li>
+
+<li><a id="org5940314"></a>Code transformation again<br />
+<div class="outline-text-5" id="text-1-2-1-4">
+<p>
+The <code>fib</code> function again!
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Step 1 ==&gt; A first attempt is to add fib(n + 1) to both sides of the equation:</span>
+<span style="color: #edd400; font-weight: bold;">fib</span> <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 2<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> fib n <span style="color: #ff6347; font-weight: bold;">+</span> 2 <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Step 2 ==&gt; The two sides of the equation look much more alike, </span>
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">but there is still an essential difference, which is the coefficient of the second term of each side. </span>
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">On the left side of the equation, it is 1 and, on the right, it is 2. </span>
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">To remedy this, we can introduce a variable b:</span>
+<span style="color: #edd400; font-weight: bold;">fib</span> <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 2<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib n <span style="color: #ff6347; font-weight: bold;">+</span> <span style="color: #ffd700;">(</span>b <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Step3 ==&gt; We notice that the coefficients of the first term are not the same (1 on the left and b on the right), </span>
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">so we introduce a variable a:</span>
+a <span style="color: #edd400; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 2<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib n <span style="color: #ff6347; font-weight: bold;">+</span> <span style="color: #ffd700;">(</span>a <span style="color: #ff6347; font-weight: bold;">+</span> b<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Step 4 ==&gt; Now the two sides have the same form (call it F), which we can define as:</span>
+<span style="color: #8ae234; font-weight: bold;">F</span> a b n <span style="color: #ff6347; font-weight: bold;">=</span> a <span style="color: #ff6347; font-weight: bold;">*</span> fib n <span style="color: #ff6347; font-weight: bold;">+</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span>
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Then we have</span>
+<span style="color: #8ae234; font-weight: bold;">F</span> a b <span style="color: #ffd700;">(</span>n <span style="color: #ff6347; font-weight: bold;">+</span> 1<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">F</span> b <span style="color: #ffd700;">(</span>a <span style="color: #ff6347; font-weight: bold;">+</span> b<span style="color: #ffd700;">)</span> n
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">and</span>
+<span style="color: #8ae234; font-weight: bold;">F</span> a b 0 <span style="color: #ff6347; font-weight: bold;">=</span> a <span style="color: #ff6347; font-weight: bold;">*</span> fib 0 <span style="color: #ff6347; font-weight: bold;">+</span> b <span style="color: #ff6347; font-weight: bold;">*</span> fib 1 <span style="color: #ff6347; font-weight: bold;">=</span> a <span style="color: #ff6347; font-weight: bold;">+</span> b
+
+<span style="color: #888a85; font-style: italic;">-- </span><span style="color: #888a85; font-style: italic;">Step 5 ==&gt; Finally, by definition of F:</span>
+<span style="color: #edd400; font-weight: bold;">fib</span> n <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #8ae234; font-weight: bold;">F</span> 1 0 n
+</pre>
+</div>
+<p>
+Cool! Are there any patterns inside?
+This time in stead of use an accumulating variable, we try to change our whole function states!
+</p>
+
+<p>
+But how to get new state definitions? It seems that the strategy above is trying to combine two states into one.
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">if</span> rec' a b x <span style="color: #ff6347; font-weight: bold;">==</span> f' a b <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> 
+<span style="color: #729fcf; font-weight: bold;">if</span> f' a b <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">==</span> f' <span style="color: #ffd700;">(</span>p a b<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>q a b<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g_ <span style="color: #ff6347; font-weight: bold;">$</span> g' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h_ <span style="color: #ff6347; font-weight: bold;">$</span> h' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+<span style="color: #edd400; font-weight: bold;">rec'</span> a b x <span style="color: #ff6347; font-weight: bold;">=</span> rec' <span style="color: #ffd700;">(</span>p a b<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>q a b<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>t x<span style="color: #ffd700;">)</span>
+<span style="color: #729fcf; font-weight: bold;">if</span> exists a0, b0 satisfy rec' a0 b0 x <span style="color: #ff6347; font-weight: bold;">=</span> f' a0 b0 <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">==</span> <span style="color: #729fcf; font-weight: bold;">rec</span> x
+<span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347; font-weight: bold;">=</span> rec' a0 b0 x
+</pre>
+</div>
+<p>
+It looks that the hardest one is <span class="underline">how to get function t</span>.
+</p>
+
+<p>
+If we want to find function <code>t</code>, we need to have this more constraint:
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">if</span> g_ <span style="color: #ffd700;">(</span>g' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> g' <span style="color: #ffd700;">(</span>g_' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">&amp;&amp;</span> h_ <span style="color: #ffd700;">(</span>h' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> h' <span style="color: #ffd700;">(</span>h_' x<span style="color: #ffd700;">)</span>
+   h' x <span style="color: #ff6347; font-weight: bold;">=</span> hg <span style="color: #ffd700;">(</span>g' x<span style="color: #ffd700;">)</span>
+<span style="color: #729fcf; font-weight: bold;">then</span> we have 1<span style="color: #ff6347; font-weight: bold;">-</span>to<span style="color: #ff6347; font-weight: bold;">-</span>1 relation<span style="color: #8ae234; font-weight: bold;">:</span>
+  x <span style="color: #ff6347; font-weight: bold;">&lt;--&gt;</span> <span style="color: #ffd700;">(</span><span style="color: #00bfff;">(</span>g' x<span style="color: #00bfff;">)</span>, <span style="color: #00bfff;">(</span>hg <span style="color: #ff6347; font-weight: bold;">$</span> g' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+  <span style="color: #ffd700;">(</span>g' <span style="color: #00bfff;">(</span>g_' x<span style="color: #00bfff;">)</span>, hg <span style="color: #00bfff;">(</span>g' <span style="color: #ff6347; font-weight: bold;">$</span> g_' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">&lt;--&gt;</span> g_' x 
+
+<span style="color: #edd400; font-weight: bold;">t</span> <span style="color: #ff6347; font-weight: bold;">=</span> g_'
+</pre>
+</div>
+<p>
+Sadly we have to add one relation function <code>hg</code> to get function <code>t</code>.
+</p>
+
+<p>
+Let's sort what we have found:
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">if</span> rec' a b x <span style="color: #ff6347; font-weight: bold;">==</span> f' a b <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ff6347; font-weight: bold;">$</span> g' x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ff6347; font-weight: bold;">$</span> h' x<span style="color: #ffd700;">)</span>
+   f' a b <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ff6347; font-weight: bold;">$</span> g' x<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ff6347; font-weight: bold;">$</span> h' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">==</span> f' <span style="color: #ffd700;">(</span>p a b<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>q a b<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #00bfff;">(</span>g_ <span style="color: #ff6347; font-weight: bold;">$</span> g' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ff6347; font-weight: bold;">$</span> <span style="color: #00bfff;">(</span>h_ <span style="color: #ff6347; font-weight: bold;">$</span> h' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span>
+   exists a0, b0 satisfy rec' a0 b0 x <span style="color: #ff6347; font-weight: bold;">=</span> f' a0 b0 <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>g' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #00bfff;">(</span>h' x<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">==</span> <span style="color: #729fcf; font-weight: bold;">rec</span> x
+   g_ <span style="color: #ffd700;">(</span>g' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> g' <span style="color: #ffd700;">(</span>g_' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">&amp;&amp;</span> h_ <span style="color: #ffd700;">(</span>h' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> h' <span style="color: #ffd700;">(</span>h_' x<span style="color: #ffd700;">)</span>
+   h' x <span style="color: #ff6347; font-weight: bold;">=</span> hg <span style="color: #ffd700;">(</span>g' x<span style="color: #ffd700;">)</span>
+
+<span style="color: #edd400; font-weight: bold;">t</span> <span style="color: #ff6347; font-weight: bold;">=</span> g_'
+<span style="color: #edd400; font-weight: bold;">rec'</span> a b x <span style="color: #ff6347; font-weight: bold;">=</span> rec' <span style="color: #ffd700;">(</span>p a b<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>q a b<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">(</span>t x<span style="color: #ffd700;">)</span>
+<span style="color: #729fcf; font-weight: bold;">rec</span> x <span style="color: #ff6347; font-weight: bold;">=</span> rec' a0 b0 x
+</pre>
+</div>
+<p>
+In words, we need to find a function <code>f'</code>, which can be resolved by <span class="underline">rec'</span> and resolved to recussion.
+And there needs to exist one relation <code>hg</code> between <code>h'</code> and <code>g'</code>.
+</p>
+
+<p>
+Let's firstly make function <code>f'</code> linear.
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">if</span> f' a b rgx rhx <span style="color: #ff6347; font-weight: bold;">=</span> a<span style="color: #ff6347; font-weight: bold;">*</span>rgx <span style="color: #ff6347; font-weight: bold;">+</span> b<span style="color: #ff6347; font-weight: bold;">*</span>rhx
+
+<span style="color: #edd400; font-weight: bold;">rec'</span> a b x <span style="color: #ff6347; font-weight: bold;">=</span> a <span style="color: #ff6347; font-weight: bold;">*</span> <span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffd700;">(</span>g' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> b <span style="color: #ff6347; font-weight: bold;">*</span> <span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffd700;">(</span>h' x<span style="color: #ffd700;">)</span>
+a <span style="color: #edd400; font-weight: bold;">*</span> <span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffd700;">(</span>g' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> b <span style="color: #ff6347; font-weight: bold;">*</span> <span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffd700;">(</span>h' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> <span style="color: #ffd700;">(</span>p a b<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">*</span> <span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffd700;">(</span>g_ <span style="color: #ff6347; font-weight: bold;">$</span> g' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">+</span> <span style="color: #ffd700;">(</span>q a b<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">*</span> <span style="color: #729fcf; font-weight: bold;">rec</span> <span style="color: #ffd700;">(</span>h_ <span style="color: #ff6347; font-weight: bold;">$</span> h' x<span style="color: #ffd700;">)</span>
+<span style="color: #edd400; font-weight: bold;">g_</span> <span style="color: #ffd700;">(</span>g' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> g' <span style="color: #ffd700;">(</span>g_' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">&amp;&amp;</span> h_ <span style="color: #ffd700;">(</span>h' x<span style="color: #ffd700;">)</span> <span style="color: #ff6347; font-weight: bold;">=</span> h' <span style="color: #ffd700;">(</span>h_' x<span style="color: #ffd700;">)</span>
+<span style="color: #edd400; font-weight: bold;">h'</span> x <span style="color: #ff6347; font-weight: bold;">=</span> hg <span style="color: #ffd700;">(</span>g' x<span style="color: #ffd700;">)</span>
+</pre>
+</div>
+</div>
+</li>
 </ol>
 </div>
 
 
-
-<div id="outline-container-org90a4c7c" class="outline-4">
-<h4 id="org90a4c7c"><span class="section-number-4">1.2.2</span> N-branch tree recursion</h4>
+<div id="outline-container-org0d2e37c" class="outline-4">
+<h4 id="org0d2e37c"><span class="section-number-4">1.2.2</span> N-branch tree recursion</h4>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgd5cddf5" class="outline-2">
-<h2 id="orgd5cddf5"><span class="section-number-2">2</span> Examples</h2>
+<div id="outline-container-org03c6b61" class="outline-2">
+<h2 id="org03c6b61"><span class="section-number-2">2</span> Examples</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org6911735" class="outline-3">
-<h3 id="org6911735"><span class="section-number-3">2.1</span> Selection sort</h3>
+<div id="outline-container-org2dc0fe4" class="outline-3">
+<h3 id="org2dc0fe4"><span class="section-number-3">2.1</span> Selection sort</h3>
 </div>
-<div id="outline-container-orga0abe8c" class="outline-3">
-<h3 id="orga0abe8c"><span class="section-number-3">2.2</span> Fibonacci</h3>
+<div id="outline-container-orgc3a5aed" class="outline-3">
+<h3 id="orgc3a5aed"><span class="section-number-3">2.2</span> Fibonacci</h3>
 </div>
-<div id="outline-container-org38b745c" class="outline-3">
-<h3 id="org38b745c"><span class="section-number-3">2.3</span> Permutations</h3>
+<div id="outline-container-orgdb48d53" class="outline-3">
+<h3 id="orgdb48d53"><span class="section-number-3">2.3</span> Permutations</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-02-26 周三 22:44</p>
+<p class="date">Created: 2020-02-27 周四 15:01</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

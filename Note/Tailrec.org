@@ -199,7 +199,7 @@ f $ g x $ g x     f $ g x $ h x    f $ h x $ g x            f $ h x $ h x
 #+END_SRC
 It looks like we are traversing all possible permutations of function =g= and =h= compositions
 
-***** A simple try 
+***** A simple try(baby step)
 
 A very simple idea is that if we can tailrec =rec=, then we want to cache result of last step:
 #+BEGIN_SRC haskell
@@ -271,6 +271,119 @@ fib' n a = fib' (n-1) (fib' (n-2) a)
 We succeeded!
 However, this is just our first baby step, this is just =tail call=, not =tailrec=.
 
+***** To the real tailrec!
+We all know that =fibonacci= problem can be expressed as loops which is real =tailrec=.
+Many tree-recursions can be optimized as tailrecs. Clearly that we need to step further.
+
+****** What have we done?
+Let's just use our =fibonacci= example.
+Although we have successfully defined our _tail call_ function, we can not see what's happening inside.
+Let's unfold function =fib'=.
+
+#+BEGIN_SRC haskell
+fib' n 0
+  = fib' (n-1) (fib' (n-2) 0)
+  = fib' (n-2) (fib' (n-3) $ fib' (n-2) 0)
+  = fib' (n-3) (fib' (n-4) $ fib' (n-3) $ fib' (n-2) 0)
+  = fib' (n-4) (fib' (n-5) $ fib' (n-4) $ fib' (n-3) $ fib' (n-2) 0)
+  ...
+#+END_SRC
+We have generated a foldable list!
+However, if we want to get the result inside, we need to handle the most inner term:
+#+BEGIN_SRC haskell
+fib' (n-4) (fib' (n-5) $ fib' (n-4) $ fib' (n-3) $ fib' (n-2) 0)
+  = fib' (n-4) (fib' (n-5) $ fib' (n-4) $ fib' (n-3) $ fib' (n-3) $ fib' (n-4) 0)
+  = fib' (n-4) (fib' (n-5) $ fib' (n-4) $ fib' (n-3) $ fib' (n-3) $ fib' (n-5) $ fib' (n-6) 0)
+  = fib' (n-4) (fib' (n-5) $ fib' (n-4) $ fib' (n-3) $ fib' (n-3) $ fib' (n-5) $ fib' (n-7) $ fib' (n-8) 0)
+  ...
+#+END_SRC
+OK, enough!
+Whenever we get an inner result, we need to re-unfold our whole expression!
+This looks no difference between tree-recursion version!
+But this =tail call= version is in fact faster than raw tree-recursion in /Haskell(because of Haskell's laziness, implied CPS)/, 
+and we can see stack-accumulating-like progress directly!
+
+****** Where to go next?
+So far, we have not figured out any useful technique at all...
+I plan to try to understand _real tailrec_ of =fib= directly.
+
+***** Code transformation again
+The =fib= function again!
+#+BEGIN_SRC haskell
+-- Step 1 ==> A first attempt is to add fib(n + 1) to both sides of the equation:
+fib (n + 1) + fib (n + 2) = fib n + 2 * fib (n + 1)
+
+-- Step 2 ==> The two sides of the equation look much more alike, 
+-- but there is still an essential difference, which is the coefficient of the second term of each side. 
+-- On the left side of the equation, it is 1 and, on the right, it is 2. 
+-- To remedy this, we can introduce a variable b:
+fib (n + 1) + b * fib (n + 2) = b * fib n + (b + 1) * fib (n + 1)
+
+-- Step3 ==> We notice that the coefficients of the first term are not the same (1 on the left and b on the right), 
+-- so we introduce a variable a:
+a * fib (n + 1) + b * fib (n + 2) = b * fib n + (a + b) * fib (n + 1)
+
+-- Step 4 ==> Now the two sides have the same form (call it F), which we can define as:
+F a b n = a * fib n + b * fib (n + 1)
+
+-- Then we have
+F a b (n + 1) = F b (a + b) n
+
+-- and
+F a b 0 = a * fib 0 + b * fib 1 = a + b
+
+-- Step 5 ==> Finally, by definition of F:
+fib n = F 1 0 n
+#+END_SRC
+Cool! Are there any patterns inside?
+This time in stead of use an accumulating variable, we try to change our whole function states!
+
+But how to get new state definitions? It seems that the strategy above is trying to combine two states into one.
+#+BEGIN_SRC haskell
+if rec' a b x == f' a b (rec (g' x)) (rec (h' x)) 
+if f' a b (rec (g' x)) (rec (h' x)) == f' (p a b) (q a b) (rec (g_ $ g' x)) (rec (h_ $ h' x))
+rec' a b x = rec' (p a b) (q a b) (t x)
+if exists a0, b0 satisfy rec' a0 b0 x = f' a0 b0 (rec (g' x)) (rec (h' x)) == rec x
+rec x = rec' a0 b0 x
+#+END_SRC
+It looks that the hardest one is _how to get function t_.
+
+If we want to find function =t=, we need to have this more constraint:
+#+BEGIN_SRC haskell
+if g_ (g' x) = g' (g_' x) && h_ (h' x) = h' (h_' x)
+   h' x = hg (g' x)
+then we have 1-to-1 relation:
+  x <--> ((g' x), (hg $ g' x))
+  (g' (g_' x), hg (g' $ g_' x)) <--> g_' x 
+
+t = g_'
+#+END_SRC
+Sadly we have to add one relation function =hg= to get function =t=.
+
+Let's sort what we have found:
+#+BEGIN_SRC haskell
+if rec' a b x == f' a b (rec $ g' x) (rec $ h' x)
+   f' a b (rec $ g' x) (rec $ h' x) == f' (p a b) (q a b) (rec $ (g_ $ g' x)) (rec $ (h_ $ h' x))
+   exists a0, b0 satisfy rec' a0 b0 x = f' a0 b0 (rec (g' x)) (rec (h' x)) == rec x
+   g_ (g' x) = g' (g_' x) && h_ (h' x) = h' (h_' x)
+   h' x = hg (g' x)
+
+t = g_'
+rec' a b x = rec' (p a b) (q a b) (t x)
+rec x = rec' a0 b0 x
+#+END_SRC
+In words, we need to find a function =f'=, which can be resolved by _rec'_ and resolved to recussion.
+And there needs to exist one relation =hg= between =h'= and =g'=.
+
+Let's firstly make function =f'= linear.
+#+BEGIN_SRC haskell
+if f' a b rgx rhx = a*rgx + b*rhx
+
+rec' a b x = a * rec (g' x) + b * rec (h' x)
+a * rec (g' x) + b * rec (h' x) = (p a b) * rec (g_ $ g' x) + (q a b) * rec (h_ $ h' x)
+g_ (g' x) = g' (g_' x) && h_ (h' x) = h' (h_' x)
+h' x = hg (g' x)
+#+END_SRC
 
 
 **** N-branch tree recursion
