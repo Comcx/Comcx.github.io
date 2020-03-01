@@ -384,6 +384,18 @@ a * rec (g' x) + b * rec (h' x) = (p a b) * rec (g_ $ g' x) + (q a b) * rec (h_ 
 g_ (g' x) = g' (g_' x) && h_ (h' x) = h' (h_' x)
 h' x = hg (g' x)
 #+END_SRC
+Not enough, make function =p= and =q= linear too:
+#+BEGIN_SRC haskell
+if f' a b rgx rhx = a*rgx + b*rhx
+   p a b = mp * a + np * b + kp
+   q a b = mq * a + nq * b + kq
+
+a * rec (g' x) + b * rec (h' x) 
+  = (mp*a + np*b + kp) * rec (g_ $ g' x) + (mq*a + nq*b + kq) * rec (h_ $ h' x)
+
+#+END_SRC
+
+
 
 
 **** N-branch tree recursion

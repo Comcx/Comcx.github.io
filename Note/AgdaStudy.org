@@ -1,0 +1,206 @@
+#+Title:  Agda lnguage study
+#+Author: Comcx
+
+
+因为 /agda/ 的国内使用者还很少，为了满足我的安利欲，我打算用中文写我的agda学习笔记与过程，希望可以在这个过程中获得新知的快乐。
+Agda是一款依赖类型系统为核心的语言，所以支持形式化证明（实际上这也是agda的重要用途）。此外，agda的设计也十分有趣，无论是
+混合前中后缀语法还是类Haskell的代码风格，都给予了玩家极大的自由。在agda的世界里，我们可以没有 =Integer= ，没有 =Bool= ,
+但是我们却获得了创造一切的木头（没错，类似Minecraft）。在没有agda-stdlib的情况下，我们就需要自力更生，成为欢乐原始人或者，
+成为 *创造神。*
+
+我想在这里首先吐槽一番我踩过的安装agda的坑！
+1. Ubuntu下的agda-bin和agda-stdlib也许不兼容。
+  我尝试了N次在Ubuntu下安装agda，一次也没成功过！我查了很多资料，最终认为也许是内部有不兼容。
+
+2. Arch平台我也安装了N次！Arch一直提示缺少IEEE的库，我重装了那个库还是没有卵用。。。
+
+3. Cabal国内访问速度龟速，几乎无法使用，换了镜像继续爆炸。。。
+  清华源安装继续失败，原因不明：(
+
+
+在绝望中，我下载了 _Agda bundle_ 的windows版本，结果居然成功了，第二次这么想赞美win（第一次是TypeScript）。
+于是现在我终于可以开始愉快的学习编程了！
+
+
+** 对Agda的第一印象
+
+首先，agda终于统一了term, type的区别，大家都愉快的变成了一种东西。因此我们也就几乎不需要类似 =type= 关键词之类的多余的设施。
+对于Haskell玩家来说，agda一上来最明显的区别是类型标记的符号从 =::= 变成了 =：= 。
+#+BEGIN_SRC agda
+foo : Set
+
+#+END_SRC
+此处 =Set= 瞩目。如果你使用过haskell的话，那么你一定知道haskell的 =kind= 。kind在haskell里写作 =*= 。在haskell里如果我们需要
+特别对类型进行限定，我们要写：
+#+BEGIN_SRC haskell
+class Functor f :: * -> * where
+  ...
+#+END_SRC
+之类的代码，其实agda这里不仅把 =*= 换成了 =Set= ，而且agda还有不同层次的 _universe_ (用来逃避罗素悖论)。
+
+此外，agda的ADT声明方式统一采用haskell的 *GADT* 格式，这样可以使得agda的烈性==类型约束十分强大。
+
+** Re: 从零开始的Agda生活
+
+*** 从零开始的自然数(Nat)
+在agda里，我们一开始是没有自然数的，我们需要使用皮亚诺公理。
+#+BEGIN_SRC agda
+data Nat : Set where
+  zero : Nat
+  suc  : Nat -> Nat
+#+END_SRC
+
+一切都十分简洁而自然。我们可以在emacs里按 =C-c C-n= 来输入表达式进行测试，比如 =suc (suc zero)= 。
+
+可是我们总不想写一个3都要写成 =suc (suc (suc zero))= ,我们可以把我们定义的自然数映射到普通的十进制算数标记：
+#+BEGIN_SRC agda
+{-# BUILTIN NATURAL Nat #-}
+#+END_SRC
+于是我们可以愉快的使用自然数数字了！
+
+简单定义几个基本算术：
+#+BEGIN_SRC agda
+
+_+_ : Nat → Nat → Nat
+zero + n = n
+(succ n) + m = succ (n + m)
+
+_*_ : Nat → Nat → Nat
+zero * m = zero
+(succ n) * m = m + (n * m)
+
+infixl 60 _*_
+infixl 40 _+_
+
+#+END_SRC
+
+注意到这里的中缀函数表达，agda里可以用下画线 =_= 来表示这里需要参数。
+最好玩的一个例子是我们可以定义出来和haskell一样的if-then-else。
+#+BEGIN_SRC agda
+data Bool : Set where
+  true  : Bool
+  false : Bool
+
+if_then_else_ : Bool -> Bool -> Bool
+if true  then x else y = x
+if false then x then y = y
+
+infix  5 if_then_else_
+#+END_SRC
+
+Cool! 我们有了布尔运算！
+
+*** 从零开始的列表(List)
+
+#+BEGIN_SRC agda
+data List (A : Set) : Set where
+  []   : List A
+  _::_ : A -> List A -> List A
+#+END_SRC
+可以看到，和haskell的GADT几乎一模一样。
+
+*** 尝试构造我们的常用小函数！
+
+#+BEGIN_SRC agda
+
+id : {A : Set} → A → A
+id x = x
+
+map : {A B : Set} → (A → B) → List A → List B
+map f [] = []
+map f (x :: xs) = f x :: map f xs
+
+foldl : {A B : Set} → (B → A → B) → B → List A → B
+foldl f a [] = a
+foldl f a (x :: xs) = foldl f (f a x) xs
+
+#+END_SRC
+
+需要说明的是agda有implicit参数功能，需要省略的term直接用大括号{包起来}就可以。
+这里的定义和使用几乎和haskell一模一样。
+
+*** 类型即命题，程序即证明
+
+可以试试先证明最简单的加法结合律和交换律。
+
+**** 证明加法结合律
+#+BEGIN_SRC agda
+
++assoc : ∀ (m n p : Nat) → (m + n) + p ≡ m + (n + p)
++assoc zero n p =
+  begin
+    (zero + n) + p
+  ≡<>
+    n + p
+  ≡<>
+    zero + (n + p)
+  end
+
++assoc (suc m) n p = 
+  begin
+    ((suc m) + n) + p
+  ≡<>
+    suc (m + n) + p
+  ≡<>
+    suc ((m + n) + p)
+  ≡< cong suc (+assoc m n p) >
+    suc (m + (n + p))
+  ≡<>
+    suc m + (n + p)
+  end
+
+#+END_SRC
+注意这里 =begin, \==<>, end= 都是agda标准库函数
+
+**** 证明加法交换律
+#+BEGIN_SRC agda
+
++identity : ∀ (m : ℕ) → m + 0 ≡ m
++identity 0 = refl
++identity (suc n) =
+  begin
+    (suc n) + 0
+  ≡<>
+    suc (n + 0)
+  ≡< cong suc (+identity n) >
+    suc n
+  end
+
+
++suc : ∀ (m n : ℕ) → m + suc n ≡ suc (m + n)
++suc 0 n = refl
++suc (suc m) n =
+  begin
+    (suc m) + (suc n)
+  ≡<>
+    suc (m + suc n)
+  ≡< cong suc (+suc m n) >
+    suc (suc (m + n))
+  ≡<>
+    suc (suc m + n)
+  end
+
+
++comm : ∀ (m n : ℕ) → m + n ≡ n + m
++comm m 0 =
+  begin
+    m + 0
+  ≡< +identity m >
+    m
+  ≡<>
+    0 + m
+  end
++comm m (suc n) =
+  begin
+    m + (suc n)
+  ≡< +suc m n >
+    suc (m + n)
+  ≡< cong suc (+comm m n) >
+    suc (n + m)
+  ≡<>
+    suc n + m
+  end
+
+#+END_SRC
+
+

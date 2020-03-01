@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-01 周日 21:56 -->
+<!-- 2020-03-01 周日 21:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Contents</title>
+<title>Agda lnguage study</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Comcx" />
 <style type="text/css">
@@ -180,16 +180,6 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="../Note/org-themes/styles/readtheorg/css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="../Note/org-themes/styles/readtheorg/css/readtheorg.css"/>
-<script type="text/javascript" src="../Note/org-themes/styles/lib/js/jquery.min.js"></script>
-<script type="text/javascript" src="../Note/org-themes/styles/lib/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../Note/org-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
-<script type="text/javascript" src="../Note/org-themes/styles/readtheorg/js/readtheorg.js"></script>
-<style>pre.src{background:#343131;color:white;} </style>
-<style> #content{max-width:1800px;}</style>
-<style> p{max-width:800px;}</style>
-<link rel="icon" type="image/x-icon" href="images/digimon-icon.png" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -236,170 +226,310 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        displayAlign: "center",
-        displayIndent: "0em",
-
-        "HTML-CSS": { scale: 100,
-                        linebreaks: { automatic: "false" },
-                        webFont: "TeX"
-                       },
-        SVG: {scale: 100,
-              linebreaks: { automatic: "false" },
-              font: "TeX"},
-        NativeMML: {scale: 100},
-        TeX: { equationNumbers: {autoNumber: "AMS"},
-               MultLineWidth: "85%",
-               TagSide: "right",
-               TagIndent: ".8em"
-             }
-});
-</script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">Contents</h1>
+<h1 class="title">Agda lnguage study</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org78238c6">1. Articles</a>
+<li><a href="#org7c7ac6f">1. 对Agda的第一印象</a></li>
+<li><a href="#org9fc2c8f">2. Re: 从零开始的Agda生活</a>
 <ul>
-<li><a href="#org8f86893">1.1. From Recursion to Greedy algorithms: a functional perspective</a></li>
-<li><a href="#org4299386">1.2. IO Monad in JavaScript!</a></li>
-<li><a href="#org712b3d1">1.3. Sorting algorithms revisited</a></li>
-<li><a href="#org93312ec">1.4. Learning Functional Programming by Parser Combinators!</a></li>
-<li><a href="#org904f765">1.5. Haskell Show Instance Overlapping Problem</a></li>
-<li><a href="#org2c8a57e">1.6. Codewars | Number of Proper Fractions with Denominator d</a></li>
-<li><a href="#org189f695">1.7. Prime Factorization</a></li>
-<li><a href="#org9e9da42">1.8. Tail recursion optimization translation</a></li>
-<li><a href="#org0981d38">1.9. 从零开始的Agda生活</a></li>
+<li><a href="#orgccd56b0">2.1. 从零开始的自然数(Nat)</a></li>
+<li><a href="#org8004066">2.2. 从零开始的列表(List)</a></li>
+<li><a href="#org1f49788">2.3. 尝试构造我们的常用小函数！</a></li>
+<li><a href="#orgc571da5">2.4. 类型即命题，程序即证明</a>
+<ul>
+<li><a href="#org9f78ba3">2.4.1. 证明加法结合律</a></li>
+<li><a href="#orgf038985">2.4.2. 证明加法交换律</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-
-
-<div id="outline-container-org78238c6" class="outline-2">
-<h2 id="org78238c6"><span class="section-number-2">1</span> Articles</h2>
-<div class="outline-text-2" id="text-1">
-</div>
-<div id="outline-container-org8f86893" class="outline-3">
-<h3 id="org8f86893"><span class="section-number-3">1.1</span> <a href="../Note/FromRecursionToGreedy.html">From Recursion to Greedy algorithms: a functional perspective</a></h3>
-<div class="outline-text-3" id="text-1-1">
 <p>
-<b>2020.01.24</b><br />
-There's an important leanring and developing chain of traditional algorithms:
-<code>Divide and Conquer(recursion) ---&gt; Dynamic Programming(mermorization) --&gt; Greedy</code> 
-</p>
-</div>
-</div>
-
-<div id="outline-container-org4299386" class="outline-3">
-<h3 id="org4299386"><span class="section-number-3">1.2</span> <a href="../Note/IOMonadInJavaScript.html">IO Monad in JavaScript!</a></h3>
-<div class="outline-text-3" id="text-1-2">
-<p>
-<b>2020.01.27</b><br />
-Monad &gt;&gt;= \m =&gt; interesting, right?
-</p>
-</div>
-</div>
-
-<div id="outline-container-org712b3d1" class="outline-3">
-<h3 id="org712b3d1"><span class="section-number-3">1.3</span> <a href="../Note/SortingAlgorithmsRevisited.html">Sorting algorithms revisited</a></h3>
-<div class="outline-text-3" id="text-1-3">
-<p>
-<b>2020.01.29</b><br />
-We're going to revisite some main-stream sorting algorithms and
-try to implement them in a more efficient way.
-</p>
-
-<p>
-To make things simple, we choose <span class="underline">Haskell</span> to describe basic recursions and
-ideas, then we directly translate haskell codes into <span class="underline">Scala</span> since Scala serves
-a great role between purely functional way and more traditional ways.
-</p>
-
-<p>
-Finally, we translate Scala codes into <span class="underline">C++</span> (some even C:).
-</p>
-</div>
-</div>
-
-<div id="outline-container-org93312ec" class="outline-3">
-<h3 id="org93312ec"><span class="section-number-3">1.4</span> <a href="../Note/LearningFPByParserCombinators.html">Learning Functional Programming by Parser Combinators!</a></h3>
-<div class="outline-text-3" id="text-1-4">
-<p>
-<b>2020.01.30</b><br />
-</p>
-</div>
-</div>
-
-<div id="outline-container-org904f765" class="outline-3">
-<h3 id="org904f765"><span class="section-number-3">1.5</span> <a href="../Note/HaskellShowInstanceOverlappingProblem.html">Haskell Show Instance Overlapping Problem</a></h3>
-<div class="outline-text-3" id="text-1-5">
-<p>
-<b>2020.02.02</b><br />
-Same question encountered when I designed <i>Nona</i>&#x2026;
-</p>
-</div>
-</div>
-
-<div id="outline-container-org2c8a57e" class="outline-3">
-<h3 id="org2c8a57e"><span class="section-number-3">1.6</span> <a href="../Note/NumberOfProperFractionsWithDenominator.html">Codewars | Number of Proper Fractions with Denominator d</a></h3>
-<div class="outline-text-3" id="text-1-6">
-<p>
-<b>2020.02.23</b><br />
-(Euler's totient function :-)
-</p>
-</div>
-</div>
-
-<div id="outline-container-org189f695" class="outline-3">
-<h3 id="org189f695"><span class="section-number-3">1.7</span> <a href="../Note/PrimeFactorization.html">Prime Factorization</a></h3>
-<div class="outline-text-3" id="text-1-7">
-<p>
-<b>2020.02.24</b><br />
-Prime numbers are interesting
-</p>
-</div>
-</div>
-
-<div id="outline-container-org9e9da42" class="outline-3">
-<h3 id="org9e9da42"><span class="section-number-3">1.8</span> <a href="../Note/Tailrec.html">Tail recursion optimization translation</a></h3>
-<div class="outline-text-3" id="text-1-8">
-<p>
-<b>2020.02.27</b><br />
-Many algorithms can be expressed concisely and elegantly in functional languages with recursions.
-However, not all languages support automatic optimizations respect to functional algorithms and,
-some languages(such as <i>Scala</i>), although support basic <code>@tailrec</code> optimizations by code transformation,
-they still can not do some agressive tailrec optimizations such as <code>CPS tailrec</code>.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org0981d38" class="outline-3">
-<h3 id="org0981d38"><span class="section-number-3">1.9</span> <a href="../Note/AgdaStudy.html">从零开始的Agda生活</a></h3>
-<div class="outline-text-3" id="text-1-9">
-<p>
-<b>2020.03.01</b><br />
 因为 <i>agda</i> 的国内使用者还很少，为了满足我的安利欲，我打算用中文写我的agda学习笔记与过程，希望可以在这个过程中获得新知的快乐。
 Agda是一款依赖类型系统为核心的语言，所以支持形式化证明（实际上这也是agda的重要用途）。此外，agda的设计也十分有趣，无论是
 混合前中后缀语法还是类Haskell的代码风格，都给予了玩家极大的自由。在agda的世界里，我们可以没有 <code>Integer</code> ，没有 <code>Bool</code> ,
 但是我们却获得了创造一切的木头（没错，类似Minecraft）。在没有agda-stdlib的情况下，我们就需要自力更生，成为欢乐原始人或者，
 成为 <b>创造神。</b>
 </p>
+
+<p>
+我想在这里首先吐槽一番我踩过的安装agda的坑！
+</p>
+<ol class="org-ol">
+<li>Ubuntu下的agda-bin和agda-stdlib也许不兼容。
+我尝试了N次在Ubuntu下安装agda，一次也没成功过！我查了很多资料，最终认为也许是内部有不兼容。</li>
+
+<li>Arch平台我也安装了N次！Arch一直提示缺少IEEE的库，我重装了那个库还是没有卵用。。。</li>
+
+<li>Cabal国内访问速度龟速，几乎无法使用，换了镜像继续爆炸。。。
+清华源安装继续失败，原因不明：(</li>
+</ol>
+
+
+<p>
+在绝望中，我下载了 <span class="underline">Agda bundle</span> 的windows版本，结果居然成功了，第二次这么想赞美win（第一次是TypeScript）。
+于是现在我终于可以开始愉快的学习编程了！
+</p>
+
+
+<div id="outline-container-org7c7ac6f" class="outline-2">
+<h2 id="org7c7ac6f"><span class="section-number-2">1</span> 对Agda的第一印象</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+首先，agda终于统一了term, type的区别，大家都愉快的变成了一种东西。因此我们也就几乎不需要类似 <code>type</code> 关键词之类的多余的设施。
+对于Haskell玩家来说，agda一上来最明显的区别是类型标记的符号从 <code>::</code> 变成了 <code>：</code> 。
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">foo : Set
+
+</pre>
+</div>
+<p>
+此处 <code>Set</code> 瞩目。如果你使用过haskell的话，那么你一定知道haskell的 <code>kind</code> 。kind在haskell里写作 <code>*</code> 。在haskell里如果我们需要
+特别对类型进行限定，我们要写：
+</p>
+<div class="org-src-container">
+<pre class="src src-haskell"><span style="color: #56b4e9; font-weight: bold;">class</span> <span style="color: #0072b2; font-weight: bold;">Functor</span> f <span style="color: #e69f00; font-weight: bold;">::</span> <span style="color: #e69f00; font-weight: bold;">*</span> <span style="color: #e69f00; font-weight: bold;">-&gt;</span> <span style="color: #e69f00; font-weight: bold;">*</span> <span style="color: #56b4e9; font-weight: bold;">where</span>
+  <span style="color: #e69f00; font-weight: bold;">...</span>
+</pre>
+</div>
+<p>
+之类的代码，其实agda这里不仅把 <code>*</code> 换成了 <code>Set</code> ，而且agda还有不同层次的 <span class="underline">universe</span> (用来逃避罗素悖论)。
+</p>
+
+<p>
+此外，agda的ADT声明方式统一采用haskell的 <b>GADT</b> 格式，这样可以使得agda的烈性==类型约束十分强大。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9fc2c8f" class="outline-2">
+<h2 id="org9fc2c8f"><span class="section-number-2">2</span> Re: 从零开始的Agda生活</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgccd56b0" class="outline-3">
+<h3 id="orgccd56b0"><span class="section-number-3">2.1</span> 从零开始的自然数(Nat)</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+在agda里，我们一开始是没有自然数的，我们需要使用皮亚诺公理。
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">data Nat : Set where
+  zero : Nat
+  suc  : Nat -&gt; Nat
+</pre>
+</div>
+
+<p>
+一切都十分简洁而自然。我们可以在emacs里按 <code>C-c C-n</code> 来输入表达式进行测试，比如 <code>suc (suc zero)</code> 。
+</p>
+
+<p>
+可是我们总不想写一个3都要写成 <code>suc (suc (suc zero))</code> ,我们可以把我们定义的自然数映射到普通的十进制算数标记：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">{-# BUILTIN NATURAL Nat #-}
+</pre>
+</div>
+<p>
+于是我们可以愉快的使用自然数数字了！
+</p>
+
+<p>
+简单定义几个基本算术：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+_+_ : Nat → Nat → Nat
+zero + n = n
+(succ n) + m = succ (n + m)
+
+_*_ : Nat → Nat → Nat
+zero * m = zero
+(succ n) * m = m + (n * m)
+
+infixl 60 _*_
+infixl 40 _+_
+
+</pre>
+</div>
+
+<p>
+注意到这里的中缀函数表达，agda里可以用下画线 <code>_</code> 来表示这里需要参数。
+最好玩的一个例子是我们可以定义出来和haskell一样的if-then-else。
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">data Bool : Set where
+  true  : Bool
+  false : Bool
+
+if_then_else_ : Bool -&gt; Bool -&gt; Bool
+if true  then x else y = x
+if false then x then y = y
+
+infix  5 if_then_else_
+</pre>
+</div>
+
+<p>
+Cool! 我们有了布尔运算！
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8004066" class="outline-3">
+<h3 id="org8004066"><span class="section-number-3">2.2</span> 从零开始的列表(List)</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-agda">data List (A : Set) : Set where
+  []   : List A
+  _::_ : A -&gt; List A -&gt; List A
+</pre>
+</div>
+<p>
+可以看到，和haskell的GADT几乎一模一样。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1f49788" class="outline-3">
+<h3 id="org1f49788"><span class="section-number-3">2.3</span> 尝试构造我们的常用小函数！</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+<pre class="src src-agda">
+id : {A : Set} → A → A
+id x = x
+
+map : {A B : Set} → (A → B) → List A → List B
+map f [] = []
+map f (x :: xs) = f x :: map f xs
+
+foldl : {A B : Set} → (B → A → B) → B → List A → B
+foldl f a [] = a
+foldl f a (x :: xs) = foldl f (f a x) xs
+
+</pre>
+</div>
+
+<p>
+需要说明的是agda有implicit参数功能，需要省略的term直接用大括号{包起来}就可以。
+这里的定义和使用几乎和haskell一模一样。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc571da5" class="outline-3">
+<h3 id="orgc571da5"><span class="section-number-3">2.4</span> 类型即命题，程序即证明</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+可以试试先证明最简单的加法结合律和交换律。
+</p>
+</div>
+
+<div id="outline-container-org9f78ba3" class="outline-4">
+<h4 id="org9f78ba3"><span class="section-number-4">2.4.1</span> 证明加法结合律</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<div class="org-src-container">
+<pre class="src src-agda">
++assoc : ∀ (m n p : Nat) → (m + n) + p ≡ m + (n + p)
++assoc zero n p =
+  begin
+    (zero + n) + p
+  ≡&lt;&gt;
+    n + p
+  ≡&lt;&gt;
+    zero + (n + p)
+  end
+
++assoc (suc m) n p = 
+  begin
+    ((suc m) + n) + p
+  ≡&lt;&gt;
+    suc (m + n) + p
+  ≡&lt;&gt;
+    suc ((m + n) + p)
+  ≡&lt; cong suc (+assoc m n p) &gt;
+    suc (m + (n + p))
+  ≡&lt;&gt;
+    suc m + (n + p)
+  end
+
+</pre>
+</div>
+<p>
+注意这里 <code>begin, \==&lt;&gt;, end</code> 都是agda标准库函数
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf038985" class="outline-4">
+<h4 id="orgf038985"><span class="section-number-4">2.4.2</span> 证明加法交换律</h4>
+<div class="outline-text-4" id="text-2-4-2">
+<div class="org-src-container">
+<pre class="src src-agda">
++identity : ∀ (m : ℕ) → m + 0 ≡ m
++identity 0 = refl
++identity (suc n) =
+  begin
+    (suc n) + 0
+  ≡&lt;&gt;
+    suc (n + 0)
+  ≡&lt; cong suc (+identity n) &gt;
+    suc n
+  end
+
+
++suc : ∀ (m n : ℕ) → m + suc n ≡ suc (m + n)
++suc 0 n = refl
++suc (suc m) n =
+  begin
+    (suc m) + (suc n)
+  ≡&lt;&gt;
+    suc (m + suc n)
+  ≡&lt; cong suc (+suc m n) &gt;
+    suc (suc (m + n))
+  ≡&lt;&gt;
+    suc (suc m + n)
+  end
+
+
++comm : ∀ (m n : ℕ) → m + n ≡ n + m
++comm m 0 =
+  begin
+    m + 0
+  ≡&lt; +identity m &gt;
+    m
+  ≡&lt;&gt;
+    0 + m
+  end
++comm m (suc n) =
+  begin
+    m + (suc n)
+  ≡&lt; +suc m n &gt;
+    suc (m + n)
+  ≡&lt; cong suc (+comm m n) &gt;
+    suc (n + m)
+  ≡&lt;&gt;
+    suc n + m
+  end
+
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-03-01 周日 21:56</p>
+<p class="date">Created: 2020-03-01 周日 21:54</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

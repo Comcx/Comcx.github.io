@@ -59,4 +59,14 @@
     some languages(such as /Scala/), although support basic =@tailrec= optimizations by code transformation,
     they still can not do some agressive tailrec optimizations such as =CPS tailrec=.
 
+*** [[../Note/AgdaStudy.html][从零开始的Agda生活]]
+    *2020.03.01*\\
+    因为 /agda/ 的国内使用者还很少，为了满足我的安利欲，我打算用中文写我的agda学习笔记与过程，希望可以在这个过程中获得新知的快乐。
+    Agda是一款依赖类型系统为核心的语言，所以支持形式化证明（实际上这也是agda的重要用途）。此外，agda的设计也十分有趣，无论是
+    混合前中后缀语法还是类Haskell的代码风格，都给予了玩家极大的自由。在agda的世界里，我们可以没有 =Integer= ，没有 =Bool= ,
+    但是我们却获得了创造一切的木头（没错，类似Minecraft）。在没有agda-stdlib的情况下，我们就需要自力更生，成为欢乐原始人或者，
+    成为 *创造神。*
+
+
+
 
