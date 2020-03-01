@@ -1,6 +1,8 @@
 #+Title:  Agda lnguage study
 #+Author: Comcx
 
+#+SETUPFILE: theme-readtheorg-local.setup
+
 
 因为 /agda/ 的国内使用者还很少，为了满足我的安利欲，我打算用中文写我的agda学习笔记与过程，希望可以在这个过程中获得新知的快乐。
 Agda是一款依赖类型系统为核心的语言，所以支持形式化证明（实际上这也是agda的重要用途）。此外，agda的设计也十分有趣，无论是
