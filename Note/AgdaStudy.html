@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-01 周日 21:59 -->
+<!-- 2020-03-03 周二 00:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Agda lnguage study</title>
+<title>Agda language study</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Comcx" />
 <style type="text/css">
@@ -239,21 +239,28 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Agda lnguage study</h1>
+<h1 class="title">Agda language study</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org739e55e">1. 对Agda的第一印象</a></li>
-<li><a href="#org88c08e4">2. Re: 从零开始的Agda生活</a>
+<li><a href="#orgb054ce5">1. 对Agda的第一印象</a></li>
+<li><a href="#org7a7b325">2. Re: 从零开始的Agda生活</a>
 <ul>
-<li><a href="#orge48ffb4">2.1. 从零开始的自然数(Nat)</a></li>
-<li><a href="#org58dc12f">2.2. 从零开始的列表(List)</a></li>
-<li><a href="#orgcf0c559">2.3. 尝试构造我们的常用小函数！</a></li>
-<li><a href="#org6e7ed84">2.4. 类型即命题，程序即证明</a>
+<li><a href="#org2554f6f">2.1. 从零开始的自然数(Nat and Bool)</a></li>
+<li><a href="#org0af4891">2.2. 从零开始的列表(List)</a></li>
+<li><a href="#orgaa60ec9">2.3. 尝试构造我们的常用小函数！</a></li>
+<li><a href="#orgeb85e8d">2.4. 类型即命题，程序即证明</a>
 <ul>
-<li><a href="#orgca91d5c">2.4.1. 证明加法结合律</a></li>
-<li><a href="#orgc03a972">2.4.2. 证明加法交换律</a></li>
+<li><a href="#org4bfb9dc">2.4.1. 证明加法结合律</a></li>
+<li><a href="#org51aba15">2.4.2. 证明加法交换律</a></li>
+</ul>
+</li>
+<li><a href="#org14563e7">2.5. 想找到相等的东西是人类一切思考的源头</a>
+<ul>
+<li><a href="#org5520bb2">2.5.1. 相等的三个基本特性</a></li>
+<li><a href="#orga43889e">2.5.2. 相等的函数可替换性</a></li>
+<li><a href="#org3efa127">2.5.3. 更多证明相等的工具</a></li>
 </ul>
 </li>
 </ul>
@@ -289,8 +296,8 @@ Agda是一款依赖类型系统为核心的语言，所以支持形式化证明�
 </p>
 
 
-<div id="outline-container-org739e55e" class="outline-2">
-<h2 id="org739e55e"><span class="section-number-2">1</span> 对Agda的第一印象</h2>
+<div id="outline-container-orgb054ce5" class="outline-2">
+<h2 id="orgb054ce5"><span class="section-number-2">1</span> 对Agda的第一印象</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 首先，agda终于统一了term, type的区别，大家都愉快的变成了一种东西。因此我们也就几乎不需要类似 <code>type</code> 关键词之类的多余的设施。
@@ -315,17 +322,17 @@ Agda是一款依赖类型系统为核心的语言，所以支持形式化证明�
 </p>
 
 <p>
-此外，agda的ADT声明方式统一采用haskell的 <b>GADT</b> 格式，这样可以使得agda的烈性==类型约束十分强大。
+此外，agda的ADT声明方式统一采用haskell的 <b>GADT</b> 格式，这样可以使得agda的类型约束十分强大。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org88c08e4" class="outline-2">
-<h2 id="org88c08e4"><span class="section-number-2">2</span> Re: 从零开始的Agda生活</h2>
+<div id="outline-container-org7a7b325" class="outline-2">
+<h2 id="org7a7b325"><span class="section-number-2">2</span> Re: 从零开始的Agda生活</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orge48ffb4" class="outline-3">
-<h3 id="orge48ffb4"><span class="section-number-3">2.1</span> 从零开始的自然数(Nat)</h3>
+<div id="outline-container-org2554f6f" class="outline-3">
+<h3 id="org2554f6f"><span class="section-number-3">2.1</span> 从零开始的自然数(Nat and Bool)</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 在agda里，我们一开始是没有自然数的，我们需要使用皮亚诺公理。
@@ -382,7 +389,7 @@ infixl 40 _+_
 
 if_then_else_ : Bool -&gt; Bool -&gt; Bool
 if true  then x else y = x
-if false then x then y = y
+if false then x else y = y
 
 infix  5 if_then_else_
 </pre>
@@ -394,8 +401,8 @@ Cool! 我们有了布尔运算！
 </div>
 </div>
 
-<div id="outline-container-org58dc12f" class="outline-3">
-<h3 id="org58dc12f"><span class="section-number-3">2.2</span> 从零开始的列表(List)</h3>
+<div id="outline-container-org0af4891" class="outline-3">
+<h3 id="org0af4891"><span class="section-number-3">2.2</span> 从零开始的列表(List)</h3>
 <div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
 <pre class="src src-agda">data List (A : Set) : Set where
@@ -409,8 +416,8 @@ Cool! 我们有了布尔运算！
 </div>
 </div>
 
-<div id="outline-container-orgcf0c559" class="outline-3">
-<h3 id="orgcf0c559"><span class="section-number-3">2.3</span> 尝试构造我们的常用小函数！</h3>
+<div id="outline-container-orgaa60ec9" class="outline-3">
+<h3 id="orgaa60ec9"><span class="section-number-3">2.3</span> 尝试构造我们的常用小函数！</h3>
 <div class="outline-text-3" id="text-2-3">
 <div class="org-src-container">
 <pre class="src src-agda">
@@ -435,16 +442,16 @@ foldl f a (x :: xs) = foldl f (f a x) xs
 </div>
 </div>
 
-<div id="outline-container-org6e7ed84" class="outline-3">
-<h3 id="org6e7ed84"><span class="section-number-3">2.4</span> 类型即命题，程序即证明</h3>
+<div id="outline-container-orgeb85e8d" class="outline-3">
+<h3 id="orgeb85e8d"><span class="section-number-3">2.4</span> 类型即命题，程序即证明</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 可以试试先证明最简单的加法结合律和交换律。
 </p>
 </div>
 
-<div id="outline-container-orgca91d5c" class="outline-4">
-<h4 id="orgca91d5c"><span class="section-number-4">2.4.1</span> 证明加法结合律</h4>
+<div id="outline-container-org4bfb9dc" class="outline-4">
+<h4 id="org4bfb9dc"><span class="section-number-4">2.4.1</span> 证明加法结合律</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <div class="org-src-container">
 <pre class="src src-agda">
@@ -479,12 +486,12 @@ foldl f a (x :: xs) = foldl f (f a x) xs
 </div>
 </div>
 
-<div id="outline-container-orgc03a972" class="outline-4">
-<h4 id="orgc03a972"><span class="section-number-4">2.4.2</span> 证明加法交换律</h4>
+<div id="outline-container-org51aba15" class="outline-4">
+<h4 id="org51aba15"><span class="section-number-4">2.4.2</span> 证明加法交换律</h4>
 <div class="outline-text-4" id="text-2-4-2">
 <div class="org-src-container">
 <pre class="src src-agda">
-+identity : ∀ (m : ℕ) → m + 0 ≡ m
++identity : ∀ (m : Nat) → m + 0 ≡ m
 +identity 0 = refl
 +identity (suc n) =
   begin
@@ -496,7 +503,7 @@ foldl f a (x :: xs) = foldl f (f a x) xs
   end
 
 
-+suc : ∀ (m n : ℕ) → m + suc n ≡ suc (m + n)
++suc : ∀ (m n : Nat) → m + suc n ≡ suc (m + n)
 +suc 0 n = refl
 +suc (suc m) n =
   begin
@@ -510,7 +517,7 @@ foldl f a (x :: xs) = foldl f (f a x) xs
   end
 
 
-+comm : ∀ (m n : ℕ) → m + n ≡ n + m
++comm : ∀ (m n : Nat) → m + n ≡ n + m
 +comm m 0 =
   begin
     m + 0
@@ -532,6 +539,125 @@ foldl f a (x :: xs) = foldl f (f a x) xs
 
 </pre>
 </div>
+<p>
+由于agda简洁干净的语法，几乎不需要任何解释，代码自明。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org14563e7" class="outline-3">
+<h3 id="org14563e7"><span class="section-number-3">2.5</span> 想找到相等的东西是人类一切思考的源头</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+相等看似简单，实则很深奥，以至于在范畴论里定义了好几种相等都不太够用，编程更是相等满天飞，重载 <code>==</code> 一直是一件很重要的事。
+在agda里，相等自然也有好几种，这里我们先看看Propositional equality。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-agda">data _≡_ {A : Set} (x : A) : A → Set where
+  refl : x ≡ x
+
+infix 4 _≡_
+</pre>
+</div>
+<p>
+没错，这种相等的想法很简单，如果是一个东西，那么相等。
+</p>
+</div>
+
+<div id="outline-container-org5520bb2" class="outline-4">
+<h4 id="org5520bb2"><span class="section-number-4">2.5.1</span> 相等的三个基本特性</h4>
+<div class="outline-text-4" id="text-2-5-1">
+<p>
+既然有了自反性，那我们的相等肯定也是对称的且是可传递的，我们来试着证明：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+sym : ∀ {A : Set} {x y : A}
+  → x ≡ y
+  → y ≡ x
+sym refl = refl
+
+trans : ∀ {A : Set} {x y z : A}
+  → x ≡ y
+  → y ≡ z
+  → x ≡ z
+trans refl refl = refl
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga43889e" class="outline-4">
+<h4 id="orga43889e"><span class="section-number-4">2.5.2</span> 相等的函数可替换性</h4>
+<div class="outline-text-4" id="text-2-5-2">
+<p>
+这一点其实我们早已见识过，没错，就是前面用到的 <code>cong</code> 函数。
+这里我们来自己动手定义：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+cong : ∀ {A B : Set} (f : A → B) {x y : A}
+  → x ≡ y
+  → f x ≡ f y
+cong f refl = refl
+
+</pre>
+</div>
+<p>
+利用这一点，我们可以进行等效替换了：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+subst : ∀ {A : Set} (f : A → Set) {x y : A}
+  → x ≡ y
+  → f x → f y
+subst f refl fx = fx
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3efa127" class="outline-4">
+<h4 id="org3efa127"><span class="section-number-4">2.5.3</span> 更多证明相等的工具</h4>
+<div class="outline-text-4" id="text-2-5-3">
+<p>
+还记得我们前面用过的 <code>begin</code> <code>\==&lt;&gt;</code> <code>end</code> 函数们吗？了解了相等的基本定义之后，定义它们其实十分简单：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+infix  1 begin_
+infixr 2 _≡&lt;&gt;_ _≡&lt;_&gt;_
+infix  3 _end
+
+begin_ : ∀ {A : Set} {x y : A}
+  → x ≡ y
+  → x ≡ y
+begin x≡y = x≡y
+
+_≡&lt;&gt;_ : ∀ {A : Set} (x : A) {y : A}
+  → x ≡ y
+  → x ≡ y
+x ≡&lt;&gt; x≡y = x≡y
+
+_≡&lt;_&gt;_ : ∀ {A : Set} (x : A) {y z : A}
+  → x ≡ y
+  → y ≡ z
+  → x ≡ z
+x ≡&lt; x≡y &gt; y≡z = trans x≡y y≡z
+
+_end : ∀ {A : Set} (x : A)
+  → x ≡ x
+x end = refl
+
+</pre>
+</div>
+<p>
+Agda真是太好玩了。
+</p>
 </div>
 </div>
 </div>
@@ -539,7 +665,7 @@ foldl f a (x :: xs) = foldl f (f a x) xs
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-03-01 周日 21:59</p>
+<p class="date">Created: 2020-03-03 周二 00:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

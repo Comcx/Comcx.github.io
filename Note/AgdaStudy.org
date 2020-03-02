@@ -1,4 +1,4 @@
-#+Title:  Agda lnguage study
+#+Title:  Agda language study
 #+Author: Comcx
 
 #+SETUPFILE: theme-readtheorg-local.setup
@@ -40,11 +40,11 @@ class Functor f :: * -> * where
 #+END_SRC
 之类的代码，其实agda这里不仅把 =*= 换成了 =Set= ，而且agda还有不同层次的 _universe_ (用来逃避罗素悖论)。
 
-此外，agda的ADT声明方式统一采用haskell的 *GADT* 格式，这样可以使得agda的烈性==类型约束十分强大。
+此外，agda的ADT声明方式统一采用haskell的 *GADT* 格式，这样可以使得agda的类型约束十分强大。
 
 ** Re: 从零开始的Agda生活
 
-*** 从零开始的自然数(Nat)
+*** 从零开始的自然数(Nat and Bool)
 在agda里，我们一开始是没有自然数的，我们需要使用皮亚诺公理。
 #+BEGIN_SRC agda
 data Nat : Set where
@@ -85,7 +85,7 @@ data Bool : Set where
 
 if_then_else_ : Bool -> Bool -> Bool
 if true  then x else y = x
-if false then x then y = y
+if false then x else y = y
 
 infix  5 if_then_else_
 #+END_SRC
@@ -157,7 +157,7 @@ foldl f a (x :: xs) = foldl f (f a x) xs
 **** 证明加法交换律
 #+BEGIN_SRC agda
 
-+identity : ∀ (m : ℕ) → m + 0 ≡ m
++identity : ∀ (m : Nat) → m + 0 ≡ m
 +identity 0 = refl
 +identity (suc n) =
   begin
@@ -169,7 +169,7 @@ foldl f a (x :: xs) = foldl f (f a x) xs
   end
 
 
-+suc : ∀ (m n : ℕ) → m + suc n ≡ suc (m + n)
++suc : ∀ (m n : Nat) → m + suc n ≡ suc (m + n)
 +suc 0 n = refl
 +suc (suc m) n =
   begin
@@ -183,7 +183,7 @@ foldl f a (x :: xs) = foldl f (f a x) xs
   end
 
 
-+comm : ∀ (m n : ℕ) → m + n ≡ n + m
++comm : ∀ (m n : Nat) → m + n ≡ n + m
 +comm m 0 =
   begin
     m + 0
@@ -204,5 +204,93 @@ foldl f a (x :: xs) = foldl f (f a x) xs
   end
 
 #+END_SRC
+由于agda简洁干净的语法，几乎不需要任何解释，代码自明。
+
+*** 想找到相等的东西是人类一切思考的源头
+相等看似简单，实则很深奥，以至于在范畴论里定义了好几种相等都不太够用，编程更是相等满天飞，重载 ==== 一直是一件很重要的事。
+在agda里，相等自然也有好几种，这里我们先看看Propositional equality。
+
+#+BEGIN_SRC agda
+data _≡_ {A : Set} (x : A) : A → Set where
+  refl : x ≡ x
+
+infix 4 _≡_
+#+END_SRC
+没错，这种相等的想法很简单，如果是一个东西，那么相等。
+
+**** 相等的三个基本特性
+
+既然有了自反性，那我们的相等肯定也是对称的且是可传递的，我们来试着证明：
+#+BEGIN_SRC agda
+
+sym : ∀ {A : Set} {x y : A}
+  → x ≡ y
+  → y ≡ x
+sym refl = refl
+
+trans : ∀ {A : Set} {x y z : A}
+  → x ≡ y
+  → y ≡ z
+  → x ≡ z
+trans refl refl = refl
+
+#+END_SRC
+
+**** 相等的函数可替换性
+这一点其实我们早已见识过，没错，就是前面用到的 =cong= 函数。
+这里我们来自己动手定义：
+#+BEGIN_SRC agda
+
+cong : ∀ {A B : Set} (f : A → B) {x y : A}
+  → x ≡ y
+  → f x ≡ f y
+cong f refl = refl
+
+#+END_SRC
+利用这一点，我们可以进行等效替换了：
+#+BEGIN_SRC agda
+
+subst : ∀ {A : Set} (f : A → Set) {x y : A}
+  → x ≡ y
+  → f x → f y
+subst f refl fx = fx
+
+#+END_SRC
+
+**** 更多证明相等的工具
+还记得我们前面用过的 =begin= =\==<>= =end= 函数们吗？了解了相等的基本定义之后，定义它们其实十分简单：
+#+BEGIN_SRC agda
+
+infix  1 begin_
+infixr 2 _≡<>_ _≡<_>_
+infix  3 _end
+
+begin_ : ∀ {A : Set} {x y : A}
+  → x ≡ y
+  → x ≡ y
+begin x≡y = x≡y
+
+_≡<>_ : ∀ {A : Set} (x : A) {y : A}
+  → x ≡ y
+  → x ≡ y
+x ≡<> x≡y = x≡y
+
+_≡<_>_ : ∀ {A : Set} (x : A) {y z : A}
+  → x ≡ y
+  → y ≡ z
+  → x ≡ z
+x ≡< x≡y > y≡z = trans x≡y y≡z
+
+_end : ∀ {A : Set} (x : A)
+  → x ≡ x
+x end = refl
+
+#+END_SRC
+Agda真是太好玩了。
+
+
+
+
+
 
 
