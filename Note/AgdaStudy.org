@@ -413,6 +413,132 @@ data ℕ : 𝓤₀ ̇ where
 #+END_SRC
 这里，注释的--长线和推理式的横线达成了完美的统一。
 
+这里使用了依赖类型的induction函数类型写法，如果我们退回到类型不能依赖于值的世界中，那么
+我们便得到了新（限制更强）的函数：
+#+BEGIN_SRC agda
+
+ℕ-recursion : (X : 𝓤 ̇)
+            → X
+            → (ℕ → X → X)
+            → ℕ → X
+ℕ-recursion X = ℕ-induction (λ _ → X)
+#+END_SRC
+写完这个函数，我对着类型越看越觉得熟悉，突然记忆一闪（“我想起来了！[某中二台词]”），这不就是函数 =foldr= 吗！
+这东西展开就是： =f n (f (n-1) (f (n-2) .. (f 0 a)..))=
+
+如果直接把中间的每个元素忽略掉，进行 =n= 次迭代，我们又得到了：
+#+BEGIN_SRC agda
+
+ℕ-iteration : (X : 𝓤 ̇)
+            → X
+            → (X → X)
+            → ℕ → X
+ℕ-iteration X x f = ℕ-recursion X x (λ _ x → f x)
+#+END_SRC
+展开就是 =f (f (f (.. (f a) ..)))= (迭代n次)。
+
+好了，有了这些工具，基本的算术运算已经跃然于眼前了：
+#+BEGIN_SRC agda
+
+module Arithmetic where
+
+  _+_ _×_ : ℕ → ℕ → ℕ
+
+  x + 0 = x
+  x + succ y = succ (x + y)
+
+  x × 0 = 0
+  x × succ y = x + x × y
+
+  infixl 20 _+_
+  infixl 21 _×_
+#+END_SRC
+我们还可以利用上面定义的iteration函数来定义arithmetic：
+#+BEGIN_SRC agda
+
+module Arithmetic' where
+
+  _+_ _×_ : ℕ → ℕ → ℕ
+
+  x + y = h y where
+    h : ℕ → ℕ
+    h = ℕ-iteration ℕ x succ
+
+  x × y = h y where
+    h : ℕ → ℕ
+    h = ℕ-iteration ℕ 0 (x +_)
+
+  infixl 20 _+_
+  infixl 21 _×_
+#+END_SRC
+这里 =(x +_)= 的写法居然让我莫名想起了Scala（逃
+
+*** 万物初始：元素的组合
+Recap! 我们有了初始宇宙 =𝓤₀= 初始元素 =𝟘= 和终结元素 =𝟙= ，我们有了自然数。
+
+下面我们开始思考，还有什么是可以创造的，或者我们究竟想要创造什么？
+既然我们已经有了不止一个元素，那么为什么我们不能把她们组合在一起呢？
+如果要组合，组合的方式又是什么呢？
+
+**** 我想把一个东西看成两种东西：X or Y
+熟悉Haskell的同学肯定对类型 =Either= 十分熟悉，这种构造方法在很多编程语言里支持还很不完善
+（没错，我就是要黑只有struct的语言，写一个解释器要弄一堆tag，应该学习Rust的enum）。
+在Agda里，我们有了更加强大的能力，我们想要指代的两个类型不仅可以映射到一个新构造的类型里，
+还可以让他们相互依赖。但这里我们先来看最简单的 =binary sum type= 。
+
+#+BEGIN_SRC agda
+
+data _+_ {𝓤 𝓥} (X : 𝓤 ̇) (Y : 𝓥 ̇) : 𝓤 ⊔ 𝓥 ̇ where
+  inl : X → X + Y
+  inr : Y → X + Y
+#+END_SRC
+如果学过范畴论的同学看到这个一定会倍感亲切，这和数学上的定义如出一辙。
+
+按照我们的惯例，进行induction和recursion：
+#+BEGIN_SRC agda
+
++-induction : {X : 𝓤 ̇} {Y : 𝓥 ̇} (A : X + Y → 𝓦 ̇)
+            → ((x : X) → A (inl x))
+            → ((y : Y) → A (inr y))
+            -----------------------
+            → (z : X + Y) → A z
++-induction A f g (inl x) = f x
++-induction A f g (inr y) = g y
+
++-recursion : {X : 𝓤 ̇} {Y : 𝓥 ̇} {A : 𝓦 ̇}
+            → (X → A)
+            → (Y → A)
+            → X + Y → A
++-recursion {𝓤} {𝓥} {𝓦} {X} {Y} {A} = +-induction (λ _ → A)
+#+END_SRC
+代码已经几乎不言自明。
+[这里打算后期补图]
+
+现在我们可以组合新的元素（类型）了:
+#+BEGIN_SRC agda
+
+𝟚 : 𝓤₀ ̇
+𝟚 = 𝟙 + 𝟙
+#+END_SRC
+这里介绍一个agda的新功能，即给一个pattern起一个新名字，我们可以给一个pattern起不同的别名：
+#+BEGIN_SRC agda
+
+pattern ₀ = inl ⋆
+pattern ₁ = inr ⋆
+#+END_SRC
+继续induction:
+#+BEGIN_SRC agda
+
+𝟚-induction : (A : 𝟚 → 𝓤 ̇)
+            → A ₀
+            → A ₁
+            ----------------
+            → (n : 𝟚) → A n
+𝟚-induction A a₀ a₁ ₀ = a₀
+𝟚-induction A a₀ a₁ ₁ = a₁
+#+END_SRC
+
+
 
 
 

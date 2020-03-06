@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-05 周四 21:14 -->
+<!-- 2020-03-06 周五 10:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Agda language study</title>
@@ -244,30 +244,35 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org624ec73">1. 对Agda的第一印象</a></li>
-<li><a href="#org9196d66">2. Re: 从零开始的Agda生活</a>
+<li><a href="#orgec68cc7">1. 对Agda的第一印象</a></li>
+<li><a href="#orgd141008">2. Re: 从零开始的Agda生活</a>
 <ul>
-<li><a href="#orgd39854a">2.1. 从零开始的自然数(Nat and Bool)</a></li>
-<li><a href="#org3cf2746">2.2. 从零开始的列表(List)</a></li>
-<li><a href="#org123e0a2">2.3. 尝试构造我们的常用小函数！</a></li>
-<li><a href="#orgcdb884b">2.4. 类型即命题，程序即证明</a>
+<li><a href="#org236af5f">2.1. 从零开始的自然数(Nat and Bool)</a></li>
+<li><a href="#orgc5de22f">2.2. 从零开始的列表(List)</a></li>
+<li><a href="#orgc510b80">2.3. 尝试构造我们的常用小函数！</a></li>
+<li><a href="#org6b10145">2.4. 类型即命题，程序即证明</a>
 <ul>
-<li><a href="#org453d008">2.4.1. 证明加法结合律</a></li>
-<li><a href="#org1a1a3ce">2.4.2. 证明加法交换律</a></li>
+<li><a href="#org955b75d">2.4.1. 证明加法结合律</a></li>
+<li><a href="#org494d28c">2.4.2. 证明加法交换律</a></li>
 </ul>
 </li>
-<li><a href="#orga6341b1">2.5. 想找到相等的东西是人类一切思考的源头</a>
+<li><a href="#orge10c838">2.5. 想找到相等的东西是人类一切思考的源头</a>
 <ul>
-<li><a href="#orgedb718b">2.5.1. 相等的三个基本特性</a></li>
-<li><a href="#org164c290">2.5.2. 相等的函数可替换性</a></li>
-<li><a href="#orgf8d07e5">2.5.3. 更多证明相等的工具</a></li>
+<li><a href="#orgd8b1b83">2.5.1. 相等的三个基本特性</a></li>
+<li><a href="#org1d2a937">2.5.2. 相等的函数可替换性</a></li>
+<li><a href="#org9e936f4">2.5.3. 更多证明相等的工具</a></li>
 </ul>
 </li>
-<li><a href="#org8159626">2.6. 万物初始：宇宙的生成</a>
+<li><a href="#org224550e">2.6. 万物初始：宇宙的生成</a>
 <ul>
-<li><a href="#org185164c">2.6.1. 宇宙的次第</a></li>
-<li><a href="#org5d003f1">2.6.2. 初始与终结对象</a></li>
-<li><a href="#org41a89fc">2.6.3. 自然数卷土重来</a></li>
+<li><a href="#org9f51247">2.6.1. 宇宙的次第</a></li>
+<li><a href="#orgdd9ed00">2.6.2. 初始与终结对象</a></li>
+<li><a href="#org023e2e6">2.6.3. 自然数卷土重来</a></li>
+</ul>
+</li>
+<li><a href="#orgb6069be">2.7. 万物初始：元素的组合</a>
+<ul>
+<li><a href="#orgf5809a8">2.7.1. 我想把一个东西看成两种东西：X or Y</a></li>
 </ul>
 </li>
 </ul>
@@ -303,8 +308,8 @@ Agda是一款依赖类型系统为核心的语言，所以支持形式化证明�
 </p>
 
 
-<div id="outline-container-org624ec73" class="outline-2">
-<h2 id="org624ec73"><span class="section-number-2">1</span> 对Agda的第一印象</h2>
+<div id="outline-container-orgec68cc7" class="outline-2">
+<h2 id="orgec68cc7"><span class="section-number-2">1</span> 对Agda的第一印象</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 首先，agda终于统一了term, type的区别，大家都愉快的变成了一种东西。因此我们也就几乎不需要类似 <code>type</code> 关键词之类的多余的设施。
@@ -320,8 +325,8 @@ Agda是一款依赖类型系统为核心的语言，所以支持形式化证明�
 特别对类型进行限定，我们要写：
 </p>
 <div class="org-src-container">
-<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">class</span> <span style="color: #8ae234; font-weight: bold;">Functor</span> f <span style="color: #ff6347;">::</span> <span style="color: #ff6347;">*</span> <span style="color: #ff6347;">-&gt;</span> <span style="color: #ff6347;">*</span> <span style="color: #729fcf; font-weight: bold;">where</span>
-  <span style="color: #ff6347;">...</span>
+<pre class="src src-haskell"><span style="color: #729fcf; font-weight: bold;">class</span> <span style="color: #8ae234; font-weight: bold;">Functor</span> f <span style="color: #ff6347; font-weight: bold;">::</span> <span style="color: #ff6347; font-weight: bold;">*</span> <span style="color: #ff6347; font-weight: bold;">-&gt;</span> <span style="color: #ff6347; font-weight: bold;">*</span> <span style="color: #729fcf; font-weight: bold;">where</span>
+  <span style="color: #ff6347; font-weight: bold;">...</span>
 </pre>
 </div>
 <p>
@@ -334,12 +339,12 @@ Agda是一款依赖类型系统为核心的语言，所以支持形式化证明�
 </div>
 </div>
 
-<div id="outline-container-org9196d66" class="outline-2">
-<h2 id="org9196d66"><span class="section-number-2">2</span> Re: 从零开始的Agda生活</h2>
+<div id="outline-container-orgd141008" class="outline-2">
+<h2 id="orgd141008"><span class="section-number-2">2</span> Re: 从零开始的Agda生活</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgd39854a" class="outline-3">
-<h3 id="orgd39854a"><span class="section-number-3">2.1</span> 从零开始的自然数(Nat and Bool)</h3>
+<div id="outline-container-org236af5f" class="outline-3">
+<h3 id="org236af5f"><span class="section-number-3">2.1</span> 从零开始的自然数(Nat and Bool)</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 在agda里，我们一开始是没有自然数的，我们需要使用皮亚诺公理。
@@ -408,8 +413,8 @@ Cool! 我们有了布尔运算！
 </div>
 </div>
 
-<div id="outline-container-org3cf2746" class="outline-3">
-<h3 id="org3cf2746"><span class="section-number-3">2.2</span> 从零开始的列表(List)</h3>
+<div id="outline-container-orgc5de22f" class="outline-3">
+<h3 id="orgc5de22f"><span class="section-number-3">2.2</span> 从零开始的列表(List)</h3>
 <div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
 <pre class="src src-agda">data List (A : Set) : Set where
@@ -423,8 +428,8 @@ Cool! 我们有了布尔运算！
 </div>
 </div>
 
-<div id="outline-container-org123e0a2" class="outline-3">
-<h3 id="org123e0a2"><span class="section-number-3">2.3</span> 尝试构造我们的常用小函数！</h3>
+<div id="outline-container-orgc510b80" class="outline-3">
+<h3 id="orgc510b80"><span class="section-number-3">2.3</span> 尝试构造我们的常用小函数！</h3>
 <div class="outline-text-3" id="text-2-3">
 <div class="org-src-container">
 <pre class="src src-agda">
@@ -449,16 +454,16 @@ foldl f a (x :: xs) = foldl f (f a x) xs
 </div>
 </div>
 
-<div id="outline-container-orgcdb884b" class="outline-3">
-<h3 id="orgcdb884b"><span class="section-number-3">2.4</span> 类型即命题，程序即证明</h3>
+<div id="outline-container-org6b10145" class="outline-3">
+<h3 id="org6b10145"><span class="section-number-3">2.4</span> 类型即命题，程序即证明</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 可以试试先证明最简单的加法结合律和交换律。
 </p>
 </div>
 
-<div id="outline-container-org453d008" class="outline-4">
-<h4 id="org453d008"><span class="section-number-4">2.4.1</span> 证明加法结合律</h4>
+<div id="outline-container-org955b75d" class="outline-4">
+<h4 id="org955b75d"><span class="section-number-4">2.4.1</span> 证明加法结合律</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <div class="org-src-container">
 <pre class="src src-agda">
@@ -493,8 +498,8 @@ foldl f a (x :: xs) = foldl f (f a x) xs
 </div>
 </div>
 
-<div id="outline-container-org1a1a3ce" class="outline-4">
-<h4 id="org1a1a3ce"><span class="section-number-4">2.4.2</span> 证明加法交换律</h4>
+<div id="outline-container-org494d28c" class="outline-4">
+<h4 id="org494d28c"><span class="section-number-4">2.4.2</span> 证明加法交换律</h4>
 <div class="outline-text-4" id="text-2-4-2">
 <div class="org-src-container">
 <pre class="src src-agda">
@@ -553,8 +558,8 @@ foldl f a (x :: xs) = foldl f (f a x) xs
 </div>
 </div>
 
-<div id="outline-container-orga6341b1" class="outline-3">
-<h3 id="orga6341b1"><span class="section-number-3">2.5</span> 想找到相等的东西是人类一切思考的源头</h3>
+<div id="outline-container-orge10c838" class="outline-3">
+<h3 id="orge10c838"><span class="section-number-3">2.5</span> 想找到相等的东西是人类一切思考的源头</h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 相等看似简单，实则很深奥，以至于在范畴论里定义了好几种相等都不太够用，编程更是相等满天飞，重载 <code>==</code> 一直是一件很重要的事。
@@ -573,8 +578,8 @@ infix 4 _≡_
 </p>
 </div>
 
-<div id="outline-container-orgedb718b" class="outline-4">
-<h4 id="orgedb718b"><span class="section-number-4">2.5.1</span> 相等的三个基本特性</h4>
+<div id="outline-container-orgd8b1b83" class="outline-4">
+<h4 id="orgd8b1b83"><span class="section-number-4">2.5.1</span> 相等的三个基本特性</h4>
 <div class="outline-text-4" id="text-2-5-1">
 <p>
 既然有了自反性，那我们的相等肯定也是对称的且是可传递的，我们来试着证明：
@@ -597,8 +602,8 @@ trans refl refl = refl
 </div>
 </div>
 
-<div id="outline-container-org164c290" class="outline-4">
-<h4 id="org164c290"><span class="section-number-4">2.5.2</span> 相等的函数可替换性</h4>
+<div id="outline-container-org1d2a937" class="outline-4">
+<h4 id="org1d2a937"><span class="section-number-4">2.5.2</span> 相等的函数可替换性</h4>
 <div class="outline-text-4" id="text-2-5-2">
 <p>
 这一点其实我们早已见识过，没错，就是前面用到的 <code>cong</code> 函数。
@@ -628,8 +633,8 @@ subst f refl fx = fx
 </div>
 </div>
 
-<div id="outline-container-orgf8d07e5" class="outline-4">
-<h4 id="orgf8d07e5"><span class="section-number-4">2.5.3</span> 更多证明相等的工具</h4>
+<div id="outline-container-org9e936f4" class="outline-4">
+<h4 id="org9e936f4"><span class="section-number-4">2.5.3</span> 更多证明相等的工具</h4>
 <div class="outline-text-4" id="text-2-5-3">
 <p>
 还记得我们前面用过的 <code>begin</code> <code>\==&lt;&gt;</code> <code>end</code> 函数们吗？了解了相等的基本定义之后，定义它们其实十分简单：
@@ -669,8 +674,8 @@ Agda真是太好玩了。
 </div>
 </div>
 
-<div id="outline-container-org8159626" class="outline-3">
-<h3 id="org8159626"><span class="section-number-3">2.6</span> 万物初始：宇宙的生成</h3>
+<div id="outline-container-org224550e" class="outline-3">
+<h3 id="org224550e"><span class="section-number-3">2.6</span> 万物初始：宇宙的生成</h3>
 <div class="outline-text-3" id="text-2-6">
 <p>
 如果我们完全不使用agda-stdlib，我们便不必遵循不必要的命名，我们可以按照逻辑从零开始创造与安排宇宙。
@@ -690,8 +695,8 @@ Agda真是太好玩了。
 </p>
 </div>
 
-<div id="outline-container-org185164c" class="outline-4">
-<h4 id="org185164c"><span class="section-number-4">2.6.1</span> 宇宙的次第</h4>
+<div id="outline-container-org9f51247" class="outline-4">
+<h4 id="org9f51247"><span class="section-number-4">2.6.1</span> 宇宙的次第</h4>
 <div class="outline-text-4" id="text-2-6-1">
 <p>
 为了绕开罗素悖论，我们不能仅仅只有一个宇宙，我们还需要更 <i>large</i> 的宇宙来无限拓展我们创造的世界。
@@ -742,8 +747,8 @@ infix  1 _̇
 </div>
 </div>
 
-<div id="outline-container-org5d003f1" class="outline-4">
-<h4 id="org5d003f1"><span class="section-number-4">2.6.2</span> 初始与终结对象</h4>
+<div id="outline-container-orgdd9ed00" class="outline-4">
+<h4 id="orgdd9ed00"><span class="section-number-4">2.6.2</span> 初始与终结对象</h4>
 <div class="outline-text-4" id="text-2-6-2">
 <p>
 正如 <code>Set</code> 这一词，我们首先创造集合的世界。
@@ -806,8 +811,8 @@ is-empty X = X → 𝟘
 </div>
 </div>
 
-<div id="outline-container-org41a89fc" class="outline-4">
-<h4 id="org41a89fc"><span class="section-number-4">2.6.3</span> 自然数卷土重来</h4>
+<div id="outline-container-org023e2e6" class="outline-4">
+<h4 id="org023e2e6"><span class="section-number-4">2.6.3</span> 自然数卷土重来</h4>
 <div class="outline-text-4" id="text-2-6-3">
 <p>
 有了上面Level的预热，自然数不请自来：
@@ -840,6 +845,180 @@ data ℕ : 𝓤₀ ̇ where
 <p>
 这里，注释的&#x2013;长线和推理式的横线达成了完美的统一。
 </p>
+
+<p>
+这里使用了依赖类型的induction函数类型写法，如果我们退回到类型不能依赖于值的世界中，那么
+我们便得到了新（限制更强）的函数：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+ℕ-recursion : (X : 𝓤 ̇)
+            → X
+            → (ℕ → X → X)
+            → ℕ → X
+ℕ-recursion X = ℕ-induction (λ _ → X)
+</pre>
+</div>
+<p>
+写完这个函数，我对着类型越看越觉得熟悉，突然记忆一闪（“我想起来了！[某中二台词]”），这不就是函数 <code>foldr</code> 吗！
+这东西展开就是： <code>f n (f (n-1) (f (n-2) .. (f 0 a)..))</code>
+</p>
+
+<p>
+如果直接把中间的每个元素忽略掉，进行 <code>n</code> 次迭代，我们又得到了：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+ℕ-iteration : (X : 𝓤 ̇)
+            → X
+            → (X → X)
+            → ℕ → X
+ℕ-iteration X x f = ℕ-recursion X x (λ _ x → f x)
+</pre>
+</div>
+<p>
+展开就是 <code>f (f (f (.. (f a) ..)))</code> (迭代n次)。
+</p>
+
+<p>
+好了，有了这些工具，基本的算术运算已经跃然于眼前了：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+module Arithmetic where
+
+  _+_ _×_ : ℕ → ℕ → ℕ
+
+  x + 0 = x
+  x + succ y = succ (x + y)
+
+  x × 0 = 0
+  x × succ y = x + x × y
+
+  infixl 20 _+_
+  infixl 21 _×_
+</pre>
+</div>
+<p>
+我们还可以利用上面定义的iteration函数来定义arithmetic：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+module Arithmetic' where
+
+  _+_ _×_ : ℕ → ℕ → ℕ
+
+  x + y = h y where
+    h : ℕ → ℕ
+    h = ℕ-iteration ℕ x succ
+
+  x × y = h y where
+    h : ℕ → ℕ
+    h = ℕ-iteration ℕ 0 (x +_)
+
+  infixl 20 _+_
+  infixl 21 _×_
+</pre>
+</div>
+<p>
+这里 <code>(x +_)</code> 的写法居然让我莫名想起了Scala（逃
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb6069be" class="outline-3">
+<h3 id="orgb6069be"><span class="section-number-3">2.7</span> 万物初始：元素的组合</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+Recap! 我们有了初始宇宙 <code>𝓤₀</code> 初始元素 <code>𝟘</code> 和终结元素 <code>𝟙</code> ，我们有了自然数。
+</p>
+
+<p>
+下面我们开始思考，还有什么是可以创造的，或者我们究竟想要创造什么？
+既然我们已经有了不止一个元素，那么为什么我们不能把她们组合在一起呢？
+如果要组合，组合的方式又是什么呢？
+</p>
+</div>
+
+<div id="outline-container-orgf5809a8" class="outline-4">
+<h4 id="orgf5809a8"><span class="section-number-4">2.7.1</span> 我想把一个东西看成两种东西：X or Y</h4>
+<div class="outline-text-4" id="text-2-7-1">
+<p>
+熟悉Haskell的同学肯定对类型 <code>Either</code> 十分熟悉，这种构造方法在很多编程语言里支持还很不完善
+（没错，我就是要黑只有struct的语言，写一个解释器要弄一堆tag，应该学习Rust的enum）。
+在Agda里，我们有了更加强大的能力，我们想要指代的两个类型不仅可以映射到一个新构造的类型里，
+还可以让他们相互依赖。但这里我们先来看最简单的 <code>binary sum type</code> 。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-agda">
+data _+_ {𝓤 𝓥} (X : 𝓤 ̇) (Y : 𝓥 ̇) : 𝓤 ⊔ 𝓥 ̇ where
+  inl : X → X + Y
+  inr : Y → X + Y
+</pre>
+</div>
+<p>
+如果学过范畴论的同学看到这个一定会倍感亲切，这和数学上的定义如出一辙。
+</p>
+
+<p>
+按照我们的惯例，进行induction和recursion：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
++-induction : {X : 𝓤 ̇} {Y : 𝓥 ̇} (A : X + Y → 𝓦 ̇)
+            → ((x : X) → A (inl x))
+            → ((y : Y) → A (inr y))
+            -----------------------
+            → (z : X + Y) → A z
++-induction A f g (inl x) = f x
++-induction A f g (inr y) = g y
+
++-recursion : {X : 𝓤 ̇} {Y : 𝓥 ̇} {A : 𝓦 ̇}
+            → (X → A)
+            → (Y → A)
+            → X + Y → A
++-recursion {𝓤} {𝓥} {𝓦} {X} {Y} {A} = +-induction (λ _ → A)
+</pre>
+</div>
+<p>
+代码已经几乎不言自明。
+[这里打算后期补图]
+</p>
+
+<p>
+现在我们可以组合新的元素（类型）了:
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+𝟚 : 𝓤₀ ̇
+𝟚 = 𝟙 + 𝟙
+</pre>
+</div>
+<p>
+这里介绍一个agda的新功能，即给一个pattern起一个新名字，我们可以给一个pattern起不同的别名：
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+pattern ₀ = inl ⋆
+pattern ₁ = inr ⋆
+</pre>
+</div>
+<p>
+继续induction:
+</p>
+<div class="org-src-container">
+<pre class="src src-agda">
+𝟚-induction : (A : 𝟚 → 𝓤 ̇)
+            → A ₀
+            → A ₁
+            ----------------
+            → (n : 𝟚) → A n
+𝟚-induction A a₀ a₁ ₀ = a₀
+𝟚-induction A a₀ a₁ ₁ = a₁
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -847,7 +1026,7 @@ data ℕ : 𝓤₀ ̇ where
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-03-05 周四 21:14</p>
+<p class="date">Created: 2020-03-06 周五 10:51</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
