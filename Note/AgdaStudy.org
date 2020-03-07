@@ -556,8 +556,11 @@ pr₂ : {X : 𝓤 ̇} {Y : X → 𝓥 ̇} → (z : Σ Y) → Y (pr₁ z)
 pr₂ (x , y) = y
 #+END_SRC
 
+- *NOTE* 
 
-
+  在我写下今天的内容的时候（2020.03.07），agda（ver 2.6.0.1）还不支持在类型声明中的 =pattern matching= 。
+  在agda即将到来的2.6.1.0中会支持这一十分有用的功能。
+  具体见：[[https://stackoverflow.com/questions/60557445/agda-pattern-matching-inside-type-declarations][Agda pattern matching inside ...]]
 
 
 
