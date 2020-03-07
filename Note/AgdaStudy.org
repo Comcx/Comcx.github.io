@@ -537,8 +537,24 @@ pattern ₁ = inr ⋆
 𝟚-induction A a₀ a₁ ₀ = a₀
 𝟚-induction A a₀ a₁ ₁ = a₁
 #+END_SRC
+So far so good. 除了 =_+_= 的组合方式，我们还可以有 =Σ= 。
 
+**** 我想把两个东西看成一种东西：X and Y
+我们首先有我们的dependent sum!
+#+BEGIN_SRC agda
 
+record Σ {𝓤 𝓥} {X : 𝓤 ̇} (Y : X → 𝓥 ̇) : 𝓤 ⊔ 𝓥 ̇ where
+  constructor _,_
+  field
+    x : X
+    y : Y x
+
+pr₁ : {X : 𝓤 ̇} {Y : X → 𝓥 ̇} → Σ Y → X
+pr₁ (x , y) = x
+
+pr₂ : {X : 𝓤 ̇} {Y : X → 𝓥 ̇} → (z : Σ Y) → Y (pr₁ z)
+pr₂ (x , y) = y
+#+END_SRC
 
 
 
