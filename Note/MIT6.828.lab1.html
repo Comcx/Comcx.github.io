@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-25 Thu 06:06 -->
+<!-- 2020-06-25 Thu 07:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Contents</title>
+<title>MIT6.828 Lab 1</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Comcx" />
 <style type="text/css">
@@ -180,16 +180,16 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="../Note/org-themes/styles/readtheorg/css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="../Note/org-themes/styles/readtheorg/css/readtheorg.css"/>
-<script type="text/javascript" src="../Note/org-themes/styles/lib/js/jquery.min.js"></script>
-<script type="text/javascript" src="../Note/org-themes/styles/lib/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../Note/org-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
-<script type="text/javascript" src="../Note/org-themes/styles/readtheorg/js/readtheorg.js"></script>
+<link rel="stylesheet" type="text/css" href="org-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="org-themes/styles/readtheorg/css/readtheorg.css"/>
+<script type="text/javascript" src="org-themes/styles/lib/js/jquery.min.js"></script>
+<script type="text/javascript" src="org-themes/styles/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="org-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="org-themes/styles/readtheorg/js/readtheorg.js"></script>
 <style>pre.src{background:#343131;color:white;} </style>
 <style> #content{max-width:1800px;}</style>
 <style> p{max-width:800px;}</style>
-<link rel="icon" type="image/x-icon" href="images/digimon-icon.png" />
+<link rel="icon" type="image/x-icon" href="../images/digimon-icon.png" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -236,172 +236,294 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        displayAlign: "center",
-        displayIndent: "0em",
-
-        "HTML-CSS": { scale: 100,
-                        linebreaks: { automatic: "false" },
-                        webFont: "TeX"
-                       },
-        SVG: {scale: 100,
-              linebreaks: { automatic: "false" },
-              font: "TeX"},
-        NativeMML: {scale: 100},
-        TeX: { equationNumbers: {autoNumber: "AMS"},
-               MultLineWidth: "85%",
-               TagSide: "right",
-               TagIndent: ".8em"
-             }
-});
-</script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">Contents</h1>
+<h1 class="title">MIT6.828 Lab 1</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb1cc693">1. Articles</a>
+<li><a href="#org924a252">1. Software and Environment Setup</a>
 <ul>
-<li><a href="#org5b3805b">1.1. From Recursion to Greedy algorithms: a functional perspective</a></li>
-<li><a href="#org79c135b">1.2. IO Monad in JavaScript!</a></li>
-<li><a href="#org92f568a">1.3. Sorting algorithms revisited</a></li>
-<li><a href="#org03b639b">1.4. Learning Functional Programming by Parser Combinators!</a></li>
-<li><a href="#org8575f93">1.5. Haskell Show Instance Overlapping Problem</a></li>
-<li><a href="#org7730f8d">1.6. Codewars | Number of Proper Fractions with Denominator d</a></li>
-<li><a href="#orgf6ea4f6">1.7. Prime Factorization</a></li>
-<li><a href="#orgc9e0e24">1.8. Tail recursion optimization translation</a></li>
-<li><a href="#org3afdb31">1.9. 从零开始的Agda生活</a></li>
-<li><a href="#org8a46302">1.10. MIT6.828 Lab 1</a></li>
+<li><a href="#orgffb26c7">1.1. Pull ubuntu from docker-hub and make a dockerfile</a></li>
+<li><a href="#org1bbd0fd">1.2. Install patched QEMU</a>
+<ul>
+<li><a href="#orgcfb79f3">1.2.1. Pitfalls</a></li>
+</ul>
+</li>
+<li><a href="#org3cb887b">1.3. Pull JOS repository</a></li>
+</ul>
+</li>
+<li><a href="#org58c7b3c">2. Part 1: PC Bootstrap</a>
+<ul>
+<li><a href="#org13100a4">2.1. Exercise 1</a></li>
+<li><a href="#org9c825e7">2.2. The PC's Physical Address Space</a></li>
+<li><a href="#org84dc85b">2.3. Exercise 2</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-
-
-<div id="outline-container-orgb1cc693" class="outline-2">
-<h2 id="orgb1cc693"><span class="section-number-2">1</span> Articles</h2>
-<div class="outline-text-2" id="text-1">
-</div>
-<div id="outline-container-org5b3805b" class="outline-3">
-<h3 id="org5b3805b"><span class="section-number-3">1.1</span> <a href="../Note/FromRecursionToGreedy.html">From Recursion to Greedy algorithms: a functional perspective</a></h3>
-<div class="outline-text-3" id="text-1-1">
 <p>
-<b>2020.01.24</b><br />
-There's an important leanring and developing chain of traditional algorithms:
-<code>Divide and Conquer(recursion) ---&gt; Dynamic Programming(mermorization) --&gt; Greedy</code> 
+I want to review MIT6.828 labs and homework&#x2026;
+This is still essential for me to make a better pl someday :)
+</p>
+
+<ul class="org-ul">
+<li>Reference</li>
+</ul>
+<p>
+<a href="https://pdos.csail.mit.edu/6.828/2018/labs/lab1/">MIT6.828 2018 Lab 1</a>
+</p>
+
+<div id="outline-container-org924a252" class="outline-2">
+<h2 id="org924a252"><span class="section-number-2">1</span> Software and Environment Setup</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The origin course uses <span class="underline">athena</span> and a patched <span class="underline">qemu</span> .
+I do not want to install a new virtual OS or have a new computer or
+ruin my current computer.
+Therefore, I decide to use <span class="underline">docker</span> and make a virtual environment which is
+effcient and light-weight.
+</p>
+
+<p>
+The process is a little tough though&#x2026;
 </p>
 </div>
+
+<div id="outline-container-orgffb26c7" class="outline-3">
+<h3 id="orgffb26c7"><span class="section-number-3">1.1</span> Pull ubuntu from docker-hub and make a dockerfile</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+<pre class="src src-shell">$ docker pull ubuntu:18.04
+</pre>
 </div>
 
-<div id="outline-container-org79c135b" class="outline-3">
-<h3 id="org79c135b"><span class="section-number-3">1.2</span> <a href="../Note/IOMonadInJavaScript.html">IO Monad in JavaScript!</a></h3>
+<ul class="org-ul">
+<li>Dockerfile</li>
+</ul>
+<pre class="example">
+FROM ubuntu:18.04
+
+RUN apt-get update \
+    &amp;&amp; apt-get install -y \
+    sudo \
+    git \
+    g++ \
+    emacs \
+    make \
+    gcc-multilib \
+    &amp;&amp; useradd --create-home --no-log-init --shell /bin/bash comcx \
+    &amp;&amp; adduser comcx sudo \
+    &amp;&amp; echo 'comcx:mimawei0' | chpasswd
+
+USER comcx
+WORKDIR /home/comcx
+
+</pre>
+
+<ul class="org-ul">
+<li>Build</li>
+</ul>
+<pre class="example">
+$ docker build -t oslab .
+</pre>
+<p>
+Now we have a very small environment prototype which will be fixed into our experiment space later:)
+</p>
+
+<p>
+Run the following command into the container!
+</p>
+<pre class="example">
+$ docker run -it oslab bash
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org1bbd0fd" class="outline-3">
+<h3 id="org1bbd0fd"><span class="section-number-3">1.2</span> Install patched QEMU</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
-<b>2020.01.27</b><br />
-Monad &gt;&gt;= \m =&gt; interesting, right?
+We need to firstly pull the patched qemu following reference page.
+<a href="https://pdos.csail.mit.edu/6.828/2018/tools.html">Tool page</a>
 </p>
+<div class="org-src-container">
+<pre class="src src-shell">$ git clone https://github.com/mit-pdos/6.828-qemu.git qemu
+$ cd qemu
+$ ./configure --disable-kvm --disable-werror --disable-sdl <span style="color: #ffd700;">[</span>--prefix=PFX<span style="color: #ffd700;">]</span> <span style="color: #ffd700;">[</span>--target-list=<span style="color: #ad7fa8; font-style: italic;">"i386-softmmu x86_64-softmmu"</span><span style="color: #ffd700;">]</span>
+$ make &amp;&amp; make install
+</pre>
 </div>
 </div>
 
-<div id="outline-container-org92f568a" class="outline-3">
-<h3 id="org92f568a"><span class="section-number-3">1.3</span> <a href="../Note/SortingAlgorithmsRevisited.html">Sorting algorithms revisited</a></h3>
+<div id="outline-container-orgcfb79f3" class="outline-4">
+<h4 id="orgcfb79f3"><span class="section-number-4">1.2.1</span> Pitfalls</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<ul class="org-ul">
+<li>Executing "./configure &#x2013;disable-kvm &#x2026;" 
+<ul class="org-ul">
+<li>ERROR: Python not found. Use &#x2013;python=/path/to/python</li>
+<li>To fix: install python2.7, and add &#x2013;python=python2.7</li>
+
+<li>ERROR: pkg-config binary 'pkg-config' not found</li>
+<li>apt-get install -y pkg-config</li>
+
+<li>ERROR: zlib check failed. Make sure to have the zlib libs and headers installed.</li>
+<li>sudo apt-get install zlib1g-dev</li>
+
+<li>ERROR: glib-2.12 gthread-2.0 is required to compile QEMU</li>
+<li>sudo apt-get install libglib2.0-dev</li>
+</ul></li>
+</ul>
+
+<p>
+Finally, we are done.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3cb887b" class="outline-3">
+<h3 id="org3cb887b"><span class="section-number-3">1.3</span> Pull JOS repository</h3>
 <div class="outline-text-3" id="text-1-3">
-<p>
-<b>2020.01.29</b><br />
-We're going to revisite some main-stream sorting algorithms and
-try to implement them in a more efficient way.
-</p>
+<div class="org-src-container">
+<pre class="src src-shell">$ git clone https://pdos.csail.mit.edu/6.828/2018/jos.git lab
+</pre>
+</div>
 
 <p>
-To make things simple, we choose <span class="underline">Haskell</span> to describe basic recursions and
-ideas, then we directly translate haskell codes into <span class="underline">Scala</span> since Scala serves
-a great role between purely functional way and more traditional ways.
+Inside lab/, try <code>make qemu</code> ,if the program runs, then our basic experiment space is now ready.
 </p>
-
-<p>
-Finally, we translate Scala codes into <span class="underline">C++</span> (some even C:).
-</p>
+<pre class="example">
+$ docker commit &lt;container&gt; mit6.828
+</pre>
+</div>
 </div>
 </div>
 
-<div id="outline-container-org03b639b" class="outline-3">
-<h3 id="org03b639b"><span class="section-number-3">1.4</span> <a href="../Note/LearningFPByParserCombinators.html">Learning Functional Programming by Parser Combinators!</a></h3>
-<div class="outline-text-3" id="text-1-4">
+<div id="outline-container-org58c7b3c" class="outline-2">
+<h2 id="org58c7b3c"><span class="section-number-2">2</span> Part 1: PC Bootstrap</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org13100a4" class="outline-3">
+<h3 id="org13100a4"><span class="section-number-3">2.1</span> Exercise 1</h3>
+<div class="outline-text-3" id="text-2-1">
+<blockquote>
 <p>
-<b>2020.01.30</b><br />
+Familiarize yourself with the assembly language materials available on the 6.828 reference page. 
+You don't have to read them now, but you'll almost certainly want to refer to some of this material when reading and writing x86 assembly.
 </p>
-</div>
-</div>
 
-<div id="outline-container-org8575f93" class="outline-3">
-<h3 id="org8575f93"><span class="section-number-3">1.5</span> <a href="../Note/HaskellShowInstanceOverlappingProblem.html">Haskell Show Instance Overlapping Problem</a></h3>
-<div class="outline-text-3" id="text-1-5">
 <p>
-<b>2020.02.02</b><br />
-Same question encountered when I designed <i>Nona</i>&#x2026;
+We do recommend reading the section "The Syntax" in Brennan's Guide to Inline Assembly. 
+It gives a good (and quite brief) description of the AT&amp;T assembly syntax we'll be using with the GNU assembler in JOS.
 </p>
-</div>
-</div>
+</blockquote>
 
-<div id="outline-container-org7730f8d" class="outline-3">
-<h3 id="org7730f8d"><span class="section-number-3">1.6</span> <a href="../Note/NumberOfProperFractionsWithDenominator.html">Codewars | Number of Proper Fractions with Denominator d</a></h3>
-<div class="outline-text-3" id="text-1-6">
 <p>
-<b>2020.02.23</b><br />
-(Euler's totient function :-)
+<a href="http://www.delorie.com/djgpp/doc/brennan/brennan_att_inline_djgpp.html">Brennan's Guide to Inline Assembly</a> is nice for both intel and AT&amp;T syntax(I prefer intel).
+The <span class="underline">PCASM book</span> helps me a lot!
 </p>
-</div>
-</div>
 
-<div id="outline-container-orgf6ea4f6" class="outline-3">
-<h3 id="orgf6ea4f6"><span class="section-number-3">1.7</span> <a href="../Note/PrimeFactorization.html">Prime Factorization</a></h3>
-<div class="outline-text-3" id="text-1-7">
 <p>
-<b>2020.02.24</b><br />
-Prime numbers are interesting
+Finally, I am comfortable with most of assembly programs, but still lack experience and have some problems at use of
+<code>in</code> and <code>out</code> commands&#x2026;
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc9e0e24" class="outline-3">
-<h3 id="orgc9e0e24"><span class="section-number-3">1.8</span> <a href="../Note/Tailrec.html">Tail recursion optimization translation</a></h3>
-<div class="outline-text-3" id="text-1-8">
+<div id="outline-container-org9c825e7" class="outline-3">
+<h3 id="org9c825e7"><span class="section-number-3">2.2</span> The PC's Physical Address Space</h3>
+<div class="outline-text-3" id="text-2-2">
+<pre class="example">
++------------------+  &lt;- 0xFFFFFFFF (4GB)
+|      32-bit      |
+|  memory mapped   |
+|     devices      |
+|                  |
+/\/\/\/\/\/\/\/\/\/\
+
+/\/\/\/\/\/\/\/\/\/\
+|                  |
+|      Unused      |
+|                  |
++------------------+  &lt;- depends on amount of RAM
+|                  |
+|                  |
+| Extended Memory  |
+|                  |
+|                  |
++------------------+  &lt;- 0x00100000 (1MB)
+|     BIOS ROM     |
++------------------+  &lt;- 0x000F0000 (960KB)
+|  16-bit devices, |
+|  expansion ROMs  |
++------------------+  &lt;- 0x000C0000 (768KB)
+|   VGA Display    |
++------------------+  &lt;- 0x000A0000 (640KB)
+|                  |
+|    Low Memory    |
+|                  |
++------------------+  &lt;- 0x00000000
+</pre>
 <p>
-<b>2020.02.27</b><br />
-Many algorithms can be expressed concisely and elegantly in functional languages with recursions.
-However, not all languages support automatic optimizations respect to functional algorithms and,
-some languages(such as <i>Scala</i>), although support basic <code>@tailrec</code> optimizations by code transformation,
-they still can not do some agressive tailrec optimizations such as <code>CPS tailrec</code>.
+This general picture of memory is important.
+</p>
+
+<p>
+The layout exposes design compromise due to back compatibility.
+To allow old PCs of 16bits, we still maintain the layout of 0x0 ~ 0x100000(old 8086 has 1MB space)
+</p>
+
+<p>
+The BIOS ROM is first loaded into memory and then be executed when a computer powers on.
+Let's inspect how BIOS is loaded and executed and eventually die out&#x2026;
+</p>
+
+<p>
+Simulate our qemu!
+The following line:
+</p>
+<pre class="example">
+[f000:fff0] 0xffff0:	ljmp   $0xf000,$0xe05b
+</pre>
+<p>
+is GDB's disassembly of the first instruction to be executed. From this output you can conclude a few things:
+</p>
+
+<ul class="org-ul">
+<li>The IBM PC starts executing at physical address 0x000ffff0, which is at the very top of the 64KB area reserved for the ROM BIOS.</li>
+<li>The PC starts executing with CS = 0xf000 and IP = 0xfff0.</li>
+<li>The first instruction to be executed is a jmp instruction, which jumps to the segmented address CS = 0xf000 and IP = 0xe05b.</li>
+</ul>
+
+<p>
+Well this looks weird, why have to first execute at 0xffff0 and immediately jump to 0xfe05b?
 </p>
 </div>
 </div>
 
-<div id="outline-container-org3afdb31" class="outline-3">
-<h3 id="org3afdb31"><span class="section-number-3">1.9</span> <a href="../Note/AgdaStudy.html">从零开始的Agda生活</a></h3>
-<div class="outline-text-3" id="text-1-9">
-<p>
-<b>2020.03.01</b><br />
-因为 <i>agda</i> 的国内使用者还很少，为了满足我的安利欲，我打算用中文写我的agda学习笔记与过程，希望可以在这个过程中获得新知的快乐。
-Agda是一款依赖类型系统为核心的语言，所以支持形式化证明（实际上这也是agda的重要用途）。此外，agda的设计也十分有趣，无论是
-混合前中后缀语法还是类Haskell的代码风格，都给予了玩家极大的自由。在agda的世界里，我们可以没有 <code>Integer</code> ，没有 <code>Bool</code> ,
-但是我们却获得了创造一切的木头（没错，类似Minecraft）。在没有agda-stdlib的情况下，我们就需要自力更生，成为欢乐原始人或者，
-成为 <b>创造神。</b>
-</p>
-</div>
-</div>
 
-<div id="outline-container-org8a46302" class="outline-3">
-<h3 id="org8a46302"><span class="section-number-3">1.10</span> <a href="../Note/MIT6.828.lab1.html">MIT6.828 Lab 1</a></h3>
-<div class="outline-text-3" id="text-1-10">
+<div id="outline-container-org84dc85b" class="outline-3">
+<h3 id="org84dc85b"><span class="section-number-3">2.3</span> Exercise 2</h3>
+<div class="outline-text-3" id="text-2-3">
+<blockquote>
 <p>
-To design a good OS is to create a great programming language.
+Use GDB's si (Step Instruction) command to trace into the ROM BIOS for a few more instructions, 
+and try to guess what it might be doing. 
+</p>
+
+<p>
+You might want to look at Phil Storrs I/O Ports Description, 
+as well as other materials on the 6.828 reference materials page. 
+No need to figure out all the details - just the general idea of what the BIOS is doing first.
+</p>
+</blockquote>
+<p>
+OK, just the general idea:)
 </p>
 </div>
 </div>
@@ -409,7 +531,7 @@ To design a good OS is to create a great programming language.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-06-25 Thu 06:06</p>
+<p class="date">Created: 2020-06-25 Thu 07:03</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

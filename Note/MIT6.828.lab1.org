@@ -1,0 +1,182 @@
+#+Title:  MIT6.828 Lab 1
+#+Author: Comcx
+
+
+#+SETUPFILE: theme-readtheorg-local.setup
+
+:Prelog:
+I want to review MIT6.828 labs and homework...
+This is still essential for me to make a better pl someday :)
+
+- Reference
+[[https://pdos.csail.mit.edu/6.828/2018/labs/lab1/][MIT6.828 2018 Lab 1]]
+:end:
+
+** Software and Environment Setup
+The origin course uses _athena_ and a patched _qemu_ .
+I do not want to install a new virtual OS or have a new computer or
+ruin my current computer.
+Therefore, I decide to use _docker_ and make a virtual environment which is
+effcient and light-weight.
+
+The process is a little tough though...
+
+*** Pull ubuntu from docker-hub and make a dockerfile
+#+BEGIN_SRC shell
+$ docker pull ubuntu:18.04
+#+END_SRC
+
+- Dockerfile
+#+BEGIN_SRC 
+FROM ubuntu:18.04
+
+RUN apt-get update \
+    && apt-get install -y \
+    sudo \
+    git \
+    g++ \
+    emacs \
+    make \
+    gcc-multilib \
+    && useradd --create-home --no-log-init --shell /bin/bash comcx \
+    && adduser comcx sudo \
+    && echo 'comcx:mimawei0' | chpasswd
+
+USER comcx
+WORKDIR /home/comcx
+
+#+END_SRC
+
+- Build
+#+BEGIN_SRC 
+$ docker build -t oslab .
+#+END_SRC
+Now we have a very small environment prototype which will be fixed into our experiment space later:)
+
+Run the following command into the container!
+#+BEGIN_SRC 
+$ docker run -it oslab bash
+#+END_SRC
+
+*** Install patched QEMU
+We need to firstly pull the patched qemu following reference page.
+[[https://pdos.csail.mit.edu/6.828/2018/tools.html][Tool page]]
+#+BEGIN_SRC shell
+$ git clone https://github.com/mit-pdos/6.828-qemu.git qemu
+$ cd qemu
+$ ./configure --disable-kvm --disable-werror --disable-sdl [--prefix=PFX] [--target-list="i386-softmmu x86_64-softmmu"]
+$ make && make install
+#+END_SRC
+
+**** Pitfalls
+- Executing "./configure --disable-kvm ..." 
+  + ERROR: Python not found. Use --python=/path/to/python
+  + To fix: install python2.7, and add --python=python2.7
+
+  + ERROR: pkg-config binary 'pkg-config' not found
+  + apt-get install -y pkg-config
+
+  + ERROR: zlib check failed. Make sure to have the zlib libs and headers installed.
+  + sudo apt-get install zlib1g-dev
+
+  + ERROR: glib-2.12 gthread-2.0 is required to compile QEMU
+  + sudo apt-get install libglib2.0-dev
+
+Finally, we are done.
+
+*** Pull JOS repository
+#+BEGIN_SRC shell
+$ git clone https://pdos.csail.mit.edu/6.828/2018/jos.git lab
+#+END_SRC
+
+Inside lab/, try =make qemu= ,if the program runs, then our basic experiment space is now ready.
+#+BEGIN_SRC 
+$ docker commit <container> mit6.828
+#+END_SRC
+
+** Part 1: PC Bootstrap
+*** Exercise 1
+  #+BEGIN_QUOTE
+  Familiarize yourself with the assembly language materials available on the 6.828 reference page. 
+  You don't have to read them now, but you'll almost certainly want to refer to some of this material when reading and writing x86 assembly.
+
+  We do recommend reading the section "The Syntax" in Brennan's Guide to Inline Assembly. 
+  It gives a good (and quite brief) description of the AT&T assembly syntax we'll be using with the GNU assembler in JOS.
+  #+END_QUOTE
+
+  [[http://www.delorie.com/djgpp/doc/brennan/brennan_att_inline_djgpp.html][Brennan's Guide to Inline Assembly]] is nice for both intel and AT&T syntax(I prefer intel).
+  The _PCASM book_ helps me a lot!
+
+  Finally, I am comfortable with most of assembly programs, but still lack experience and have some problems at use of
+  =in= and =out= commands...
+
+*** The PC's Physical Address Space
+#+BEGIN_SRC 
++------------------+  <- 0xFFFFFFFF (4GB)
+|      32-bit      |
+|  memory mapped   |
+|     devices      |
+|                  |
+/\/\/\/\/\/\/\/\/\/\
+
+/\/\/\/\/\/\/\/\/\/\
+|                  |
+|      Unused      |
+|                  |
++------------------+  <- depends on amount of RAM
+|                  |
+|                  |
+| Extended Memory  |
+|                  |
+|                  |
++------------------+  <- 0x00100000 (1MB)
+|     BIOS ROM     |
++------------------+  <- 0x000F0000 (960KB)
+|  16-bit devices, |
+|  expansion ROMs  |
++------------------+  <- 0x000C0000 (768KB)
+|   VGA Display    |
++------------------+  <- 0x000A0000 (640KB)
+|                  |
+|    Low Memory    |
+|                  |
++------------------+  <- 0x00000000
+#+END_SRC
+This general picture of memory is important.
+
+The layout exposes design compromise due to back compatibility.
+To allow old PCs of 16bits, we still maintain the layout of 0x0 ~ 0x100000(old 8086 has 1MB space)
+
+The BIOS ROM is first loaded into memory and then be executed when a computer powers on.
+Let's inspect how BIOS is loaded and executed and eventually die out...
+
+Simulate our qemu!
+The following line:
+#+BEGIN_SRC 
+[f000:fff0] 0xffff0:	ljmp   $0xf000,$0xe05b
+#+END_SRC
+is GDB's disassembly of the first instruction to be executed. From this output you can conclude a few things:
+
+- The IBM PC starts executing at physical address 0x000ffff0, which is at the very top of the 64KB area reserved for the ROM BIOS.
+- The PC starts executing with CS = 0xf000 and IP = 0xfff0.
+- The first instruction to be executed is a jmp instruction, which jumps to the segmented address CS = 0xf000 and IP = 0xe05b.
+
+Well this looks weird, why have to first execute at 0xffff0 and immediately jump to 0xfe05b?
+
+
+*** Exercise 2
+  #+BEGIN_QUOTE
+  Use GDB's si (Step Instruction) command to trace into the ROM BIOS for a few more instructions, 
+  and try to guess what it might be doing. 
+
+  You might want to look at Phil Storrs I/O Ports Description, 
+  as well as other materials on the 6.828 reference materials page. 
+  No need to figure out all the details - just the general idea of what the BIOS is doing first.
+  #+END_QUOTE
+  OK, just the general idea:)
+
+
+
+
+
+
