@@ -68,6 +68,7 @@
     成为 *创造神。*
 
 *** [[../Note/MIT6.828.lab1.html][MIT6.828 Lab 1]]
+    *2020.06.25*\\
     To design a good OS is to create a great programming language.
 
 
