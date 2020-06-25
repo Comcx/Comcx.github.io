@@ -464,9 +464,35 @@ main(int ac, char **av)
 }
 
 #+END_SRC
+Result:
+#+BEGIN_SRC 
+1: a = 0x7ffeeb8b9970, b = 0x7fcb43405800, c = 0x7ffeeb8b99d8
+2: a[0] = 200, a[1] = 101, a[2] = 102, a[3] = 103
+3: a[0] = 200, a[1] = 300, a[2] = 301, a[3] = 302
+4: a[0] = 200, a[1] = 400, a[2] = 301, a[3] = 302
+5: a[0] = 200, a[1] = 128144, a[2] = 256, a[3] = 302
+6: a = 0x7ffeeb8b9970, b = 0x7ffeeb8b9974, c = 0x7ffeeb8b9971
+#+END_SRC
+Well I'm done, how about u?
+
+**** ELF format
+- *.text*: The program's executable instructions.
+- *.rodata*: Read-only data, such as ASCII string constants produced by the C compiler.
+- *.data*: The data section holds the program's initialized data, such as global variables declared with initializers like int x = 5;.
+- *.bss*: "uninitialized" global variables start with a value of zero
+
+**** Exercise 5
+#+BEGIN_QUOTE
+Trace through the first few instructions of the boot loader again and identify the first instruction that 
+would "break" or otherwise do the wrong thing if you were to get the boot loader's link address wrong. 
+Then change the link address in boot/Makefrag to something wrong, run make clean, recompile the lab with make, 
+and trace into the boot loader again to see what happens. Don't forget to change the link address back and make clean again afterward!
+#+END_QUOTE
 
 
 ** Part 3: The Kernel
+Kernel! Things going to become interesting!
+
 
 
 
