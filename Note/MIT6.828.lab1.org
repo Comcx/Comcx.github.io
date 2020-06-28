@@ -481,6 +481,44 @@ Well I'm done, how about u?
 - *.data*: The data section holds the program's initialized data, such as global variables declared with initializers like int x = 5;.
 - *.bss*: "uninitialized" global variables start with a value of zero
 
+Let's try this command:
+#+BEGIN_SRC 
+$ objdump -h obj/kern/kernel
+#+END_SRC
+#+BEGIN_SRC 
+obj/kern/kernel:     file format elf32-i386
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000019e9  f0100000  00100000  00001000  2**4
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .rodata       000006c0  f0101a00  00101a00  00002a00  2**5
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  2 .stab         00003b95  f01020c0  001020c0  000030c0  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  3 .stabstr      00001948  f0105c55  00105c55  00006c55  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  4 .data         00009300  f0108000  00108000  00009000  2**12
+                  CONTENTS, ALLOC, LOAD, DATA
+  5 .got          00000008  f0111300  00111300  00012300  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .got.plt      0000000c  f0111308  00111308  00012308  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  7 .data.rel.local 00001000  f0112000  00112000  00013000  2**12
+                  CONTENTS, ALLOC, LOAD, DATA
+  8 .data.rel.ro.local 00000044  f0113000  00113000  00014000  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .bss          00000648  f0113060  00113060  00014060  2**5
+                  CONTENTS, ALLOC, LOAD, DATA
+ 10 .comment      00000029  00000000  00000000  000146a8  2**0
+                  CONTENTS, READONLY
+#+END_SRC
+Several things to notice:
+1) "VMA" (or link address) and the "LMA" (or load address) of the .text section.
+   VMA and LMA often the same, why not here(we will rediscuss this in the part 3).
+
+well, just a general concept here, I shall study in-depth when I review compiler theories again.
+
 **** Exercise 5
 #+BEGIN_QUOTE
 Trace through the first few instructions of the boot loader again and identify the first instruction that 
@@ -489,9 +527,122 @@ Then change the link address in boot/Makefrag to something wrong, run make clean
 and trace into the boot loader again to see what happens. Don't forget to change the link address back and make clean again afterward!
 #+END_QUOTE
 
-
 ** Part 3: The Kernel
 Kernel! Things going to become interesting!
+Let's first try to figure out one remained question above:
+#+BEGIN_QUOTE
+Why VMA is different from LMA?
+#+END_QUOTE
+#+BEGIN_QUOTE
+Operating system kernels often like to be linked and run at very high virtual address, such as 0xf0100000, 
+in order to leave the lower part of the processor's virtual address space for user programs to use. 
+The reason for this arrangement will become clearer in the next lab.
+#+END_QUOTE
+In fact, OS map virtual address 0xf0100000 (the link address at which the kernel code expects to run) 
+to physical address 0x00100000 (where the boot loader loaded the kernel into physical memory).
+Well, it seems we still have more work to do:)
+
+*** Exercise 7
+#+BEGIN_QUOTE
+Use QEMU and GDB to trace into the JOS kernel and stop at the movl %eax, %cr0. 
+Examine memory at 0x00100000 and at 0xf0100000. 
+Now, single step over that instruction using the stepi GDB command. 
+Again, examine memory at 0x00100000 and at 0xf0100000. Make sure you understand what just happened.
+
+What is the first instruction after the new mapping is established that would fail to work properly if the mapping weren't in place? 
+Comment out the movl %eax, %cr0 in kern/entry.S, trace into it, and see if you were right.
+#+END_QUOTE
+#+BEGIN_SRC
+(gdb) b *0x10000c
+Breakpoint 1 at 0x10000c
+(gdb) c
+Continuing.
+The target architecture is assumed to be i386
+=> 0x10000c:	movw   $0x1234,0x472
+
+Breakpoint 1, 0x0010000c in ?? ()
+(gdb) x/4i 0x00100000
+   0x100000:	add    0x1bad(%eax),%dh
+   0x100006:	add    %al,(%eax)
+   0x100008:	decb   0x52(%edi)
+   0x10000b:	in     $0x66,%al
+(gdb) x/4i 0xf0100000
+   0xf0100000 <_start+4026531828>:	add    %al,(%eax)
+   0xf0100002 <_start+4026531830>:	add    %al,(%eax)
+   0xf0100004 <_start+4026531832>:	add    %al,(%eax)
+   0xf0100006 <_start+4026531834>:	add    %al,(%eax)
+#+END_SRC
+
+After several =si=...
+#+BEGIN_SRC
+(gdb) si
+=> 0x100028:	mov    $0xf010002f,%eax
+0x00100028 in ?? ()
+(gdb) x/4i 0x00100000
+   0x100000:	add    0x1bad(%eax),%dh
+   0x100006:	add    %al,(%eax)
+   0x100008:	decb   0x52(%edi)
+   0x10000b:	in     $0x66,%al
+(gdb) x/4i 0xf0100000
+   0xf0100000 <_start+4026531828>:	add    0x1bad(%eax),%dh
+   0xf0100006 <_start+4026531834>:	add    %al,(%eax)
+   0xf0100008 <_start+4026531836>:	decb   0x52(%edi)
+   0xf010000b <_start+4026531839>:	in     $0x66,%al
+#+END_SRC
+Address mapping done.
+
+*** Formatted Printing to the Console
+**** Exercise 8
+#+BEGIN_QUOTE
+We have omitted a small fragment of code - the code necessary to print octal numbers using patterns of the form "%o". 
+Find and fill in this code fragment.
+#+END_QUOTE
+Well, it's easy to complete the code, but it's still alittle hard for me to understand every line here.
+
+- =kern/printf.c= rely on =lib/printfmt.c= and =kern/console.c= .
+- =lib/printfmt.c= rely on =kern/console.c= .
+
+The most important part is here:
+#+BEGIN_SRC c
+// output a character to the console
+static void
+cons_putc(int c)
+{
+    serial_putc(c);
+    lpt_putc(c);
+    cga_putc(c);
+}
+#+END_SRC
+
+Let's firstly finish the code and try to analyse more codes...
+#+BEGIN_SRC c
+case 'o':
+    num = getuint(&ap, lflag);
+    base = 8;
+    goto number;
+#+END_SRC
+
+**** Explain the following code from =kern/console.c= .
+#+BEGIN_SRC c
+if (crt_pos >= CRT_SIZE) {
+    int i;
+    memmove(crt_buf, crt_buf + CRT_COLS, (CRT_SIZE - CRT_COLS) * sizeof(uint16_t));
+    for (i = CRT_SIZE - CRT_COLS; i < CRT_SIZE; i++)
+        crt_buf[i] = 0x0700 | ' ';
+        crt_pos -= CRT_COLS;
+}
+#+END_SRC
+
+*** The Stack
+Exploring in more detail the way the C language uses the stack on the x86.
+
+**** Exercise 9
+#+BEGIN_QUOTE
+Determine where the kernel initializes its stack, and exactly where in memory its stack is located. 
+How does the kernel reserve space for its stack? And at which "end" of this reserved area is the stack pointer initialized to point to?
+#+END_QUOTE
+
+
 
 
 
