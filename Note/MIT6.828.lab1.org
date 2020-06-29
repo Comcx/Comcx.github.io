@@ -529,7 +529,7 @@ and trace into the boot loader again to see what happens. Don't forget to change
 
 ** Part 3: The Kernel
 Kernel! Things going to become interesting!
-Let's first try to figure out one remained question above:
+Let's first try to figure out one remained question on _ELF format_ above:
 #+BEGIN_QUOTE
 Why VMA is different from LMA?
 #+END_QUOTE
@@ -634,13 +634,309 @@ if (crt_pos >= CRT_SIZE) {
 #+END_SRC
 
 *** The Stack
-Exploring in more detail the way the C language uses the stack on the x86.
+ Exploring in more detail the way the C language uses the stack on the x86.
 
 **** Exercise 9
+ #+BEGIN_QUOTE
+ Determine where the kernel initializes its stack, and exactly where in memory its stack is located. 
+ How does the kernel reserve space for its stack? And at which "end" of this reserved area is the stack pointer initialized to point to?
+ #+END_QUOTE
+
+ I noticed codes in =kern/entry.S= :
+ #+BEGIN_SRC 
+.data
+###################################################################
+# boot stack
+###################################################################
+        .p2align        PGSHIFT         # force page alignment
+        .globl          bootstack
+bootstack:
+        .space          KSTKSIZE
+	.globl          bootstacktop
+bootstacktop:
+ #+END_SRC
+
+ and settings here:
+ #+BEGIN_SRC 
+ # Clear the frame pointer register (EBP)
+ # so that once we get into debugging C code,
+ # stack backtraces will be terminated properly.
+ movl    $0x0,%ebp                       # nuke frame pointer
+
+ # Set the stack pointer
+ movl    $(bootstacktop),%esp
+ #+END_SRC
+
+ Moreover, in =inc/memlayout.h= :
+ #+BEGIN_SRC c
+// Kernel stack.
+#define KSTACKTOP    KERNBASE
+#define KSTKSIZE    (8*PGSIZE)           // size of a kernel stack
+#define KSTKGAP        (8*PGSIZE)           // size of a kernel stack guard
+ #+END_SRC
+
+ =PGSIZE= is defined in =inc/mmu.h= , which is =4096= .
+ Thus =KSTKSIZE = 32KB= .
+
+ Before jump into exercise 10, I want to draw an overview of current memory layout.
+ #+BEGIN_SRC 
++------------------+  <- 0xFFFFFFFF (4GB)
+|      32-bit      |
+|  memory mapped   |
+|     devices      |
+|                  |
+/\/\/\/\/\/\/\/\/\/\
+
+/\/\/\/\/\/\/\/\/\/\
+|                  |
+|      Unused      |
+|                  |
++------------------+  <- depends on amount of RAM
+|                  |
+|------------------|  <- 0x00110000 (Stack top)
+|   Kernel stack   |
+|------------------|  <- 0x0010fc00 (end of stack)
+|   Kernel codes   |
++------------------+  <- 0x00100000 (1MB)
+|     BIOS ROM     |
++------------------+  <- 0x000F0000 (960KB)
+|  16-bit devices, |
+|  expansion ROMs  |
++------------------+  <- 0x000C0000 (768KB)
+|   VGA Display    |
++------------------+  <- 0x000A0000 (640KB)
+|                  |
+|    Low Memory    |
+|                  |
++------------------+  <- 0x00000000
+ #+END_SRC
+
+**** Exercise 10
+ #+BEGIN_QUOTE
+ To become familiar with the C calling conventions on the x86, 
+ find the address of the test_backtrace function in obj/kern/kernel.asm, 
+ set a breakpoint there, and examine what happens each time it gets called after the kernel starts. 
+ How many 32-bit words does each recursive nesting level of test_backtrace push on the stack, and what are those words?
+
+ Note that, for this exercise to work properly, 
+ you should be using the patched version of QEMU available on the tools page or on Athena. 
+ Otherwise, you'll have to manually translate all breakpoint and memory addresses to linear addresses.
+ #+END_QUOTE
+
+ - Function =test_backtrace= in =obj/kern/kernel.asm= :
+ #+BEGIN_SRC
+f0100040 <test_backtrace>:
+ #+END_SRC
+ The C codes of =test_backtrace= is in =kern/init.c= :
+ #+BEGIN_SRC c
+// Test the stack backtrace function (lab 1 only)                               
+void
+test_backtrace(int x)
+{
+        cprintf("entering test_backtrace %d\n", x);
+        if (x > 0)
+                test_backtrace(x-1);
+        else
+                mon_backtrace(0, 0, 0);
+        cprintf("leaving test_backtrace %d\n", x);
+}
+ #+END_SRC
+
+ Register =%bp= makes stack linked.
+ This is a recursion function, let's test this in qemu.
+ Firstly, we need to implement more codes...
+
+**** Exercise 11
 #+BEGIN_QUOTE
-Determine where the kernel initializes its stack, and exactly where in memory its stack is located. 
-How does the kernel reserve space for its stack? And at which "end" of this reserved area is the stack pointer initialized to point to?
+Implement the backtrace function as specified above. 
+Use the same format as in the example, since otherwise the grading script will be confused. 
+When you think you have it working right, run make grade to see if its output conforms to what our grading script expects, 
+and fix it if it doesn't. 
+After you have handed in your Lab 1 code, you are welcome to change the output format of the backtrace function any way you like.
+
+If you use read_ebp(), note that GCC may generate "optimized" code that 
+calls read_ebp() before mon_backtrace()'s function prologue, 
+which results in an incomplete stack trace (the stack frame of the most recent function call is missing). 
+While we have tried to disable optimizations that cause this reordering, 
+you may want to examine the assembly of mon_backtrace() and make sure the call to read_ebp() is happening after the function prologue.
 #+END_QUOTE
+#+BEGIN_SRC c
+int
+mon_backtrace(int argc, char **argv, struct Trapframe *tf)
+{
+ 	// Your code here.                                                           
+	uint32_t ebp, eip, args[5];
+        cprintf("Stack backtrace:\n");
+        for(ebp = read_ebp(); ebp != 0; ebp = *((uint32_t *)ebp)) {
+                eip = *((uint32_t *)ebp + 1);
+                args[0] = *((uintptr_t *)ebp + 2);
+                args[1] = *((uintptr_t *)ebp + 3);
+                args[2] = *((uintptr_t *)ebp + 4);
+                args[3] = *((uintptr_t *)ebp + 5);
+                args[4] = *((uintptr_t *)ebp + 6);
+                cprintf("  ebp %08x  eip %08x  args %08x %08x %08x %08x %08x\n",
+                        ebp, eip, args[0], args[1], args[2], args[3], args[4]);
+        }
+        return 0;
+}
+#+END_SRC
+#+BEGIN_SRC 
+entering test_backtrace 5
+entering test_backtrace 4
+entering test_backtrace 3
+entering test_backtrace 2
+entering test_backtrace 1
+entering test_backtrace 0
+Stack backtrace:
+  ebp f010ff18  eip f0100078  args 00000000 00000000 00000000 f010004a f0111308
+  ebp f010ff38  eip f01000a1  args 00000000 00000001 f010ff78 f010004a f0111308
+  ebp f010ff58  eip f01000a1  args 00000001 00000002 f010ff98 f010004a f0111308
+  ebp f010ff78  eip f01000a1  args 00000002 00000003 f010ffb8 f010004a f0111308
+  ebp f010ff98  eip f01000a1  args 00000003 00000004 00000000 f010004a f0111308
+  ebp f010ffb8  eip f01000a1  args 00000004 00000005 00000000 f010004a f0111308
+  ebp f010ffd8  eip f01000f4  args 00000005 00001aac 00000640 00000000 00000000
+  ebp f010fff8  eip f010003e  args 00000003 00001003 00002003 00003003 00004003
+leaving test_backtrace 0
+leaving test_backtrace 1
+leaving test_backtrace 2
+leaving test_backtrace 3
+leaving test_backtrace 4
+leaving test_backtrace 5
+#+END_SRC
+Done!
+
+**** Exercise 12
+#+BEGIN_QUOTE
+Modify your stack backtrace function to display, for each eip, the function name, source file name, and line number corresponding to that eip.
+
+In debuginfo_eip, where do __STAB_* come from? This question has a long answer; to help you to discover the answer, here are some things you might want to do:
+
+look in the file kern/kernel.ld for __STAB_*
+run objdump -h obj/kern/kernel
+run objdump -G obj/kern/kernel
+run gcc -pipe -nostdinc -O2 -fno-builtin -I. -MD -Wall -Wno-format -DJOS_KERNEL -gstabs -c -S kern/init.c, and look at init.s.
+see if the bootloader loads the symbol table in memory as part of loading the kernel binary
+Complete the implementation of debuginfo_eip by inserting the call to stab_binsearch to find the line number for an address.
+
+Add a backtrace command to the kernel monitor, and extend your implementation of mon_backtrace to call 
+debuginfo_eip and print a line for each stack frame of the form:
+#+BEGIN_SRC 
+K> backtrace
+Stack backtrace:
+  ebp f010ff78  eip f01008ae  args 00000001 f010ff8c 00000000 f0110580 00000000
+         kern/monitor.c:143: monitor+106
+  ebp f010ffd8  eip f0100193  args 00000000 00001aac 00000660 00000000 00000000
+         kern/init.c:49: i386_init+59
+  ebp f010fff8  eip f010003d  args 00000000 00000000 0000ffff 10cf9a00 0000ffff
+         kern/entry.S:70: <unknown>+0
+K> 
+#+END_SRC
+Each line gives the file name and line within that file of the stack frame's eip, 
+followed by the name of the function and the offset of the eip from the first instruction of the function 
+(e.g., monitor+106 means the return eip is 106 bytes past the beginning of monitor).
+
+Be sure to print the file and function names on a separate line, to avoid confusing the grading script.
+
+Tip: printf format strings provide an easy, albeit obscure, way to print non-null-terminated strings like those in STABS tables. 
+printf("%.*s", length, string) prints at most length characters of string. Take a look at the printf man page to find out why this works.
+
+You may find that some functions are missing from the backtrace. 
+For example, you will probably see a call to monitor() but not to runcmd(). 
+This is because the compiler in-lines some function calls. 
+Other optimizations may cause you to see unexpected line numbers. 
+If you get rid of the -O2 from GNUMakefile, the backtraces may make more sense (but your kernel will run more slowly).
+#+END_QUOTE
+Let's finish lab 1!
+
+Tracing address is not enough!
+We want the function name:)
+
+#+BEGIN_SRC c
+int
+mon_backtrace(int argc, char **argv, struct Trapframe *tf)
+{
+        uint32_t ebp, eip, args[5];
+        struct Eipdebuginfo info;
+        cprintf("Stack backtrace:\n");
+	for(ebp = read_ebp(); ebp != 0; ebp = *((uint32_t *)ebp)) {
+                eip = *((uint32_t *)ebp + 1);
+                debuginfo_eip(eip, &info);
+                args[0] = *((uintptr_t *)ebp + 2);
+	        args[1] = *((uintptr_t *)ebp + 3);
+                args[2] = *((uintptr_t *)ebp + 4);
+	        args[3] = *((uintptr_t *)ebp + 5);
+	        args[4] = *((uintptr_t *)ebp + 6);
+                cprintf("  ebp %08x  eip %08x  args %08x %08x %08x %08x %08x\n",
+	                ebp, eip, args[0], args[1], args[2], args[3], args[4]);
+                cprintf("      %s:%d: %.*s+%d\n", info.eip_file, info.eip_line,
+                        info.eip_fn_namelen, info.eip_fn_name, eip - info.eip_fn_addr);
+        }
+        return 0;
+}
+#+END_SRC
+plumb into =kern/kdebug.c= :
+#+BEGIN_SRC c
+// Your code here.                                                                                                                                      
+stab_binsearch(stabs, &lline, &rline, N_SLINE, addr);
+if(lline <= rline) {
+    info->eip_line = stabs[lline].n_desc;
+}
+else info->eip_line = -1;
+#+END_SRC
+
+Have a test:
+#+BEGIN_SRC 
+Stack backtrace:
+  ebp f010ff18  eip f0100078  args 00000000 00000000 00000000 f010004a f0111308
+      kern/init.c:18: test_backtrace+56
+  ebp f010ff38  eip f01000a1  args 00000000 00000001 f010ff78 f010004a f0111308
+      kern/init.c:16: test_backtrace+97
+  ebp f010ff58  eip f01000a1  args 00000001 00000002 f010ff98 f010004a f0111308
+      kern/init.c:16: test_backtrace+97
+  ebp f010ff78  eip f01000a1  args 00000002 00000003 f010ffb8 f010004a f0111308
+      kern/init.c:16: test_backtrace+97
+  ebp f010ff98  eip f01000a1  args 00000003 00000004 00000000 f010004a f0111308
+      kern/init.c:16: test_backtrace+97
+  ebp f010ffb8  eip f01000a1  args 00000004 00000005 00000000 f010004a f0111308
+      kern/init.c:16: test_backtrace+97
+  ebp f010ffd8  eip f01000f4  args 00000005 00001aac 00000640 00000000 00000000
+      kern/init.c:39: i386_init+78
+  ebp f010fff8  eip f010003e  args 00000003 00001003 00002003 00003003 00004003
+      kern/entry.S:83: <unknown>+0
+#+END_SRC
+
+The last thing, add command to qemu repl:
+#+BEGIN_SRC c
+static struct Command commands[] = {
+    { "help", "Display this list of commands", mon_help },
+    { "kerninfo", "Display information about the kernel", mon_kerninfo },
+    { "backtrace", "Display a listing of function call frames", mon_backtrace}
+};
+#+END_SRC
+Done!
+
+** Epilogue
+Have a grade!
+#+BEGIN_SRC 
+$ make grade
+#+END_SRC
+#+BEGIN_SRC 
+make[1]: Leaving directory '/home/comcx/MIT6.828/lab'
+running JOS: (0.5s) 
+  printf: OK 
+  backtrace count: OK 
+  backtrace arguments: OK 
+  backtrace symbols: OK 
+  backtrace lines: OK 
+Score: 50/50
+#+END_SRC
+Done!
+
+There left some challenges to do,
+See u later:)
+
+
+
 
 
 

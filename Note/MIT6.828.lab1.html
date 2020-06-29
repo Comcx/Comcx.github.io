@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-28 Sun 21:34 -->
+<!-- 2020-06-29 Mon 23:52 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MIT6.828 Lab 1</title>
@@ -244,55 +244,63 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga3d2d3e">1. Software and Environment Setup</a>
+<li><a href="#org1f197f5">1. Software and Environment Setup</a>
 <ul>
-<li><a href="#org99d7687">1.1. Pull ubuntu from docker-hub and make a dockerfile</a></li>
-<li><a href="#org907d1c6">1.2. Install patched QEMU</a>
+<li><a href="#orgff16fc1">1.1. Pull ubuntu from docker-hub and make a dockerfile</a></li>
+<li><a href="#org85d09ba">1.2. Install patched QEMU</a>
 <ul>
-<li><a href="#org0063631">1.2.1. Pitfalls</a></li>
+<li><a href="#orge16fcd8">1.2.1. Pitfalls</a></li>
 </ul>
 </li>
-<li><a href="#org38b1701">1.3. Pull JOS repository</a></li>
+<li><a href="#orgb0ef2f0">1.3. Pull JOS repository</a></li>
 </ul>
 </li>
-<li><a href="#org624f399">2. Part 1: PC Bootstrap</a>
+<li><a href="#orgd4f8613">2. Part 1: PC Bootstrap</a>
 <ul>
-<li><a href="#orgb8f0083">2.1. Exercise 1</a></li>
-<li><a href="#orgd18b419">2.2. The PC's Physical Address Space</a></li>
-<li><a href="#orgda6919e">2.3. Exercise 2</a></li>
+<li><a href="#org3789845">2.1. Exercise 1</a></li>
+<li><a href="#orgfcca574">2.2. The PC's Physical Address Space</a></li>
+<li><a href="#org6932729">2.3. Exercise 2</a></li>
 </ul>
 </li>
-<li><a href="#org5271512">3. Part 2: The Boot Loader</a>
+<li><a href="#orgd10fd1d">3. Part 2: The Boot Loader</a>
 <ul>
-<li><a href="#org1e4a3a2">3.1. Exercise 3</a>
+<li><a href="#orgc58b143">3.1. Exercise 3</a>
 <ul>
-<li><a href="#orge8ca299">3.1.1. GDB useful instructions</a></li>
-<li><a href="#org0b0f5be">3.1.2. Trace 0x7C00</a></li>
-<li><a href="#orgc738fde">3.1.3. Trace bootmain and readect</a></li>
-<li><a href="#orgb604194">3.1.4. Questions</a></li>
+<li><a href="#orgf403c01">3.1.1. GDB useful instructions</a></li>
+<li><a href="#org8d24aba">3.1.2. Trace 0x7C00</a></li>
+<li><a href="#org21d3002">3.1.3. Trace bootmain and readect</a></li>
+<li><a href="#org86c021d">3.1.4. Questions</a></li>
 </ul>
 </li>
-<li><a href="#org8accb9c">3.2. Loading the kernel</a>
+<li><a href="#org2e74333">3.2. Loading the kernel</a>
 <ul>
-<li><a href="#org0c0f77e">3.2.1. Exercise 5</a></li>
-<li><a href="#org6249fa0">3.2.2. ELF format</a></li>
-<li><a href="#org7c7125a">3.2.3. Exercise 5</a></li>
+<li><a href="#orgeae11c7">3.2.1. Exercise 5</a></li>
+<li><a href="#org01bcaa2">3.2.2. ELF format</a></li>
+<li><a href="#org9bfdf99">3.2.3. Exercise 5</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgeb49e25">4. Part 3: The Kernel</a>
+<li><a href="#org58bac30">4. Part 3: The Kernel</a>
 <ul>
-<li><a href="#org03cb6d2">4.1. Exercise 7</a></li>
-<li><a href="#org89cf826">4.2. Formatted Printing to the Console</a>
+<li><a href="#org59edb95">4.1. Exercise 7</a></li>
+<li><a href="#org3493dce">4.2. Formatted Printing to the Console</a>
 <ul>
-<li><a href="#org51e55d2">4.2.1. Exercise 8</a></li>
-<li><a href="#org54d3c2c">4.2.2. Explain the following code from <code>kern/console.c</code> .</a></li>
+<li><a href="#org1365bea">4.2.1. Exercise 8</a></li>
+<li><a href="#orgb274763">4.2.2. Explain the following code from <code>kern/console.c</code> .</a></li>
 </ul>
 </li>
-<li><a href="#org9e001f0">4.3. The Stack</a></li>
+<li><a href="#orgc1cc327">4.3. The Stack</a>
+<ul>
+<li><a href="#org5742cc4">4.3.1. Exercise 9</a></li>
+<li><a href="#org65d6d34">4.3.2. Exercise 10</a></li>
+<li><a href="#org6d6e509">4.3.3. Exercise 11</a></li>
+<li><a href="#org7f53a61">4.3.4. Exercise 12</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a href="#org4e9f341">5. Epilogue</a></li>
 </ul>
 </div>
 </div>
@@ -308,8 +316,8 @@ This is still essential for me to make a better pl someday :)
 <a href="https://pdos.csail.mit.edu/6.828/2018/labs/lab1/">MIT6.828 2018 Lab 1</a>
 </p>
 
-<div id="outline-container-orga3d2d3e" class="outline-2">
-<h2 id="orga3d2d3e"><span class="section-number-2">1</span> Software and Environment Setup</h2>
+<div id="outline-container-org1f197f5" class="outline-2">
+<h2 id="org1f197f5"><span class="section-number-2">1</span> Software and Environment Setup</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The origin course uses <span class="underline">athena</span> and a patched <span class="underline">qemu</span> .
@@ -324,8 +332,8 @@ The process is a little tough though&#x2026;
 </p>
 </div>
 
-<div id="outline-container-org99d7687" class="outline-3">
-<h3 id="org99d7687"><span class="section-number-3">1.1</span> Pull ubuntu from docker-hub and make a dockerfile</h3>
+<div id="outline-container-orgff16fc1" class="outline-3">
+<h3 id="orgff16fc1"><span class="section-number-3">1.1</span> Pull ubuntu from docker-hub and make a dockerfile</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-shell">$ docker pull ubuntu:18.04
@@ -374,8 +382,8 @@ $ docker run -it oslab bash
 </div>
 </div>
 
-<div id="outline-container-org907d1c6" class="outline-3">
-<h3 id="org907d1c6"><span class="section-number-3">1.2</span> Install patched QEMU</h3>
+<div id="outline-container-org85d09ba" class="outline-3">
+<h3 id="org85d09ba"><span class="section-number-3">1.2</span> Install patched QEMU</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 We need to firstly pull the patched qemu following reference page.
@@ -390,8 +398,8 @@ $ make &amp;&amp; make install
 </div>
 </div>
 
-<div id="outline-container-org0063631" class="outline-4">
-<h4 id="org0063631"><span class="section-number-4">1.2.1</span> Pitfalls</h4>
+<div id="outline-container-orge16fcd8" class="outline-4">
+<h4 id="orge16fcd8"><span class="section-number-4">1.2.1</span> Pitfalls</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <ul class="org-ul">
 <li>Executing "./configure &#x2013;disable-kvm &#x2026;" 
@@ -417,8 +425,8 @@ Finally, we are done.
 </div>
 </div>
 
-<div id="outline-container-org38b1701" class="outline-3">
-<h3 id="org38b1701"><span class="section-number-3">1.3</span> Pull JOS repository</h3>
+<div id="outline-container-orgb0ef2f0" class="outline-3">
+<h3 id="orgb0ef2f0"><span class="section-number-3">1.3</span> Pull JOS repository</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
 <pre class="src src-shell">$ git clone https://pdos.csail.mit.edu/6.828/2018/jos.git lab
@@ -435,12 +443,12 @@ $ docker commit &lt;container&gt; mit6.828
 </div>
 </div>
 
-<div id="outline-container-org624f399" class="outline-2">
-<h2 id="org624f399"><span class="section-number-2">2</span> Part 1: PC Bootstrap</h2>
+<div id="outline-container-orgd4f8613" class="outline-2">
+<h2 id="orgd4f8613"><span class="section-number-2">2</span> Part 1: PC Bootstrap</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgb8f0083" class="outline-3">
-<h3 id="orgb8f0083"><span class="section-number-3">2.1</span> Exercise 1</h3>
+<div id="outline-container-org3789845" class="outline-3">
+<h3 id="org3789845"><span class="section-number-3">2.1</span> Exercise 1</h3>
 <div class="outline-text-3" id="text-2-1">
 <blockquote>
 <p>
@@ -466,8 +474,8 @@ Finally, I am comfortable with most of assembly programs, but still lack experie
 </div>
 </div>
 
-<div id="outline-container-orgd18b419" class="outline-3">
-<h3 id="orgd18b419"><span class="section-number-3">2.2</span> The PC's Physical Address Space</h3>
+<div id="outline-container-orgfcca574" class="outline-3">
+<h3 id="orgfcca574"><span class="section-number-3">2.2</span> The PC's Physical Address Space</h3>
 <div class="outline-text-3" id="text-2-2">
 <pre class="example">
 +------------------+  &lt;- 0xFFFFFFFF (4GB)
@@ -541,8 +549,8 @@ so that execution begins at that (CS:IP) segment address.
 </div>
 </div>
 
-<div id="outline-container-orgda6919e" class="outline-3">
-<h3 id="orgda6919e"><span class="section-number-3">2.3</span> Exercise 2</h3>
+<div id="outline-container-org6932729" class="outline-3">
+<h3 id="org6932729"><span class="section-number-3">2.3</span> Exercise 2</h3>
 <div class="outline-text-3" id="text-2-3">
 <blockquote>
 <p>
@@ -588,12 +596,12 @@ This is where the "Starting SeaBIOS" message you see in the QEMU window comes fr
 </div>
 </div>
 
-<div id="outline-container-org5271512" class="outline-2">
-<h2 id="org5271512"><span class="section-number-2">3</span> Part 2: The Boot Loader</h2>
+<div id="outline-container-orgd10fd1d" class="outline-2">
+<h2 id="orgd10fd1d"><span class="section-number-2">3</span> Part 2: The Boot Loader</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org1e4a3a2" class="outline-3">
-<h3 id="org1e4a3a2"><span class="section-number-3">3.1</span> Exercise 3</h3>
+<div id="outline-container-orgc58b143" class="outline-3">
+<h3 id="orgc58b143"><span class="section-number-3">3.1</span> Exercise 3</h3>
 <div class="outline-text-3" id="text-3-1">
 <blockquote>
 <p>
@@ -620,8 +628,8 @@ Then step through the remainder of the boot loader.
 </blockquote>
 </div>
 
-<div id="outline-container-orge8ca299" class="outline-4">
-<h4 id="orge8ca299"><span class="section-number-4">3.1.1</span> GDB useful instructions</h4>
+<div id="outline-container-orgf403c01" class="outline-4">
+<h4 id="orgf403c01"><span class="section-number-4">3.1.1</span> GDB useful instructions</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -720,8 +728,8 @@ Mostly, we will only use <code>c</code> and <code>b</code> and <code>x/N</code> 
 </div>
 </div>
 
-<div id="outline-container-org0b0f5be" class="outline-4">
-<h4 id="org0b0f5be"><span class="section-number-4">3.1.2</span> Trace 0x7C00</h4>
+<div id="outline-container-org8d24aba" class="outline-4">
+<h4 id="org8d24aba"><span class="section-number-4">3.1.2</span> Trace 0x7C00</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <pre class="example">
 (gdb) b *0x7C00
@@ -821,8 +829,8 @@ more likely, its just the header or footer information that comes with every exe
 </div>
 </div>
 
-<div id="outline-container-orgc738fde" class="outline-4">
-<h4 id="orgc738fde"><span class="section-number-4">3.1.3</span> Trace bootmain and readect</h4>
+<div id="outline-container-org21d3002" class="outline-4">
+<h4 id="org21d3002"><span class="section-number-4">3.1.3</span> Trace bootmain and readect</h4>
 <div class="outline-text-4" id="text-3-1-3">
 <ul class="org-ul">
 <li>bootmain code</li>
@@ -831,32 +839,32 @@ more likely, its just the header or footer information that comes with every exe
 <pre class="src src-c"><span style="color: #8ae234; font-weight: bold;">void</span>
 <span style="color: #edd400; font-weight: bold;">bootmain</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">void</span><span style="color: #ffd700;">)</span>
 <span style="color: #ffd700;">{</span>
-        <span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">Proghdr</span> *<span style="color: #ff6347;">ph</span>, *<span style="color: #ff6347;">eph</span>;
+        <span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">Proghdr</span> *<span style="color: #ff6347; font-weight: bold;">ph</span>, *<span style="color: #ff6347; font-weight: bold;">eph</span>;
 
-        <span style="color: #888a85;">// </span><span style="color: #888a85;">read 1st page off disk                                               </span>
+        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">read 1st page off disk                                               </span>
         readseg<span style="color: #00bfff;">(</span><span style="color: #ffa500;">(</span><span style="color: #8ae234; font-weight: bold;">uint32_t</span><span style="color: #ffa500;">)</span> ELFHDR, SECTSIZE*8, 0<span style="color: #00bfff;">)</span>;
 
-        <span style="color: #888a85;">// </span><span style="color: #888a85;">is this a valid ELF?                                                 </span>
+        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">is this a valid ELF?                                                 </span>
         <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #00bfff;">(</span>ELFHDR-&gt;e_magic != ELF_MAGIC<span style="color: #00bfff;">)</span>
-                <span style="color: #729fcf; font-weight: bold;">goto</span> <span style="color: #8ae234;">bad</span>;
+                <span style="color: #729fcf; font-weight: bold;">goto</span> <span style="color: #8ae234; font-weight: bold;">bad</span>;
 
-        <span style="color: #888a85;">// </span><span style="color: #888a85;">load each program segment (ignores ph flags)                         </span>
+        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">load each program segment (ignores ph flags)                         </span>
         ph = <span style="color: #00bfff;">(</span><span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">Proghdr</span> *<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">(</span><span style="color: #ffa500;">(</span><span style="color: #8ae234; font-weight: bold;">uint8_t</span> *<span style="color: #ffa500;">)</span> ELFHDR + ELFHDR-&gt;e_phoff<span style="color: #00bfff;">)</span>;
         eph = ph + ELFHDR-&gt;e_phnum;
         <span style="color: #729fcf; font-weight: bold;">for</span> <span style="color: #00bfff;">(</span>; ph &lt; eph; ph++<span style="color: #00bfff;">)</span>
-                <span style="color: #888a85;">// </span><span style="color: #888a85;">p_pa is the load address of this segment (as well            </span>
-                <span style="color: #888a85;">// </span><span style="color: #888a85;">as the physical address)                                     </span>
+                <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">p_pa is the load address of this segment (as well            </span>
+                <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">as the physical address)                                     </span>
                 readseg<span style="color: #00bfff;">(</span>ph-&gt;p_pa, ph-&gt;p_memsz, ph-&gt;p_offset<span style="color: #00bfff;">)</span>;
 
-        <span style="color: #888a85;">// </span><span style="color: #888a85;">call the entry point from the ELF header                             </span>
-        <span style="color: #888a85;">// </span><span style="color: #888a85;">note: does not return!                                               </span>
+        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">call the entry point from the ELF header                             </span>
+        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">note: does not return!                                               </span>
         <span style="color: #00bfff;">(</span><span style="color: #ffa500;">(</span><span style="color: #8ae234; font-weight: bold;">void</span> <span style="color: #ff7f50;">(</span>*<span style="color: #ff7f50;">)(</span><span style="color: #8ae234; font-weight: bold;">void</span><span style="color: #ff7f50;">)</span><span style="color: #ffa500;">)</span> <span style="color: #ffa500;">(</span>ELFHDR-&gt;e_entry<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)()</span>;
 
-<span style="color: #8ae234;">bad</span>:
+<span style="color: #8ae234; font-weight: bold;">bad</span>:
         outw<span style="color: #00bfff;">(</span>0x8A00, 0x8A00<span style="color: #00bfff;">)</span>;
         outw<span style="color: #00bfff;">(</span>0x8A00, 0x8E00<span style="color: #00bfff;">)</span>;
         <span style="color: #729fcf; font-weight: bold;">while</span> <span style="color: #00bfff;">(</span>1<span style="color: #00bfff;">)</span>
-                <span style="color: #888a85;">/* </span><span style="color: #888a85;">do nothing </span><span style="color: #888a85;">*/</span>;
+                <span style="color: #888a85; font-style: italic;">/* </span><span style="color: #888a85; font-style: italic;">do nothing </span><span style="color: #888a85; font-style: italic;">*/</span>;
 <span style="color: #ffd700;">}</span>
 
 </pre>
@@ -884,8 +892,8 @@ The for loop checks eph range each loop.
 </div>
 </div>
 
-<div id="outline-container-orgb604194" class="outline-4">
-<h4 id="orgb604194"><span class="section-number-4">3.1.4</span> Questions</h4>
+<div id="outline-container-org86c021d" class="outline-4">
+<h4 id="org86c021d"><span class="section-number-4">3.1.4</span> Questions</h4>
 <div class="outline-text-4" id="text-3-1-4">
 <ul class="org-ul">
 <li><p>
@@ -930,12 +938,12 @@ from the variable <code>ELFHDR-&gt;e_phoff</code>.
 </div>
 </div>
 
-<div id="outline-container-org8accb9c" class="outline-3">
-<h3 id="org8accb9c"><span class="section-number-3">3.2</span> Loading the kernel</h3>
+<div id="outline-container-org2e74333" class="outline-3">
+<h3 id="org2e74333"><span class="section-number-3">3.2</span> Loading the kernel</h3>
 <div class="outline-text-3" id="text-3-2">
 </div>
-<div id="outline-container-org0c0f77e" class="outline-4">
-<h4 id="org0c0f77e"><span class="section-number-4">3.2.1</span> Exercise 5</h4>
+<div id="outline-container-orgeae11c7" class="outline-4">
+<h4 id="orgeae11c7"><span class="section-number-4">3.2.1</span> Exercise 5</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <blockquote>
 <p>
@@ -979,10 +987,10 @@ Code of <i>pointers.c</i>.
 <span style="color: #8ae234; font-weight: bold;">void</span>
 <span style="color: #edd400; font-weight: bold;">f</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">void</span><span style="color: #ffd700;">)</span>
 <span style="color: #ffd700;">{</span>
-    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347;">a</span><span style="color: #00bfff;">[</span>4<span style="color: #00bfff;">]</span>;
-    <span style="color: #8ae234; font-weight: bold;">int</span> *<span style="color: #ff6347;">b</span> = malloc<span style="color: #00bfff;">(</span>16<span style="color: #00bfff;">)</span>;
-    <span style="color: #8ae234; font-weight: bold;">int</span> *<span style="color: #ff6347;">c</span>;
-    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347;">i</span>;
+    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">a</span><span style="color: #00bfff;">[</span>4<span style="color: #00bfff;">]</span>;
+    <span style="color: #8ae234; font-weight: bold;">int</span> *<span style="color: #ff6347; font-weight: bold;">b</span> = malloc<span style="color: #00bfff;">(</span>16<span style="color: #00bfff;">)</span>;
+    <span style="color: #8ae234; font-weight: bold;">int</span> *<span style="color: #ff6347; font-weight: bold;">c</span>;
+    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span>;
 
     printf<span style="color: #00bfff;">(</span><span style="color: #ad7fa8; font-style: italic;">"1: a = %p, b = %p, c = %p\n"</span>, a, b, c<span style="color: #00bfff;">)</span>;
 
@@ -1015,7 +1023,7 @@ Code of <i>pointers.c</i>.
 <span style="color: #ffd700;">}</span>
 
 <span style="color: #8ae234; font-weight: bold;">int</span>
-<span style="color: #edd400; font-weight: bold;">main</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347;">ac</span>, <span style="color: #8ae234; font-weight: bold;">char</span> **<span style="color: #ff6347;">av</span><span style="color: #ffd700;">)</span>
+<span style="color: #edd400; font-weight: bold;">main</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">ac</span>, <span style="color: #8ae234; font-weight: bold;">char</span> **<span style="color: #ff6347; font-weight: bold;">av</span><span style="color: #ffd700;">)</span>
 <span style="color: #ffd700;">{</span>
     f<span style="color: #00bfff;">()</span>;
     <span style="color: #729fcf; font-weight: bold;">return</span> 0;
@@ -1040,8 +1048,8 @@ Well I'm done, how about u?
 </div>
 </div>
 
-<div id="outline-container-org6249fa0" class="outline-4">
-<h4 id="org6249fa0"><span class="section-number-4">3.2.2</span> ELF format</h4>
+<div id="outline-container-org01bcaa2" class="outline-4">
+<h4 id="org01bcaa2"><span class="section-number-4">3.2.2</span> ELF format</h4>
 <div class="outline-text-4" id="text-3-2-2">
 <ul class="org-ul">
 <li><b>.text</b>: The program's executable instructions.</li>
@@ -1098,8 +1106,8 @@ well, just a general concept here, I shall study in-depth when I review compiler
 </div>
 </div>
 
-<div id="outline-container-org7c7125a" class="outline-4">
-<h4 id="org7c7125a"><span class="section-number-4">3.2.3</span> Exercise 5</h4>
+<div id="outline-container-org9bfdf99" class="outline-4">
+<h4 id="org9bfdf99"><span class="section-number-4">3.2.3</span> Exercise 5</h4>
 <div class="outline-text-4" id="text-3-2-3">
 <blockquote>
 <p>
@@ -1114,12 +1122,12 @@ and trace into the boot loader again to see what happens. Don't forget to change
 </div>
 </div>
 
-<div id="outline-container-orgeb49e25" class="outline-2">
-<h2 id="orgeb49e25"><span class="section-number-2">4</span> Part 3: The Kernel</h2>
+<div id="outline-container-org58bac30" class="outline-2">
+<h2 id="org58bac30"><span class="section-number-2">4</span> Part 3: The Kernel</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Kernel! Things going to become interesting!
-Let's first try to figure out one remained question above:
+Let's first try to figure out one remained question on <span class="underline">ELF format</span> above:
 </p>
 <blockquote>
 <p>
@@ -1140,8 +1148,8 @@ Well, it seems we still have more work to do:)
 </p>
 </div>
 
-<div id="outline-container-org03cb6d2" class="outline-3">
-<h3 id="org03cb6d2"><span class="section-number-3">4.1</span> Exercise 7</h3>
+<div id="outline-container-org59edb95" class="outline-3">
+<h3 id="org59edb95"><span class="section-number-3">4.1</span> Exercise 7</h3>
 <div class="outline-text-3" id="text-4-1">
 <blockquote>
 <p>
@@ -1201,12 +1209,12 @@ Address mapping done.
 </div>
 </div>
 
-<div id="outline-container-org89cf826" class="outline-3">
-<h3 id="org89cf826"><span class="section-number-3">4.2</span> Formatted Printing to the Console</h3>
+<div id="outline-container-org3493dce" class="outline-3">
+<h3 id="org3493dce"><span class="section-number-3">4.2</span> Formatted Printing to the Console</h3>
 <div class="outline-text-3" id="text-4-2">
 </div>
-<div id="outline-container-org51e55d2" class="outline-4">
-<h4 id="org51e55d2"><span class="section-number-4">4.2.1</span> Exercise 8</h4>
+<div id="outline-container-org1365bea" class="outline-4">
+<h4 id="org1365bea"><span class="section-number-4">4.2.1</span> Exercise 8</h4>
 <div class="outline-text-4" id="text-4-2-1">
 <blockquote>
 <p>
@@ -1227,9 +1235,9 @@ Well, it's easy to complete the code, but it's still alittle hard for me to unde
 The most important part is here:
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #888a85;">// </span><span style="color: #888a85;">output a character to the console</span>
+<pre class="src src-c"><span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">output a character to the console</span>
 <span style="color: #729fcf; font-weight: bold;">static</span> <span style="color: #8ae234; font-weight: bold;">void</span>
-<span style="color: #edd400; font-weight: bold;">cons_putc</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347;">c</span><span style="color: #ffd700;">)</span>
+<span style="color: #edd400; font-weight: bold;">cons_putc</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">c</span><span style="color: #ffd700;">)</span>
 <span style="color: #ffd700;">{</span>
     serial_putc<span style="color: #00bfff;">(</span>c<span style="color: #00bfff;">)</span>;
     lpt_putc<span style="color: #00bfff;">(</span>c<span style="color: #00bfff;">)</span>;
@@ -1245,18 +1253,18 @@ Let's firstly finish the code and try to analyse more codes&#x2026;
 <pre class="src src-c"><span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #ad7fa8; font-style: italic;">'o'</span>:
     num = getuint<span style="color: #ffd700;">(</span>&amp;ap, lflag<span style="color: #ffd700;">)</span>;
     base = 8;
-    <span style="color: #729fcf; font-weight: bold;">goto</span> <span style="color: #8ae234;">number</span>;
+    <span style="color: #729fcf; font-weight: bold;">goto</span> <span style="color: #8ae234; font-weight: bold;">number</span>;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org54d3c2c" class="outline-4">
-<h4 id="org54d3c2c"><span class="section-number-4">4.2.2</span> Explain the following code from <code>kern/console.c</code> .</h4>
+<div id="outline-container-orgb274763" class="outline-4">
+<h4 id="orgb274763"><span class="section-number-4">4.2.2</span> Explain the following code from <code>kern/console.c</code> .</h4>
 <div class="outline-text-4" id="text-4-2-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #ffd700;">(</span>crt_pos &gt;= CRT_SIZE<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
-    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347;">i</span>;
+    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">i</span>;
     memmove<span style="color: #00bfff;">(</span>crt_buf, crt_buf + CRT_COLS, <span style="color: #ffa500;">(</span>CRT_SIZE - CRT_COLS<span style="color: #ffa500;">)</span> * <span style="color: #729fcf; font-weight: bold;">sizeof</span><span style="color: #ffa500;">(</span>uint16_t<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span>;
     <span style="color: #729fcf; font-weight: bold;">for</span> <span style="color: #00bfff;">(</span>i = CRT_SIZE - CRT_COLS; i &lt; CRT_SIZE; i++<span style="color: #00bfff;">)</span>
         crt_buf<span style="color: #00bfff;">[</span>i<span style="color: #00bfff;">]</span> = 0x0700 | <span style="color: #ad7fa8; font-style: italic;">' '</span>;
@@ -1268,14 +1276,406 @@ Let's firstly finish the code and try to analyse more codes&#x2026;
 </div>
 </div>
 
-<div id="outline-container-org9e001f0" class="outline-3">
-<h3 id="org9e001f0"><span class="section-number-3">4.3</span> The Stack</h3>
+<div id="outline-container-orgc1cc327" class="outline-3">
+<h3 id="orgc1cc327"><span class="section-number-3">4.3</span> The Stack</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+Exploring in more detail the way the C language uses the stack on the x86.
+</p>
+</div>
+
+<div id="outline-container-org5742cc4" class="outline-4">
+<h4 id="org5742cc4"><span class="section-number-4">4.3.1</span> Exercise 9</h4>
+<div class="outline-text-4" id="text-4-3-1">
+<blockquote>
+<p>
+Determine where the kernel initializes its stack, and exactly where in memory its stack is located. 
+How does the kernel reserve space for its stack? And at which "end" of this reserved area is the stack pointer initialized to point to?
+</p>
+</blockquote>
+
+<p>
+I noticed codes in <code>kern/entry.S</code> :
+</p>
+<pre class="example">
+.data
+###################################################################
+# boot stack
+###################################################################
+        .p2align        PGSHIFT         # force page alignment
+        .globl          bootstack
+bootstack:
+        .space          KSTKSIZE
+	.globl          bootstacktop
+bootstacktop:
+</pre>
+
+<p>
+and settings here:
+</p>
+<pre class="example">
+ # Clear the frame pointer register (EBP)
+ # so that once we get into debugging C code,
+ # stack backtraces will be terminated properly.
+ movl    $0x0,%ebp                       # nuke frame pointer
+
+ # Set the stack pointer
+ movl    $(bootstacktop),%esp
+</pre>
+
+<p>
+Moreover, in <code>inc/memlayout.h</code> :
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Kernel stack.</span>
+<span style="color: #729fcf;">#define</span> <span style="color: #ff6347; font-weight: bold;">KSTACKTOP</span>    KERNBASE
+<span style="color: #729fcf;">#define</span> <span style="color: #ff6347; font-weight: bold;">KSTKSIZE</span>    <span style="color: #ffd700;">(</span>8*PGSIZE<span style="color: #ffd700;">)</span>           <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">size of a kernel stack</span>
+<span style="color: #729fcf;">#define</span> <span style="color: #ff6347; font-weight: bold;">KSTKGAP</span>        <span style="color: #ffd700;">(</span>8*PGSIZE<span style="color: #ffd700;">)</span>           <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">size of a kernel stack guard</span>
+</pre>
+</div>
+
+<p>
+<code>PGSIZE</code> is defined in <code>inc/mmu.h</code> , which is <code>4096</code> .
+Thus <code>KSTKSIZE = 32KB</code> .
+</p>
+
+<p>
+Before jump into exercise 10, I want to draw an overview of current memory layout.
+</p>
+<pre class="example">
++------------------+  &lt;- 0xFFFFFFFF (4GB)
+|      32-bit      |
+|  memory mapped   |
+|     devices      |
+|                  |
+/\/\/\/\/\/\/\/\/\/\
+
+/\/\/\/\/\/\/\/\/\/\
+|                  |
+|      Unused      |
+|                  |
++------------------+  &lt;- depends on amount of RAM
+|                  |
+|------------------|  &lt;- 0x00110000 (Stack top)
+|   Kernel stack   |
+|------------------|  &lt;- 0x0010fc00 (end of stack)
+|   Kernel codes   |
++------------------+  &lt;- 0x00100000 (1MB)
+|     BIOS ROM     |
++------------------+  &lt;- 0x000F0000 (960KB)
+|  16-bit devices, |
+|  expansion ROMs  |
++------------------+  &lt;- 0x000C0000 (768KB)
+|   VGA Display    |
++------------------+  &lt;- 0x000A0000 (640KB)
+|                  |
+|    Low Memory    |
+|                  |
++------------------+  &lt;- 0x00000000
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org65d6d34" class="outline-4">
+<h4 id="org65d6d34"><span class="section-number-4">4.3.2</span> Exercise 10</h4>
+<div class="outline-text-4" id="text-4-3-2">
+<blockquote>
+<p>
+To become familiar with the C calling conventions on the x86, 
+find the address of the test<sub>backtrace</sub> function in obj/kern/kernel.asm, 
+set a breakpoint there, and examine what happens each time it gets called after the kernel starts. 
+How many 32-bit words does each recursive nesting level of test<sub>backtrace</sub> push on the stack, and what are those words?
+</p>
+
+<p>
+Note that, for this exercise to work properly, 
+you should be using the patched version of QEMU available on the tools page or on Athena. 
+Otherwise, you'll have to manually translate all breakpoint and memory addresses to linear addresses.
+</p>
+</blockquote>
+
+<ul class="org-ul">
+<li>Function <code>test_backtrace</code> in <code>obj/kern/kernel.asm</code> :</li>
+</ul>
+<pre class="example">
+f0100040 &lt;test_backtrace&gt;:
+</pre>
+<p>
+The C codes of <code>test_backtrace</code> is in <code>kern/init.c</code> :
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Test the stack backtrace function (lab 1 only)                               </span>
+<span style="color: #8ae234; font-weight: bold;">void</span>
+<span style="color: #edd400; font-weight: bold;">test_backtrace</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">x</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>
+        cprintf<span style="color: #00bfff;">(</span><span style="color: #ad7fa8; font-style: italic;">"entering test_backtrace %d\n"</span>, x<span style="color: #00bfff;">)</span>;
+        <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #00bfff;">(</span>x &gt; 0<span style="color: #00bfff;">)</span>
+                test_backtrace<span style="color: #00bfff;">(</span>x-1<span style="color: #00bfff;">)</span>;
+        <span style="color: #729fcf; font-weight: bold;">else</span>
+                mon_backtrace<span style="color: #00bfff;">(</span>0, 0, 0<span style="color: #00bfff;">)</span>;
+        cprintf<span style="color: #00bfff;">(</span><span style="color: #ad7fa8; font-style: italic;">"leaving test_backtrace %d\n"</span>, x<span style="color: #00bfff;">)</span>;
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+
+<p>
+Register <code>%bp</code> makes stack linked.
+This is a recursion function, let's test this in qemu.
+Firstly, we need to implement more codes&#x2026;
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6d6e509" class="outline-4">
+<h4 id="org6d6e509"><span class="section-number-4">4.3.3</span> Exercise 11</h4>
+<div class="outline-text-4" id="text-4-3-3">
+<blockquote>
+<p>
+Implement the backtrace function as specified above. 
+Use the same format as in the example, since otherwise the grading script will be confused. 
+When you think you have it working right, run make grade to see if its output conforms to what our grading script expects, 
+and fix it if it doesn't. 
+After you have handed in your Lab 1 code, you are welcome to change the output format of the backtrace function any way you like.
+</p>
+
+<p>
+If you use read<sub>ebp</sub>(), note that GCC may generate "optimized" code that 
+calls read<sub>ebp</sub>() before mon<sub>backtrace</sub>()'s function prologue, 
+which results in an incomplete stack trace (the stack frame of the most recent function call is missing). 
+While we have tried to disable optimizations that cause this reordering, 
+you may want to examine the assembly of mon<sub>backtrace</sub>() and make sure the call to read<sub>ebp</sub>() is happening after the function prologue.
+</p>
+</blockquote>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #8ae234; font-weight: bold;">int</span>
+<span style="color: #edd400; font-weight: bold;">mon_backtrace</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">argc</span>, <span style="color: #8ae234; font-weight: bold;">char</span> **<span style="color: #ff6347; font-weight: bold;">argv</span>, <span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">Trapframe</span> *<span style="color: #ff6347; font-weight: bold;">tf</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>
+        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Your code here.                                                           </span>
+        <span style="color: #8ae234; font-weight: bold;">uint32_t</span> <span style="color: #ff6347; font-weight: bold;">ebp</span>, <span style="color: #ff6347; font-weight: bold;">eip</span>, <span style="color: #ff6347; font-weight: bold;">args</span><span style="color: #00bfff;">[</span>5<span style="color: #00bfff;">]</span>;
+        cprintf<span style="color: #00bfff;">(</span><span style="color: #ad7fa8; font-style: italic;">"Stack backtrace:\n"</span><span style="color: #00bfff;">)</span>;
+        <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span>ebp = read_ebp<span style="color: #ffa500;">()</span>; ebp != 0; ebp = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uint32_t</span> *<span style="color: #ff7f50;">)</span>ebp<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+                eip = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uint32_t</span> *<span style="color: #ff7f50;">)</span>ebp + 1<span style="color: #ffa500;">)</span>;
+                args<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">]</span> = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uintptr_t</span> *<span style="color: #ff7f50;">)</span>ebp + 2<span style="color: #ffa500;">)</span>;
+                args<span style="color: #ffa500;">[</span>1<span style="color: #ffa500;">]</span> = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uintptr_t</span> *<span style="color: #ff7f50;">)</span>ebp + 3<span style="color: #ffa500;">)</span>;
+                args<span style="color: #ffa500;">[</span>2<span style="color: #ffa500;">]</span> = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uintptr_t</span> *<span style="color: #ff7f50;">)</span>ebp + 4<span style="color: #ffa500;">)</span>;
+                args<span style="color: #ffa500;">[</span>3<span style="color: #ffa500;">]</span> = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uintptr_t</span> *<span style="color: #ff7f50;">)</span>ebp + 5<span style="color: #ffa500;">)</span>;
+                args<span style="color: #ffa500;">[</span>4<span style="color: #ffa500;">]</span> = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uintptr_t</span> *<span style="color: #ff7f50;">)</span>ebp + 6<span style="color: #ffa500;">)</span>;
+                cprintf<span style="color: #ffa500;">(</span><span style="color: #ad7fa8; font-style: italic;">"  ebp %08x  eip %08x  args %08x %08x %08x %08x %08x\n"</span>,
+                        ebp, eip, args<span style="color: #ff7f50;">[</span>0<span style="color: #ff7f50;">]</span>, args<span style="color: #ff7f50;">[</span>1<span style="color: #ff7f50;">]</span>, args<span style="color: #ff7f50;">[</span>2<span style="color: #ff7f50;">]</span>, args<span style="color: #ff7f50;">[</span>3<span style="color: #ff7f50;">]</span>, args<span style="color: #ff7f50;">[</span>4<span style="color: #ff7f50;">]</span><span style="color: #ffa500;">)</span>;
+        <span style="color: #00bfff;">}</span>
+        <span style="color: #729fcf; font-weight: bold;">return</span> 0;
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+<pre class="example">
+entering test_backtrace 5
+entering test_backtrace 4
+entering test_backtrace 3
+entering test_backtrace 2
+entering test_backtrace 1
+entering test_backtrace 0
+Stack backtrace:
+  ebp f010ff18  eip f0100078  args 00000000 00000000 00000000 f010004a f0111308
+  ebp f010ff38  eip f01000a1  args 00000000 00000001 f010ff78 f010004a f0111308
+  ebp f010ff58  eip f01000a1  args 00000001 00000002 f010ff98 f010004a f0111308
+  ebp f010ff78  eip f01000a1  args 00000002 00000003 f010ffb8 f010004a f0111308
+  ebp f010ff98  eip f01000a1  args 00000003 00000004 00000000 f010004a f0111308
+  ebp f010ffb8  eip f01000a1  args 00000004 00000005 00000000 f010004a f0111308
+  ebp f010ffd8  eip f01000f4  args 00000005 00001aac 00000640 00000000 00000000
+  ebp f010fff8  eip f010003e  args 00000003 00001003 00002003 00003003 00004003
+leaving test_backtrace 0
+leaving test_backtrace 1
+leaving test_backtrace 2
+leaving test_backtrace 3
+leaving test_backtrace 4
+leaving test_backtrace 5
+</pre>
+<p>
+Done!
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7f53a61" class="outline-4">
+<h4 id="org7f53a61"><span class="section-number-4">4.3.4</span> Exercise 12</h4>
+<div class="outline-text-4" id="text-4-3-4">
+<blockquote>
+<p>
+Modify your stack backtrace function to display, for each eip, the function name, source file name, and line number corresponding to that eip.
+</p>
+
+<p>
+In debuginfo<sub>eip</sub>, where do _<sub>STAB</sub><sub>*</sub> come from? This question has a long answer; to help you to discover the answer, here are some things you might want to do:
+</p>
+
+<p>
+look in the file kern/kernel.ld for _<sub>STAB</sub><sub>*</sub>
+run objdump -h obj/kern/kernel
+run objdump -G obj/kern/kernel
+run gcc -pipe -nostdinc -O2 -fno-builtin -I. -MD -Wall -Wno-format -DJOS<sub>KERNEL</sub> -gstabs -c -S kern/init.c, and look at init.s.
+see if the bootloader loads the symbol table in memory as part of loading the kernel binary
+Complete the implementation of debuginfo<sub>eip</sub> by inserting the call to stab<sub>binsearch</sub> to find the line number for an address.
+</p>
+
+<p>
+Add a backtrace command to the kernel monitor, and extend your implementation of mon<sub>backtrace</sub> to call 
+debuginfo<sub>eip</sub> and print a line for each stack frame of the form:
+</p>
+<pre class="example">
+K&gt; backtrace
+Stack backtrace:
+  ebp f010ff78  eip f01008ae  args 00000001 f010ff8c 00000000 f0110580 00000000
+         kern/monitor.c:143: monitor+106
+  ebp f010ffd8  eip f0100193  args 00000000 00001aac 00000660 00000000 00000000
+         kern/init.c:49: i386_init+59
+  ebp f010fff8  eip f010003d  args 00000000 00000000 0000ffff 10cf9a00 0000ffff
+         kern/entry.S:70: &lt;unknown&gt;+0
+K&gt; 
+</pre>
+<p>
+Each line gives the file name and line within that file of the stack frame's eip, 
+followed by the name of the function and the offset of the eip from the first instruction of the function 
+(e.g., monitor+106 means the return eip is 106 bytes past the beginning of monitor).
+</p>
+
+<p>
+Be sure to print the file and function names on a separate line, to avoid confusing the grading script.
+</p>
+
+<p>
+Tip: printf format strings provide an easy, albeit obscure, way to print non-null-terminated strings like those in STABS tables. 
+printf("%.*s", length, string) prints at most length characters of string. Take a look at the printf man page to find out why this works.
+</p>
+
+<p>
+You may find that some functions are missing from the backtrace. 
+For example, you will probably see a call to monitor() but not to runcmd(). 
+This is because the compiler in-lines some function calls. 
+Other optimizations may cause you to see unexpected line numbers. 
+If you get rid of the -O2 from GNUMakefile, the backtraces may make more sense (but your kernel will run more slowly).
+</p>
+</blockquote>
+<p>
+Let's finish lab 1!
+</p>
+
+<p>
+Tracing address is not enough!
+We want the function name:)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #8ae234; font-weight: bold;">int</span>
+<span style="color: #edd400; font-weight: bold;">mon_backtrace</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">argc</span>, <span style="color: #8ae234; font-weight: bold;">char</span> **<span style="color: #ff6347; font-weight: bold;">argv</span>, <span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">Trapframe</span> *<span style="color: #ff6347; font-weight: bold;">tf</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>
+        <span style="color: #8ae234; font-weight: bold;">uint32_t</span> <span style="color: #ff6347; font-weight: bold;">ebp</span>, <span style="color: #ff6347; font-weight: bold;">eip</span>, <span style="color: #ff6347; font-weight: bold;">args</span><span style="color: #00bfff;">[</span>5<span style="color: #00bfff;">]</span>;
+        <span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">Eipdebuginfo</span> <span style="color: #ff6347; font-weight: bold;">info</span>;
+        cprintf<span style="color: #00bfff;">(</span><span style="color: #ad7fa8; font-style: italic;">"Stack backtrace:\n"</span><span style="color: #00bfff;">)</span>;
+        <span style="color: #729fcf; font-weight: bold;">for</span><span style="color: #00bfff;">(</span>ebp = read_ebp<span style="color: #ffa500;">()</span>; ebp != 0; ebp = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uint32_t</span> *<span style="color: #ff7f50;">)</span>ebp<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+                eip = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uint32_t</span> *<span style="color: #ff7f50;">)</span>ebp + 1<span style="color: #ffa500;">)</span>;
+                debuginfo_eip<span style="color: #ffa500;">(</span>eip, &amp;info<span style="color: #ffa500;">)</span>;
+                args<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">]</span> = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uintptr_t</span> *<span style="color: #ff7f50;">)</span>ebp + 2<span style="color: #ffa500;">)</span>;
+                args<span style="color: #ffa500;">[</span>1<span style="color: #ffa500;">]</span> = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uintptr_t</span> *<span style="color: #ff7f50;">)</span>ebp + 3<span style="color: #ffa500;">)</span>;
+                args<span style="color: #ffa500;">[</span>2<span style="color: #ffa500;">]</span> = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uintptr_t</span> *<span style="color: #ff7f50;">)</span>ebp + 4<span style="color: #ffa500;">)</span>;
+                args<span style="color: #ffa500;">[</span>3<span style="color: #ffa500;">]</span> = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uintptr_t</span> *<span style="color: #ff7f50;">)</span>ebp + 5<span style="color: #ffa500;">)</span>;
+                args<span style="color: #ffa500;">[</span>4<span style="color: #ffa500;">]</span> = *<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">uintptr_t</span> *<span style="color: #ff7f50;">)</span>ebp + 6<span style="color: #ffa500;">)</span>;
+                cprintf<span style="color: #ffa500;">(</span><span style="color: #ad7fa8; font-style: italic;">"  ebp %08x  eip %08x  args %08x %08x %08x %08x %08x\n"</span>,
+                        ebp, eip, args<span style="color: #ff7f50;">[</span>0<span style="color: #ff7f50;">]</span>, args<span style="color: #ff7f50;">[</span>1<span style="color: #ff7f50;">]</span>, args<span style="color: #ff7f50;">[</span>2<span style="color: #ff7f50;">]</span>, args<span style="color: #ff7f50;">[</span>3<span style="color: #ff7f50;">]</span>, args<span style="color: #ff7f50;">[</span>4<span style="color: #ff7f50;">]</span><span style="color: #ffa500;">)</span>;
+                cprintf<span style="color: #ffa500;">(</span><span style="color: #ad7fa8; font-style: italic;">"      %s:%d: %.*s+%d\n"</span>, info.eip_file, info.eip_line,
+                        info.eip_fn_namelen, info.eip_fn_name, eip - info.eip_fn_addr<span style="color: #ffa500;">)</span>;
+        <span style="color: #00bfff;">}</span>
+        <span style="color: #729fcf; font-weight: bold;">return</span> 0;
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+<p>
+plumb into <code>kern/kdebug.c</code> :
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Your code here.                                                                                                                                      </span>
+<span style="color: #edd400; font-weight: bold;">stab_binsearch</span><span style="color: #ffd700;">(</span>stabs, &amp;lline, &amp;rline, N_SLINE, addr<span style="color: #ffd700;">)</span>;
+<span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffd700;">(</span>lline &lt;= rline<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
+    info-&gt;eip_line = stabs<span style="color: #00bfff;">[</span>lline<span style="color: #00bfff;">]</span>.n_desc;
+<span style="color: #ffd700;">}</span>
+<span style="color: #729fcf; font-weight: bold;">else</span> info-&gt;eip_line = -1;
+</pre>
+</div>
+
+<p>
+Have a test:
+</p>
+<pre class="example">
+Stack backtrace:
+  ebp f010ff18  eip f0100078  args 00000000 00000000 00000000 f010004a f0111308
+      kern/init.c:18: test_backtrace+56
+  ebp f010ff38  eip f01000a1  args 00000000 00000001 f010ff78 f010004a f0111308
+      kern/init.c:16: test_backtrace+97
+  ebp f010ff58  eip f01000a1  args 00000001 00000002 f010ff98 f010004a f0111308
+      kern/init.c:16: test_backtrace+97
+  ebp f010ff78  eip f01000a1  args 00000002 00000003 f010ffb8 f010004a f0111308
+      kern/init.c:16: test_backtrace+97
+  ebp f010ff98  eip f01000a1  args 00000003 00000004 00000000 f010004a f0111308
+      kern/init.c:16: test_backtrace+97
+  ebp f010ffb8  eip f01000a1  args 00000004 00000005 00000000 f010004a f0111308
+      kern/init.c:16: test_backtrace+97
+  ebp f010ffd8  eip f01000f4  args 00000005 00001aac 00000640 00000000 00000000
+      kern/init.c:39: i386_init+78
+  ebp f010fff8  eip f010003e  args 00000003 00001003 00002003 00003003 00004003
+      kern/entry.S:83: &lt;unknown&gt;+0
+</pre>
+
+<p>
+The last thing, add command to qemu repl:
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #729fcf; font-weight: bold;">static</span> <span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">Command</span> <span style="color: #ff6347; font-weight: bold;">commands</span><span style="color: #ffd700;">[]</span> = <span style="color: #ffd700;">{</span>
+    <span style="color: #00bfff;">{</span> <span style="color: #ad7fa8; font-style: italic;">"help"</span>, <span style="color: #ad7fa8; font-style: italic;">"Display this list of commands"</span>, mon_help <span style="color: #00bfff;">}</span>,
+    <span style="color: #00bfff;">{</span> <span style="color: #ad7fa8; font-style: italic;">"kerninfo"</span>, <span style="color: #ad7fa8; font-style: italic;">"Display information about the kernel"</span>, mon_kerninfo <span style="color: #00bfff;">}</span>,
+    <span style="color: #00bfff;">{</span> <span style="color: #ad7fa8; font-style: italic;">"backtrace"</span>, <span style="color: #ad7fa8; font-style: italic;">"Display a listing of function call frames"</span>, mon_backtrace<span style="color: #00bfff;">}</span>
+<span style="color: #ffd700;">}</span>;
+</pre>
+</div>
+<p>
+Done!
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4e9f341" class="outline-2">
+<h2 id="org4e9f341"><span class="section-number-2">5</span> Epilogue</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Have a grade!
+</p>
+<pre class="example">
+$ make grade
+</pre>
+<pre class="example">
+make[1]: Leaving directory '/home/comcx/MIT6.828/lab'
+running JOS: (0.5s) 
+  printf: OK 
+  backtrace count: OK 
+  backtrace arguments: OK 
+  backtrace symbols: OK 
+  backtrace lines: OK 
+Score: 50/50
+</pre>
+<p>
+Done!
+</p>
+
+<p>
+There left some challenges to do,
+See u later:)
+</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-06-28 Sun 21:34</p>
+<p class="date">Created: 2020-06-29 Mon 23:52</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
