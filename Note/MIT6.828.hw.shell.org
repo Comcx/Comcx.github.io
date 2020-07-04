@@ -1,0 +1,102 @@
+#+Title:  MIT6.828 Homework - Shell
+#+Author: Comcx
+
+#+SETUPFILE: theme-readtheorg-local.setup
+
+
+Download =sh.c= from [[https://pdos.csail.mit.edu/6.828/2018/homework/sh.c][6.828 shell]].
+
+** Implement simple functions
+
+*** Implement with =execv=  
+#+BEGIN_SRC c
+case ' ':
+    ecmd = (struct execcmd*)cmd;
+    if(ecmd->argv[0] == 0)
+      _exit(0);
+    // fprintf(stderr, "exec not implemented\n");                                
+    // Your code here ...                                                       
+    if (!access(ecmd->argv[0], F_OK)) { //cmd exists in current directory       
+      execv(ecmd->argv[0], ecmd->argv);
+    }
+    else {
+      char path[128] = {0};
+      char *root = "/bin/";
+      strcpy(path, root);         // path = "/bin/"                             
+      strcat(path, ecmd->argv[0]);// path = "/bin/<cmd>"                        
+      if(!access(path, F_OK)) {
+        execv(path, ecmd->argv);
+      }
+      else {
+        fprintf(stderr, "Command <%s> not found.\n", ecmd->argv[0]);
+      }
+    }
+    break;
+#+END_SRC
+
+*** Implement IO redirection
+#+BEGIN_QUOTE
+Implement I/O redirection commands so that you can run:
+#+BEGIN_SRC 
+echo "6.828 is cool" > x.txt
+cat < x.txt
+#+END_SRC
+#+END_QUOTE
+#+BEGIN_SRC c
+  case '>':
+  case '<':
+    rcmd = (struct redircmd*)cmd;
+    // fprintf(stderr, "redir not implemented\n");
+    // Your code here ...                                                       
+    close(rcmd->fd); //close fnode with id 0                                    
+    if(open(rcmd->file, rcmd->flags, 0777) < 0) {
+      fprintf(stderr, "open %s failed!\n", rcmd->file);
+      exit(0);
+    }
+    runcmd(rcmd->cmd);
+    break;
+#+END_SRC
+
+*** Implement Pipes
+#+BEGIN_QUOTE
+Implement pipes so that you can run command pipelines such as:
+#+BEGIN_SRC 
+$ ls | sort | uniq | wc
+#+END_SRC
+#+END_QUOTE
+#+BEGIN_SRC c
+case '|':
+    pcmd = (struct pipecmd*)cmd;
+    // fprintf(stderr, "pipe not implemented\n");                               
+    // Your code here ...                                                       
+    int p[2], r;
+    pipe(p);
+    if (fork1() == 0) {
+      close(1);
+      dup(p[1]);  // write-end                                                  
+      close(p[0]);
+      close(p[1]);
+      runcmd(pcmd->left);
+    }
+    if (fork1() == 0) {
+      close(0);
+      dup(p[0]);  // read-end                                                   
+      close(p[0]);
+      close(p[1]);
+      runcmd(pcmd->right);
+    }
+    close(p[0]);
+    close(p[1]);
+    wait(&r);
+    wait(&r);
+    break;
+#+END_SRC
+Look these imperative codes...
+
+Well, pipes are nothing but one naive way of implementing function composition. 
+
+I dislike shell language, I want to make a better one.
+
+
+
+

@@ -13,7 +13,7 @@
 #+HTML_HEAD: <style> #content{max-width:1800px;}</style>
 #+HTML_HEAD: <style> p{max-width:800px;}</style>
 
-#+HTML_HEAD: <link rel="icon" type="image/x-icon" href="images/digimon-icon.png" />
+#+HTML_HEAD: <link rel="icon" type="../image/x-icon" href="images/digimon-icon.png" />
 
 
 ** Articles
@@ -67,11 +67,12 @@
     但是我们却获得了创造一切的木头（没错，类似Minecraft）。在没有agda-stdlib的情况下，我们就需要自力更生，成为欢乐原始人或者，
     成为 *创造神。*
 
-*** [[../Note/MIT6.828.lab1.html][MIT6.828 Lab 1]]
+*** [[../Note/MIT6.828.lab1.html][MIT6.828 Lab ]] 
     *2020.06.25*\\
     To design a good OS is to create a great programming language.
 
-
-
+*** [[../Note/MIT6.828.hw.shell.html][MIT6.828 HW Shell]]
+    *2020.07.03* 
+    Shell is just a shell.
 
 
