@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-07-05 Sun 17:37 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MIT6.828 Lab 2</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Comcx" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="org-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="org-themes/styles/readtheorg/css/readtheorg.css"/>
+<script type="text/javascript" src="org-themes/styles/lib/js/jquery.min.js"></script>
+<script type="text/javascript" src="org-themes/styles/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="org-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="org-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style>pre.src{background:#343131;color:white;} </style>
+<style> #content{max-width:1800px;}</style>
+<style> p{max-width:800px;}</style>
+<link rel="icon" type="image/x-icon" href="../images/digimon-icon.png" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">MIT6.828 Lab 2</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org2d51914">1. Part 1: Physical Page Management</a>
+<ul>
+<li><a href="#org4fe420b">1.1. Exercise 1</a>
+<ul>
+<li><a href="#org2c27898">1.1.1. <code>inc/memlayout.h</code></a></li>
+<li><a href="#org8c0b7f5">1.1.2. <code>kern/pmap.h</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+Let's make abstractions of memory space!
+</p>
+
+<blockquote>
+<p>
+Lab 2 contains the following new source files, which you should browse through:
+</p>
+
+<pre class="example">
+inc/memlayout.h
+kern/pmap.c
+kern/pmap.h
+kern/kclock.h
+kern/kclock.c
+</pre>
+
+<p>
+<code>memlayout.h</code> describes the layout of the virtual address space that you must implement by modifying pmap.c. 
+<code>memlayout.h</code> and <code>pmap.h</code> define the PageInfo structure that you'll use to keep track of which pages of physical memory are free. 
+<code>kclock.c</code> and <code>kclock.h</code> manipulate the PC's battery-backed clock and CMOS RAM hardware, 
+in which the BIOS records the amount of physical memory the PC contains, among other things. 
+The code in pmap.c needs to read this device hardware in order to figure out how much physical memory there is, 
+but that part of the code is done for you: you do not need to know the details of how the CMOS hardware works.
+</p>
+
+<p>
+Pay particular attention to <code>memlayout.h</code> and <code>pmap.h</code>, since this lab requires you to use and understand many of the definitions they contain. 
+You may want to review <code>inc/mmu.h</code>, too, as it also contains a number of definitions that will be useful for this lab.
+</p>
+</blockquote>
+
+
+<div id="outline-container-org2d51914" class="outline-2">
+<h2 id="org2d51914"><span class="section-number-2">1</span> Part 1: Physical Page Management</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org4fe420b" class="outline-3">
+<h3 id="org4fe420b"><span class="section-number-3">1.1</span> Exercise 1</h3>
+<div class="outline-text-3" id="text-1-1">
+<blockquote>
+<p>
+In the file kern/pmap.c, you must implement code for the following functions (probably in the order given).
+</p>
+
+<pre class="example">
+boot_alloc()
+mem_init() (only up to the call to check_page_free_list(1))
+page_init()
+page_alloc()
+page_free()
+</pre>
+
+<p>
+<code>check_page_free_list()</code> and <code>check_page_alloc()</code> test your physical page allocator. 
+You should boot JOS and see whether <code>check_page_alloc()</code> reports success. 
+Fix your code so that it passes. You may find it helpful to add your own assert()s to verify that your assumptions are correct.
+</p>
+</blockquote>
+<p>
+Before writing codes, I need to read and understand <code>kern/pmap.h</code> and <code>inc/memlayout.h</code> first.
+</p>
+</div>
+
+<div id="outline-container-org2c27898" class="outline-4">
+<h4 id="org2c27898"><span class="section-number-4">1.1.1</span> <code>inc/memlayout.h</code></h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+Here we have the entire virtual memory map which we need to implement later.
+</p>
+<pre class="example">
+/*                                                                              
+ * Virtual memory map:                                Permissions               
+ *                                                    kernel/user               
+ *                                                                              
+ *    4 Gig --------&gt;  +------------------------------+                         
+ *                     |                              | RW/--                   
+ *                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                         
+ *                     :              .               :                         
+ *                     :              .               :                         
+ *                     :              .               :                         
+ *                     |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| RW/--                   
+ *                     |                              | RW/--                   
+ *                     |   Remapped Physical Memory   | RW/--                   
+ *                     |                              | RW/--                   
+ *    KERNBASE, ----&gt;  +------------------------------+ 0xf0000000      --+     
+ *    KSTACKTOP        |     CPU0's Kernel Stack      | RW/--  KSTKSIZE   |     
+ *                     | - - - - - - - - - - - - - - -|                   |     
+ *                     |      Invalid Memory (*)      | --/--  KSTKGAP    |     
+ *                     +------------------------------+                   |     
+ *                     |     CPU1's Kernel Stack      | RW/--  KSTKSIZE   |     
+ *                     | - - - - - - - - - - - - - - -|                 PTSIZE  
+ *                     |      Invalid Memory (*)      | --/--  KSTKGAP    |     
+ *                     +------------------------------+                   |     
+ *                     :              .               :                   |     
+ *                     :              .               :                   |     
+ *    MMIOLIM ------&gt;  +------------------------------+ 0xefc00000      --+     
+ *                     |       Memory-mapped I/O      | RW/--  PTSIZE           
+ * ULIM, MMIOBASE --&gt;  +------------------------------+ 0xef800000              
+ *                     |  Cur. Page Table (User R-)   | R-/R-  PTSIZE           
+ *    UVPT      ----&gt;  +------------------------------+ 0xef400000              
+ *                     |          RO PAGES            | R-/R-  PTSIZE           
+ *    UPAGES    ----&gt;  +------------------------------+ 0xef000000              
+ *                     |           RO ENVS            | R-/R-  PTSIZE           
+ * UTOP,UENVS ------&gt;  +------------------------------+ 0xeec00000              
+ * UXSTACKTOP -/       |     User Exception Stack     | RW/RW  PGSIZE           
+ *                     +------------------------------+ 0xeebff000              
+ *                     |       Empty Memory (*)       | --/--  PGSIZE           
+ *    USTACKTOP  ---&gt;  +------------------------------+ 0xeebfe000              
+ *                     |      Normal User Stack       | RW/RW  PGSIZE           
+ *                     +------------------------------+ 0xeebfd000              
+ *                     |                              |                         
+ *                     |                              |                         
+ *                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                         
+ *                     .                              .                         
+ *                     .                              .                         
+ *                     .                              .                         
+ *                     |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|                         
+ *                     |     Program Data &amp; Heap      |                         
+ *    UTEXT --------&gt;  +------------------------------+ 0x00800000              
+ *    PFTEMP -------&gt;  |       Empty Memory (*)       |        PTSIZE           
+ *                     |                              |                         
+ *    UTEMP --------&gt;  +------------------------------+ 0x00400000      --+     
+ *                     |       Empty Memory (*)       |                   |     
+ *                     | - - - - - - - - - - - - - - -|                   |     
+ *                     |  User STAB Data (optional)   |                 PTSIZE  
+ *    USTABDATA ----&gt;  +------------------------------+ 0x00200000        |     
+ *                     |       Empty Memory (*)       |                   |     
+ *    0 ------------&gt;  +------------------------------+                 --+     
+ *                                                                              
+ * (*) Note: The kernel ensures that "Invalid Memory" is *never* mapped.        
+ *     "Empty Memory" is normally unmapped, but user programs may map pages     
+ *     there if desired.  JOS user programs map pages temporarily at UTEMP.     
+ */
+</pre>
+
+<p>
+Moreover, we can find definition of <span class="underline">free-page-list</span> .
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #009e73; font-style: italic;">/*                                                                              </span>
+<span style="color: #009e73; font-style: italic;"> * Page descriptor structures, mapped at UPAGES.                                </span>
+<span style="color: #009e73; font-style: italic;"> * Read/write to the kernel, read-only to user programs.                        </span>
+<span style="color: #009e73; font-style: italic;"> *                                                                              </span>
+<span style="color: #009e73; font-style: italic;"> * Each struct PageInfo stores metadata for one physical page.                  </span>
+<span style="color: #009e73; font-style: italic;"> * Is it NOT the physical page itself, but there is a one-to-one                </span>
+<span style="color: #009e73; font-style: italic;"> * correspondence between physical pages and struct PageInfo's.                 </span>
+<span style="color: #009e73; font-style: italic;"> * You can map a struct PageInfo * to the corresponding physical address        </span>
+<span style="color: #009e73; font-style: italic;"> * with page2pa() in kern/pmap.h.                                               </span>
+<span style="color: #009e73; font-style: italic;"> </span><span style="color: #009e73; font-style: italic;">*/</span>
+<span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span> <span style="color: #ffd700;">{</span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Next page on the free list.                                          </span>
+        <span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span> *<span style="color: #e69f00; font-weight: bold;">pp_link</span>;
+
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">pp_ref is the count of pointers (usually in page table entries)      </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">to this page, for pages allocated using page_alloc.                  </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Pages allocated at boot time using pmap.c's                          </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">boot_alloc do not have valid reference count fields.                 </span>
+
+        <span style="color: #0072b2; font-weight: bold;">uint16_t</span> <span style="color: #e69f00; font-weight: bold;">pp_ref</span>;
+<span style="color: #ffd700;">}</span>;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8c0b7f5" class="outline-4">
+<h4 id="org8c0b7f5"><span class="section-number-4">1.1.2</span> <code>kern/pmap.h</code></h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+This is the core of memory mangement.
+It can be found that in lab1, function <code>i386_init</code> in <code>kern/init.c</code> calls <code>mem_init</code> which is defined in <code>pmap.c</code> .
+In <code>mem_init</code> , <code>boot_alloc</code> is first called, thus we need to implement <code>boot_alloc</code> first.
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="org88d3cfc"></a><code>boot_alloc</code><br />
+<div class="outline-text-5" id="text-1-1-2-1">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">This simple physical memory allocator is used only while JOS is setting                          </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">up its virtual memory system.  page_alloc() is the real allocator.                               </span>
+<span style="color: #009e73; font-style: italic;">//                                                                                                  </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">If n&gt;0, allocates enough pages of contiguous physical memory to hold 'n'                         </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">bytes.  Doesn't initialize the memory.  Returns a kernel virtual address.                        </span>
+<span style="color: #009e73; font-style: italic;">//                                                                                                  </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">If n==0, returns the address of the next free page without allocating                            </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">anything.                                                                                        </span>
+<span style="color: #009e73; font-style: italic;">//                                                                                                  </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">If we're out of memory, boot_alloc should panic.                                                 </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">This function may ONLY be used during initialization,                                            </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">before the page_free_list list has been set up.                                                  </span>
+<span style="color: #56b4e9; font-weight: bold;">static</span> <span style="color: #0072b2; font-weight: bold;">void</span> *
+<span style="color: #d55e00;">boot_alloc</span><span style="color: #ffd700;">(</span><span style="color: #0072b2; font-weight: bold;">uint32_t</span> <span style="color: #e69f00; font-weight: bold;">n</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>
+        <span style="color: #56b4e9; font-weight: bold;">static</span> <span style="color: #0072b2; font-weight: bold;">char</span> *<span style="color: #e69f00; font-weight: bold;">nextfree</span>;  <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">virtual address of next byte of free memory                      </span>
+        <span style="color: #0072b2; font-weight: bold;">char</span> *<span style="color: #e69f00; font-weight: bold;">result</span>;
+
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Initialize nextfree if this is the first time.                                           </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">'end' is a magic symbol automatically generated by the linker,                           </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">which points to the end of the kernel's bss segment:                                     </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">the first virtual address that the linker did *not* assign                               </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">to any kernel code or global variables.                                                  </span>
+        <span style="color: #56b4e9; font-weight: bold;">if</span> <span style="color: #00bfff;">(</span>!nextfree<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+                <span style="color: #56b4e9; font-weight: bold;">extern</span> <span style="color: #0072b2; font-weight: bold;">char</span> <span style="color: #e69f00; font-weight: bold;">end</span><span style="color: #ffa500;">[]</span>;
+                nextfree = ROUNDUP<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #0072b2; font-weight: bold;">char</span> *<span style="color: #ff7f50;">)</span> end, PGSIZE<span style="color: #ffa500;">)</span>;
+        <span style="color: #00bfff;">}</span>
+
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Allocate a chunk large enough to hold 'n' bytes, then update                             </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">nextfree.  Make sure nextfree is kept aligned                                            </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">to a multiple of PGSIZE.                                                                 </span>
+        <span style="color: #009e73; font-style: italic;">//                                                                                          </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">LAB 2: Your code here.                                                                 </span>
+        result = nextfree;
+        nextfree = ROUNDUP<span style="color: #00bfff;">(</span><span style="color: #ffa500;">(</span><span style="color: #0072b2; font-weight: bold;">char</span> *<span style="color: #ffa500;">)</span>result + n, PGSIZE<span style="color: #00bfff;">)</span>;
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span><span style="color: #ffa500;">(</span><span style="color: #0072b2; font-weight: bold;">uint32_t</span><span style="color: #ffa500;">)</span>nextfree &gt; KERNBASE + <span style="color: #ffa500;">(</span>npages * PGSIZE<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+                panic<span style="color: #ffa500;">(</span><span style="color: #848ea9;">"Out of memory!\n"</span><span style="color: #ffa500;">)</span>;
+        <span style="color: #00bfff;">}</span>
+        cprintf<span style="color: #00bfff;">(</span><span style="color: #848ea9;">"boot_alloc 1st memory at %x, next memory allocated at %x\n"</span>,
+                result, nextfree<span style="color: #00bfff;">)</span>;
+
+        <span style="color: #56b4e9; font-weight: bold;">return</span> result;
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+<p>
+<code>boot_alloc</code> does two things:
+</p>
+<ol class="org-ol">
+<li>Initialize the 1st address which is never used,</li>
+<li>Allocate a chunk to hold n bytes and return its address.</li>
+</ol>
+
+<p>
+<b>Note</b> :
+</p>
+<ol class="org-ol">
+<li>static variables inside function will always be initialized.</li>
+<li>Variable <code>end</code> is the end of kernel, as <code>.bss</code> is the bottom of ELF file.</li>
+<li>Macro <code>ROUNDUP</code> is defined in <code>inc/types.h</code> which is used to align.</li>
+</ol>
+</div>
+</li>
+
+<li><a id="org5e6fb6f"></a><code>mem_init</code><br />
+<div class="outline-text-5" id="text-1-1-2-2">
+<p>
+Next, the main init part.
+</p>
+
+<ul class="org-ul">
+<li><code>PADDR</code> is defined in <code>kern/pmap.h</code> .</li>
+<li><code>PDX</code> (Page Directory indeX), <code>PTX</code> (Page Table indeX) is defined in <code>inc/mmu.h</code> .</li>
+</ul>
+</div>
+</li>
+
+<li><a id="orge9f5688"></a><code>page_init</code><br />
+<div class="outline-text-5" id="text-1-1-2-3">
+<div class="org-src-container">
+<pre class="src src-c"> <span style="color: #0072b2; font-weight: bold;">void</span>
+ <span style="color: #d55e00;">page_init</span><span style="color: #ffd700;">(</span><span style="color: #0072b2; font-weight: bold;">void</span><span style="color: #ffd700;">)</span>
+ <span style="color: #ffd700;">{</span>
+ <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">The example code here marks all physical pages as free.              </span>
+ <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">However this is not truly the case.  What memory is free?            </span>
+ <span style="color: #009e73; font-style: italic;">//  </span><span style="color: #009e73; font-style: italic;">1) Mark physical page 0 as in use.                                  </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">This way we preserve the real-mode IDT and BIOS structures       </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">in case we ever need them.  (Currently we don't, but...)         </span>
+ <span style="color: #009e73; font-style: italic;">//  </span><span style="color: #009e73; font-style: italic;">2) The rest of base memory, [PGSIZE, npages_basemem * PGSIZE)       </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">is free.                                                         </span>
+ <span style="color: #009e73; font-style: italic;">//  </span><span style="color: #009e73; font-style: italic;">3) Then comes the IO hole [IOPHYSMEM, EXTPHYSMEM), which must       </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">never be allocated.                                              </span>
+ <span style="color: #009e73; font-style: italic;">//  </span><span style="color: #009e73; font-style: italic;">4) Then extended memory [EXTPHYSMEM, ...).                          </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">Some of it is in use, some is free. Where is the kernel          </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">in physical memory?  Which pages are already in use for          </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">page tables and other data structures?                           </span>
+ <span style="color: #009e73; font-style: italic;">//                                                                      </span>
+ <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Change the code to reflect this.                                     </span>
+ <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">NB: DO NOT actually touch the physical memory corresponding to       </span>
+ <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">free pages!                                                          </span>
+ <span style="color: #0072b2; font-weight: bold;">size_t</span> <span style="color: #e69f00; font-weight: bold;">i</span>;
+ <span style="color: #56b4e9; font-weight: bold;">for</span> <span style="color: #00bfff;">(</span>i = 0; i &lt; npages; i++<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+                  <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i == 0<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+                          <span style="color: #009e73; font-style: italic;">//</span><span style="color: #009e73; font-style: italic;">Page 1 as used                                        </span>
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_ref = 1;
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = <span style="color: #d55e00; font-weight: bold;">NULL</span>;
+                  <span style="color: #ffa500;">}</span>
+                  <span style="color: #56b4e9; font-weight: bold;">else</span> <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i &lt; npages_basemem<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+                          <span style="color: #009e73; font-style: italic;">//</span><span style="color: #009e73; font-style: italic;">Rest of base mem as free                              </span>
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_ref = 0;
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = page_free_list;
+                          page_free_list = &amp;pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>;
+                  <span style="color: #ffa500;">}</span>
+                  <span style="color: #56b4e9; font-weight: bold;">else</span> <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i &gt;= IOPHYSMEM/PGSIZE &amp;&amp; i &lt; EXTPHYSMEM/PGSIZE<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+                          <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">IO hole                                              </span>
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_ref = 1;
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = <span style="color: #d55e00; font-weight: bold;">NULL</span>;
+                  <span style="color: #ffa500;">}</span>
+                  <span style="color: #56b4e9; font-weight: bold;">else</span> <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i &gt;= EXTPHYSMEM/PGSIZE &amp;&amp;
+                          i &lt; PADDR<span style="color: #ff7f50;">(</span>boot_alloc<span style="color: #00ff00;">(</span>0<span style="color: #00ff00;">)</span><span style="color: #ff7f50;">)</span>/PGSIZE<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_ref = 1;
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = <span style="color: #d55e00; font-weight: bold;">NULL</span>;
+                  <span style="color: #ffa500;">}</span>
+                  <span style="color: #56b4e9; font-weight: bold;">else</span> <span style="color: #ffa500;">{</span>
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_ref = 0;
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = page_free_list;
+                          page_free_list = &amp;pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>;
+                  <span style="color: #ffa500;">}</span>
+          <span style="color: #00bfff;">}</span>
+  <span style="color: #ffd700;">}</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orgba43b4a"></a><code>page_alloc</code> and <code>page_free</code><br />
+<div class="outline-text-5" id="text-1-1-2-4">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span> *
+<span style="color: #d55e00;">page_alloc</span><span style="color: #ffd700;">(</span><span style="color: #0072b2; font-weight: bold;">int</span> <span style="color: #e69f00; font-weight: bold;">alloc_flags</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Fill this function in                                                </span>
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>page_free_list == <span style="color: #d55e00; font-weight: bold;">NULL</span><span style="color: #00bfff;">)</span>
+                <span style="color: #56b4e9; font-weight: bold;">return</span> <span style="color: #d55e00; font-weight: bold;">NULL</span>;
+
+        <span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span>* <span style="color: #e69f00; font-weight: bold;">page</span> = page_free_list;
+        page_free_list = page-&gt;pp_link;
+        page-&gt;pp_link = 0;
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>alloc_flags &amp; ALLOC_ZERO<span style="color: #00bfff;">)</span>
+                memset<span style="color: #00bfff;">(</span>page2kva<span style="color: #ffa500;">(</span>page<span style="color: #ffa500;">)</span>, 0, PGSIZE<span style="color: #00bfff;">)</span>;
+        <span style="color: #56b4e9; font-weight: bold;">return</span> page;
+<span style="color: #ffd700;">}</span>
+<span style="color: #0072b2; font-weight: bold;">void</span>
+<span style="color: #d55e00;">page_free</span><span style="color: #ffd700;">(</span><span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span> *<span style="color: #e69f00; font-weight: bold;">pp</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Fill this function in                                                </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Hint: You may want to panic if pp-&gt;pp_ref is nonzero or              </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">pp-&gt;pp_link is not NULL.                                             </span>
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>pp-&gt;pp_link != 0  || pp-&gt;pp_ref != 0<span style="color: #00bfff;">)</span>
+                panic<span style="color: #00bfff;">(</span><span style="color: #848ea9;">"page_free: this page is not ready!"</span><span style="color: #00bfff;">)</span>;
+        pp-&gt;pp_link = page_free_list;
+        page_free_list = pp;
+        <span style="color: #56b4e9; font-weight: bold;">return</span>;
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Comcx</p>
+<p class="date">Created: 2020-07-05 Sun 17:37</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,305 @@
+#+Title:  MIT6.828 Lab 2
+#+Author: Comcx
+
+
+#+SETUPFILE: theme-readtheorg-local.setup
+
+Let's make abstractions of memory space!
+
+#+BEGIN_QUOTE
+Lab 2 contains the following new source files, which you should browse through:
+
+#+BEGIN_SRC 
+inc/memlayout.h
+kern/pmap.c
+kern/pmap.h
+kern/kclock.h
+kern/kclock.c
+#+END_SRC
+
+=memlayout.h= describes the layout of the virtual address space that you must implement by modifying pmap.c. 
+=memlayout.h= and =pmap.h= define the PageInfo structure that you'll use to keep track of which pages of physical memory are free. 
+=kclock.c= and =kclock.h= manipulate the PC's battery-backed clock and CMOS RAM hardware, 
+in which the BIOS records the amount of physical memory the PC contains, among other things. 
+The code in pmap.c needs to read this device hardware in order to figure out how much physical memory there is, 
+but that part of the code is done for you: you do not need to know the details of how the CMOS hardware works.
+
+Pay particular attention to =memlayout.h= and =pmap.h=, since this lab requires you to use and understand many of the definitions they contain. 
+You may want to review =inc/mmu.h=, too, as it also contains a number of definitions that will be useful for this lab.
+#+END_QUOTE
+
+
+** Part 1: Physical Page Management
+*** Exercise 1
+#+BEGIN_QUOTE
+In the file kern/pmap.c, you must implement code for the following functions (probably in the order given).
+
+#+BEGIN_SRC 
+boot_alloc()
+mem_init() (only up to the call to check_page_free_list(1))
+page_init()
+page_alloc()
+page_free()
+#+END_SRC
+
+=check_page_free_list()= and =check_page_alloc()= test your physical page allocator. 
+You should boot JOS and see whether =check_page_alloc()= reports success. 
+Fix your code so that it passes. You may find it helpful to add your own assert()s to verify that your assumptions are correct.
+#+END_QUOTE
+Before writing codes, I need to read and understand =kern/pmap.h= and =inc/memlayout.h= first.
+
+**** =inc/memlayout.h= 
+Here we have the entire virtual memory map which we need to implement later.
+#+BEGIN_SRC 
+/*                                                                              
+ * Virtual memory map:                                Permissions               
+ *                                                    kernel/user               
+ *                                                                              
+ *    4 Gig -------->  +------------------------------+                         
+ *                     |                              | RW/--                   
+ *                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                         
+ *                     :              .               :                         
+ *                     :              .               :                         
+ *                     :              .               :                         
+ *                     |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| RW/--                   
+ *                     |                              | RW/--                   
+ *                     |   Remapped Physical Memory   | RW/--                   
+ *                     |                              | RW/--                   
+ *    KERNBASE, ---->  +------------------------------+ 0xf0000000      --+     
+ *    KSTACKTOP        |     CPU0's Kernel Stack      | RW/--  KSTKSIZE   |     
+ *                     | - - - - - - - - - - - - - - -|                   |     
+ *                     |      Invalid Memory (*)      | --/--  KSTKGAP    |     
+ *                     +------------------------------+                   |     
+ *                     |     CPU1's Kernel Stack      | RW/--  KSTKSIZE   |     
+ *                     | - - - - - - - - - - - - - - -|                 PTSIZE  
+ *                     |      Invalid Memory (*)      | --/--  KSTKGAP    |     
+ *                     +------------------------------+                   |     
+ *                     :              .               :                   |     
+ *                     :              .               :                   |     
+ *    MMIOLIM ------>  +------------------------------+ 0xefc00000      --+     
+ *                     |       Memory-mapped I/O      | RW/--  PTSIZE           
+ * ULIM, MMIOBASE -->  +------------------------------+ 0xef800000              
+ *                     |  Cur. Page Table (User R-)   | R-/R-  PTSIZE           
+ *    UVPT      ---->  +------------------------------+ 0xef400000              
+ *                     |          RO PAGES            | R-/R-  PTSIZE           
+ *    UPAGES    ---->  +------------------------------+ 0xef000000              
+ *                     |           RO ENVS            | R-/R-  PTSIZE           
+ * UTOP,UENVS ------>  +------------------------------+ 0xeec00000              
+ * UXSTACKTOP -/       |     User Exception Stack     | RW/RW  PGSIZE           
+ *                     +------------------------------+ 0xeebff000              
+ *                     |       Empty Memory (*)       | --/--  PGSIZE           
+ *    USTACKTOP  --->  +------------------------------+ 0xeebfe000              
+ *                     |      Normal User Stack       | RW/RW  PGSIZE           
+ *                     +------------------------------+ 0xeebfd000              
+ *                     |                              |                         
+ *                     |                              |                         
+ *                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                         
+ *                     .                              .                         
+ *                     .                              .                         
+ *                     .                              .                         
+ *                     |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|                         
+ *                     |     Program Data & Heap      |                         
+ *    UTEXT -------->  +------------------------------+ 0x00800000              
+ *    PFTEMP ------->  |       Empty Memory (*)       |        PTSIZE           
+ *                     |                              |                         
+ *    UTEMP -------->  +------------------------------+ 0x00400000      --+     
+ *                     |       Empty Memory (*)       |                   |     
+ *                     | - - - - - - - - - - - - - - -|                   |     
+ *                     |  User STAB Data (optional)   |                 PTSIZE  
+ *    USTABDATA ---->  +------------------------------+ 0x00200000        |     
+ *                     |       Empty Memory (*)       |                   |     
+ *    0 ------------>  +------------------------------+                 --+     
+ *                                                                              
+ * (*) Note: The kernel ensures that "Invalid Memory" is *never* mapped.        
+ *     "Empty Memory" is normally unmapped, but user programs may map pages     
+ *     there if desired.  JOS user programs map pages temporarily at UTEMP.     
+ */
+#+END_SRC
+
+Moreover, we can find definition of _free-page-list_ .
+#+BEGIN_SRC c
+/*                                                                              
+ * Page descriptor structures, mapped at UPAGES.                                
+ * Read/write to the kernel, read-only to user programs.                        
+ *                                                                              
+ * Each struct PageInfo stores metadata for one physical page.                  
+ * Is it NOT the physical page itself, but there is a one-to-one                
+ * correspondence between physical pages and struct PageInfo's.                 
+ * You can map a struct PageInfo * to the corresponding physical address        
+ * with page2pa() in kern/pmap.h.                                               
+ */
+struct PageInfo {
+	// Next page on the free list.                                          
+	struct PageInfo *pp_link;
+
+	// pp_ref is the count of pointers (usually in page table entries)      
+	// to this page, for pages allocated using page_alloc.                  
+	// Pages allocated at boot time using pmap.c's                          
+	// boot_alloc do not have valid reference count fields.                 
+
+	uint16_t pp_ref;
+};
+#+END_SRC
+
+**** =kern/pmap.h= 
+This is the core of memory mangement.
+It can be found that in lab1, function =i386_init= in =kern/init.c= calls =mem_init= which is defined in =pmap.c= .
+In =mem_init= , =boot_alloc= is first called, thus we need to implement =boot_alloc= first.
+
+***** =boot_alloc= 
+#+BEGIN_SRC c
+// This simple physical memory allocator is used only while JOS is setting                          
+// up its virtual memory system.  page_alloc() is the real allocator.                               
+//                                                                                                  
+// If n>0, allocates enough pages of contiguous physical memory to hold 'n'                         
+// bytes.  Doesn't initialize the memory.  Returns a kernel virtual address.                        
+//                                                                                                  
+// If n==0, returns the address of the next free page without allocating                            
+// anything.                                                                                        
+//                                                                                                  
+// If we're out of memory, boot_alloc should panic.                                                 
+// This function may ONLY be used during initialization,                                            
+// before the page_free_list list has been set up.                                                  
+static void *
+boot_alloc(uint32_t n)
+{
+        static char *nextfree;  // virtual address of next byte of free memory                      
+        char *result;
+
+        // Initialize nextfree if this is the first time.                                           
+        // 'end' is a magic symbol automatically generated by the linker,                           
+        // which points to the end of the kernel's bss segment:                                     
+        // the first virtual address that the linker did *not* assign                               
+        // to any kernel code or global variables.                                                  
+        if (!nextfree) {
+                extern char end[];
+                nextfree = ROUNDUP((char *) end, PGSIZE);
+        }
+
+        // Allocate a chunk large enough to hold 'n' bytes, then update                             
+        // nextfree.  Make sure nextfree is kept aligned                                            
+        // to a multiple of PGSIZE.                                                                 
+        //                                                                                          
+        // LAB 2: Your code here.                                                                 
+        result = nextfree;
+        nextfree = ROUNDUP((char *)result + n, PGSIZE);
+	if((uint32_t)nextfree > KERNBASE + (npages * PGSIZE)) {
+	        panic("Out of memory!\n");
+	}
+        cprintf("boot_alloc 1st memory at %x, next memory allocated at %x\n",
+                result, nextfree);
+
+        return result;
+}
+#+END_SRC
+=boot_alloc= does two things:
+1) Initialize the 1st address which is never used,
+2) Allocate a chunk to hold n bytes and return its address.
+
+*Note* :
+1) static variables inside function will always be initialized.
+2) Variable =end= is the end of kernel, as =.bss= is the bottom of ELF file.
+3) Macro =ROUNDUP= is defined in =inc/types.h= which is used to align.
+
+***** =mem_init= 
+Next, the main init part.
+
+- =PADDR= is defined in =kern/pmap.h= .
+- =PDX= (Page Directory indeX), =PTX= (Page Table indeX) is defined in =inc/mmu.h= .
+
+***** =page_init= 
+#+BEGIN_SRC c
+ void
+ page_init(void)
+ {
+ // The example code here marks all physical pages as free.              
+ // However this is not truly the case.  What memory is free?            
+ //  1) Mark physical page 0 as in use.                                  
+ //     This way we preserve the real-mode IDT and BIOS structures       
+ //     in case we ever need them.  (Currently we don't, but...)         
+ //  2) The rest of base memory, [PGSIZE, npages_basemem * PGSIZE)       
+ //     is free.                                                         
+ //  3) Then comes the IO hole [IOPHYSMEM, EXTPHYSMEM), which must       
+ //     never be allocated.                                              
+ //  4) Then extended memory [EXTPHYSMEM, ...).                          
+ //     Some of it is in use, some is free. Where is the kernel          
+ //     in physical memory?  Which pages are already in use for          
+ //     page tables and other data structures?                           
+ //                                                                      
+ // Change the code to reflect this.                                     
+ // NB: DO NOT actually touch the physical memory corresponding to       
+ // free pages!                                                          
+ size_t i;
+ for (i = 0; i < npages; i++) {
+                  if(i == 0) {
+                          //Page 1 as used                                        
+                          pages[i].pp_ref = 1;
+                          pages[i].pp_link = NULL;
+                  }
+                  else if(i < npages_basemem) {
+                          //Rest of base mem as free                              
+                          pages[i].pp_ref = 0;
+                          pages[i].pp_link = page_free_list;
+                          page_free_list = &pages[i];
+                  }
+                  else if(i >= IOPHYSMEM/PGSIZE && i < EXTPHYSMEM/PGSIZE) {
+                          // IO hole                                              
+                          pages[i].pp_ref = 1;
+                          pages[i].pp_link = NULL;
+                  }
+                  else if(i >= EXTPHYSMEM/PGSIZE &&
+                          i < PADDR(boot_alloc(0))/PGSIZE) {
+                          pages[i].pp_ref = 1;
+                          pages[i].pp_link = NULL;
+                  }
+                  else {
+                          pages[i].pp_ref = 0;
+                          pages[i].pp_link = page_free_list;
+                          page_free_list = &pages[i];
+                  }
+          }
+  }
+#+END_SRC
+
+***** =page_alloc= and =page_free= 
+#+BEGIN_SRC c
+struct PageInfo *
+page_alloc(int alloc_flags)
+{
+        // Fill this function in                                                
+        if(page_free_list == NULL)
+                return NULL;
+
+        struct PageInfo* page = page_free_list;
+        page_free_list = page->pp_link;
+        page->pp_link = 0;
+        if(alloc_flags & ALLOC_ZERO)
+                memset(page2kva(page), 0, PGSIZE);
+        return page;
+}
+void
+page_free(struct PageInfo *pp)
+{
+        // Fill this function in                                                
+        // Hint: You may want to panic if pp->pp_ref is nonzero or              
+        // pp->pp_link is not NULL.                                             
+        if(pp->pp_link != 0  || pp->pp_ref != 0)
+                panic("page_free: this page is not ready!");
+        pp->pp_link = page_free_list;
+        page_free_list = pp;
+        return;
+}
+#+END_SRC
+
+
+
+
+
+
+
+
+
+
+
+
+

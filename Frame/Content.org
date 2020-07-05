@@ -67,12 +67,18 @@
     但是我们却获得了创造一切的木头（没错，类似Minecraft）。在没有agda-stdlib的情况下，我们就需要自力更生，成为欢乐原始人或者，
     成为 *创造神。*
 
-*** [[../Note/MIT6.828.lab1.html][MIT6.828 Lab ]] 
+*** [[../Note/MIT6.828.lab1.html][MIT6.828 Lab1 ]]
     *2020.06.25*\\
     To design a good OS is to create a great programming language.
 
 *** [[../Note/MIT6.828.hw.shell.html][MIT6.828 HW Shell]]
-    *2020.07.03* 
+    *2020.07.03* \\
     Shell is just a shell.
+
+*** [[../Note/MIT6.828.lab2.html][MIT6.828 Lab2]]
+    *2020.07.04*\\
+    Abstraction of space. 
+
+
 
 
