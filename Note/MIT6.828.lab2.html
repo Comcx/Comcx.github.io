@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-06 Mon 22:35 -->
+<!-- 2020-07-07 Tue 02:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MIT6.828 Lab 2</title>
@@ -244,28 +244,28 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8557828">1. Part 1: Physical Page Management</a>
+<li><a href="#orgbc41bc1">1. Part 1: Physical Page Management</a>
 <ul>
-<li><a href="#orgb511fca">1.1. Exercise 1</a>
+<li><a href="#orgb0b49cd">1.1. Exercise 1</a>
 <ul>
-<li><a href="#orgeef8b1d">1.1.1. <code>inc/memlayout.h</code></a></li>
-<li><a href="#org1fad0ec">1.1.2. <code>kern/pmap.h</code></a></li>
+<li><a href="#orgc3acb57">1.1.1. <code>inc/memlayout.h</code></a></li>
+<li><a href="#org4d85c88">1.1.2. <code>kern/pmap.h</code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org1b4d737">2. Part 2: Virtual Memory</a>
+<li><a href="#org2b6c8c6">2. Part 2: Virtual Memory</a>
 <ul>
-<li><a href="#orgb9e2dfc">2.1. Exercise 2</a></li>
-<li><a href="#org2e2b636">2.2. Exercise 3</a>
+<li><a href="#org1891f14">2.1. Exercise 2</a></li>
+<li><a href="#orge2e8d37">2.2. Exercise 3</a>
 <ul>
-<li><a href="#orgac7c281">2.2.1. Question</a></li>
+<li><a href="#org42d1b28">2.2.1. Question</a></li>
 </ul>
 </li>
-<li><a href="#org451f040">2.3. Exercise 4</a></li>
+<li><a href="#org6e9b969">2.3. Exercise 4</a></li>
 </ul>
 </li>
-<li><a href="#org6305f53">3. Part 3: Kernel Address Space</a></li>
+<li><a href="#org1a2a11f">3. Part 3: Kernel Address Space</a></li>
 </ul>
 </div>
 </div>
@@ -302,12 +302,12 @@ You may want to review <code>inc/mmu.h</code>, too, as it also contains a number
 </blockquote>
 
 
-<div id="outline-container-org8557828" class="outline-2">
-<h2 id="org8557828"><span class="section-number-2">1</span> Part 1: Physical Page Management</h2>
+<div id="outline-container-orgbc41bc1" class="outline-2">
+<h2 id="orgbc41bc1"><span class="section-number-2">1</span> Part 1: Physical Page Management</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgb511fca" class="outline-3">
-<h3 id="orgb511fca"><span class="section-number-3">1.1</span> Exercise 1</h3>
+<div id="outline-container-orgb0b49cd" class="outline-3">
+<h3 id="orgb0b49cd"><span class="section-number-3">1.1</span> Exercise 1</h3>
 <div class="outline-text-3" id="text-1-1">
 <blockquote>
 <p>
@@ -333,8 +333,8 @@ Before writing codes, I need to read and understand <code>kern/pmap.h</code> and
 </p>
 </div>
 
-<div id="outline-container-orgeef8b1d" class="outline-4">
-<h4 id="orgeef8b1d"><span class="section-number-4">1.1.1</span> <code>inc/memlayout.h</code></h4>
+<div id="outline-container-orgc3acb57" class="outline-4">
+<h4 id="orgc3acb57"><span class="section-number-4">1.1.1</span> <code>inc/memlayout.h</code></h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 Here we have the entire virtual memory map which we need to implement later.
@@ -435,8 +435,8 @@ Moreover, we can find definition of <span class="underline">free-page-list</span
 </div>
 </div>
 
-<div id="outline-container-org1fad0ec" class="outline-4">
-<h4 id="org1fad0ec"><span class="section-number-4">1.1.2</span> <code>kern/pmap.h</code></h4>
+<div id="outline-container-org4d85c88" class="outline-4">
+<h4 id="org4d85c88"><span class="section-number-4">1.1.2</span> <code>kern/pmap.h</code></h4>
 <div class="outline-text-4" id="text-1-1-2">
 <p>
 This is the core of memory mangement.
@@ -446,7 +446,7 @@ In <code>mem_init</code> , <code>boot_alloc</code> is first called, thus we need
 </div>
 
 <ol class="org-ol">
-<li><a id="org8436279"></a><code>boot_alloc</code><br />
+<li><a id="org9974b2b"></a><code>boot_alloc</code><br />
 <div class="outline-text-5" id="text-1-1-2-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">This simple physical memory allocator is used only while JOS is setting                          </span>
@@ -513,7 +513,7 @@ In <code>mem_init</code> , <code>boot_alloc</code> is first called, thus we need
 </div>
 </li>
 
-<li><a id="org289c11d"></a><code>mem_init</code><br />
+<li><a id="org5dd71ca"></a><code>mem_init</code><br />
 <div class="outline-text-5" id="text-1-1-2-2">
 <p>
 Next, the main init part.
@@ -526,7 +526,7 @@ Next, the main init part.
 </div>
 </li>
 
-<li><a id="org5f1cdac"></a><code>page_init</code><br />
+<li><a id="org4b69352"></a><code>page_init</code><br />
 <div class="outline-text-5" id="text-1-1-2-3">
 <div class="org-src-container">
 <pre class="src src-c"> <span style="color: #8ae234; font-weight: bold;">void</span>
@@ -584,7 +584,7 @@ Next, the main init part.
 </div>
 </li>
 
-<li><a id="orge110f27"></a><code>page_alloc</code> and <code>page_free</code><br />
+<li><a id="org534528f"></a><code>page_alloc</code> and <code>page_free</code><br />
 <div class="outline-text-5" id="text-1-1-2-4">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">PageInfo</span> *
@@ -626,12 +626,12 @@ Exercise finished!
 </div>
 </div>
 
-<div id="outline-container-org1b4d737" class="outline-2">
-<h2 id="org1b4d737"><span class="section-number-2">2</span> Part 2: Virtual Memory</h2>
+<div id="outline-container-org2b6c8c6" class="outline-2">
+<h2 id="org2b6c8c6"><span class="section-number-2">2</span> Part 2: Virtual Memory</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgb9e2dfc" class="outline-3">
-<h3 id="orgb9e2dfc"><span class="section-number-3">2.1</span> Exercise 2</h3>
+<div id="outline-container-org1891f14" class="outline-3">
+<h3 id="org1891f14"><span class="section-number-3">2.1</span> Exercise 2</h3>
 <div class="outline-text-3" id="text-2-1">
 <blockquote>
 <p>
@@ -662,8 +662,8 @@ Done!
 </div>
 </div>
 
-<div id="outline-container-org2e2b636" class="outline-3">
-<h3 id="org2e2b636"><span class="section-number-3">2.2</span> Exercise 3</h3>
+<div id="outline-container-orge2e8d37" class="outline-3">
+<h3 id="orge2e8d37"><span class="section-number-3">2.2</span> Exercise 3</h3>
 <div class="outline-text-3" id="text-2-2">
 <blockquote>
 <p>
@@ -716,8 +716,8 @@ To help document the code, in JOS, type <code>uintptr_t</code> and <code>physadd
 </p>
 </div>
 
-<div id="outline-container-orgac7c281" class="outline-4">
-<h4 id="orgac7c281"><span class="section-number-4">2.2.1</span> Question</h4>
+<div id="outline-container-org42d1b28" class="outline-4">
+<h4 id="org42d1b28"><span class="section-number-4">2.2.1</span> Question</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <ul class="org-ul">
 <li>Solution: type is uintptr<sub>t</sub> since it's used as virtual addr.</li>
@@ -726,8 +726,8 @@ To help document the code, in JOS, type <code>uintptr_t</code> and <code>physadd
 </div>
 </div>
 
-<div id="outline-container-org451f040" class="outline-3">
-<h3 id="org451f040"><span class="section-number-3">2.3</span> Exercise 4</h3>
+<div id="outline-container-org6e9b969" class="outline-3">
+<h3 id="org6e9b969"><span class="section-number-3">2.3</span> Exercise 4</h3>
 <div class="outline-text-3" id="text-2-3">
 <blockquote>
 <p>
@@ -750,13 +750,13 @@ In the file kern/pmap.c, you must implement code for the following functions.
 </div>
 
 
-<div id="outline-container-org6305f53" class="outline-2">
-<h2 id="org6305f53"><span class="section-number-2">3</span> Part 3: Kernel Address Space</h2>
+<div id="outline-container-org1a2a11f" class="outline-2">
+<h2 id="org1a2a11f"><span class="section-number-2">3</span> Part 3: Kernel Address Space</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-07-06 Mon 22:35</p>
+<p class="date">Created: 2020-07-07 Tue 02:01</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
