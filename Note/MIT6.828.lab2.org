@@ -291,11 +291,81 @@ page_free(struct PageInfo *pp)
 }
 #+END_SRC
 
+Exercise finished!
+
+** Part 2: Virtual Memory
+*** Exercise 2
+#+BEGIN_QUOTE
+Look at chapters 5 and 6 of the Intel 80386 Reference Manual, if you haven't done so already. 
+Read the sections about page translation and page-based protection closely (5.2 and 6.4). 
+We recommend that you also skim the sections about segmentation; 
+while JOS uses the paging hardware for virtual memory and protection, 
+segment translation and segment-based protection cannot be disabled on the x86, so you will need a basic understanding of it.
+#+END_QUOTE
+I like this setting as I dislike segment strategy...
+
+#+BEGIN_SRC 
+           Selector  +--------------+         +-----------+
+          ---------->|              |         |           |
+                     | Segmentation |         |  Paging   |
+Software             |              |-------->|           |---------->  RAM
+            Offset   |  Mechanism   |         | Mechanism |
+          ---------->|              |         |           |
+                     +--------------+         +-----------+
+            Virtual                   Linear                Physical
+#+END_SRC
+Done!
+
+*** Exercise 3
+#+BEGIN_QUOTE
+While GDB can only access QEMU's memory by virtual address, 
+it's often useful to be able to inspect physical memory while setting up virtual memory. 
+Review the QEMU monitor commands from the lab tools guide, especially the xp command, 
+which lets you inspect physical memory. 
+To access the QEMU monitor, press =Ctrl-a c= in the terminal (the same binding returns to the serial console).
+
+Use the =xp= command in the QEMU monitor and the x command in GDB to inspect memory at 
+corresponding physical and virtual addresses and make sure you see the same data.
+
+Our patched version of QEMU provides an =info pg= command that may also prove useful: 
+it shows a compact but detailed representation of the current page tables, including all mapped memory ranges, permissions, and flags. 
+Stock QEMU also provides an info mem command that shows an overview of which ranges of virtual addresses are mapped and with what permissions.
+#+END_QUOTE
+
+QEMU's monitor command:
+- =xp/Nx paddr= 
+  
+  Display a hex dump of N words starting at physical address paddr. 
+  If N is omitted, it defaults to 1. This is the physical memory analogue of GDB's x command.
+
+- =info registers= 
+
+  Display a full dump of the machine's internal register state. 
+  In particular, this includes the machine's hidden segment state for the segment selectors and the local, global, and 
+  interrupt descriptor tables, plus the task register. 
+  This hidden state is the information the virtual CPU read from the GDT/LDT when the segment selector was loaded.
+
+To help document the code, in JOS, type =uintptr_t= and =physaddr_t= are just synonyms for =uint32_t= .
+
+**** Question
+- Solution: type is uintptr_t since it's used as virtual addr.
+
+*** Exercise 4
+#+BEGIN_QUOTE
+In the file kern/pmap.c, you must implement code for the following functions.
+#+BEGIN_SRC 
+        pgdir_walk()
+        boot_map_region()
+        page_lookup()
+        page_remove()
+        page_insert()
+#+END_SRC
+
+=check_page()=, called from =mem_init()=, tests your page table management routines. You should make sure it reports success before proceeding.
+#+END_QUOTE
 
 
-
-
-
+** Part 3: Kernel Address Space
 
 
 
