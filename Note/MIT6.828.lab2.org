@@ -364,12 +364,137 @@ In the file kern/pmap.c, you must implement code for the following functions.
 =check_page()=, called from =mem_init()=, tests your page table management routines. You should make sure it reports success before proceeding.
 #+END_QUOTE
 
+Well, we have less and less hints...
+After reading the comments spreaded in codes...
+- =pgdir_walk(pde_t *pgdir, const void *va, in create)= Get PTE of virtual address va, if not found and create, create one.
+- =boot_map_region()= Map [va, va+size) of virtual address space to physical [pa, pa+size) in the page table rooted at pgdir.
+- =page_lookup()= Return the page mapped at virtual address 'va'.
+- =page_remove()= Unmaps the physical page at virtual address 'va'.
+- =page_insert()= Map the physical page 'pp' at virtual address 'va'.
+
+#+BEGIN_SRC c
+pte_t *
+pgdir_walk(pde_t *pgdir, const void *va, int create)
+{
+	// Fill this function in
+	int pdeIndex = (unsigned int)va >>22;
+	if(pgdir[pdeIndex] == 0 && create == 0)
+		return NULL;
+	if(pgdir[pdeIndex] == 0){
+		struct PageInfo* page = page_alloc(1);
+		if(page == NULL)
+			return NULL;
+		page->pp_ref++;
+		pte_t pgAddress = page2pa(page);
+		pgAddress |= PTE_U;
+		pgAddress |= PTE_P;
+		pgAddress |= PTE_W;
+		pgdir[pdeIndex] = pgAddress;
+	}
+	pte_t pgAdd = pgdir[pdeIndex];
+	pgAdd = pgAdd>>12<<12;
+	int pteIndex = (pte_t)va >>12 & 0x3ff;
+	pte_t * pte = (pte_t*) pgAdd + pteIndex;
+	return KADDR( (pte_t) pte );
+}
+#+END_SRC
+
+#+BEGIN_SRC c
+static void
+boot_map_region(pde_t *pgdir, uintptr_t va, size_t size, physaddr_t pa, int perm)
+{
+        // Fill this function in
+        size_t  num = size/PGSIZE;
+        for ( size_t i = 0 ; i < num ; i++)
+        {
+                uintptr_t cur_va = va + i*PGSIZE;
+                pte_t * entry = pgdir_walk(pgdir,(const void*)cur_va,1);
+                if (!entry)
+                {
+                        panic("pgdir_walk return NULL!");
+                }
+                physaddr_t cur_pa = pa + i*PGSIZE;
+                *entry = cur_pa | perm | PTE_P;
+        }
+}
+#+END_SRC
+
+#+BEGIN_SRC c
+struct PageInfo *
+page_lookup(pde_t *pgdir, void *va, pte_t **pte_store)
+{	
+        pte_t* pte = pgdir_walk(pgdir, va, 0);
+	if(pte == NULL)
+		return NULL;
+	physaddr_t pa = PTE_ADDR(*pte);
+	if(pte_store != 0)
+		,*pte_store = pte ;
+	return pa2page(pa);	
+}
+#+END_SRC
+
+#+BEGIN_SRC c
+void
+page_remove(pde_t *pgdir, void *va)
+{
+        // Fill this function in
+        pte_t *entry;
+        struct PageInfo * pginfo = page_lookup(pgdir, va, &entry);
+        if (!pginfo) return;
+        page_decref(pginfo);
+        *entry = 0;
+        tlb_invalidate(pgdir, va);
+}
+#+END_SRC
+
+#+BEGIN_SRC c
+int
+page_insert(pde_t *pgdir, struct PageInfo *pp, void *va, int perm)
+{
+	pte_t* pte = pgdir_walk(pgdir, va, 1);
+	if(pte == NULL)
+		return -E_NO_MEM;
+	if( (pte[0] &  ~0xfff) == page2pa(pp))
+		pp->pp_ref--;
+	else if(*pte != 0)
+		page_remove(pgdir, va);
+
+	*pte = (page2pa(pp) & ~0xfff) | perm | PTE_P;
+	pp->pp_ref++;
+	return 0;
+}
+#+END_SRC
+These cost me a lot of time lol...
+To be a detective is really hard...
 
 ** Part 3: Kernel Address Space
-   
+Now it's time to map our virtual addrs.
+
+*** Exercise 5
+#+BEGIN_QUOTE
+Fill in the missing code in mem_init() after the call to check_page().
+
+Your code should now pass the check_kern_pgdir() and check_page_installed_pgdir() checks.
+#+END_QUOTE
+
+#+BEGIN_SRC c
+boot_map_region(kern_pgdir, UPAGES, PTSIZE, PADDR(pages), PTE_U|PTE_P);
+
+boot_map_region(kern_pgdir, KSTACKTOP-KSTKSIZE, KSTKSIZE, PADDR(bootstack), PTE_W|PTE_P);
+
+boot_map_region(kern_pgdir, KERNBASE, (0xffffffff-KERNBASE), 0, PTE_W|PTE_P);
+#+END_SRC
 
 
-
+Finally,
+#+BEGIN_SRC 
+running JOS: (0.7s) 
+  Physical page allocator: OK 
+  Page management: OK 
+  Kernel page directory: OK 
+  Page management 2: OK 
+Score: 70/70
+#+END_SRC
 
 
 

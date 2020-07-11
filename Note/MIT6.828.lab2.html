@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-07 Tue 02:01 -->
+<!-- 2020-07-11 Sat 17:59 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MIT6.828 Lab 2</title>
@@ -244,28 +244,32 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgbc41bc1">1. Part 1: Physical Page Management</a>
+<li><a href="#org21cc72d">1. Part 1: Physical Page Management</a>
 <ul>
-<li><a href="#orgb0b49cd">1.1. Exercise 1</a>
+<li><a href="#org48ad00e">1.1. Exercise 1</a>
 <ul>
-<li><a href="#orgc3acb57">1.1.1. <code>inc/memlayout.h</code></a></li>
-<li><a href="#org4d85c88">1.1.2. <code>kern/pmap.h</code></a></li>
+<li><a href="#org5aa8980">1.1.1. <code>inc/memlayout.h</code></a></li>
+<li><a href="#orgcc3377d">1.1.2. <code>kern/pmap.h</code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org2b6c8c6">2. Part 2: Virtual Memory</a>
+<li><a href="#orgdcb03ed">2. Part 2: Virtual Memory</a>
 <ul>
-<li><a href="#org1891f14">2.1. Exercise 2</a></li>
-<li><a href="#orge2e8d37">2.2. Exercise 3</a>
+<li><a href="#org0488995">2.1. Exercise 2</a></li>
+<li><a href="#orgbfc09cb">2.2. Exercise 3</a>
 <ul>
-<li><a href="#org42d1b28">2.2.1. Question</a></li>
+<li><a href="#org30bedd6">2.2.1. Question</a></li>
 </ul>
 </li>
-<li><a href="#org6e9b969">2.3. Exercise 4</a></li>
+<li><a href="#org830f7a8">2.3. Exercise 4</a></li>
 </ul>
 </li>
-<li><a href="#org1a2a11f">3. Part 3: Kernel Address Space</a></li>
+<li><a href="#org5567564">3. Part 3: Kernel Address Space</a>
+<ul>
+<li><a href="#org1f087c6">3.1. Exercise 5</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -302,12 +306,12 @@ You may want to review <code>inc/mmu.h</code>, too, as it also contains a number
 </blockquote>
 
 
-<div id="outline-container-orgbc41bc1" class="outline-2">
-<h2 id="orgbc41bc1"><span class="section-number-2">1</span> Part 1: Physical Page Management</h2>
+<div id="outline-container-org21cc72d" class="outline-2">
+<h2 id="org21cc72d"><span class="section-number-2">1</span> Part 1: Physical Page Management</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgb0b49cd" class="outline-3">
-<h3 id="orgb0b49cd"><span class="section-number-3">1.1</span> Exercise 1</h3>
+<div id="outline-container-org48ad00e" class="outline-3">
+<h3 id="org48ad00e"><span class="section-number-3">1.1</span> Exercise 1</h3>
 <div class="outline-text-3" id="text-1-1">
 <blockquote>
 <p>
@@ -333,8 +337,8 @@ Before writing codes, I need to read and understand <code>kern/pmap.h</code> and
 </p>
 </div>
 
-<div id="outline-container-orgc3acb57" class="outline-4">
-<h4 id="orgc3acb57"><span class="section-number-4">1.1.1</span> <code>inc/memlayout.h</code></h4>
+<div id="outline-container-org5aa8980" class="outline-4">
+<h4 id="org5aa8980"><span class="section-number-4">1.1.1</span> <code>inc/memlayout.h</code></h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 Here we have the entire virtual memory map which we need to implement later.
@@ -409,34 +413,34 @@ Here we have the entire virtual memory map which we need to implement later.
 Moreover, we can find definition of <span class="underline">free-page-list</span> .
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #888a85; font-style: italic;">/*                                                                              </span>
-<span style="color: #888a85; font-style: italic;"> * Page descriptor structures, mapped at UPAGES.                                </span>
-<span style="color: #888a85; font-style: italic;"> * Read/write to the kernel, read-only to user programs.                        </span>
-<span style="color: #888a85; font-style: italic;"> *                                                                              </span>
-<span style="color: #888a85; font-style: italic;"> * Each struct PageInfo stores metadata for one physical page.                  </span>
-<span style="color: #888a85; font-style: italic;"> * Is it NOT the physical page itself, but there is a one-to-one                </span>
-<span style="color: #888a85; font-style: italic;"> * correspondence between physical pages and struct PageInfo's.                 </span>
-<span style="color: #888a85; font-style: italic;"> * You can map a struct PageInfo * to the corresponding physical address        </span>
-<span style="color: #888a85; font-style: italic;"> * with page2pa() in kern/pmap.h.                                               </span>
-<span style="color: #888a85; font-style: italic;"> </span><span style="color: #888a85; font-style: italic;">*/</span>
-<span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">PageInfo</span> <span style="color: #ffd700;">{</span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Next page on the free list.                                          </span>
-        <span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">PageInfo</span> *<span style="color: #ff6347; font-weight: bold;">pp_link</span>;
+<pre class="src src-c"><span style="color: #009e73; font-style: italic;">/*                                                                              </span>
+<span style="color: #009e73; font-style: italic;"> * Page descriptor structures, mapped at UPAGES.                                </span>
+<span style="color: #009e73; font-style: italic;"> * Read/write to the kernel, read-only to user programs.                        </span>
+<span style="color: #009e73; font-style: italic;"> *                                                                              </span>
+<span style="color: #009e73; font-style: italic;"> * Each struct PageInfo stores metadata for one physical page.                  </span>
+<span style="color: #009e73; font-style: italic;"> * Is it NOT the physical page itself, but there is a one-to-one                </span>
+<span style="color: #009e73; font-style: italic;"> * correspondence between physical pages and struct PageInfo's.                 </span>
+<span style="color: #009e73; font-style: italic;"> * You can map a struct PageInfo * to the corresponding physical address        </span>
+<span style="color: #009e73; font-style: italic;"> * with page2pa() in kern/pmap.h.                                               </span>
+<span style="color: #009e73; font-style: italic;"> </span><span style="color: #009e73; font-style: italic;">*/</span>
+<span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span> <span style="color: #ffd700;">{</span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Next page on the free list.                                          </span>
+        <span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span> *<span style="color: #e69f00; font-weight: bold;">pp_link</span>;
 
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">pp_ref is the count of pointers (usually in page table entries)      </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">to this page, for pages allocated using page_alloc.                  </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Pages allocated at boot time using pmap.c's                          </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">boot_alloc do not have valid reference count fields.                 </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">pp_ref is the count of pointers (usually in page table entries)      </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">to this page, for pages allocated using page_alloc.                  </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Pages allocated at boot time using pmap.c's                          </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">boot_alloc do not have valid reference count fields.                 </span>
 
-        <span style="color: #8ae234; font-weight: bold;">uint16_t</span> <span style="color: #ff6347; font-weight: bold;">pp_ref</span>;
+        <span style="color: #0072b2; font-weight: bold;">uint16_t</span> <span style="color: #e69f00; font-weight: bold;">pp_ref</span>;
 <span style="color: #ffd700;">}</span>;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org4d85c88" class="outline-4">
-<h4 id="org4d85c88"><span class="section-number-4">1.1.2</span> <code>kern/pmap.h</code></h4>
+<div id="outline-container-orgcc3377d" class="outline-4">
+<h4 id="orgcc3377d"><span class="section-number-4">1.1.2</span> <code>kern/pmap.h</code></h4>
 <div class="outline-text-4" id="text-1-1-2">
 <p>
 This is the core of memory mangement.
@@ -446,51 +450,51 @@ In <code>mem_init</code> , <code>boot_alloc</code> is first called, thus we need
 </div>
 
 <ol class="org-ol">
-<li><a id="org9974b2b"></a><code>boot_alloc</code><br />
+<li><a id="orgb96b6a0"></a><code>boot_alloc</code><br />
 <div class="outline-text-5" id="text-1-1-2-1">
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">This simple physical memory allocator is used only while JOS is setting                          </span>
-<span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">up its virtual memory system.  page_alloc() is the real allocator.                               </span>
-<span style="color: #888a85; font-style: italic;">//                                                                                                  </span>
-<span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">If n&gt;0, allocates enough pages of contiguous physical memory to hold 'n'                         </span>
-<span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">bytes.  Doesn't initialize the memory.  Returns a kernel virtual address.                        </span>
-<span style="color: #888a85; font-style: italic;">//                                                                                                  </span>
-<span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">If n==0, returns the address of the next free page without allocating                            </span>
-<span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">anything.                                                                                        </span>
-<span style="color: #888a85; font-style: italic;">//                                                                                                  </span>
-<span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">If we're out of memory, boot_alloc should panic.                                                 </span>
-<span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">This function may ONLY be used during initialization,                                            </span>
-<span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">before the page_free_list list has been set up.                                                  </span>
-<span style="color: #729fcf; font-weight: bold;">static</span> <span style="color: #8ae234; font-weight: bold;">void</span> *
-<span style="color: #edd400; font-weight: bold;">boot_alloc</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">uint32_t</span> <span style="color: #ff6347; font-weight: bold;">n</span><span style="color: #ffd700;">)</span>
+<pre class="src src-c"><span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">This simple physical memory allocator is used only while JOS is setting                          </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">up its virtual memory system.  page_alloc() is the real allocator.                               </span>
+<span style="color: #009e73; font-style: italic;">//                                                                                                  </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">If n&gt;0, allocates enough pages of contiguous physical memory to hold 'n'                         </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">bytes.  Doesn't initialize the memory.  Returns a kernel virtual address.                        </span>
+<span style="color: #009e73; font-style: italic;">//                                                                                                  </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">If n==0, returns the address of the next free page without allocating                            </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">anything.                                                                                        </span>
+<span style="color: #009e73; font-style: italic;">//                                                                                                  </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">If we're out of memory, boot_alloc should panic.                                                 </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">This function may ONLY be used during initialization,                                            </span>
+<span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">before the page_free_list list has been set up.                                                  </span>
+<span style="color: #56b4e9; font-weight: bold;">static</span> <span style="color: #0072b2; font-weight: bold;">void</span> *
+<span style="color: #d55e00;">boot_alloc</span><span style="color: #ffd700;">(</span><span style="color: #0072b2; font-weight: bold;">uint32_t</span> <span style="color: #e69f00; font-weight: bold;">n</span><span style="color: #ffd700;">)</span>
 <span style="color: #ffd700;">{</span>
-        <span style="color: #729fcf; font-weight: bold;">static</span> <span style="color: #8ae234; font-weight: bold;">char</span> *<span style="color: #ff6347; font-weight: bold;">nextfree</span>;  <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">virtual address of next byte of free memory                      </span>
-        <span style="color: #8ae234; font-weight: bold;">char</span> *<span style="color: #ff6347; font-weight: bold;">result</span>;
+        <span style="color: #56b4e9; font-weight: bold;">static</span> <span style="color: #0072b2; font-weight: bold;">char</span> *<span style="color: #e69f00; font-weight: bold;">nextfree</span>;  <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">virtual address of next byte of free memory                      </span>
+        <span style="color: #0072b2; font-weight: bold;">char</span> *<span style="color: #e69f00; font-weight: bold;">result</span>;
 
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Initialize nextfree if this is the first time.                                           </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">'end' is a magic symbol automatically generated by the linker,                           </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">which points to the end of the kernel's bss segment:                                     </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">the first virtual address that the linker did *not* assign                               </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">to any kernel code or global variables.                                                  </span>
-        <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #00bfff;">(</span>!nextfree<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
-                <span style="color: #729fcf; font-weight: bold;">extern</span> <span style="color: #8ae234; font-weight: bold;">char</span> <span style="color: #ff6347; font-weight: bold;">end</span><span style="color: #ffa500;">[]</span>;
-                nextfree = ROUNDUP<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #8ae234; font-weight: bold;">char</span> *<span style="color: #ff7f50;">)</span> end, PGSIZE<span style="color: #ffa500;">)</span>;
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Initialize nextfree if this is the first time.                                           </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">'end' is a magic symbol automatically generated by the linker,                           </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">which points to the end of the kernel's bss segment:                                     </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">the first virtual address that the linker did *not* assign                               </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">to any kernel code or global variables.                                                  </span>
+        <span style="color: #56b4e9; font-weight: bold;">if</span> <span style="color: #00bfff;">(</span>!nextfree<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+                <span style="color: #56b4e9; font-weight: bold;">extern</span> <span style="color: #0072b2; font-weight: bold;">char</span> <span style="color: #e69f00; font-weight: bold;">end</span><span style="color: #ffa500;">[]</span>;
+                nextfree = ROUNDUP<span style="color: #ffa500;">(</span><span style="color: #ff7f50;">(</span><span style="color: #0072b2; font-weight: bold;">char</span> *<span style="color: #ff7f50;">)</span> end, PGSIZE<span style="color: #ffa500;">)</span>;
         <span style="color: #00bfff;">}</span>
 
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Allocate a chunk large enough to hold 'n' bytes, then update                             </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">nextfree.  Make sure nextfree is kept aligned                                            </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">to a multiple of PGSIZE.                                                                 </span>
-        <span style="color: #888a85; font-style: italic;">//                                                                                          </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">LAB 2: Your code here.                                                                 </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Allocate a chunk large enough to hold 'n' bytes, then update                             </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">nextfree.  Make sure nextfree is kept aligned                                            </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">to a multiple of PGSIZE.                                                                 </span>
+        <span style="color: #009e73; font-style: italic;">//                                                                                          </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">LAB 2: Your code here.                                                                 </span>
         result = nextfree;
-        nextfree = ROUNDUP<span style="color: #00bfff;">(</span><span style="color: #ffa500;">(</span><span style="color: #8ae234; font-weight: bold;">char</span> *<span style="color: #ffa500;">)</span>result + n, PGSIZE<span style="color: #00bfff;">)</span>;
-        <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #00bfff;">(</span><span style="color: #ffa500;">(</span><span style="color: #8ae234; font-weight: bold;">uint32_t</span><span style="color: #ffa500;">)</span>nextfree &gt; KERNBASE + <span style="color: #ffa500;">(</span>npages * PGSIZE<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
-                panic<span style="color: #ffa500;">(</span><span style="color: #ad7fa8; font-style: italic;">"Out of memory!\n"</span><span style="color: #ffa500;">)</span>;
+        nextfree = ROUNDUP<span style="color: #00bfff;">(</span><span style="color: #ffa500;">(</span><span style="color: #0072b2; font-weight: bold;">char</span> *<span style="color: #ffa500;">)</span>result + n, PGSIZE<span style="color: #00bfff;">)</span>;
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span><span style="color: #ffa500;">(</span><span style="color: #0072b2; font-weight: bold;">uint32_t</span><span style="color: #ffa500;">)</span>nextfree &gt; KERNBASE + <span style="color: #ffa500;">(</span>npages * PGSIZE<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+                panic<span style="color: #ffa500;">(</span><span style="color: #848ea9;">"Out of memory!\n"</span><span style="color: #ffa500;">)</span>;
         <span style="color: #00bfff;">}</span>
-        cprintf<span style="color: #00bfff;">(</span><span style="color: #ad7fa8; font-style: italic;">"boot_alloc 1st memory at %x, next memory allocated at %x\n"</span>,
+        cprintf<span style="color: #00bfff;">(</span><span style="color: #848ea9;">"boot_alloc 1st memory at %x, next memory allocated at %x\n"</span>,
                 result, nextfree<span style="color: #00bfff;">)</span>;
 
-        <span style="color: #729fcf; font-weight: bold;">return</span> result;
+        <span style="color: #56b4e9; font-weight: bold;">return</span> result;
 <span style="color: #ffd700;">}</span>
 </pre>
 </div>
@@ -513,7 +517,7 @@ In <code>mem_init</code> , <code>boot_alloc</code> is first called, thus we need
 </div>
 </li>
 
-<li><a id="org5dd71ca"></a><code>mem_init</code><br />
+<li><a id="org975b446"></a><code>mem_init</code><br />
 <div class="outline-text-5" id="text-1-1-2-2">
 <p>
 Next, the main init part.
@@ -526,53 +530,53 @@ Next, the main init part.
 </div>
 </li>
 
-<li><a id="org4b69352"></a><code>page_init</code><br />
+<li><a id="orgd1b0b9c"></a><code>page_init</code><br />
 <div class="outline-text-5" id="text-1-1-2-3">
 <div class="org-src-container">
-<pre class="src src-c"> <span style="color: #8ae234; font-weight: bold;">void</span>
- <span style="color: #edd400; font-weight: bold;">page_init</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">void</span><span style="color: #ffd700;">)</span>
+<pre class="src src-c"> <span style="color: #0072b2; font-weight: bold;">void</span>
+ <span style="color: #d55e00;">page_init</span><span style="color: #ffd700;">(</span><span style="color: #0072b2; font-weight: bold;">void</span><span style="color: #ffd700;">)</span>
  <span style="color: #ffd700;">{</span>
- <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">The example code here marks all physical pages as free.              </span>
- <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">However this is not truly the case.  What memory is free?            </span>
- <span style="color: #888a85; font-style: italic;">//  </span><span style="color: #888a85; font-style: italic;">1) Mark physical page 0 as in use.                                  </span>
- <span style="color: #888a85; font-style: italic;">//     </span><span style="color: #888a85; font-style: italic;">This way we preserve the real-mode IDT and BIOS structures       </span>
- <span style="color: #888a85; font-style: italic;">//     </span><span style="color: #888a85; font-style: italic;">in case we ever need them.  (Currently we don't, but...)         </span>
- <span style="color: #888a85; font-style: italic;">//  </span><span style="color: #888a85; font-style: italic;">2) The rest of base memory, [PGSIZE, npages_basemem * PGSIZE)       </span>
- <span style="color: #888a85; font-style: italic;">//     </span><span style="color: #888a85; font-style: italic;">is free.                                                         </span>
- <span style="color: #888a85; font-style: italic;">//  </span><span style="color: #888a85; font-style: italic;">3) Then comes the IO hole [IOPHYSMEM, EXTPHYSMEM), which must       </span>
- <span style="color: #888a85; font-style: italic;">//     </span><span style="color: #888a85; font-style: italic;">never be allocated.                                              </span>
- <span style="color: #888a85; font-style: italic;">//  </span><span style="color: #888a85; font-style: italic;">4) Then extended memory [EXTPHYSMEM, ...).                          </span>
- <span style="color: #888a85; font-style: italic;">//     </span><span style="color: #888a85; font-style: italic;">Some of it is in use, some is free. Where is the kernel          </span>
- <span style="color: #888a85; font-style: italic;">//     </span><span style="color: #888a85; font-style: italic;">in physical memory?  Which pages are already in use for          </span>
- <span style="color: #888a85; font-style: italic;">//     </span><span style="color: #888a85; font-style: italic;">page tables and other data structures?                           </span>
- <span style="color: #888a85; font-style: italic;">//                                                                      </span>
- <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Change the code to reflect this.                                     </span>
- <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">NB: DO NOT actually touch the physical memory corresponding to       </span>
- <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">free pages!                                                          </span>
- <span style="color: #8ae234; font-weight: bold;">size_t</span> <span style="color: #ff6347; font-weight: bold;">i</span>;
- <span style="color: #729fcf; font-weight: bold;">for</span> <span style="color: #00bfff;">(</span>i = 0; i &lt; npages; i++<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
-                  <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i == 0<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
-                          <span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">Page 1 as used                                        </span>
+ <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">The example code here marks all physical pages as free.              </span>
+ <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">However this is not truly the case.  What memory is free?            </span>
+ <span style="color: #009e73; font-style: italic;">//  </span><span style="color: #009e73; font-style: italic;">1) Mark physical page 0 as in use.                                  </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">This way we preserve the real-mode IDT and BIOS structures       </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">in case we ever need them.  (Currently we don't, but...)         </span>
+ <span style="color: #009e73; font-style: italic;">//  </span><span style="color: #009e73; font-style: italic;">2) The rest of base memory, [PGSIZE, npages_basemem * PGSIZE)       </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">is free.                                                         </span>
+ <span style="color: #009e73; font-style: italic;">//  </span><span style="color: #009e73; font-style: italic;">3) Then comes the IO hole [IOPHYSMEM, EXTPHYSMEM), which must       </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">never be allocated.                                              </span>
+ <span style="color: #009e73; font-style: italic;">//  </span><span style="color: #009e73; font-style: italic;">4) Then extended memory [EXTPHYSMEM, ...).                          </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">Some of it is in use, some is free. Where is the kernel          </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">in physical memory?  Which pages are already in use for          </span>
+ <span style="color: #009e73; font-style: italic;">//     </span><span style="color: #009e73; font-style: italic;">page tables and other data structures?                           </span>
+ <span style="color: #009e73; font-style: italic;">//                                                                      </span>
+ <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Change the code to reflect this.                                     </span>
+ <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">NB: DO NOT actually touch the physical memory corresponding to       </span>
+ <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">free pages!                                                          </span>
+ <span style="color: #0072b2; font-weight: bold;">size_t</span> <span style="color: #e69f00; font-weight: bold;">i</span>;
+ <span style="color: #56b4e9; font-weight: bold;">for</span> <span style="color: #00bfff;">(</span>i = 0; i &lt; npages; i++<span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
+                  <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i == 0<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+                          <span style="color: #009e73; font-style: italic;">//</span><span style="color: #009e73; font-style: italic;">Page 1 as used                                        </span>
                           pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_ref = 1;
-                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = <span style="color: #8ae234; font-weight: bold;">NULL</span>;
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = <span style="color: #d55e00; font-weight: bold;">NULL</span>;
                   <span style="color: #ffa500;">}</span>
-                  <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i &lt; npages_basemem<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
-                          <span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">Rest of base mem as free                              </span>
+                  <span style="color: #56b4e9; font-weight: bold;">else</span> <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i &lt; npages_basemem<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+                          <span style="color: #009e73; font-style: italic;">//</span><span style="color: #009e73; font-style: italic;">Rest of base mem as free                              </span>
                           pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_ref = 0;
                           pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = page_free_list;
                           page_free_list = &amp;pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>;
                   <span style="color: #ffa500;">}</span>
-                  <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i &gt;= IOPHYSMEM/PGSIZE &amp;&amp; i &lt; EXTPHYSMEM/PGSIZE<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
-                          <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">IO hole                                              </span>
+                  <span style="color: #56b4e9; font-weight: bold;">else</span> <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i &gt;= IOPHYSMEM/PGSIZE &amp;&amp; i &lt; EXTPHYSMEM/PGSIZE<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
+                          <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">IO hole                                              </span>
                           pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_ref = 1;
-                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = <span style="color: #8ae234; font-weight: bold;">NULL</span>;
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = <span style="color: #d55e00; font-weight: bold;">NULL</span>;
                   <span style="color: #ffa500;">}</span>
-                  <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i &gt;= EXTPHYSMEM/PGSIZE &amp;&amp;
+                  <span style="color: #56b4e9; font-weight: bold;">else</span> <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>i &gt;= EXTPHYSMEM/PGSIZE &amp;&amp;
                           i &lt; PADDR<span style="color: #ff7f50;">(</span>boot_alloc<span style="color: #00ff00;">(</span>0<span style="color: #00ff00;">)</span><span style="color: #ff7f50;">)</span>/PGSIZE<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span>
                           pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_ref = 1;
-                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = <span style="color: #8ae234; font-weight: bold;">NULL</span>;
+                          pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = <span style="color: #d55e00; font-weight: bold;">NULL</span>;
                   <span style="color: #ffa500;">}</span>
-                  <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #ffa500;">{</span>
+                  <span style="color: #56b4e9; font-weight: bold;">else</span> <span style="color: #ffa500;">{</span>
                           pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_ref = 0;
                           pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>.pp_link = page_free_list;
                           page_free_list = &amp;pages<span style="color: #ff7f50;">[</span>i<span style="color: #ff7f50;">]</span>;
@@ -584,34 +588,34 @@ Next, the main init part.
 </div>
 </li>
 
-<li><a id="org534528f"></a><code>page_alloc</code> and <code>page_free</code><br />
+<li><a id="orged39ee3"></a><code>page_alloc</code> and <code>page_free</code><br />
 <div class="outline-text-5" id="text-1-1-2-4">
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">PageInfo</span> *
-<span style="color: #edd400; font-weight: bold;">page_alloc</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">alloc_flags</span><span style="color: #ffd700;">)</span>
+<pre class="src src-c"><span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span> *
+<span style="color: #d55e00;">page_alloc</span><span style="color: #ffd700;">(</span><span style="color: #0072b2; font-weight: bold;">int</span> <span style="color: #e69f00; font-weight: bold;">alloc_flags</span><span style="color: #ffd700;">)</span>
 <span style="color: #ffd700;">{</span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Fill this function in                                                </span>
-        <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>page_free_list == <span style="color: #8ae234; font-weight: bold;">NULL</span><span style="color: #00bfff;">)</span>
-                <span style="color: #729fcf; font-weight: bold;">return</span> <span style="color: #8ae234; font-weight: bold;">NULL</span>;
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Fill this function in                                                </span>
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>page_free_list == <span style="color: #d55e00; font-weight: bold;">NULL</span><span style="color: #00bfff;">)</span>
+                <span style="color: #56b4e9; font-weight: bold;">return</span> <span style="color: #d55e00; font-weight: bold;">NULL</span>;
 
-        <span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">PageInfo</span>* <span style="color: #ff6347; font-weight: bold;">page</span> = page_free_list;
+        <span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span>* <span style="color: #e69f00; font-weight: bold;">page</span> = page_free_list;
         page_free_list = page-&gt;pp_link;
         page-&gt;pp_link = 0;
-        <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>alloc_flags &amp; ALLOC_ZERO<span style="color: #00bfff;">)</span>
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>alloc_flags &amp; ALLOC_ZERO<span style="color: #00bfff;">)</span>
                 memset<span style="color: #00bfff;">(</span>page2kva<span style="color: #ffa500;">(</span>page<span style="color: #ffa500;">)</span>, 0, PGSIZE<span style="color: #00bfff;">)</span>;
-        <span style="color: #729fcf; font-weight: bold;">return</span> page;
+        <span style="color: #56b4e9; font-weight: bold;">return</span> page;
 <span style="color: #ffd700;">}</span>
-<span style="color: #8ae234; font-weight: bold;">void</span>
-<span style="color: #edd400; font-weight: bold;">page_free</span><span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">PageInfo</span> *<span style="color: #ff6347; font-weight: bold;">pp</span><span style="color: #ffd700;">)</span>
+<span style="color: #0072b2; font-weight: bold;">void</span>
+<span style="color: #d55e00;">page_free</span><span style="color: #ffd700;">(</span><span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span> *<span style="color: #e69f00; font-weight: bold;">pp</span><span style="color: #ffd700;">)</span>
 <span style="color: #ffd700;">{</span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Fill this function in                                                </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Hint: You may want to panic if pp-&gt;pp_ref is nonzero or              </span>
-        <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">pp-&gt;pp_link is not NULL.                                             </span>
-        <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>pp-&gt;pp_link != 0  || pp-&gt;pp_ref != 0<span style="color: #00bfff;">)</span>
-                panic<span style="color: #00bfff;">(</span><span style="color: #ad7fa8; font-style: italic;">"page_free: this page is not ready!"</span><span style="color: #00bfff;">)</span>;
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Fill this function in                                                </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Hint: You may want to panic if pp-&gt;pp_ref is nonzero or              </span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">pp-&gt;pp_link is not NULL.                                             </span>
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>pp-&gt;pp_link != 0  || pp-&gt;pp_ref != 0<span style="color: #00bfff;">)</span>
+                panic<span style="color: #00bfff;">(</span><span style="color: #848ea9;">"page_free: this page is not ready!"</span><span style="color: #00bfff;">)</span>;
         pp-&gt;pp_link = page_free_list;
         page_free_list = pp;
-        <span style="color: #729fcf; font-weight: bold;">return</span>;
+        <span style="color: #56b4e9; font-weight: bold;">return</span>;
 <span style="color: #ffd700;">}</span>
 </pre>
 </div>
@@ -626,12 +630,12 @@ Exercise finished!
 </div>
 </div>
 
-<div id="outline-container-org2b6c8c6" class="outline-2">
-<h2 id="org2b6c8c6"><span class="section-number-2">2</span> Part 2: Virtual Memory</h2>
+<div id="outline-container-orgdcb03ed" class="outline-2">
+<h2 id="orgdcb03ed"><span class="section-number-2">2</span> Part 2: Virtual Memory</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org1891f14" class="outline-3">
-<h3 id="org1891f14"><span class="section-number-3">2.1</span> Exercise 2</h3>
+<div id="outline-container-org0488995" class="outline-3">
+<h3 id="org0488995"><span class="section-number-3">2.1</span> Exercise 2</h3>
 <div class="outline-text-3" id="text-2-1">
 <blockquote>
 <p>
@@ -662,8 +666,8 @@ Done!
 </div>
 </div>
 
-<div id="outline-container-orge2e8d37" class="outline-3">
-<h3 id="orge2e8d37"><span class="section-number-3">2.2</span> Exercise 3</h3>
+<div id="outline-container-orgbfc09cb" class="outline-3">
+<h3 id="orgbfc09cb"><span class="section-number-3">2.2</span> Exercise 3</h3>
 <div class="outline-text-3" id="text-2-2">
 <blockquote>
 <p>
@@ -716,8 +720,8 @@ To help document the code, in JOS, type <code>uintptr_t</code> and <code>physadd
 </p>
 </div>
 
-<div id="outline-container-org42d1b28" class="outline-4">
-<h4 id="org42d1b28"><span class="section-number-4">2.2.1</span> Question</h4>
+<div id="outline-container-org30bedd6" class="outline-4">
+<h4 id="org30bedd6"><span class="section-number-4">2.2.1</span> Question</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <ul class="org-ul">
 <li>Solution: type is uintptr<sub>t</sub> since it's used as virtual addr.</li>
@@ -726,8 +730,8 @@ To help document the code, in JOS, type <code>uintptr_t</code> and <code>physadd
 </div>
 </div>
 
-<div id="outline-container-org6e9b969" class="outline-3">
-<h3 id="org6e9b969"><span class="section-number-3">2.3</span> Exercise 4</h3>
+<div id="outline-container-org830f7a8" class="outline-3">
+<h3 id="org830f7a8"><span class="section-number-3">2.3</span> Exercise 4</h3>
 <div class="outline-text-3" id="text-2-3">
 <blockquote>
 <p>
@@ -745,18 +749,173 @@ In the file kern/pmap.c, you must implement code for the following functions.
 <code>check_page()</code>, called from <code>mem_init()</code>, tests your page table management routines. You should make sure it reports success before proceeding.
 </p>
 </blockquote>
+
+<p>
+Well, we have less and less hints&#x2026;
+After reading the comments spreaded in codes&#x2026;
+</p>
+<ul class="org-ul">
+<li><code>pgdir_walk(pde_t *pgdir, const void *va, in create)</code> Get PTE of virtual address va, if not found and create, create one.</li>
+<li><code>boot_map_region()</code> Map [va, va+size) of virtual address space to physical [pa, pa+size) in the page table rooted at pgdir.</li>
+<li><code>page_lookup()</code> Return the page mapped at virtual address 'va'.</li>
+<li><code>page_remove()</code> Unmaps the physical page at virtual address 'va'.</li>
+<li><code>page_insert()</code> Map the physical page 'pp' at virtual address 'va'.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #0072b2; font-weight: bold;">pte_t</span> *
+<span style="color: #d55e00;">pgdir_walk</span><span style="color: #ffd700;">(</span><span style="color: #0072b2; font-weight: bold;">pde_t</span> *<span style="color: #e69f00; font-weight: bold;">pgdir</span>, <span style="color: #56b4e9; font-weight: bold;">const</span> <span style="color: #0072b2; font-weight: bold;">void</span> *<span style="color: #e69f00; font-weight: bold;">va</span>, <span style="color: #0072b2; font-weight: bold;">int</span> <span style="color: #e69f00; font-weight: bold;">create</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Fill this function in</span>
+        <span style="color: #0072b2; font-weight: bold;">int</span> <span style="color: #e69f00; font-weight: bold;">pdeIndex</span> = <span style="color: #00bfff;">(</span><span style="color: #0072b2; font-weight: bold;">unsigned</span> <span style="color: #0072b2; font-weight: bold;">int</span><span style="color: #00bfff;">)</span>va &gt;&gt;22;
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>pgdir<span style="color: #ffa500;">[</span>pdeIndex<span style="color: #ffa500;">]</span> == 0 &amp;&amp; create == 0<span style="color: #00bfff;">)</span>
+                <span style="color: #56b4e9; font-weight: bold;">return</span> <span style="color: #d55e00; font-weight: bold;">NULL</span>;
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>pgdir<span style="color: #ffa500;">[</span>pdeIndex<span style="color: #ffa500;">]</span> == 0<span style="color: #00bfff;">){</span>
+                <span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span>* <span style="color: #e69f00; font-weight: bold;">page</span> = page_alloc<span style="color: #ffa500;">(</span>1<span style="color: #ffa500;">)</span>;
+                <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #ffa500;">(</span>page == <span style="color: #d55e00; font-weight: bold;">NULL</span><span style="color: #ffa500;">)</span>
+                        <span style="color: #56b4e9; font-weight: bold;">return</span> <span style="color: #d55e00; font-weight: bold;">NULL</span>;
+                page-&gt;pp_ref++;
+                <span style="color: #0072b2; font-weight: bold;">pte_t</span> <span style="color: #e69f00; font-weight: bold;">pgAddress</span> = page2pa<span style="color: #ffa500;">(</span>page<span style="color: #ffa500;">)</span>;
+                pgAddress |= PTE_U;
+                pgAddress |= PTE_P;
+                pgAddress |= PTE_W;
+                pgdir<span style="color: #ffa500;">[</span>pdeIndex<span style="color: #ffa500;">]</span> = pgAddress;
+        <span style="color: #00bfff;">}</span>
+        <span style="color: #0072b2; font-weight: bold;">pte_t</span> <span style="color: #e69f00; font-weight: bold;">pgAdd</span> = pgdir<span style="color: #00bfff;">[</span>pdeIndex<span style="color: #00bfff;">]</span>;
+        pgAdd = pgAdd&gt;&gt;12&lt;&lt;12;
+        <span style="color: #0072b2; font-weight: bold;">int</span> <span style="color: #e69f00; font-weight: bold;">pteIndex</span> = <span style="color: #00bfff;">(</span><span style="color: #0072b2; font-weight: bold;">pte_t</span><span style="color: #00bfff;">)</span>va &gt;&gt;12 &amp; 0x3ff;
+        <span style="color: #0072b2; font-weight: bold;">pte_t</span> * <span style="color: #e69f00; font-weight: bold;">pte</span> = <span style="color: #00bfff;">(</span><span style="color: #0072b2; font-weight: bold;">pte_t</span>*<span style="color: #00bfff;">)</span> pgAdd + pteIndex;
+        <span style="color: #56b4e9; font-weight: bold;">return</span> KADDR<span style="color: #00bfff;">(</span> <span style="color: #ffa500;">(</span><span style="color: #0072b2; font-weight: bold;">pte_t</span><span style="color: #ffa500;">)</span> pte <span style="color: #00bfff;">)</span>;
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #56b4e9; font-weight: bold;">static</span> <span style="color: #0072b2; font-weight: bold;">void</span>
+<span style="color: #d55e00;">boot_map_region</span><span style="color: #ffd700;">(</span><span style="color: #0072b2; font-weight: bold;">pde_t</span> *<span style="color: #e69f00; font-weight: bold;">pgdir</span>, <span style="color: #0072b2; font-weight: bold;">uintptr_t</span> <span style="color: #e69f00; font-weight: bold;">va</span>, <span style="color: #0072b2; font-weight: bold;">size_t</span> <span style="color: #e69f00; font-weight: bold;">size</span>, <span style="color: #0072b2; font-weight: bold;">physaddr_t</span> <span style="color: #e69f00; font-weight: bold;">pa</span>, <span style="color: #0072b2; font-weight: bold;">int</span> <span style="color: #e69f00; font-weight: bold;">perm</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Fill this function in</span>
+        <span style="color: #0072b2; font-weight: bold;">size_t</span>  <span style="color: #e69f00; font-weight: bold;">num</span> = size/PGSIZE;
+        <span style="color: #56b4e9; font-weight: bold;">for</span> <span style="color: #00bfff;">(</span> <span style="color: #0072b2; font-weight: bold;">size_t</span> <span style="color: #e69f00; font-weight: bold;">i</span> = 0 ; i &lt; num ; i++<span style="color: #00bfff;">)</span>
+        <span style="color: #00bfff;">{</span>
+                <span style="color: #0072b2; font-weight: bold;">uintptr_t</span> <span style="color: #e69f00; font-weight: bold;">cur_va</span> = va + i*PGSIZE;
+                <span style="color: #0072b2; font-weight: bold;">pte_t</span> * <span style="color: #e69f00; font-weight: bold;">entry</span> = pgdir_walk<span style="color: #ffa500;">(</span>pgdir,<span style="color: #ff7f50;">(</span><span style="color: #56b4e9; font-weight: bold;">const</span> <span style="color: #0072b2; font-weight: bold;">void</span>*<span style="color: #ff7f50;">)</span>cur_va,1<span style="color: #ffa500;">)</span>;
+                <span style="color: #56b4e9; font-weight: bold;">if</span> <span style="color: #ffa500;">(</span>!entry<span style="color: #ffa500;">)</span>
+                <span style="color: #ffa500;">{</span>
+                        panic<span style="color: #ff7f50;">(</span><span style="color: #848ea9;">"pgdir_walk return NULL!"</span><span style="color: #ff7f50;">)</span>;
+                <span style="color: #ffa500;">}</span>
+                <span style="color: #0072b2; font-weight: bold;">physaddr_t</span> <span style="color: #e69f00; font-weight: bold;">cur_pa</span> = pa + i*PGSIZE;
+                *entry = cur_pa | perm | PTE_P;
+        <span style="color: #00bfff;">}</span>
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span> *
+<span style="color: #d55e00;">page_lookup</span><span style="color: #ffd700;">(</span><span style="color: #0072b2; font-weight: bold;">pde_t</span> *<span style="color: #e69f00; font-weight: bold;">pgdir</span>, <span style="color: #0072b2; font-weight: bold;">void</span> *<span style="color: #e69f00; font-weight: bold;">va</span>, <span style="color: #0072b2; font-weight: bold;">pte_t</span> **<span style="color: #e69f00; font-weight: bold;">pte_store</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>       
+        <span style="color: #0072b2; font-weight: bold;">pte_t</span>* <span style="color: #e69f00; font-weight: bold;">pte</span> = pgdir_walk<span style="color: #00bfff;">(</span>pgdir, va, 0<span style="color: #00bfff;">)</span>;
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>pte == <span style="color: #d55e00; font-weight: bold;">NULL</span><span style="color: #00bfff;">)</span>
+                <span style="color: #56b4e9; font-weight: bold;">return</span> <span style="color: #d55e00; font-weight: bold;">NULL</span>;
+        <span style="color: #0072b2; font-weight: bold;">physaddr_t</span> <span style="color: #e69f00; font-weight: bold;">pa</span> = PTE_ADDR<span style="color: #00bfff;">(</span>*pte<span style="color: #00bfff;">)</span>;
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>pte_store != 0<span style="color: #00bfff;">)</span>
+                *pte_store = pte ;
+        <span style="color: #56b4e9; font-weight: bold;">return</span> pa2page<span style="color: #00bfff;">(</span>pa<span style="color: #00bfff;">)</span>;     
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #0072b2; font-weight: bold;">void</span>
+<span style="color: #d55e00;">page_remove</span><span style="color: #ffd700;">(</span><span style="color: #0072b2; font-weight: bold;">pde_t</span> *<span style="color: #e69f00; font-weight: bold;">pgdir</span>, <span style="color: #0072b2; font-weight: bold;">void</span> *<span style="color: #e69f00; font-weight: bold;">va</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>
+        <span style="color: #009e73; font-style: italic;">// </span><span style="color: #009e73; font-style: italic;">Fill this function in</span>
+        <span style="color: #0072b2; font-weight: bold;">pte_t</span> *<span style="color: #e69f00; font-weight: bold;">entry</span>;
+        <span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span> * <span style="color: #e69f00; font-weight: bold;">pginfo</span> = page_lookup<span style="color: #00bfff;">(</span>pgdir, va, &amp;entry<span style="color: #00bfff;">)</span>;
+        <span style="color: #56b4e9; font-weight: bold;">if</span> <span style="color: #00bfff;">(</span>!pginfo<span style="color: #00bfff;">)</span> <span style="color: #56b4e9; font-weight: bold;">return</span>;
+        page_decref<span style="color: #00bfff;">(</span>pginfo<span style="color: #00bfff;">)</span>;
+        *entry = 0;
+        tlb_invalidate<span style="color: #00bfff;">(</span>pgdir, va<span style="color: #00bfff;">)</span>;
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #0072b2; font-weight: bold;">int</span>
+<span style="color: #d55e00;">page_insert</span><span style="color: #ffd700;">(</span><span style="color: #0072b2; font-weight: bold;">pde_t</span> *<span style="color: #e69f00; font-weight: bold;">pgdir</span>, <span style="color: #56b4e9; font-weight: bold;">struct</span> <span style="color: #0072b2; font-weight: bold;">PageInfo</span> *<span style="color: #e69f00; font-weight: bold;">pp</span>, <span style="color: #0072b2; font-weight: bold;">void</span> *<span style="color: #e69f00; font-weight: bold;">va</span>, <span style="color: #0072b2; font-weight: bold;">int</span> <span style="color: #e69f00; font-weight: bold;">perm</span><span style="color: #ffd700;">)</span>
+<span style="color: #ffd700;">{</span>
+        <span style="color: #0072b2; font-weight: bold;">pte_t</span>* <span style="color: #e69f00; font-weight: bold;">pte</span> = pgdir_walk<span style="color: #00bfff;">(</span>pgdir, va, 1<span style="color: #00bfff;">)</span>;
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>pte == <span style="color: #d55e00; font-weight: bold;">NULL</span><span style="color: #00bfff;">)</span>
+                <span style="color: #56b4e9; font-weight: bold;">return</span> -E_NO_MEM;
+        <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span> <span style="color: #ffa500;">(</span>pte<span style="color: #ff7f50;">[</span>0<span style="color: #ff7f50;">]</span> &amp;  ~0xfff<span style="color: #ffa500;">)</span> == page2pa<span style="color: #ffa500;">(</span>pp<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span>
+                pp-&gt;pp_ref--;
+        <span style="color: #56b4e9; font-weight: bold;">else</span> <span style="color: #56b4e9; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>*pte != 0<span style="color: #00bfff;">)</span>
+                page_remove<span style="color: #00bfff;">(</span>pgdir, va<span style="color: #00bfff;">)</span>;
+
+        *pte = <span style="color: #00bfff;">(</span>page2pa<span style="color: #ffa500;">(</span>pp<span style="color: #ffa500;">)</span> &amp; ~0xfff<span style="color: #00bfff;">)</span> | perm | PTE_P;
+        pp-&gt;pp_ref++;
+        <span style="color: #56b4e9; font-weight: bold;">return</span> 0;
+<span style="color: #ffd700;">}</span>
+</pre>
+</div>
+<p>
+These cost me a lot of time lol&#x2026;
+To be a detective is really hard&#x2026;
+</p>
 </div>
 </div>
 </div>
 
+<div id="outline-container-org5567564" class="outline-2">
+<h2 id="org5567564"><span class="section-number-2">3</span> Part 3: Kernel Address Space</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Now it's time to map our virtual addrs.
+</p>
+</div>
 
-<div id="outline-container-org1a2a11f" class="outline-2">
-<h2 id="org1a2a11f"><span class="section-number-2">3</span> Part 3: Kernel Address Space</h2>
+<div id="outline-container-org1f087c6" class="outline-3">
+<h3 id="org1f087c6"><span class="section-number-3">3.1</span> Exercise 5</h3>
+<div class="outline-text-3" id="text-3-1">
+<blockquote>
+<p>
+Fill in the missing code in mem<sub>init</sub>() after the call to check<sub>page</sub>().
+</p>
+
+<p>
+Your code should now pass the check<sub>kern</sub><sub>pgdir</sub>() and check<sub>page</sub><sub>installed</sub><sub>pgdir</sub>() checks.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #d55e00;">boot_map_region</span><span style="color: #ffd700;">(</span>kern_pgdir, UPAGES, PTSIZE, <span style="color: #0072b2; font-weight: bold;">PADDR</span><span style="color: #00bfff;">(</span><span style="color: #e69f00; font-weight: bold;">pages</span><span style="color: #00bfff;">)</span>, PTE_U|PTE_P<span style="color: #ffd700;">)</span>;
+
+<span style="color: #d55e00;">boot_map_region</span><span style="color: #ffd700;">(</span>kern_pgdir, KSTACKTOP-KSTKSIZE, KSTKSIZE, <span style="color: #0072b2; font-weight: bold;">PADDR</span><span style="color: #00bfff;">(</span><span style="color: #e69f00; font-weight: bold;">bootstack</span><span style="color: #00bfff;">)</span>, PTE_W|PTE_P<span style="color: #ffd700;">)</span>;
+
+<span style="color: #d55e00;">boot_map_region</span><span style="color: #ffd700;">(</span>kern_pgdir, KERNBASE, <span style="color: #00bfff;">(</span>0xffffffff-KERNBASE<span style="color: #00bfff;">)</span>, 0, PTE_W|PTE_P<span style="color: #ffd700;">)</span>;
+</pre>
+</div>
+
+
+<p>
+Finally,
+</p>
+<pre class="example">
+running JOS: (0.7s) 
+  Physical page allocator: OK 
+  Page management: OK 
+  Kernel page directory: OK 
+  Page management 2: OK 
+Score: 70/70
+</pre>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-07-07 Tue 02:01</p>
+<p class="date">Created: 2020-07-11 Sat 17:59</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
