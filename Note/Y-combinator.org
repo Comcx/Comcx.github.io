@@ -1,0 +1,69 @@
+#+Title:  Abstract Y Combinator
+#+Author: Comcx
+
+#+SETUPFILE: theme-readtheorg-local.setup
+
+** Programming is about abstraction.
+** Abstraction is about composition.
+** Composition is about complexity.
+
+Y combinator is just a simple application of ABSTRACTION.
+
+Since pure lambda calculus can not reference a function itself while definition,
+To implement automatic recursion we need to find a pattern to do it.
+
+The most simple idea is just to write a function twice.
+Let's make an example by =fact=.(_Note: I'm using Haskell-like language, if u know about Haskell then its ok:_)
+
+#+BEGIN_SRC haskell
+fact x = if x < 2 then 1 else x * fact (x - 1)
+#+END_SRC
+NO nono, we should not refer to fact itself inside fact definition!
+
+#+BEGIN_SRC haskell
+fact x = if x < 2 then 1 else x * fact_ (x - 1)
+#+END_SRC
+OK, then what about =fact_=?
+
+#+BEGIN_SRC haskell
+fact_ x = if x < 2 then 1 else x * fact (x - 1)
+#+END_SRC
+NO nono! Pure lambda calculus has no definition!
+We can't use mutual definition!
+
+We have no way but to parameterize fact
+#+BEGIN_SRC haskell
+fact self x = if x < 2 then 1 else x * self self (x - 1)
+-- fact fact
+#+END_SRC
+
+Let's abstract a little:
+#+BEGIN_SRC haskell
+f self x = h (self self) x
+#+END_SRC
+
+Drop x(thanks to curry):
+#+BEGIN_SRC haskell
+f self = h (self self)
+#+END_SRC
+
+Parameterize =h=
+#+BEGIN_SRC haskell
+t h = \self -> h (self self)
+g = t h
+-- g g => h (g g) => h (h (g g)) => ...
+#+END_SRC
+
+Bring everything together!
+#+BEGIN_SRC haskell
+Y h = (\x -> h (x x)) (\x -> h (x x))
+--
+Y = \f -> (\x -> f (x x)) (\x -> f (x x))
+#+END_SRC
+Now we get Y combinator.
+
+Note: this is the version for lazy evaluation, for eager evaluation,
+we should not drop the =x= parameter:
+#+BEGIN_SRC haskell
+Y h = (\self -> h (self self) x) (\self -> h (self self) x)
+#+END_SRC

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-04 Sat 20:51 -->
+<!-- 2020-07-21 Tue 01:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MIT6.828 Homework - Shell</title>
@@ -244,11 +244,11 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga2fda78">1. Implement simple functions</a>
+<li><a href="#orgb2f9594">1. Implement simple functions</a>
 <ul>
-<li><a href="#org5224529">1.1. Implement with <code>execv</code></a></li>
-<li><a href="#orgc051680">1.2. Implement IO redirection</a></li>
-<li><a href="#org9a2f7d0">1.3. Implement Pipes</a></li>
+<li><a href="#orgffb2c03">1.1. Implement with <code>execv</code></a></li>
+<li><a href="#org4b227d0">1.2. Implement IO redirection</a></li>
+<li><a href="#orgaccf5c2">1.3. Implement Pipes</a></li>
 </ul>
 </li>
 </ul>
@@ -258,43 +258,43 @@ for the JavaScript code in this tag.
 Download <code>sh.c</code> from <a href="https://pdos.csail.mit.edu/6.828/2018/homework/sh.c">6.828 shell</a>.
 </p>
 
-<div id="outline-container-orga2fda78" class="outline-2">
-<h2 id="orga2fda78"><span class="section-number-2">1</span> Implement simple functions</h2>
+<div id="outline-container-orgb2f9594" class="outline-2">
+<h2 id="orgb2f9594"><span class="section-number-2">1</span> Implement simple functions</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org5224529" class="outline-3">
-<h3 id="org5224529"><span class="section-number-3">1.1</span> Implement with <code>execv</code></h3>
+<div id="outline-container-orgffb2c03" class="outline-3">
+<h3 id="orgffb2c03"><span class="section-number-3">1.1</span> Implement with <code>execv</code></h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #ad7fa8; font-style: italic;">' '</span>:
-    ecmd = <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">execcmd</span>*<span style="color: #ffd700;">)</span>cmd;
-    <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffd700;">(</span>ecmd-&gt;argv<span style="color: #00bfff;">[</span>0<span style="color: #00bfff;">]</span> == 0<span style="color: #ffd700;">)</span>
-      _exit<span style="color: #ffd700;">(</span>0<span style="color: #ffd700;">)</span>;
-    <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">fprintf(stderr, "exec not implemented\n");                                </span>
-    <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Your code here ...                                                       </span>
-    <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #ffd700;">(</span>!access<span style="color: #00bfff;">(</span>ecmd-&gt;argv<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">]</span>, F_OK<span style="color: #00bfff;">)</span><span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span> <span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">cmd exists in current directory       </span>
-      execv<span style="color: #00bfff;">(</span>ecmd-&gt;argv<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">]</span>, ecmd-&gt;argv<span style="color: #00bfff;">)</span>;
-    <span style="color: #ffd700;">}</span>
-    <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #ffd700;">{</span>
-      <span style="color: #8ae234; font-weight: bold;">char</span> <span style="color: #ff6347; font-weight: bold;">path</span><span style="color: #00bfff;">[</span>128<span style="color: #00bfff;">]</span> = <span style="color: #00bfff;">{</span>0<span style="color: #00bfff;">}</span>;
-      <span style="color: #8ae234; font-weight: bold;">char</span> *<span style="color: #ff6347; font-weight: bold;">root</span> = <span style="color: #ad7fa8; font-style: italic;">"/bin/"</span>;
-      strcpy<span style="color: #00bfff;">(</span>path, root<span style="color: #00bfff;">)</span>;         <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">path = "/bin/"                             </span>
-      strcat<span style="color: #00bfff;">(</span>path, ecmd-&gt;argv<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span>;<span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">path = "/bin/&lt;cmd&gt;"                        </span>
-      <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #00bfff;">(</span>!access<span style="color: #ffa500;">(</span>path, F_OK<span style="color: #ffa500;">)</span><span style="color: #00bfff;">)</span> <span style="color: #00bfff;">{</span>
-        execv<span style="color: #ffa500;">(</span>path, ecmd-&gt;argv<span style="color: #ffa500;">)</span>;
-      <span style="color: #00bfff;">}</span>
-      <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #00bfff;">{</span>
-        fprintf<span style="color: #ffa500;">(</span>stderr, <span style="color: #ad7fa8; font-style: italic;">"Command &lt;%s&gt; not found.\n"</span>, ecmd-&gt;argv<span style="color: #ff7f50;">[</span>0<span style="color: #ff7f50;">]</span><span style="color: #ffa500;">)</span>;
-      <span style="color: #00bfff;">}</span>
-    <span style="color: #ffd700;">}</span>
+    ecmd = <span style="color: #8c8c8c;">(</span><span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">execcmd</span>*<span style="color: #8c8c8c;">)</span>cmd;
+    <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #8c8c8c;">(</span>ecmd-&gt;argv<span style="color: #93a8c6;">[</span>0<span style="color: #93a8c6;">]</span> == 0<span style="color: #8c8c8c;">)</span>
+      _exit<span style="color: #8c8c8c;">(</span>0<span style="color: #8c8c8c;">)</span>;
+    <span style="color: #888a85;">// </span><span style="color: #888a85;">fprintf(stderr, "exec not implemented\n");                                </span>
+    <span style="color: #888a85;">// </span><span style="color: #888a85;">Your code here ...                                                       </span>
+    <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #8c8c8c;">(</span>!access<span style="color: #93a8c6;">(</span>ecmd-&gt;argv<span style="color: #b0b1a3;">[</span>0<span style="color: #b0b1a3;">]</span>, F_OK<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span> <span style="color: #8c8c8c;">{</span> <span style="color: #888a85;">//</span><span style="color: #888a85;">cmd exists in current directory       </span>
+      execv<span style="color: #93a8c6;">(</span>ecmd-&gt;argv<span style="color: #b0b1a3;">[</span>0<span style="color: #b0b1a3;">]</span>, ecmd-&gt;argv<span style="color: #93a8c6;">)</span>;
+    <span style="color: #8c8c8c;">}</span>
+    <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #8c8c8c;">{</span>
+      <span style="color: #8ae234; font-weight: bold;">char</span> <span style="color: #ff6347;">path</span><span style="color: #93a8c6;">[</span>128<span style="color: #93a8c6;">]</span> = <span style="color: #93a8c6;">{</span>0<span style="color: #93a8c6;">}</span>;
+      <span style="color: #8ae234; font-weight: bold;">char</span> *<span style="color: #ff6347;">root</span> = <span style="color: #ad7fa8; font-style: italic;">"/bin/"</span>;
+      strcpy<span style="color: #93a8c6;">(</span>path, root<span style="color: #93a8c6;">)</span>;         <span style="color: #888a85;">// </span><span style="color: #888a85;">path = "/bin/"                             </span>
+      strcat<span style="color: #93a8c6;">(</span>path, ecmd-&gt;argv<span style="color: #b0b1a3;">[</span>0<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>;<span style="color: #888a85;">// </span><span style="color: #888a85;">path = "/bin/&lt;cmd&gt;"                        </span>
+      <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #93a8c6;">(</span>!access<span style="color: #b0b1a3;">(</span>path, F_OK<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span> <span style="color: #93a8c6;">{</span>
+        execv<span style="color: #b0b1a3;">(</span>path, ecmd-&gt;argv<span style="color: #b0b1a3;">)</span>;
+      <span style="color: #93a8c6;">}</span>
+      <span style="color: #729fcf; font-weight: bold;">else</span> <span style="color: #93a8c6;">{</span>
+        fprintf<span style="color: #b0b1a3;">(</span>stderr, <span style="color: #ad7fa8; font-style: italic;">"Command &lt;%s&gt; not found.</span><span style="color: #ad7fa8; font-weight: bold; font-style: italic;">\</span><span style="color: #ad7fa8; font-weight: bold; font-style: italic;">n</span><span style="color: #ad7fa8; font-style: italic;">"</span>, ecmd-&gt;argv<span style="color: #97b098;">[</span>0<span style="color: #97b098;">]</span><span style="color: #b0b1a3;">)</span>;
+      <span style="color: #93a8c6;">}</span>
+    <span style="color: #8c8c8c;">}</span>
     <span style="color: #729fcf; font-weight: bold;">break</span>;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgc051680" class="outline-3">
-<h3 id="orgc051680"><span class="section-number-3">1.2</span> Implement IO redirection</h3>
+<div id="outline-container-org4b227d0" class="outline-3">
+<h3 id="org4b227d0"><span class="section-number-3">1.2</span> Implement IO redirection</h3>
 <div class="outline-text-3" id="text-1-2">
 <blockquote>
 <p>
@@ -306,25 +306,25 @@ cat &lt; x.txt
 </pre>
 </blockquote>
 <div class="org-src-container">
-<pre class="src src-c">  <span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #ad7fa8; font-style: italic;">'&gt;'</span>:
-  <span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #ad7fa8; font-style: italic;">'&lt;'</span>:
-    rcmd = <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">redircmd</span>*<span style="color: #ffd700;">)</span>cmd;
-    <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">fprintf(stderr, "redir not implemented\n");</span>
-    <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Your code here ...                                                       </span>
-    <span style="color: #edd400; font-weight: bold;">close</span><span style="color: #ffd700;">(</span>rcmd-&gt;fd<span style="color: #ffd700;">)</span>; <span style="color: #888a85; font-style: italic;">//</span><span style="color: #888a85; font-style: italic;">close fnode with id 0                                    </span>
-    <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #ffd700;">(</span>open<span style="color: #00bfff;">(</span>rcmd-&gt;file, rcmd-&gt;flags, 0777<span style="color: #00bfff;">)</span> &lt; 0<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
-      fprintf<span style="color: #00bfff;">(</span>stderr, <span style="color: #ad7fa8; font-style: italic;">"open %s failed!\n"</span>, rcmd-&gt;file<span style="color: #00bfff;">)</span>;
-      exit<span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>;
-    <span style="color: #ffd700;">}</span>
-    <span style="color: #edd400; font-weight: bold;">runcmd</span><span style="color: #ffd700;">(</span>rcmd-&gt;cmd<span style="color: #ffd700;">)</span>;
-    <span style="color: #729fcf; font-weight: bold;">break</span>;
+<pre class="src src-c"><span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #ad7fa8; font-style: italic;">'&gt;'</span>:
+<span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #ad7fa8; font-style: italic;">'&lt;'</span>:
+  rcmd = <span style="color: #8c8c8c;">(</span><span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">redircmd</span>*<span style="color: #8c8c8c;">)</span>cmd;
+  <span style="color: #888a85;">// </span><span style="color: #888a85;">fprintf(stderr, "redir not implemented\n");</span>
+  <span style="color: #888a85;">// </span><span style="color: #888a85;">Your code here ...                                                       </span>
+  <span style="color: #edd400; font-weight: bold;">close</span><span style="color: #8c8c8c;">(</span>rcmd-&gt;fd<span style="color: #8c8c8c;">)</span>; <span style="color: #888a85;">//</span><span style="color: #888a85;">close fnode with id 0                                    </span>
+  <span style="color: #729fcf; font-weight: bold;">if</span><span style="color: #8c8c8c;">(</span>open<span style="color: #93a8c6;">(</span>rcmd-&gt;file, rcmd-&gt;flags, 0777<span style="color: #93a8c6;">)</span> &lt; 0<span style="color: #8c8c8c;">)</span> <span style="color: #8c8c8c;">{</span>
+    fprintf<span style="color: #93a8c6;">(</span>stderr, <span style="color: #ad7fa8; font-style: italic;">"open %s failed!</span><span style="color: #ad7fa8; font-weight: bold; font-style: italic;">\</span><span style="color: #ad7fa8; font-weight: bold; font-style: italic;">n</span><span style="color: #ad7fa8; font-style: italic;">"</span>, rcmd-&gt;file<span style="color: #93a8c6;">)</span>;
+    exit<span style="color: #93a8c6;">(</span>0<span style="color: #93a8c6;">)</span>;
+  <span style="color: #8c8c8c;">}</span>
+  <span style="color: #edd400; font-weight: bold;">runcmd</span><span style="color: #8c8c8c;">(</span>rcmd-&gt;cmd<span style="color: #8c8c8c;">)</span>;
+  <span style="color: #729fcf; font-weight: bold;">break</span>;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org9a2f7d0" class="outline-3">
-<h3 id="org9a2f7d0"><span class="section-number-3">1.3</span> Implement Pipes</h3>
+<div id="outline-container-orgaccf5c2" class="outline-3">
+<h3 id="orgaccf5c2"><span class="section-number-3">1.3</span> Implement Pipes</h3>
 <div class="outline-text-3" id="text-1-3">
 <blockquote>
 <p>
@@ -336,29 +336,29 @@ $ ls | sort | uniq | wc
 </blockquote>
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #729fcf; font-weight: bold;">case</span> <span style="color: #ad7fa8; font-style: italic;">'|'</span>:
-    pcmd = <span style="color: #ffd700;">(</span><span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">pipecmd</span>*<span style="color: #ffd700;">)</span>cmd;
-    <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">fprintf(stderr, "pipe not implemented\n");                               </span>
-    <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">Your code here ...                                                       </span>
-    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347; font-weight: bold;">p</span><span style="color: #ffd700;">[</span>2<span style="color: #ffd700;">]</span>, <span style="color: #ff6347; font-weight: bold;">r</span>;
-    <span style="color: #edd400; font-weight: bold;">pipe</span><span style="color: #ffd700;">(</span>p<span style="color: #ffd700;">)</span>;
-    <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #ffd700;">(</span>fork1<span style="color: #00bfff;">()</span> == 0<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
-      close<span style="color: #00bfff;">(</span>1<span style="color: #00bfff;">)</span>;
-      dup<span style="color: #00bfff;">(</span>p<span style="color: #ffa500;">[</span>1<span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span>;  <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">write-end                                                  </span>
-      close<span style="color: #00bfff;">(</span>p<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span>;
-      close<span style="color: #00bfff;">(</span>p<span style="color: #ffa500;">[</span>1<span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span>;
-      runcmd<span style="color: #00bfff;">(</span>pcmd-&gt;left<span style="color: #00bfff;">)</span>;
-    <span style="color: #ffd700;">}</span>
-    <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #ffd700;">(</span>fork1<span style="color: #00bfff;">()</span> == 0<span style="color: #ffd700;">)</span> <span style="color: #ffd700;">{</span>
-      close<span style="color: #00bfff;">(</span>0<span style="color: #00bfff;">)</span>;
-      dup<span style="color: #00bfff;">(</span>p<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span>;  <span style="color: #888a85; font-style: italic;">// </span><span style="color: #888a85; font-style: italic;">read-end                                                   </span>
-      close<span style="color: #00bfff;">(</span>p<span style="color: #ffa500;">[</span>0<span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span>;
-      close<span style="color: #00bfff;">(</span>p<span style="color: #ffa500;">[</span>1<span style="color: #ffa500;">]</span><span style="color: #00bfff;">)</span>;
-      runcmd<span style="color: #00bfff;">(</span>pcmd-&gt;right<span style="color: #00bfff;">)</span>;
-    <span style="color: #ffd700;">}</span>
-    <span style="color: #edd400; font-weight: bold;">close</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">p</span><span style="color: #00bfff;">[</span>0<span style="color: #00bfff;">]</span><span style="color: #ffd700;">)</span>;
-    <span style="color: #edd400; font-weight: bold;">close</span><span style="color: #ffd700;">(</span><span style="color: #8ae234; font-weight: bold;">p</span><span style="color: #00bfff;">[</span>1<span style="color: #00bfff;">]</span><span style="color: #ffd700;">)</span>;
-    wait<span style="color: #ffd700;">(</span>&amp;r<span style="color: #ffd700;">)</span>;
-    wait<span style="color: #ffd700;">(</span>&amp;r<span style="color: #ffd700;">)</span>;
+    pcmd = <span style="color: #8c8c8c;">(</span><span style="color: #729fcf; font-weight: bold;">struct</span> <span style="color: #8ae234; font-weight: bold;">pipecmd</span>*<span style="color: #8c8c8c;">)</span>cmd;
+    <span style="color: #888a85;">// </span><span style="color: #888a85;">fprintf(stderr, "pipe not implemented\n");                               </span>
+    <span style="color: #888a85;">// </span><span style="color: #888a85;">Your code here ...                                                       </span>
+    <span style="color: #8ae234; font-weight: bold;">int</span> <span style="color: #ff6347;">p</span><span style="color: #8c8c8c;">[</span>2<span style="color: #8c8c8c;">]</span>, <span style="color: #ff6347;">r</span>;
+    <span style="color: #edd400; font-weight: bold;">pipe</span><span style="color: #8c8c8c;">(</span>p<span style="color: #8c8c8c;">)</span>;
+    <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #8c8c8c;">(</span>fork1<span style="color: #93a8c6;">()</span> == 0<span style="color: #8c8c8c;">)</span> <span style="color: #8c8c8c;">{</span>
+      close<span style="color: #93a8c6;">(</span>1<span style="color: #93a8c6;">)</span>;
+      dup<span style="color: #93a8c6;">(</span>p<span style="color: #b0b1a3;">[</span>1<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>;  <span style="color: #888a85;">// </span><span style="color: #888a85;">write-end                                                  </span>
+      close<span style="color: #93a8c6;">(</span>p<span style="color: #b0b1a3;">[</span>0<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>;
+      close<span style="color: #93a8c6;">(</span>p<span style="color: #b0b1a3;">[</span>1<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>;
+      runcmd<span style="color: #93a8c6;">(</span>pcmd-&gt;left<span style="color: #93a8c6;">)</span>;
+    <span style="color: #8c8c8c;">}</span>
+    <span style="color: #729fcf; font-weight: bold;">if</span> <span style="color: #8c8c8c;">(</span>fork1<span style="color: #93a8c6;">()</span> == 0<span style="color: #8c8c8c;">)</span> <span style="color: #8c8c8c;">{</span>
+      close<span style="color: #93a8c6;">(</span>0<span style="color: #93a8c6;">)</span>;
+      dup<span style="color: #93a8c6;">(</span>p<span style="color: #b0b1a3;">[</span>0<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>;  <span style="color: #888a85;">// </span><span style="color: #888a85;">read-end                                                   </span>
+      close<span style="color: #93a8c6;">(</span>p<span style="color: #b0b1a3;">[</span>0<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>;
+      close<span style="color: #93a8c6;">(</span>p<span style="color: #b0b1a3;">[</span>1<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>;
+      runcmd<span style="color: #93a8c6;">(</span>pcmd-&gt;right<span style="color: #93a8c6;">)</span>;
+    <span style="color: #8c8c8c;">}</span>
+    <span style="color: #edd400; font-weight: bold;">close</span><span style="color: #8c8c8c;">(</span><span style="color: #8ae234; font-weight: bold;">p</span><span style="color: #93a8c6;">[</span>0<span style="color: #93a8c6;">]</span><span style="color: #8c8c8c;">)</span>;
+    <span style="color: #edd400; font-weight: bold;">close</span><span style="color: #8c8c8c;">(</span><span style="color: #8ae234; font-weight: bold;">p</span><span style="color: #93a8c6;">[</span>1<span style="color: #93a8c6;">]</span><span style="color: #8c8c8c;">)</span>;
+    wait<span style="color: #8c8c8c;">(</span>&amp;r<span style="color: #8c8c8c;">)</span>;
+    wait<span style="color: #8c8c8c;">(</span>&amp;r<span style="color: #8c8c8c;">)</span>;
     <span style="color: #729fcf; font-weight: bold;">break</span>;
 </pre>
 </div>
@@ -379,8 +379,8 @@ I dislike shell language, I want to make a better one.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Comcx</p>
-<p class="date">Created: 2020-07-04 Sat 20:51</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+<p class="date">Created: 2020-07-21 Tue 01:57</p>
+<p class="validation"></p>
 </div>
 </body>
 </html>

@@ -79,6 +79,14 @@
     *2020.07.04*\\
     Abstraction of space. 
 
+*** [[../Note/Y-combinator.html][Abstract Y Combinator]]
+    *2020.08.01*\\
+    Abstract Y combinator from common patterns
+
+
+
+
+
 
 
 
